@@ -19,37 +19,6 @@
         "passWithNoTests": true,
         "reportsDirectory": "../../../coverage/modules/shared/ui"
       }
-    },
-    "storybook": {
-      "executor": "@nx/storybook:storybook",
-      "options": {
-        "port": 4400,
-        "configDir": "modules/shared/ui/.storybook"
-      },
-      "configurations": {
-        "ci": {
-          "quiet": true
-        }
-      }
-    },
-    "build-storybook": {
-      "executor": "@nx/storybook:build",
-      "outputs": ["{options.outputDir}"],
-      "options": {
-        "outputDir": "dist/storybook/modules-shared-ui",
-        "configDir": "modules/shared/ui/.storybook"
-      },
-      "configurations": {
-        "ci": {
-          "quiet": true
-        }
-      }
-    },
-    "test-storybook": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "test-storybook -c modules/shared/ui/.storybook --url=http://localhost:4400"
-      }
     }
   }
 }
