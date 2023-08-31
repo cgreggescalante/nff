@@ -3,10 +3,17 @@ import { Footer } from './footer';
 
 import { within } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
+import { BrowserRouter } from "react-router-dom";
 
 const meta: Meta<typeof Footer> = {
   component: Footer,
   title: 'Footer',
+  decorators: [
+    (Story) =>
+      <BrowserRouter>
+        <Story />
+      </BrowserRouter>
+  ]
 };
 export default meta;
 type Story = StoryObj<typeof Footer>;

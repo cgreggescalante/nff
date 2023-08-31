@@ -1,12 +1,17 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import styles from './app.module.scss';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-export function App() {
-  return (
-    <div>
-      Hello! This is NOT the Fantasy Fitness you're looking for.
-    </div>
-  );
-}
+export const App = () =>
+  <BrowserRouter>
+    <Routes>
+      <Route path="/about">
+        About Page
+      </Route>
+      <Route path="/help">
+        Help Page
+      </Route>
+    </Routes>
+  </BrowserRouter>
 
 export default App;
