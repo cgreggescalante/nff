@@ -1,12 +1,17 @@
 import styles from './center.module.scss';
+import React, { ReactNode } from "react";
 
 /* eslint-disable-next-line */
-export interface CenterProps {}
+export interface CenterProps {
+  children?: ReactNode
+}
 
-export function Center(props: CenterProps) {
+export function Center({ children }: CenterProps) {
   return (
     <div className={styles['container']}>
-      <h1>Welcome to Center!</h1>
+      <div>
+        { children }
+      </div>
     </div>
   );
 }

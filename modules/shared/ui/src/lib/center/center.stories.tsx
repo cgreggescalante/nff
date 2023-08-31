@@ -12,13 +12,27 @@ export default meta;
 type Story = StoryObj<typeof Center>;
 
 export const Primary = {
-  args: {},
+  args: {
+    children: <div style={{ backgroundColor: "lightgrey" }}>
+      <h1>This is some content!!</h1>
+      <table>
+        <thead>
+        <tr>
+          <th>Meat</th>
+          <th>Cheese</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>Yes!</td>
+          <td>Yes!</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  },
 };
 
 export const Heading: Story = {
-  args: {},
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    expect(canvas.getByText(/Welcome to Center!/gi)).toBeTruthy();
-  },
+  args: {}
 };
