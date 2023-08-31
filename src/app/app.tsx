@@ -1,12 +1,10 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import styles from './app.module.scss';
 
-import NxWelcome from './nx-welcome';
-
 export function App() {
   return (
     <div>
-      <NxWelcome title="nff" />
+      Hello! This is NOT the Fantasy Fitness you're looking for.
     </div>
   );
 }
