@@ -1,4 +1,4 @@
-import styles from './workout-card.module.scss';
+import styles from './upload-card.module.scss';
 import { Card, Table } from "react-bootstrap";
 
 /* eslint-disable-next-line */
