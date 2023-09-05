@@ -2,19 +2,16 @@
 import styles from './app.module.scss';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Footer } from '@shared-ui';
+import About from "./about/about";
+import Help from "./help/help";
+import Home from "./home/home";
 
 export const App = () =>
   <BrowserRouter>
     <Routes>
-      <Route path="/">
-        Home Page
-      </Route>
-      <Route path="/about">
-        About Page
-      </Route>
-      <Route path="/help">
-        Help Page
-      </Route>
+      <Route path="/" element={<Home />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/help" element={<Help />} />
     </Routes>
     <Footer />
   </BrowserRouter>
