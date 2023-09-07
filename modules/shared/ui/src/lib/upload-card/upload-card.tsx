@@ -14,9 +14,8 @@ export interface User {
 
 export interface Upload {
   user: User,
-  date: Date
+  date: string
   workouts: Workout[]
-  points: number
 }
 
 export interface Workout {
@@ -32,21 +31,12 @@ export enum WorkoutType {
   Ski = "Ski",
 }
 
-/*
-  Fields to display
-    - Upload date
-    - User
-    - Workout type
-    - Distance / Duration
-    - Point total
- */
-
 export function UploadCard({ upload }: UploadCardProps) {
   return (
     <Card>
       <Card.Body>
         <span>{ upload.user.firstName } { upload.user.lastName } { upload.user.id }</span>
-        <span>{ upload.date.toISOString().split("T")[0] }</span>
+        <span>{ upload.date.split("T")[0] }</span>
         <Table striped border={1}>
           <thead>
             <tr>
@@ -68,7 +58,7 @@ export function UploadCard({ upload }: UploadCardProps) {
             <tr>
               <td></td>
               <td><b>Total</b></td>
-              <td>{ upload.points }</td>
+              <td>{ upload.workouts.reduce((sum, workout) => sum + workout.points, 0) }</td>
             </tr>
           </tbody>
         </Table>

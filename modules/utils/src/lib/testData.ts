@@ -13,7 +13,6 @@ export interface Upload {
   user: User,
   date: Date
   workouts: Workout[]
-  points: number
 }
 
 export interface Workout {
@@ -53,8 +52,7 @@ const generateDynamicJSONData = (): string => {
         uploadId: user.id * 10 + ui,
         userId: user.id,
         id: (user.id * 10 + ui) * 2 + wi
-      })),
-      points: faker.number.int({ min: 2, max: 40 })
+      }))
     }));
   }).flat();
 
