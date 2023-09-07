@@ -1,14 +1,21 @@
 import styles from './header.module.scss';
+import { Container, Nav, Navbar } from "react-bootstrap";
 
-/* eslint-disable-next-line */
-export interface HeaderProps {}
+const Header = () =>
+  <Navbar expand="lg" className="bg-body-tertiary">
+    <Container>
+      <Navbar.Brand href="#home">NFF</Navbar.Brand>
 
-export function Header(props: HeaderProps) {
-  return (
-    <div className={styles['container']}>
-      <h1>Welcome to Header!</h1>
-    </div>
-  );
-}
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+
+      <Navbar.Collapse>
+        <Nav className="me-auto">
+          <Nav.Link href="/">Home</Nav.Link>
+          <Nav.Link href="/about">About</Nav.Link>
+          <Nav.Link href="/help">Help</Nav.Link>
+        </Nav>
+      </Navbar.Collapse>
+    </Container>
+  </Navbar>
 
 export default Header;
