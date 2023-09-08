@@ -17,6 +17,9 @@
         },
         "production": {
           "mode": "production"
+        },
+        "gh-pages":  {
+          "baseHref": "nff"
         }
       }
     },

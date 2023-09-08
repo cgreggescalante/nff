@@ -7,7 +7,7 @@ import Home from "./home/home";
 import { Header } from "@shared-ui";
 
 export const App = () =>
-  <BrowserRouter>
+  <BrowserRouter basename={"/nff/"}>
     <Header />
     <Routes>
       <Route path="/" element={<Home />} />

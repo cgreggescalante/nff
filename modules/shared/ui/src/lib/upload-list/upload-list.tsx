@@ -10,7 +10,7 @@ export function UploadList(props: UploadListProps) {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetch('http://localhost:3000/uploads?_sort=date&_order=desc&limit=20')
+    fetch('http://localhost:3000/uploads?_sort=date&_order=desc&_limit=20')
       .then((res) => res.json())
       .then(data => {
         setLoading(false);
