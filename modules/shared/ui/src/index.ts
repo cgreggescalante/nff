@@ -1,13 +1,6 @@
-import Footer from './lib/footer/footer'
-import Header from './lib/header/header'
-import Center from './lib/center/center'
-import UploadCard from './lib/upload-card/upload-card'
-import UploadList from './lib/upload-list/upload-list'
-
-export {
-  Footer,
-  Center,
-  Header,
-  UploadCard,
-  UploadList
-}
+export * from './lib/footer/footer'
+export * from './lib/header/header'
+export * from './lib/center/center'
+export * from './lib/upload-card/upload-card'
+export * from './lib/upload-list/upload-list'
+export * from './lib/workout-input/workout-input'

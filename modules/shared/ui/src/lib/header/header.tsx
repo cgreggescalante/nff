@@ -1,7 +1,7 @@
 import styles from './header.module.scss';
 import { Container, Nav, Navbar } from "react-bootstrap";
 
-const Header = () =>
+export const Header = () =>
   <Navbar expand="lg" className="bg-body-tertiary">
     <Container>
       <Navbar.Brand href="/nff">NFF</Navbar.Brand>
@@ -17,5 +17,3 @@ const Header = () =>
       </Navbar.Collapse>
     </Container>
   </Navbar>
-
-export default Header;
