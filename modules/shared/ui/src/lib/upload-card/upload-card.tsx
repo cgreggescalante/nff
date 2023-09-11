@@ -1,34 +1,10 @@
 import styles from './upload-card.module.scss';
 import { Card, Table } from "react-bootstrap";
+import { Upload, Workout } from "@shared-data";
 
 /* eslint-disable-next-line */
 export interface UploadCardProps {
   upload: Upload
-}
-
-export interface User {
-  firstName: string,
-  lastName: string,
-  id: number
-}
-
-export interface Upload {
-  user: User,
-  date: string
-  workouts: Workout[]
-}
-
-export interface Workout {
-  workoutType: WorkoutType,
-  duration: number,
-  points: number
-}
-
-export enum WorkoutType {
-  Run = "Run",
-  Bike = "Bike",
-  Swim = "Swim",
-  Ski = "Ski",
 }
 
 export function UploadCard({ upload }: UploadCardProps) {
@@ -36,7 +12,7 @@ export function UploadCard({ upload }: UploadCardProps) {
     <Card>
       <Card.Body>
         <span>{ upload.user.firstName } { upload.user.lastName } { upload.user.id }</span>
-        <span>{ upload.date.split("T")[0] }</span>
+        <span>{ upload.date.toISOString().split("T")[0] }</span>
         <Table striped border={1}>
           <thead>
             <tr>

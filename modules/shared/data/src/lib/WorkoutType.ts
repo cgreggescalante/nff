@@ -1,7 +1,6 @@
-enum WorkoutType {
+export enum WorkoutType {
   Run = "Run",
   Bike = "Bike",
-  Ski = "Ski"
+  Ski = "Ski",
+  Swim = "Swim"
 }
-
-export { WorkoutType };

@@ -1,6 +1,7 @@
 import styles from './upload-list.module.scss';
 import { useEffect, useState } from "react";
-import { Upload, UploadCard } from "../upload-card/upload-card";
+import { UploadCard } from "../upload-card/upload-card";
+import { Upload } from "@shared-data";
 
 /* eslint-disable-next-line */
 export interface UploadListProps {}
@@ -14,7 +15,12 @@ export function UploadList(props: UploadListProps) {
       .then((res) => res.json())
       .then(data => {
         setLoading(false);
-        setUploads(data);
+        setUploads(data.map(
+          (upload: {date: string}) => ({
+            ...upload,
+            date: Date.parse(upload.date)
+          })
+        ));
       })
   }, []);
 
