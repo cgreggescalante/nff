@@ -6,17 +6,34 @@ import Help from "./help/help";
 import Home from "./home/home";
 import Upload from "./upload/upload";
 import { Header } from "@shared-ui";
+import Signup from "./signup/signup";
+import Login from "./login/login";
+import { auth } from "../firebase";
+import { useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
 
-export const App = () =>
-  <BrowserRouter basename={"/nff/"}>
-    <Header />
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/help" element={<Help />} />
-      <Route path="/upload" element={<Upload />} />
-    </Routes>
-  </BrowserRouter>
+export const App = () => {
+  const [authenticated, setAuthenticated] = useState<boolean>(false);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, user => user ? setAuthenticated(true) : setAuthenticated(false))
+  });
+
+  return (
+    <BrowserRouter basename={"/nff/"}>
+      <Header auth={auth} authenticated={authenticated} />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/help" element={<Help />} />
+        <Route path="/upload" element={<Upload />} />
+        <Route path="/signup" element={<Signup  />} />
+        <Route path="/login" element={<Login  />} />
+      </Routes>
+    </BrowserRouter>
+  )
+}
+
 
 
 export default App;

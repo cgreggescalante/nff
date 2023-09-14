@@ -1,12 +1,31 @@
 import styles from './home.module.scss';
 import { UploadList } from "@shared-ui";
+import { useEffect, useState } from "react";
+import { auth } from "../../firebase";
+import { User, onAuthStateChanged } from 'firebase/auth';
 
-const Home = () => (
-  <div className={styles['container']}>
-    <h3>Should probably put a short leaderboard up here, maybe some curated stuff?</h3>
+const Home = () => {
+  const [user, setUser] = useState<User | null>();
 
-    <UploadList />
-  </div>
-);
+  useEffect(() =>
+    onAuthStateChanged(auth, user => {
+      if (user)
+        setUser(user)
+      else
+        setUser(null)
+    })
+  )
+  return (
+    <div className={styles['container']}>
+      <div>
+        <h3>Current User</h3>
+        { user?.email }
+      </div>
+
+
+      <UploadList />
+    </div>
+  );
+}
 
 export default Home;
