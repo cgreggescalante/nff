@@ -3,7 +3,7 @@ import { UploadCard } from "./upload-card";
 
 import { within } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
-import { WorkoutType } from "@shared-data";
+import { RUN, BIKE } from "@shared-data";
 
 const meta: Meta<typeof UploadCard> = {
   component: UploadCard,
@@ -23,12 +23,12 @@ export const Primary = {
       date: new Date(),
       workouts: [
         {
-          workoutType: WorkoutType.Run,
+          workoutType: RUN,
           duration: 10,
           points: 10
         },
         {
-          workoutType: WorkoutType.Bike,
+          workoutType: BIKE,
           duration: 25,
           points: 6.25
         }

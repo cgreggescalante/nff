@@ -1,6 +1,6 @@
 import styles from './workout-input.module.scss';
 import React, { ChangeEvent } from "react";
-import { Workout } from "@shared-data";
+import { Workout, WorkoutTypes } from "@shared-data";
 
 export interface WorkoutProps {
   index: number;
@@ -21,10 +21,11 @@ export const WorkoutInput: React.FC<WorkoutProps> = ({ index, workoutData, handl
         value={workoutData.workoutType ? workoutData.workoutType.toString() : "Run"}
         onChange={(e: ChangeEvent<HTMLSelectElement>) => handleWorkoutChange(index, 'workoutType', e.target.value)}
       >
-        <option value="Run">Run</option>
-        <option value="Swim">Swim</option>
-        <option value="Bike">Bike</option>
-        <option value="Ski">Ski</option>
+        {
+          WorkoutTypes.map(workoutType =>
+            <option key={workoutType.name} value={workoutType.name}>{ workoutType.name }</option>
+          )
+        }
       </select>
 
       <label htmlFor={`duration${index}`}>Duration:</label>

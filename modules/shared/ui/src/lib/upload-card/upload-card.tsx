@@ -25,7 +25,7 @@ export function UploadCard({ upload }: UploadCardProps) {
           {
             upload.workouts.map((workout: Workout) =>
               <tr>
-                <td>{ workout.workoutType }</td>
+                <td>{ workout.workoutType.name }</td>
                 <td>{ workout.duration }</td>
                 <td>{ workout.points }</td>
               </tr>
