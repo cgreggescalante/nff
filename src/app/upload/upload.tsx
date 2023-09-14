@@ -1,28 +1,32 @@
 import React, { useState, ChangeEvent } from "react";
-import { WorkoutData, WorkoutInput } from "@shared-ui";
+import { WorkoutInput } from "@shared-ui";
+import { Upload, Workout } from "@shared-data";
 
 
-// Main component to add groups of workouts
-const WorkoutGroup: React.FC = () => {
+const UploadView: React.FC = () => {
     const [description, setDescription] = useState<string>("");
-    const [workouts, setWorkouts] = useState<WorkoutData[]>([{ type: "Running", duration: 0 }]);
+    const [workouts, setWorkouts] = useState<Workout[]>([{ type: "Running", duration: 0 }]);
 
-    const handleWorkoutChange = (index: number, field: keyof WorkoutData, value: string | number) => {
+    const handleWorkoutChange = (index: number, field: keyof Workout, value: string | number) => {
         const newWorkouts = [...workouts];
         newWorkouts[index][field] = value;
         setWorkouts(newWorkouts);
     };
 
-    const addWorkout = () => {
-        setWorkouts([...workouts, { type: "Running", duration: 0 }]);
-    };
+    const deleteWorkout = (index: number) => {
+        setWorkouts([...workouts.slice(0, index), ...workouts.slice(index + 1)]);
+    }
+
+    const addWorkout = () => setWorkouts([...workouts, { type: "Running", duration: 0 }]);
 
     const handleSubmit = () => {
-        const data = { 
-            description, 
-            workouts,
+        const data: Upload = {
+            description,
+            date: new Date(),
+            workouts: workouts.filter(w => w.duration > 0),
         };
-        // Perform API call or other action with the collected data
+
+        // TODO: Perform API call or other action with the collected data
         console.log("Submitting data:", data);
     };
 
@@ -39,13 +43,17 @@ const WorkoutGroup: React.FC = () => {
         }
         />
 
-        {workouts.map((workout, index) => (
-          <WorkoutInput
-            key={index}
-            index={index}
-            handleWorkoutChange={handleWorkoutChange}
-          />
-        ))}
+        {
+            workouts.map((workout, index) => (
+              <WorkoutInput
+                key={index}
+                index={index}
+                workoutData={workout}
+                handleWorkoutChange={handleWorkoutChange}
+                handleDelete={() => deleteWorkout(index)}
+              />
+            ))
+        }
 
         <button onClick={addWorkout}>Add Workout</button>
         <button onClick={handleSubmit}>Submit</button>
@@ -53,4 +61,4 @@ const WorkoutGroup: React.FC = () => {
     );
 };
 
-export default WorkoutGroup;
+export default UploadView;

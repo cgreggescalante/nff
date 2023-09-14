@@ -1,33 +1,30 @@
 import styles from './workout-input.module.scss';
 import React, { ChangeEvent } from "react";
-
-export interface WorkoutData {
-  type: string;
-  duration: number;
-}
+import { Workout } from "@shared-data";
 
 export interface WorkoutProps {
   index: number;
-  handleWorkoutChange: (index: number, field: keyof WorkoutData, value: string | number) => void;
+  workoutData: Workout,
+  handleWorkoutChange: (index: number, field: keyof Workout, value: string | number) => void;
+  handleDelete: (index: number) => void;
 }
 
 // Individual workout component
-export const WorkoutInput: React.FC<WorkoutProps> = ({ index, handleWorkoutChange }) => {
-  const handleSelectOrInputChange = (field: keyof WorkoutData, value: string | number) => {
-    handleWorkoutChange(index, field, value);
-  };
-
+export const WorkoutInput: React.FC<WorkoutProps> = ({ index, workoutData, handleWorkoutChange, handleDelete }) => {
   return (
     <div>
+      <button onClick={() => handleDelete(index)}>X</button>
       <label htmlFor={`workoutType${index}`}>Workout Type:</label>
       <select
         id={`workoutType${index}`}
         name={`workoutType${index}`}
-        onChange={(e: ChangeEvent<HTMLSelectElement>) => handleSelectOrInputChange('type', e.target.value)}
+        value={workoutData.workoutType ? workoutData.workoutType.toString() : "Run"}
+        onChange={(e: ChangeEvent<HTMLSelectElement>) => handleWorkoutChange(index, 'workoutType', e.target.value)}
       >
-        <option value="Running">Running</option>
-        <option value="Swimming">Swimming</option>
-        <option value="Cycling">Cycling</option>
+        <option value="Run">Run</option>
+        <option value="Swim">Swim</option>
+        <option value="Bike">Bike</option>
+        <option value="Ski">Ski</option>
       </select>
 
       <label htmlFor={`duration${index}`}>Duration:</label>
@@ -36,7 +33,8 @@ export const WorkoutInput: React.FC<WorkoutProps> = ({ index, handleWorkoutChang
         id={`duration${index}`}
         type="number"
         name={`duration${index}`}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => handleSelectOrInputChange('duration', parseInt(e.target.value, 10))}
+        value={workoutData.duration}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => handleWorkoutChange(index, 'duration', parseInt(e.target.value, 10))}
       />
     </div>
   );

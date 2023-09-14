@@ -18,7 +18,7 @@ export function UploadList(props: UploadListProps) {
         setUploads(data.map(
           (upload: {date: string}) => ({
             ...upload,
-            date: Date.parse(upload.date)
+            date: new Date(upload.date)
           })
         ));
       })
