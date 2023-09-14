@@ -1,5 +1,5 @@
 import styles from './header.module.scss';
-import { Button, Container, Nav, Navbar } from "react-bootstrap";
+import { Container, Nav, Navbar } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { Auth, signOut } from 'firebase/auth';
 
@@ -38,7 +38,6 @@ export const Header = ({ auth, authenticated }: HeaderProps) => {
             {
               authenticated ?
                 <Nav.Link onClick={handleSignOut}>Sign Out</Nav.Link> :
-                // <Button variant="link" style={{ textDecoration: 'none', color: 'inherit' }} onClick={handleSignOut}>Sign Out</Button> :
                 <>
                   <Nav.Link href="/nff/login">Login</Nav.Link>
                   <Nav.Link href="/nff/signup">Sign Up</Nav.Link>
