@@ -21,3 +21,10 @@ export const SWIM = new WorkoutType("Swim", "Swam", "Miles", (d) => d * 4)
 export const WorkoutTypes = [
   RUN, BIKE, SKI, SWIM
 ]
+
+export const WorkoutTypeFromName = {
+  "Run": RUN,
+  "Bike": BIKE,
+  "Ski": SKI,
+  "Swim": SWIM
+}

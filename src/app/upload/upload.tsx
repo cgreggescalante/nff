@@ -1,12 +1,22 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { WorkoutInput } from '@shared-ui';
-import { Upload, Workout, WorkoutType } from '@shared-data';
+import { Workout, WorkoutTypeFromName, WorkoutTypes } from "@shared-data";
+import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
+import { auth, db } from '../../firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 
 const UploadView: React.FC = () => {
   const [description, setDescription] = useState<string>('');
   const [workouts, setWorkouts] = useState<Workout[]>([
-    { workoutType: WorkoutType.Run, duration: 0, points: 0 },
+    { workoutType: WorkoutTypes[0], duration: 0, points: 0 },
   ]);
+
+  const navigate = useNavigate();
+
+  useEffect(() =>
+    onAuthStateChanged(auth, (user) => (user ? {} : navigate('/nff/login')))
+  );
 
   const handleWorkoutChange = (
     index: number,
@@ -18,23 +28,48 @@ const UploadView: React.FC = () => {
     setWorkouts(newWorkouts);
   };
 
-  const deleteWorkout = (index: number) => setWorkouts([...workouts.slice(0, index), ...workouts.slice(index + 1)]);
+  const deleteWorkout = (index: number) =>
+    setWorkouts([...workouts.slice(0, index), ...workouts.slice(index + 1)]);
 
   const addWorkout = () =>
     setWorkouts([
       ...workouts,
-      { workoutType: WorkoutType.Run, duration: 0, points: 0 },
+      { workoutType: WorkoutTypes[0], duration: 0, points: 0 },
     ]);
 
-  const handleSubmit = () => {
-    const data: Upload = {
-      description,
-      date: new Date(),
-      workouts: workouts.filter((w) => w.duration > 0),
-    };
+  const handleSubmit = async () => {
+    const validWorkouts = workouts.filter((w) => w.duration > 0);
 
-    // TODO: Perform API call or other action with the collected data
-    console.log('Submitting data:', data);
+    if (auth.currentUser != null) {
+      const userRef = doc(db, 'users', auth.currentUser.uid);
+
+      const uploadRef = await addDoc(collection(db, 'uploads'), {
+        description,
+        date: new Date(),
+        user: userRef,
+      });
+
+      const workoutRefs = Array.from({ length: validWorkouts.length });
+
+      for (let i = 0; i < validWorkouts.length; i++) {
+        const workout = validWorkouts[i];
+        const workoutType = typeof workout.workoutType == "string" ? WorkoutTypeFromName[workout.workoutType] : workout.workoutType;
+
+        workoutRefs[i] = await addDoc(collection(db, 'workouts'), {
+          upload: uploadRef,
+          user: userRef,
+          workoutType: workoutType.name,
+          duration: workout.duration,
+          points: workoutType.pointsFunction(
+            workout.duration
+          ),
+        });
+      }
+
+      updateDoc(uploadRef, {
+        workouts: workoutRefs,
+      }).then(() => console.log("Updated upload"));
+    }
   };
 
   return (
