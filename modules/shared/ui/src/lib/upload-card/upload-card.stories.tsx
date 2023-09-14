@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { UploadCard, WorkoutType } from "./upload-card";
+import { UploadCard } from "./upload-card";
 
 import { within } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
+import { WorkoutType } from "@shared-data";
 
 const meta: Meta<typeof UploadCard> = {
   component: UploadCard,
