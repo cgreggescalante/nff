@@ -20,7 +20,7 @@ export const App = () => {
   });
 
   return (
-    <BrowserRouter basename={"/nff/"}>
+    <BrowserRouter basename={"/nff"}>
       <Header auth={auth} authenticated={authenticated} />
       <Routes>
         <Route path="/" element={<Home />} />

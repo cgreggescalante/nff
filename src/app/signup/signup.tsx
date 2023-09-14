@@ -1,7 +1,8 @@
 import styles from './signup.module.scss';
 import { useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase";
+import { createUserWithEmailAndPassword, User } from "firebase/auth";
+import { auth, db } from "../../firebase";
+import { collection, addDoc, doc, setDoc } from 'firebase/firestore';
 
 /* eslint-disable-next-line */
 export interface SignupProps {}
@@ -16,13 +17,19 @@ export const Signup = (props: SignupProps) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((credentials) => {
         const user = credentials.user;
-        console.log(user);
+        createUserDocument(user);
       })
       .catch((err) => {
         setError(err.message);
         console.error(err);
       });
   }
+
+  const createUserDocument = (user: User) =>
+    setDoc(doc(db, "users", user.uid), {
+      email: user.email
+    }).then(() => console.log("Added document for user: ", user.uid))
+      .catch(e => console.error(e));
 
   return (
     <div className={styles['container']}>
