@@ -16,7 +16,7 @@ export const workoutConverter: FirestoreDataConverter<Workout> = {
   fromFirestore: (snapshot, options): Workout => {
     const data = snapshot.data(options);
     return {
-      workoutType: WorkoutTypeFromName[data['workoutType']],
+      workoutType: WorkoutTypeFromName(data['workoutType']),
       duration: data['duration'],
       points: data['points'],
     };

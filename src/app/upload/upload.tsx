@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { WorkoutInput } from '@shared-ui';
-import { Workout, WorkoutTypeFromName, WorkoutTypes } from "@shared-data";
+import { Workout, WorkoutType, WorkoutTypes } from "@shared-data";
 import { addDoc, collection, doc } from 'firebase/firestore';
 import { auth, db } from '../../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -17,16 +17,19 @@ const UploadView: React.FC = () => {
   useEffect(() =>
     onAuthStateChanged(auth, (user) => (user ? {} : navigate('/nff/login')))
   );
-
-  const handleWorkoutChange = (
-    index: number,
-    field: keyof Workout,
-    value: string | number
-  ) => {
+  
+  const handleWorkoutTypeChange = (index: number, value: WorkoutType) => {
     const newWorkouts = [...workouts];
-    newWorkouts[index][field] = value;
+    console.log(value);
+    newWorkouts[index].workoutType = value;
     setWorkouts(newWorkouts);
-  };
+  }
+  
+  const handleDurationChange = (index: number, value: number) => {
+    const newWorkouts = [...workouts];
+    newWorkouts[index].duration = value;
+    setWorkouts(newWorkouts);
+  }
 
   const deleteWorkout = (index: number) =>
     setWorkouts([...workouts.slice(0, index), ...workouts.slice(index + 1)]);
@@ -47,14 +50,11 @@ const UploadView: React.FC = () => {
         description,
         date: new Date(),
         user: userRef,
-        workouts: validWorkouts.map(w => {
-          const workoutType = typeof w.workoutType == "string" ? WorkoutTypeFromName[w.workoutType] : w.workoutType;
-          return {
-            workoutType: workoutType.name,
-            duration: w.duration,
-            points: workoutType.pointsFunction(w.duration)
-          }
-        })
+        workouts: validWorkouts.map(w => ({
+          workoutType: w.workoutType.name,
+          duration: w.duration,
+          points: w.workoutType.pointsFunction(w.duration)
+        }))
       });
     }
   };
@@ -77,7 +77,8 @@ const UploadView: React.FC = () => {
           key={index}
           index={index}
           workoutData={workout}
-          handleWorkoutChange={handleWorkoutChange}
+          handleWorkoutTypeChange={handleWorkoutTypeChange}
+          handleDurationChange={handleDurationChange}
           handleDelete={() => deleteWorkout(index)}
         />
       ))}

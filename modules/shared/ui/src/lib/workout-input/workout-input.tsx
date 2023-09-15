@@ -1,16 +1,17 @@
 import styles from './workout-input.module.scss';
 import React, { ChangeEvent } from "react";
-import { Workout, WorkoutTypes } from "@shared-data";
+import { Workout, WorkoutType, WorkoutTypeFromName, WorkoutTypes } from "@shared-data";
 
 export interface WorkoutProps {
   index: number;
   workoutData: Workout,
-  handleWorkoutChange: (index: number, field: keyof Workout, value: string | number) => void;
+  handleWorkoutTypeChange: (index: number, value: WorkoutType) => void;
+  handleDurationChange: (index: number, value: number) => void;
   handleDelete: (index: number) => void;
 }
 
 // Individual workout component
-export const WorkoutInput: React.FC<WorkoutProps> = ({ index, workoutData, handleWorkoutChange, handleDelete }) => {
+export const WorkoutInput: React.FC<WorkoutProps> = ({ index, workoutData, handleWorkoutTypeChange, handleDurationChange, handleDelete }) => {
   return (
     <div>
       <button onClick={() => handleDelete(index)}>X</button>
@@ -18,8 +19,8 @@ export const WorkoutInput: React.FC<WorkoutProps> = ({ index, workoutData, handl
       <select
         id={`workoutType${index}`}
         name={`workoutType${index}`}
-        value={workoutData.workoutType ? workoutData.workoutType.toString() : "Run"}
-        onChange={(e: ChangeEvent<HTMLSelectElement>) => handleWorkoutChange(index, 'workoutType', e.target.value)}
+        value={workoutData.workoutType ? workoutData.workoutType.name : "Run"}
+        onChange={(e: ChangeEvent<HTMLSelectElement>) => handleWorkoutTypeChange(index, WorkoutTypeFromName(e.target.value))}
       >
         {
           WorkoutTypes.map(workoutType =>
@@ -35,7 +36,7 @@ export const WorkoutInput: React.FC<WorkoutProps> = ({ index, workoutData, handl
         type="number"
         name={`duration${index}`}
         value={workoutData.duration}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => handleWorkoutChange(index, 'duration', parseInt(e.target.value, 10))}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => handleDurationChange(index, parseInt(e.target.value, 10))}
       />
     </div>
   );
