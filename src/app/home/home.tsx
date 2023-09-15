@@ -1,7 +1,7 @@
 import styles from './home.module.scss';
 import { UploadList } from "@shared-ui";
 import { useEffect, useState } from "react";
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
 import { User, onAuthStateChanged } from 'firebase/auth';
 
 const Home = () => {
@@ -14,7 +14,8 @@ const Home = () => {
       else
         setUser(null)
     })
-  )
+  );
+
   return (
     <div className={styles['container']}>
       <div>
@@ -22,8 +23,7 @@ const Home = () => {
         { user?.email }
       </div>
 
-
-      <UploadList />
+      <UploadList db={db}/>
     </div>
   );
 }

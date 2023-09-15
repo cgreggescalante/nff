@@ -1,28 +1,52 @@
 import styles from './upload-list.module.scss';
 import { useEffect, useState } from "react";
 import { UploadCard } from "../upload-card/upload-card";
-import { Upload } from "@shared-data";
+import { Upload, uploadConverter, userConverter, workoutConverter } from "@shared-data";
+import {
+  collection,
+  limit,
+  orderBy,
+  query,
+  Firestore,
+  getDocs,
+  where,
+  getDoc,
+} from 'firebase/firestore';
 
 /* eslint-disable-next-line */
-export interface UploadListProps {}
+export interface UploadListProps {
+  db: Firestore
+}
 
-export function UploadList(props: UploadListProps) {
+export function UploadList({ db }: UploadListProps) {
   const [uploads, setUploads] = useState<Upload[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetch('http://localhost:3000/uploads?_sort=date&_order=desc&_limit=20')
-      .then((res) => res.json())
-      .then(data => {
-        setLoading(false);
-        setUploads(data.map(
-          (upload: {date: string}) => ({
-            ...upload,
-            date: new Date(upload.date)
-          })
-        ));
-      })
-  }, []);
+    getDocs(query(
+      collection(db, "uploads").withConverter(uploadConverter),
+      orderBy("date", "desc"),
+      limit(25)
+    ))
+      .then(async snapshot => {
+          const uploads = snapshot.docs.map(doc => doc.data());
+
+          for (const upload of uploads) {
+            if (upload.userRef) {
+              upload.user = (await getDoc(upload.userRef.withConverter(userConverter))).data()
+            }
+
+            upload.resolved = true;
+          }
+
+          console.log(uploads);
+
+          setUploads(uploads);
+          setLoading(false);
+        }
+
+      );
+  }, [db]);
 
   return (
     <div className={styles['container']}>

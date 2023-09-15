@@ -1,9 +1,31 @@
 import { User } from "./User";
 import { Workout } from "./Workout";
+import { FirestoreDataConverter, DocumentReference } from 'firebase/firestore';
 
 export interface Upload {
   user?: User,
+  userRef?: DocumentReference,
   description: string
   date: Date,
   workouts: Workout[]
+  resolved: boolean
 }
+
+export const uploadConverter: FirestoreDataConverter<Upload> = {
+  toFirestore: (upload: Upload) => ({
+    user: upload.user,
+    description: upload.description,
+    date: upload.date,
+    workouts: upload.workouts
+  }),
+  fromFirestore: (snapshot, options): Upload => {
+    const data = snapshot.data(options);
+    return {
+      userRef: data['user'],
+      description: data['description'],
+      date: new Date(data['date']['seconds'] * 1000),
+      workouts: data['workouts'],
+      resolved: false
+    };
+  },
+};

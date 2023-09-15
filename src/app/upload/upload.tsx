@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { WorkoutInput } from '@shared-ui';
 import { Workout, WorkoutTypeFromName, WorkoutTypes } from "@shared-data";
-import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, doc } from 'firebase/firestore';
 import { auth, db } from '../../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
@@ -43,32 +43,19 @@ const UploadView: React.FC = () => {
     if (auth.currentUser != null) {
       const userRef = doc(db, 'users', auth.currentUser.uid);
 
-      const uploadRef = await addDoc(collection(db, 'uploads'), {
+      await addDoc(collection(db, 'uploads'), {
         description,
         date: new Date(),
         user: userRef,
+        workouts: validWorkouts.map(w => {
+          const workoutType = typeof w.workoutType == "string" ? WorkoutTypeFromName[w.workoutType] : w.workoutType;
+          return {
+            workoutType: workoutType.name,
+            duration: w.duration,
+            points: workoutType.pointsFunction(w.duration)
+          }
+        })
       });
-
-      const workoutRefs = Array.from({ length: validWorkouts.length });
-
-      for (let i = 0; i < validWorkouts.length; i++) {
-        const workout = validWorkouts[i];
-        const workoutType = typeof workout.workoutType == "string" ? WorkoutTypeFromName[workout.workoutType] : workout.workoutType;
-
-        workoutRefs[i] = await addDoc(collection(db, 'workouts'), {
-          upload: uploadRef,
-          user: userRef,
-          workoutType: workoutType.name,
-          duration: workout.duration,
-          points: workoutType.pointsFunction(
-            workout.duration
-          ),
-        });
-      }
-
-      updateDoc(uploadRef, {
-        workouts: workoutRefs,
-      }).then(() => console.log("Updated upload"));
     }
   };
 
