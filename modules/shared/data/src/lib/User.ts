@@ -19,7 +19,6 @@ export const userConverter: FirestoreDataConverter<User> = {
   }),
   fromFirestore: (snapshot, options): User => {
     const data = snapshot.data(options);
-    console.log(data)
     return {
       email: data['email'],
       firstName: data['name'] ? data['name']['firstName'] : "",

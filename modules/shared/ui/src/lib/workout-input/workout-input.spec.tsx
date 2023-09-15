@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 
-import WorkoutInput from './workout-input';
+import { WorkoutInput } from "@shared-ui";
 
 describe('WorkoutInput', () => {
   it('should render successfully', () => {

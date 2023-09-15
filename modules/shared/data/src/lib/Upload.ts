@@ -1,6 +1,7 @@
 import { User } from "./User";
 import { Workout } from "./Workout";
 import { FirestoreDataConverter, DocumentReference } from 'firebase/firestore';
+import { WorkoutTypeFromName } from "./WorkoutType";
 
 export interface Upload {
   user?: User,
@@ -24,8 +25,11 @@ export const uploadConverter: FirestoreDataConverter<Upload> = {
       userRef: data['user'],
       description: data['description'],
       date: new Date(data['date']['seconds'] * 1000),
-      workouts: data['workouts'],
-      resolved: false
+      workouts: data['workouts'].map((workout: { [x: string]: string }) => ({
+        ...workout,
+        workoutType: WorkoutTypeFromName(workout['workoutType']),
+      })),
+      resolved: false,
     };
   },
 };

@@ -1,7 +1,7 @@
 import styles from './upload-list.module.scss';
 import { useEffect, useState } from "react";
 import { UploadCard } from "../upload-card/upload-card";
-import { Upload, uploadConverter, userConverter, workoutConverter } from "@shared-data";
+import { Upload, uploadConverter, userConverter } from "@shared-data";
 import {
   collection,
   limit,
@@ -9,7 +9,6 @@ import {
   query,
   Firestore,
   getDocs,
-  where,
   getDoc,
 } from 'firebase/firestore';
 
@@ -35,11 +34,8 @@ export function UploadList({ db }: UploadListProps) {
             if (upload.userRef) {
               upload.user = (await getDoc(upload.userRef.withConverter(userConverter))).data()
             }
-
             upload.resolved = true;
           }
-
-          console.log(uploads);
 
           setUploads(uploads);
           setLoading(false);
