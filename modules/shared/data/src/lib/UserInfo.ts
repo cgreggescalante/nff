@@ -1,6 +1,6 @@
 import { FirestoreDataConverter } from "firebase/firestore";
 
-export interface User {
+export interface UserInfo {
   email: string
   firstName: string,
   lastName: string,
@@ -8,8 +8,8 @@ export interface User {
   id: number
 }
 
-export const userConverter: FirestoreDataConverter<User> = {
-  toFirestore: (user: User) => ({
+export const userConverter: FirestoreDataConverter<UserInfo> = {
+  toFirestore: (user: UserInfo) => ({
     email: user.email,
     name: {
       firstName: user.firstName,
@@ -17,7 +17,7 @@ export const userConverter: FirestoreDataConverter<User> = {
     },
     username: user.username
   }),
-  fromFirestore: (snapshot, options): User => {
+  fromFirestore: (snapshot, options): UserInfo => {
     const data = snapshot.data(options);
     return {
       email: data['email'],

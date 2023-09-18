@@ -1,10 +1,10 @@
-import { User } from "./User";
+import { UserInfo } from "./UserInfo";
 import { Workout } from "./Workout";
 import { FirestoreDataConverter, DocumentReference } from 'firebase/firestore';
 import { WorkoutTypeFromName } from "./WorkoutType";
 
 export interface Upload {
-  user?: User,
+  user?: UserInfo,
   userRef?: DocumentReference,
   description: string
   date: Date,

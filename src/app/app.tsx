@@ -11,6 +11,7 @@ import Login from "./login/login";
 import { auth } from "../firebase";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
+import Profile from "./profile/profile";
 
 export const App = () => {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
@@ -28,7 +29,8 @@ export const App = () => {
         <Route path="/help" element={<Help />} />
         <Route path="/upload" element={<Upload />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login  />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>
   )
