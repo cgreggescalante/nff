@@ -2,7 +2,7 @@ import styles from './profile.module.scss';
 import { useState } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth, db } from "../../firebase";
-import { userConverter, UserInfo } from "@shared-data";
+import { UserInfo } from "@shared-data";
 import { doc, getDoc } from "firebase/firestore";
 import { EditUserDetails, Loadable } from "@shared-ui";
 
@@ -16,7 +16,7 @@ export const Profile = (props: ProfileProps) => {
   const getData = (): Promise<object> =>
     new Promise((resolve, reject) => onAuthStateChanged(auth, user => {
       if (user) {
-        getDoc(doc(db, 'users', user.uid).withConverter(userConverter))
+        getDoc(doc(db, 'users', user.uid).withConverter(UserInfo.converter))
           .then((snapshot) => snapshot.data())
           .then(data => resolve({ user, userInfo: data }));
       }

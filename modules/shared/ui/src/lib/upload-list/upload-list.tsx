@@ -1,7 +1,7 @@
 import styles from './upload-list.module.scss';
 import { useEffect, useState } from "react";
 import { UploadCard } from "../upload-card/upload-card";
-import { Upload, uploadConverter, userConverter } from "@shared-data";
+import { Upload, uploadConverter, UserInfo } from "@shared-data";
 import {
   collection,
   limit,
@@ -32,7 +32,7 @@ export function UploadList({ db }: UploadListProps) {
 
           for (const upload of uploads) {
             if (upload.userRef) {
-              upload.user = (await getDoc(upload.userRef.withConverter(userConverter))).data()
+              upload.user = (await getDoc(upload.userRef.withConverter(UserInfo.converter))).data()
             }
             upload.resolved = true;
           }
