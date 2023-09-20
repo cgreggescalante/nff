@@ -44,7 +44,7 @@ export class Upload {
       return new Upload(
         data['user'],
         data['description'],
-        data['date'],
+        new Date(data['date']['seconds'] * 1000),
         workouts
       );
     },

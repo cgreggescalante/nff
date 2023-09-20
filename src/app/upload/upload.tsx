@@ -15,7 +15,7 @@ const UploadView: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() =>
-    onAuthStateChanged(auth, (user) => (user ? {} : navigate('/nff/login')))
+    onAuthStateChanged(auth, (user) => (user ? {} : navigate('/login')))
   );
   
   const handleWorkoutTypeChange = (index: number, value: WorkoutType) => {

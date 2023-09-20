@@ -33,6 +33,8 @@ export function UploadList({ db }: UploadListProps) {
             upload.user = (await getDoc(upload.userRef.withConverter(UserInfo.converter))).data()
           }
 
+          console.log(uploads);
+
           setUploads(uploads);
           setLoading(false);
         }

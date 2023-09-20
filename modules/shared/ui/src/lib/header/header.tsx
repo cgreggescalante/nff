@@ -23,15 +23,15 @@ export const Header = ({ auth, authenticated }: HeaderProps) => {
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
-        <Navbar.Brand href="/nff">NFF</Navbar.Brand>
+        <Navbar.Brand href="/">NFF</Navbar.Brand>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
         <Navbar.Collapse>
           <Nav className="mr-auto">
-            <Nav.Link href="/nff">Home</Nav.Link>
-            <Nav.Link href="/nff/about">About</Nav.Link>
-            <Nav.Link href="/nff/help">Help</Nav.Link>
+            <Nav.Link href="/">Home</Nav.Link>
+            <Nav.Link href="/about">About</Nav.Link>
+            <Nav.Link href="/help">Help</Nav.Link>
           </Nav>
 
           <Nav className="ml-auto">
@@ -39,8 +39,8 @@ export const Header = ({ auth, authenticated }: HeaderProps) => {
               authenticated ?
                 <Nav.Link onClick={handleSignOut}>Sign Out</Nav.Link> :
                 <>
-                  <Nav.Link href="/nff/login">Login</Nav.Link>
-                  <Nav.Link href="/nff/signup">Sign Up</Nav.Link>
+                  <Nav.Link href="/login">Login</Nav.Link>
+                  <Nav.Link href="/signup">Sign Up</Nav.Link>
                 </>
             }
           </Nav>
