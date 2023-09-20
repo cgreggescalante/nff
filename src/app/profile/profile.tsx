@@ -26,7 +26,11 @@ export const Profile = (props: ProfileProps) => {
   
   const resolve = (data: object) => {
     if ('user' in data && 'userInfo' in data) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       setUser(data.user);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       setUserInfo(data.userInfo);
     }
   }
