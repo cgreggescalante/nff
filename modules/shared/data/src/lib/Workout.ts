@@ -12,6 +12,8 @@ export class Workout {
     this.points = points;
   }
 
+  static default = () => new Workout(WorkoutType.RUN, 0, 0);
+
   static converter: FirestoreDataConverter<Workout> = {
     toFirestore: (workout: Workout) => ({
       workoutType: workout.workoutType.name,

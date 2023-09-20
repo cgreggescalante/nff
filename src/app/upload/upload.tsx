@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { WorkoutInput } from '@shared-ui';
-import { Workout, WorkoutType, WorkoutTypes } from "@shared-data";
+import { Workout, WorkoutType } from "@shared-data";
 import { addDoc, collection, doc } from 'firebase/firestore';
 import { auth, db } from '../../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const UploadView: React.FC = () => {
   const [description, setDescription] = useState<string>('');
   const [workouts, setWorkouts] = useState<Workout[]>([
-    { workoutType: WorkoutTypes[0], duration: 0, points: 0 },
+    Workout.default()
   ]);
 
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ const UploadView: React.FC = () => {
   const addWorkout = () =>
     setWorkouts([
       ...workouts,
-      { workoutType: WorkoutTypes[0], duration: 0, points: 0 },
+      Workout.default(),
     ]);
 
   const handleSubmit = async () => {

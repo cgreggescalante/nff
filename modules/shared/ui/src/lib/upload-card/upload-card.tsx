@@ -2,7 +2,6 @@ import styles from './upload-card.module.scss';
 import { Card, Table } from "react-bootstrap";
 import { Upload, Workout } from "@shared-data";
 
-/* eslint-disable-next-line */
 export interface UploadCardProps {
   upload: Upload
 }
@@ -17,6 +16,7 @@ export function UploadCard({ upload }: UploadCardProps) {
             <>Anonymous User { "  " }</>
         }
         <span>{ upload.date.toISOString().split("T").join(" ") }</span>
+
         <Table striped border={1}>
           <thead>
             <tr>

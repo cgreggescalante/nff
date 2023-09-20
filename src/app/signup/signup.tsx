@@ -2,7 +2,7 @@ import styles from './signup.module.scss';
 import { useState } from "react";
 import { createUserWithEmailAndPassword, User } from "firebase/auth";
 import { auth, db } from "../../firebase";
-import { collection, addDoc, doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 
 /* eslint-disable-next-line */
 export interface SignupProps {}
@@ -17,6 +17,7 @@ export const Signup = (props: SignupProps) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((credentials) => {
         const user = credentials.user;
+        // TODO: Navigate to user info page when createUserDocument is completed?
         createUserDocument(user);
       })
       .catch((err) => {
