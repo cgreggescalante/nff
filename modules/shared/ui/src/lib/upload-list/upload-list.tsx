@@ -12,7 +12,6 @@ import {
   getDoc,
 } from 'firebase/firestore';
 
-/* eslint-disable-next-line */
 export interface UploadListProps {
   db: Firestore
 }
@@ -31,16 +30,12 @@ export function UploadList({ db }: UploadListProps) {
           const uploads = snapshot.docs.map(doc => doc.data());
 
           for (const upload of uploads) {
-            if (upload.userRef) {
-              upload.user = (await getDoc(upload.userRef.withConverter(UserInfo.converter))).data()
-            }
-            upload.resolved = true;
+            upload.user = (await getDoc(upload.userRef.withConverter(UserInfo.converter))).data()
           }
 
           setUploads(uploads);
           setLoading(false);
         }
-
       );
   }, [db]);
 
