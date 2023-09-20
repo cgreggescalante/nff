@@ -1,7 +1,7 @@
 import styles from './upload-list.module.scss';
 import { useEffect, useState } from "react";
 import { UploadCard } from "../upload-card/upload-card";
-import { Upload, uploadConverter, UserInfo } from "@shared-data";
+import { Upload, UserInfo } from "@shared-data";
 import {
   collection,
   limit,
@@ -23,7 +23,7 @@ export function UploadList({ db }: UploadListProps) {
 
   useEffect(() => {
     getDocs(query(
-      collection(db, "uploads").withConverter(uploadConverter),
+      collection(db, "uploads").withConverter(Upload.converter),
       orderBy("date", "desc"),
       limit(25)
     ))
