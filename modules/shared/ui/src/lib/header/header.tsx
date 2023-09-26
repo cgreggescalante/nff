@@ -2,20 +2,21 @@ import styles from './header.module.scss';
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { Auth, signOut } from 'firebase/auth';
+import { UserInfo } from "@shared-data";
 
 export interface HeaderProps {
+  user: UserInfo | null,
+  loading: boolean,
   auth: Auth
-  authenticated: boolean
 }
 
-export const Header = ({ auth, authenticated }: HeaderProps) => {
+export const Header = ({ user, loading, auth }: HeaderProps) => {
   const navigate = useNavigate();
 
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
         navigate("/");
-        console.log("Signed out successfully");
       })
       .catch(err => console.error(err));
   }
@@ -36,12 +37,17 @@ export const Header = ({ auth, authenticated }: HeaderProps) => {
 
           <Nav className="ml-auto">
             {
-              authenticated ?
-                <Nav.Link onClick={handleSignOut}>Sign Out</Nav.Link> :
-                <>
-                  <Nav.Link href="/login">Login</Nav.Link>
-                  <Nav.Link href="/signup">Sign Up</Nav.Link>
-                </>
+              loading ? null :
+                user ?
+                  <Nav.Link onClick={handleSignOut}>Sign Out</Nav.Link> :
+                  <>
+                    <Nav.Link href="/login">Login</Nav.Link>
+                    <Nav.Link href="/signup">Sign Up</Nav.Link>
+                  </>
+            }
+            {
+              user?.role === 'admin' ?
+                <Nav.Link href={"/admin-tools"}>Admin</Nav.Link> : null
             }
           </Nav>
         </Navbar.Collapse>

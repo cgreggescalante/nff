@@ -1,35 +1,34 @@
 import { FirestoreDataConverter } from "firebase/firestore";
 
 export class UserInfo {
-  email: string;
   firstName: string;
   lastName: string;
-  id: string;
+  uid: string;
   role: string;
 
-  constructor(email: string, firstName: string, lastName: string, id: string) {
-    this.email = email;
+  constructor(firstName: string, lastName: string, uid: string, role: string) {
     this.firstName = firstName;
     this.lastName = lastName;
-    this.id = id;
-    this.role = "none";
+    this.uid = uid;
+    this.role = role;
   }
 
   static converter: FirestoreDataConverter<UserInfo> = {
     toFirestore: (user: UserInfo) => ({
-      email: user.email,
       name: {
         firstName: user.firstName,
         lastName: user.lastName
-      }
+      },
+      uid: user.uid,
+      role: user.role
     }),
     fromFirestore: (snapshot, options): UserInfo => {
       const data = snapshot.data(options);
       return new UserInfo(
-        data['email'],
         data['name'] ? data['name']['firstName'] : "",
         data['name'] ? data['name']['lastName'] : "",
-        data['id']
+        snapshot.id,
+        data['role']
       );
     }
   }

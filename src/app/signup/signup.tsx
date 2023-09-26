@@ -3,38 +3,35 @@ import { useState } from "react";
 import { createUserWithEmailAndPassword, User } from "firebase/auth";
 import { auth, db } from "../../firebase";
 import { doc, setDoc } from 'firebase/firestore';
+import { useNavigate } from "react-router-dom";
 
-/* eslint-disable-next-line */
-export interface SignupProps {}
-
-export const Signup = (props: SignupProps) => {
+export const Signup = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | undefined>()
 
+  const navigate = useNavigate();
+
   const handleSignup = () => {
-    console.log(email, password);
     createUserWithEmailAndPassword(auth, email, password)
       .then((credentials) => {
         const user = credentials.user;
-        // TODO: Navigate to user info page when createUserDocument is completed?
-        createUserDocument(user);
+        createUserDocument(user)
+          .then(_ => navigate("/profile"));
       })
       .catch((err) => {
         setError(err.message);
-        console.error(err);
       });
   }
 
   const createUserDocument = (user: User) =>
-    setDoc(doc(db, "users", user.uid), {
-      email: user.email
-    }).then(() => console.log("Added document for user: ", user.uid))
+    setDoc(doc(db, "users", user.uid), { uid: user.uid }).then(() => console.log("Added document for user: ", user.uid))
       .catch(e => console.error(e));
 
   return (
     <div className={styles['container']}>
       <h1>Sign Up</h1>
+
       <label>
         Email
         <input type={"email"} onChange={(e) => setEmail(e.target.value)} />

@@ -9,8 +9,12 @@ const Home = () => {
   return (
     <div className={styles['container']}>
       <div>
-        <h3>Current User</h3>
-        { user?.email }
+        { loading ? <h3>Loading...</h3> : user ? <>
+          <h3>Current User</h3>
+          { user.uid } { user.firstName } { user.lastName } { user.role }
+        </>
+          : <h3>No Current User</h3>
+        }
       </div>
 
       <UploadList db={db}/>

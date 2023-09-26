@@ -1,65 +1,114 @@
 import styles from './admin-tools.module.scss';
 import { useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from "../../firebase";
+import { db } from "../../firebase";
 import { UserInfo } from "@shared-data";
-import { collection, getDocs, query } from "firebase/firestore";
-import { Table } from "react-bootstrap";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  where,
+} from 'firebase/firestore';
+import { Button, Modal, Table } from "react-bootstrap";
+import { useUser } from "../../userContext";
+import { useNavigate } from "react-router-dom";
 
-/* eslint-disable-next-line */
-export interface AdminToolsProps {}
-
-export const AdminTools = (props: AdminToolsProps) => {
-  const [authenticated, setAuthenticated] = useState<boolean>(false);
+export const AdminTools = () => {
   const [users, setUsers] = useState<UserInfo[]>([]);
 
-  useEffect(() => {
-    onAuthStateChanged(auth, user => user?.uid === "hi1zLi5QJNgaoZc1NHDg04zFDQV2" ? setAuthenticated(true) : setAuthenticated(false))
-  });
+  const { user, loading } = useUser();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (authenticated) {
+    if (!loading && (!user || user.role !== 'admin'))
+      navigate("/")
+  }, [user, navigate, loading]);
+
+  useEffect(() => {
+    getDocs(query(
+      collection(db, "users").withConverter(UserInfo.converter)
+    ))
+      .then(snapshot => {
+        const users = snapshot.docs.map(doc => doc.data());
+
+        setUsers(users);
+      })
+  }, []);
+
+  const [userId, setUserId] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState<boolean>(false);
+
+  const beginDelete = (uid: string) => {
+    setUserId(uid);
+    setShowModal(true);
+  }
+
+  const deleteUser = async () => {
+    setShowModal(false);
+
+    if (userId) {
+      const userRef = doc(db, "users", userId);
+
+      await deleteDoc(userRef);
+
       getDocs(query(
-        collection(db, "users").withConverter(UserInfo.converter)
+        collection(db, "uploads"),
+        where("user", "==", userRef)
       ))
-        .then(snapshot => {
-          const users = snapshot.docs.map(doc => doc.data());
-
-          setUsers(users);
+        .then(docs => {
+          docs.forEach(doc => deleteDoc(doc.ref));
         })
     }
-  }, [authenticated]);
+  }
 
   return <div className={styles['container']}>
     <h1>Welcome to AdminTools!</h1>
-
+    <Table bordered>
+      <thead>
+      <tr>
+        <th></th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>UID</th>
+      </tr>
+      </thead>
+      <tbody>
+      {
+        users.map(user => <tr>
+            <td><Button onClick={() => beginDelete(user.uid)}>Delete</Button></td>
+            <td>{ user.firstName }</td>
+            <td>{ user.lastName }</td>
+            <td>{ user.uid }</td>
+        </tr>
+        )
+      }
+      </tbody>
+    </Table>
     {
-      authenticated ? <>
-        <Table bordered>
-          <thead>
-          <tr>
-            <th>Email</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>UID</th>
-          </tr>
-          </thead>
-          <tbody>
-          {
-            users.map(user => <tr>
-                <td>{ user.email }</td>
-                <td>{ user.firstName }</td>
-                <td>{ user.lastName }</td>
-                <td>{ user.id }</td>
-            </tr>
-            )
-          }
-          </tbody>
-        </Table>
-
-      </> : <h3>No user authenticated, please login and try again.</h3>
+      userId && <ConfirmDelete onConfirm={deleteUser} userId={userId} show={showModal} setShow={setShowModal} />
     }
   </div>
 }
+
+interface ConfirmDeleteProps {
+  onConfirm: () => void,
+  userId: string,
+  show: boolean,
+  setShow: (value: boolean) => void
+}
+
+const ConfirmDelete = ({ onConfirm, userId, show, setShow }: ConfirmDeleteProps) =>
+  <Modal show={show} onHide={() => setShow(false)}>
+    <Modal.Header closeButton>
+      <Modal.Title>Confirm Delete User</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>Are you sure you want to delete user { userId } and all associated uploads?</Modal.Body>
+    <Modal.Footer>
+      <Button onClick={() => setShow(false)}>Cancel</Button>
+      <Button onClick={onConfirm}>Delete User</Button>
+    </Modal.Footer>
+  </Modal>
 
 export default AdminTools;

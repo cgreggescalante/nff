@@ -17,7 +17,6 @@ const UserProvider = ({ children }: { children: ReactElement }) => {
           const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid).withConverter(UserInfo.converter));
           if (userDoc.exists()) {
             const userInfo = userDoc.data();
-            userInfo.id = firebaseUser.uid;
             setUser(userInfo);
           }
         } catch (error) {

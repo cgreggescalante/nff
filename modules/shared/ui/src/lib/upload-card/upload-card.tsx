@@ -12,7 +12,7 @@ export function UploadCard({ upload }: UploadCardProps) {
       <Card.Body>
         {
           upload.user && upload.user.firstName ?
-            <span>{ upload.user.firstName } { upload.user.lastName } { upload.user.id }{ "  " }</span> :
+            <span>{ upload.user.firstName } { upload.user.lastName } { upload.user.uid }{ "  " }</span> :
             <>Anonymous User { "  " }</>
         }
         <span>{ upload.date.toISOString().split("T").join(" ") }</span>
