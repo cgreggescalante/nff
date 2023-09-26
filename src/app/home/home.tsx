@@ -1,20 +1,10 @@
 import styles from './home.module.scss';
 import { UploadList } from "@shared-ui";
-import { useEffect, useState } from "react";
-import { auth, db } from "../../firebase";
-import { User, onAuthStateChanged } from 'firebase/auth';
+import { db } from "../../firebase";
+import { useUser } from "../../userContext";
 
 const Home = () => {
-  const [user, setUser] = useState<User | null>();
-
-  useEffect(() =>
-    onAuthStateChanged(auth, user => {
-      if (user)
-        setUser(user)
-      else
-        setUser(null)
-    })
-  );
+  const { user, loading } = useUser();
 
   return (
     <div className={styles['container']}>

@@ -5,12 +5,14 @@ export class UserInfo {
   firstName: string;
   lastName: string;
   id: string;
+  role: string[];
 
   constructor(email: string, firstName: string, lastName: string, id: string) {
     this.email = email;
     this.firstName = firstName;
     this.lastName = lastName;
     this.id = id;
+    this.role = [];
   }
 
   static converter: FirestoreDataConverter<UserInfo> = {

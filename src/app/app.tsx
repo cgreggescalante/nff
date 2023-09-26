@@ -12,6 +12,7 @@ import { auth } from "../firebase";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import Profile from "./profile/profile";
+import AdminTools from './admin-tools/admin-tools';
 
 export const App = () => {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
@@ -31,6 +32,7 @@ export const App = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/admin-tools" element={<AdminTools />} />
       </Routes>
     </BrowserRouter>
   )
