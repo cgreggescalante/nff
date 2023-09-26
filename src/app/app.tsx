@@ -5,7 +5,7 @@ import About from "./about/about";
 import Help from "./help/help";
 import Home from "./home/home";
 import Upload from "./upload/upload";
-import { Header } from "@shared-ui";
+import { AdminRoute, Header } from "@shared-ui";
 import Signup from "./signup/signup";
 import Login from "./login/login";
 import { auth } from "../firebase";
@@ -13,9 +13,11 @@ import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import Profile from "./profile/profile";
 import AdminTools from './admin-tools/admin-tools';
+import { useUser } from "../userContext";
 
 export const App = () => {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
+  const { user } = useUser();
 
   useEffect(() => {
     onAuthStateChanged(auth, user => user ? setAuthenticated(true) : setAuthenticated(false))
@@ -32,7 +34,11 @@ export const App = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/admin-tools" element={<AdminTools />} />
+        <Route path="/admin-tools" element={
+          <AdminRoute allowed={user?.role === 'admin'} redirectPath={"/"}>
+            <AdminTools />
+          </AdminRoute>
+        } />
       </Routes>
     </BrowserRouter>
   )
