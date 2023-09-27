@@ -45,8 +45,8 @@ export function UploadList({ db }: UploadListProps) {
     <div className={styles['container']}>
       {
         loading ? <h2>Loading...</h2> :
-        uploads.map(upload =>
-          <UploadCard upload={upload} />
+        uploads.map((upload, index) =>
+          <UploadCard key={index} upload={upload} />
         )
       }
     </div>
