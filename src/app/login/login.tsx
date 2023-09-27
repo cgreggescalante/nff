@@ -1,17 +1,20 @@
 import styles from './login.module.scss';
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../../firebase";
 import { signInWithEmailAndPassword, User } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import { Button, FloatingLabel, Form } from "react-bootstrap";
 
 export const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState<any>("");
+  const [error, setError] = useState<string>("");
   
-  const handleLogin = async () => {
+  const handleSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     try {
       const credentials = await signInWithEmailAndPassword(auth, email, password);
       const user = credentials.user;
@@ -27,7 +30,7 @@ export const Login = () => {
 
       navigate("/");
     } catch (e) {
-      setError(e);
+      setError("Error while attempting to validate credentials. Please verify email and password and try again.");
     }
   }
 
@@ -38,16 +41,28 @@ export const Login = () => {
   return (
     <div className={styles['container']}>
       <h1>Login</h1>
-      <label>
-        Email
-        <input type={"email"} onChange={(e) => setEmail(e.target.value)} />
-      </label>
-      <label>
-        Password
-        <input type={"password"} onChange={(e) => setPassword(e.target.value)} />
-      </label>
-      <button onClick={handleLogin}>Login</button>
-      { error }
+      <Form onSubmit={handleSubmit}>
+        <FloatingLabel label={"Email"} className={"mb-3"}>
+          <Form.Control
+            required
+            type={"email"}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder={"Email"}/>
+        </FloatingLabel>
+
+        <FloatingLabel label={"Password"}>
+          <Form.Control
+            required
+            type={"password"}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder={"Password"}/>
+        </FloatingLabel>
+        <Button type={"submit"}>Login</Button>
+      </Form>
+
+      { error && <p>{ error }</p> }
     </div>
   );
 };
