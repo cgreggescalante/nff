@@ -1,9 +1,10 @@
 import styles from './signup.module.scss';
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { createUserWithEmailAndPassword, User } from "firebase/auth";
 import { auth, db } from "../../firebase";
 import { doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from "react-router-dom";
+import { Button, FloatingLabel, Form } from "react-bootstrap";
 
 export const Signup = () => {
   const [email, setEmail] = useState<string>("");
@@ -12,7 +13,9 @@ export const Signup = () => {
 
   const navigate = useNavigate();
 
-  const handleSignup = () => {
+  const handleSubmit = (event: ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     createUserWithEmailAndPassword(auth, email, password)
       .then((credentials) => {
         const user = credentials.user;
@@ -32,16 +35,28 @@ export const Signup = () => {
     <div className={styles['container']}>
       <h1>Sign Up</h1>
 
-      <label>
-        Email
-        <input type={"email"} onChange={(e) => setEmail(e.target.value)} />
-      </label>
-      <label>
-        Password
-        <input type={"password"} onChange={(e) => setPassword(e.target.value)} />
-      </label>
-      <button onClick={() => handleSignup()}>Sign Up</button>
-      <h4>{ error }</h4>
+      <Form onSubmit={handleSubmit}>
+        <FloatingLabel label={"Email"} className={"mb-3"}>
+          <Form.Control
+            required
+            type={"email"}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder={"Email"}/>
+        </FloatingLabel>
+
+        <FloatingLabel label={"Password"}>
+          <Form.Control
+            required
+            type={"password"}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder={"Password"}/>
+        </FloatingLabel>
+        <Button type={"submit"}>Login</Button>
+      </Form>
+
+      { error && <p>{ error }</p> }
     </div>
   );
 }
