@@ -1,6 +1,6 @@
 import styles from './upload-list.module.scss';
 import { useEffect, useState } from "react";
-import { UploadCard } from "../upload-card/upload-card";
+import { UploadCard } from "./upload-card/upload-card";
 import { Upload, UserInfo } from "@shared-data";
 import {
   collection,
