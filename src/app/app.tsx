@@ -9,19 +9,12 @@ import { Header } from "@shared-ui";
 import Signup from "./signup/signup";
 import Login from "./login/login";
 import { auth } from "../firebase";
-import { useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
 import Profile from "./profile/profile";
 import AdminTools from './admin-tools/admin-tools';
 import { useUser } from "../userContext";
 
 export const App = () => {
-  const [authenticated, setAuthenticated] = useState<boolean>(false);
   const { user, loading } = useUser();
-
-  useEffect(() => {
-    onAuthStateChanged(auth, user => user ? setAuthenticated(true) : setAuthenticated(false))
-  });
 
   return (
     <BrowserRouter basename={"/"}>

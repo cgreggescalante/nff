@@ -1,26 +1,39 @@
 import styles from './login.module.scss';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../../firebase";
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth, db } from "../../firebase";
+import { signInWithEmailAndPassword, User } from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 export const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<any>("");
+  
+  const handleLogin = async () => {
+    try {
+      const credentials = await signInWithEmailAndPassword(auth, email, password);
+      const user = credentials.user;
 
-  const handleLogin = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then(credentials => {
-        const user = credentials.user;
-        navigate("/")
-        console.log(user);
-      })
-      .catch(err => {
-        setError(err.message);
-      });
+      if (!user) throw new Error("No user found with that email and password");
+
+      const userDocRef = doc(db, "users", user.uid);
+
+      const snapshot = await getDoc(userDocRef);
+
+      if (!snapshot.exists())
+        await createUserDocument(user);
+
+      navigate("/");
+    } catch (e) {
+      setError(e);
+    }
   }
+
+  const createUserDocument = (user: User) =>
+    setDoc(doc(db, "users", user.uid), { uid: user.uid }).then(() => console.log("Added document for user: ", user.uid))
+      .catch(e => console.error(e));
 
   return (
     <div className={styles['container']}>
