@@ -2,16 +2,19 @@ import styles from './login.module.scss';
 import { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../../firebase";
-import { signInWithEmailAndPassword, User } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
 import { Button, FloatingLabel, Form } from "react-bootstrap";
+import { UserInfoService } from "@shared-data";
+import { useUser } from "../../userContext";
 
 export const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
-  
+  const [userInfoService] = useState(new UserInfoService());
+
   const handleSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -21,22 +24,24 @@ export const Login = () => {
 
       if (!user) throw new Error("No user found with that email and password");
 
-      const userDocRef = doc(db, "users", user.uid);
+      const userInfo = await userInfoService.getById(user.uid);
 
-      const snapshot = await getDoc(userDocRef);
-
-      if (!snapshot.exists())
-        await createUserDocument(user);
+      if (userInfo == null) {
+        userInfoService.create(user.uid)
+          .then(success => {
+            if (success) {
+              navigate("/profile");
+            } else {
+              setError("Error while creating user");
+            }
+          });
+      }
 
       navigate("/");
     } catch (e) {
       setError("Error while attempting to validate credentials. Please verify email and password and try again.");
     }
   }
-
-  const createUserDocument = (user: User) =>
-    setDoc(doc(db, "users", user.uid), { uid: user.uid }).then(() => console.log("Added document for user: ", user.uid))
-      .catch(e => console.error(e));
 
   return (
     <div className={styles['container']}>

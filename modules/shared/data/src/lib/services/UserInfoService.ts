@@ -1,4 +1,13 @@
-import { CollectionReference, addDoc, collection, doc, getDoc, setDoc } from 'firebase/firestore';
+import {
+  CollectionReference,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  setDoc,
+  getDocs,
+  query, where
+} from "firebase/firestore";
 import { UserInfoConverter } from "../converters/UserInfoConverter";
 import { UserInfo } from '../models/UserInfo';
 import { db } from "../firebase";
@@ -10,14 +19,21 @@ export class UserInfoService {
     this.collectionRef = collection(db, "users").withConverter(UserInfoConverter);
   }
 
-  async create(user: UserInfo): Promise<UserInfo | null> {
+  async create(uid: string): Promise<boolean> {
     try {
-      const docRef = await addDoc(this.collectionRef, user);
-      const snapshot = await getDoc(docRef.withConverter(UserInfoConverter));
-      return snapshot.exists() ? snapshot.data() : null;
+      await setDoc(doc(this.collectionRef, uid), {
+        name: {
+          firstName: "",
+          lastName: ""
+        },
+        uid,
+        role: ""
+      });
+
+      return true;
     } catch (error) {
       console.error("Error creating user: ", error);
-      return null;
+      return false;
     }
   }
 
@@ -37,6 +53,27 @@ export class UserInfoService {
       return true;
     } catch (error) {
       console.error("Error while updating user: ", error);
+      return false;
+    }
+  }
+
+  async delete(id: string): Promise<boolean> {
+    try {
+      const userRef = doc(this.collectionRef, id);
+
+      await deleteDoc(userRef);
+
+      await getDocs(query(
+        collection(db, "uploads"),
+        where("user", "==", userRef)
+      ))
+        .then(docs => {
+          docs.forEach(doc => deleteDoc(doc.ref));
+        });
+
+      return true;
+    } catch (error) {
+      console.error("Error while deleting user: ", error);
       return false;
     }
   }

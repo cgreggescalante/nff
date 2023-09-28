@@ -15,6 +15,14 @@ export const Profile = () => {
     })
   }, []);
 
+  useEffect(() => {
+    if (!loading && user === null) {
+      console.log("refreshing");
+      refreshUser();
+    }
+
+  }, [loading]);
+
   return loading ?
     <h3>Loading...</h3>
     : <>

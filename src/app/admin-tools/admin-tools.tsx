@@ -1,7 +1,7 @@
 import styles from './admin-tools.module.scss';
 import { useEffect, useState } from "react";
 import { db } from "../../firebase";
-import { UserInfo, UserInfoConverter } from "@shared-data";
+import { UserInfo, UserInfoConverter, UserInfoService } from "@shared-data";
 import {
   collection,
   deleteDoc,
@@ -20,6 +20,8 @@ export const AdminTools = () => {
   const { user, loading } = useUser();
 
   const navigate = useNavigate();
+
+  const [userInfoService] = useState(new UserInfoService());
 
   useEffect(() => {
     if (!loading && (!user || user.role !== 'admin'))
@@ -48,19 +50,8 @@ export const AdminTools = () => {
   const deleteUser = async () => {
     setShowModal(false);
 
-    if (userId) {
-      const userRef = doc(db, "users", userId);
-
-      await deleteDoc(userRef);
-
-      getDocs(query(
-        collection(db, "uploads"),
-        where("user", "==", userRef)
-      ))
-        .then(docs => {
-          docs.forEach(doc => deleteDoc(doc.ref));
-        })
-    }
+    if (userId)
+      await userInfoService.delete(userId);
   }
 
   return <div className={styles['container']}>
@@ -72,15 +63,17 @@ export const AdminTools = () => {
         <th>First Name</th>
         <th>Last Name</th>
         <th>UID</th>
+        <th>Role</th>
       </tr>
       </thead>
       <tbody>
       {
-        users.map(user => <tr>
+        users.map((user, index) => <tr key={index}>
             <td><Button onClick={() => beginDelete(user.uid)}>Delete</Button></td>
             <td>{ user.firstName }</td>
             <td>{ user.lastName }</td>
             <td>{ user.uid }</td>
+            <td>{ user.role }</td>
         </tr>
         )
       }

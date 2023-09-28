@@ -1,15 +1,17 @@
 import styles from './signup.module.scss';
 import { ChangeEvent, useState } from "react";
-import { createUserWithEmailAndPassword, User } from "firebase/auth";
-import { auth, db } from "../../firebase";
-import { doc, setDoc } from 'firebase/firestore';
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import { Button, FloatingLabel, Form } from "react-bootstrap";
+import { UserInfoService } from "@shared-data";
 
 export const Signup = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | undefined>()
+
+  const [userInfoService] = useState(new UserInfoService());
 
   const navigate = useNavigate();
 
@@ -19,17 +21,19 @@ export const Signup = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((credentials) => {
         const user = credentials.user;
-        createUserDocument(user)
-          .then(_ => navigate("/profile"));
+        userInfoService.create(user.uid)
+          .then(success => {
+            if (success) {
+              navigate("/profile")
+            } else {
+              setError("Error while creating user");
+            }
+          });
       })
       .catch((err) => {
         setError(err.message);
       });
   }
-
-  const createUserDocument = (user: User) =>
-    setDoc(doc(db, "users", user.uid), { uid: user.uid }).then(() => console.log("Added document for user: ", user.uid))
-      .catch(e => console.error(e));
 
   return (
     <div className={styles['container']}>

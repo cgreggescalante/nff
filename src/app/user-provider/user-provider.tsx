@@ -11,17 +11,15 @@ const UserProvider = ({ children }: { children: ReactElement }) => {
   
   const [userInfoService] = useState(new UserInfoService());
   
-  const refreshUser = useCallback(async (fbu?: User | null) => {
-    if (fbu === null || fbu === undefined)
-      fbu = firebaseUser;
+  const refreshUser = useCallback(async (fbu: User | null = firebaseUser) => {
     if (fbu) {
-      const userInfo = await userInfoService.getById(fbu.uid);
-      setUser(userInfo);
+      userInfoService.getById(fbu.uid)
+        .then(userInfo => setUser(userInfo));
     } else {
       setUser(null);
     }
     setLoading(false);
-  }, [firebaseUser, userInfoService]);
+  }, [firebaseUser, userInfoService])
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (firebaseUser) => {
