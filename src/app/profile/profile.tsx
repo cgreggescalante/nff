@@ -1,14 +1,13 @@
-import styles from './profile.module.scss';
 import { useEffect, useState } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
-import { auth, db } from "../../firebase";
+import { auth } from "../../firebase";
 import { EditUserDetails } from "@shared-ui";
 import { useUser } from "../../userContext";
 
 export const Profile = () => {
   const [firebaseUser, setFirebaseUser] = useState<User | null>(null);
 
-  const { user, loading } = useUser();
+  const { user, loading, refreshUser } = useUser();
 
   useEffect(() => {
     onAuthStateChanged(auth, firebaseUser => {
@@ -21,7 +20,7 @@ export const Profile = () => {
     : <>
       <h1>User Details</h1>
 
-      { firebaseUser && user && <EditUserDetails user={firebaseUser} userInfo={user} db={db} /> }
+      { firebaseUser && user && <EditUserDetails user={firebaseUser} userInfo={user} refreshUser={refreshUser} /> }
     </>
 }
 
