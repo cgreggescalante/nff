@@ -22,7 +22,7 @@ export const App = () => {
       <BrowserRouter basename={"/"}>
         <Header user={user} loading={loading} auth={auth} />
 
-        <Container className={"p-3"}>
+        <Container className={styles["content"]}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />

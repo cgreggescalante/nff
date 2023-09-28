@@ -1,5 +1,5 @@
 import { Container, Nav, Navbar } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 import { Auth, signOut } from 'firebase/auth';
 import { UserInfo } from '@shared-data';
 
@@ -21,7 +21,7 @@ export const Header = ({ user, loading, auth }: HeaderProps) => {
   }
 
   return (
-    <Navbar expand="lg" className="bg-body-secondary">
+    <Navbar expand="lg" fixed="top" className="bg-body-secondary">
       <Container>
         <Navbar.Brand href="/">NFF</Navbar.Brand>
 
@@ -29,9 +29,9 @@ export const Header = ({ user, loading, auth }: HeaderProps) => {
 
         <Navbar.Collapse>
           <Nav className="mr-auto">
-            <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/about">About</Nav.Link>
-            <Nav.Link href="/help">Help</Nav.Link>
+            <Nav.Link as={Link} to="/">Home</Nav.Link>
+            <Nav.Link as={Link} to="/about">About</Nav.Link>
+            <Nav.Link as={Link} to="/help">Help</Nav.Link>
           </Nav>
 
           <Nav className="ml-auto">
