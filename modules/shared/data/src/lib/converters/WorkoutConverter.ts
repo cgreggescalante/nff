@@ -1,6 +1,6 @@
 import { FirestoreDataConverter } from "firebase/firestore";
 import { WorkoutTypeFromName } from "../WorkoutType";
-import { Workout } from "./Workout";
+import { Workout } from "../models/Workout";
 
 export const WorkoutConverter: FirestoreDataConverter<Workout> = {
   toFirestore: (workout: Workout) => ({

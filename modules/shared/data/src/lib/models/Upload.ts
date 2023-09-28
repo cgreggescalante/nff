@@ -1,5 +1,5 @@
-import { UserInfo } from '../UserInfo/UserInfo';
-import { Workout } from '../Workout/Workout';
+import { UserInfo } from './UserInfo';
+import { Workout } from './Workout';
 import { DocumentReference } from 'firebase/firestore';
 
 export class Upload {

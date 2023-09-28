@@ -1,7 +1,13 @@
 export * from './lib/WorkoutType';
-export * from './lib/UserInfo/UserInfo';
-export * from './lib/UserInfo/UserInfoConverter';
-export * from './lib/Upload/Upload';
-export * from './lib/Upload/UploadConverter';
-export * from './lib/Workout/Workout';
-export * from './lib/Workout/WorkoutConverter';
+
+// Models
+export { Upload } from './lib/models/Upload';
+export { UserInfo } from './lib/models/UserInfo';
+export { Workout } from './lib/models/Workout';
+
+// Converters
+export { UploadConverter } from './lib/converters/UploadConverter';
+export { UserInfoConverter } from './lib/converters/UserInfoConverter';
+export { WorkoutConverter } from './lib/converters/WorkoutConverter';
+
+// Services
