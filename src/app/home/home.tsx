@@ -1,7 +1,6 @@
 import styles from './home.module.scss';
-import { UploadList } from "@shared-ui";
-import { db } from "../../firebase";
-import { useUser } from "../../userContext";
+import { UploadList } from '@shared-ui';
+import { useUser } from '../../userContext';
 
 const Home = () => {
   const { user, loading } = useUser();
@@ -9,17 +8,21 @@ const Home = () => {
   return (
     <div className={styles['container']}>
       <div>
-        { loading ? <h3>Loading...</h3> : user ? <>
-          <h3>Current User</h3>
-          { user.uid } { user.firstName } { user.lastName } { user.role }
-        </>
-          : <h3>No Current User</h3>
-        }
+        {loading ? (
+          <h3>Loading...</h3>
+        ) : user ? (
+          <>
+            <h3>Current User</h3>
+            {user.uid} {user.firstName} {user.lastName} {user.role}
+          </>
+        ) : (
+          <h3>No Current User</h3>
+        )}
       </div>
 
-      <UploadList db={db}/>
+      <UploadList />
     </div>
   );
-}
+};
 
 export default Home;

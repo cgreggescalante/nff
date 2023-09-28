@@ -1,12 +1,10 @@
 import styles from './login.module.scss';
 import { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth, db } from "../../firebase";
+import { auth } from "../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
 import { Button, FloatingLabel, Form } from "react-bootstrap";
 import { UserInfoService } from "@shared-data";
-import { useUser } from "../../userContext";
 
 export const Login = () => {
   const navigate = useNavigate();

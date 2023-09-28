@@ -1,54 +1,30 @@
 import styles from './upload-list.module.scss';
-import { useEffect, useState } from "react";
-import { UploadCard } from "./upload-card/upload-card";
-import { Upload, UploadConverter, UserInfo, UserInfoConverter } from "@shared-data";
-import {
-  collection,
-  limit,
-  orderBy,
-  query,
-  Firestore,
-  getDocs,
-  getDoc,
-} from 'firebase/firestore';
+import { useEffect, useState } from 'react';
+import { UploadCard } from './upload-card/upload-card';
+import { Upload, UploadService } from '@shared-data';
 
-export interface UploadListProps {
-  db: Firestore
-}
-
-export function UploadList({ db }: UploadListProps) {
+export function UploadList() {
   const [uploads, setUploads] = useState<Upload[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
+  const [uploadService] = useState(new UploadService());
+
   useEffect(() => {
-    getDocs(query(
-      collection(db, "uploads").withConverter(UploadConverter),
-      orderBy("date", "desc"),
-      limit(25)
-    ))
-      .then(async snapshot => {
-          const uploads = snapshot.docs.map(doc => doc.data());
-
-          for (const upload of uploads) {
-            upload.user = (await getDoc(upload.userRef.withConverter(UserInfoConverter))).data()
-          }
-
-          console.log(uploads);
-
-          setUploads(uploads);
-          setLoading(false);
-        }
-      );
-  }, [db]);
+    uploadService.getRecent().then((uploads) => {
+      setUploads(uploads);
+      setLoading(false);
+    });
+  });
 
   return (
     <div className={styles['container']}>
-      {
-        loading ? <h2>Loading...</h2> :
-        uploads.map((upload, index) =>
+      {loading ? (
+        <h2>Loading...</h2>
+      ) : (
+        uploads.map((upload, index) => (
           <UploadCard key={index} upload={upload} />
-        )
-      }
+        ))
+      )}
     </div>
   );
 }
