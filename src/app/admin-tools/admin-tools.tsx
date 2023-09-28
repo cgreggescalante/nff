@@ -1,7 +1,7 @@
 import styles from './admin-tools.module.scss';
 import { useEffect, useState } from "react";
 import { db } from "../../firebase";
-import { UserInfo } from "@shared-data";
+import { UserInfo, UserInfoConverter } from "@shared-data";
 import {
   collection,
   deleteDoc,
@@ -28,7 +28,7 @@ export const AdminTools = () => {
 
   useEffect(() => {
     getDocs(query(
-      collection(db, "users").withConverter(UserInfo.converter)
+      collection(db, "users").withConverter(UserInfoConverter)
     ))
       .then(snapshot => {
         const users = snapshot.docs.map(doc => doc.data());

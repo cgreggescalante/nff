@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import UserContext from "../../userContext"
-import { UserInfo } from "@shared-data";
+import { UserInfo, UserInfoConverter } from "@shared-data";
 
 const UserProvider = ({ children }: { children: ReactElement }) => {
   const [user, setUser] = useState<UserInfo | null>(null);
@@ -14,7 +14,7 @@ const UserProvider = ({ children }: { children: ReactElement }) => {
       if (firebaseUser) {
         try {
           // If user is signed in, get their document from the users collection
-          const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid).withConverter(UserInfo.converter));
+          const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid).withConverter(UserInfoConverter));
           if (userDoc.exists()) {
             const userInfo = userDoc.data();
             setUser(userInfo);

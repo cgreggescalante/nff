@@ -1,7 +1,7 @@
 import styles from './upload-list.module.scss';
 import { useEffect, useState } from "react";
 import { UploadCard } from "./upload-card/upload-card";
-import { Upload, UserInfo } from "@shared-data";
+import { Upload, UploadConverter, UserInfo, UserInfoConverter } from "@shared-data";
 import {
   collection,
   limit,
@@ -22,7 +22,7 @@ export function UploadList({ db }: UploadListProps) {
 
   useEffect(() => {
     getDocs(query(
-      collection(db, "uploads").withConverter(Upload.converter),
+      collection(db, "uploads").withConverter(UploadConverter),
       orderBy("date", "desc"),
       limit(25)
     ))
@@ -30,7 +30,7 @@ export function UploadList({ db }: UploadListProps) {
           const uploads = snapshot.docs.map(doc => doc.data());
 
           for (const upload of uploads) {
-            upload.user = (await getDoc(upload.userRef.withConverter(UserInfo.converter))).data()
+            upload.user = (await getDoc(upload.userRef.withConverter(UserInfoConverter))).data()
           }
 
           console.log(uploads);
