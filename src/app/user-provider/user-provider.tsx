@@ -1,27 +1,18 @@
 import React, { ReactElement, useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
-import { auth, db } from "../../firebase";
+import { auth } from "../../firebase";
 import UserContext from "../../userContext"
-import { UserInfo, UserInfoConverter } from "@shared-data";
+import { UserInfo, UserInfoService } from "@shared-data";
 
 const UserProvider = ({ children }: { children: ReactElement }) => {
   const [user, setUser] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Subscribe to auth state changes
     const unsubscribe = auth.onAuthStateChanged(async (firebaseUser) => {
       if (firebaseUser) {
-        try {
-          // If user is signed in, get their document from the users collection
-          const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid).withConverter(UserInfoConverter));
-          if (userDoc.exists()) {
-            const userInfo = userDoc.data();
-            setUser(userInfo);
-          }
-        } catch (error) {
-          console.error('Error fetching user data: ', error);
-        }
+        const userInfo = await new UserInfoService().getById(firebaseUser.uid);
+
+        setUser(userInfo);
       } else {
         setUser(null);
       }

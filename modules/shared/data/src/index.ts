@@ -11,3 +11,4 @@ export { UserInfoConverter } from './lib/converters/UserInfoConverter';
 export { WorkoutConverter } from './lib/converters/WorkoutConverter';
 
 // Services
+export { UserInfoService } from './lib/services/UserInfoService';
