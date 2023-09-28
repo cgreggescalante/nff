@@ -1,1 +1,15 @@
-/* Your styles goes here. */
+.app {
+  position: relative;
+  height: 100vh;
+}
+
+.content {
+  margin-bottom: 60px;
+}
+
+Footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+}

@@ -1,13 +1,12 @@
-import styles from './header.module.scss';
-import { Container, Nav, Navbar } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Container, Nav, Navbar } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import { Auth, signOut } from 'firebase/auth';
-import { UserInfo } from "@shared-data";
+import { UserInfo } from '@shared-data';
 
 export interface HeaderProps {
-  user: UserInfo | null,
-  loading: boolean,
-  auth: Auth
+  user: UserInfo | null;
+  loading: boolean;
+  auth: Auth;
 }
 
 export const Header = ({ user, loading, auth }: HeaderProps) => {
@@ -22,7 +21,7 @@ export const Header = ({ user, loading, auth }: HeaderProps) => {
   }
 
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
+    <Navbar expand="lg" className="bg-body-secondary">
       <Container>
         <Navbar.Brand href="/">NFF</Navbar.Brand>
 
