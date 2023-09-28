@@ -1,15 +1,6 @@
 import styles from './admin-tools.module.scss';
 import { useEffect, useState } from "react";
-import { db } from "../../firebase";
-import { UserInfo, UserInfoConverter, UserInfoService } from "@shared-data";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  query,
-  where,
-} from 'firebase/firestore';
+import { UserInfo, UserInfoService } from "@shared-data";
 import { Button, Modal, Table } from "react-bootstrap";
 import { useUser } from "../../userContext";
 import { useNavigate } from "react-router-dom";
@@ -17,27 +8,32 @@ import { useNavigate } from "react-router-dom";
 export const AdminTools = () => {
   const [users, setUsers] = useState<UserInfo[]>([]);
 
-  const { user, loading } = useUser();
+  const { user, loading, refreshUser } = useUser();
 
   const navigate = useNavigate();
 
   const [userInfoService] = useState(new UserInfoService());
+  const [authenticated, setAuthenticated] = useState<boolean>(false);
+  
+  useEffect(() => {
+    if (!loading && !user)
+      refreshUser();
+    else if (!loading && (!user || user.role !== 'admin')) {
+      console.log(user, user?.role)
+      navigate("/");
+    }
+    
+    if (!loading && user?.role === "admin")
+      setAuthenticated(true);
+
+  }, [user, navigate, loading, refreshUser]);
 
   useEffect(() => {
-    if (!loading && (!user || user.role !== 'admin'))
-      navigate("/")
-  }, [user, navigate, loading]);
-
-  useEffect(() => {
-    getDocs(query(
-      collection(db, "users").withConverter(UserInfoConverter)
-    ))
-      .then(snapshot => {
-        const users = snapshot.docs.map(doc => doc.data());
-
-        setUsers(users);
-      })
-  }, []);
+    if (authenticated) {
+      userInfoService.getUsers()
+        .then(users => setUsers(users));
+    }
+  }, [authenticated, userInfoService]);
 
   const [userId, setUserId] = useState<string | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);

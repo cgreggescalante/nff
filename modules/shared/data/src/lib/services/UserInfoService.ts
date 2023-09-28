@@ -77,4 +77,17 @@ export class UserInfoService {
       return false;
     }
   }
+
+  async getUsers(): Promise<UserInfo[]> {
+    try {
+      const snapshot = await getDocs(query(
+        this.collectionRef
+      ));
+
+      return snapshot.docs.map(document => document.data() as UserInfo);
+    } catch (error) {
+      console.error("Error while fetching users: ", error);
+      return [];
+    }
+  }
 }
