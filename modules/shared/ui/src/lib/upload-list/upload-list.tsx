@@ -7,10 +7,8 @@ export function UploadList() {
   const [uploads, setUploads] = useState<Upload[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const [uploadService] = useState(new UploadService());
-
   useEffect(() => {
-    uploadService.getRecent().then((uploads) => {
+    UploadService.getRecent().then((uploads) => {
       setUploads(uploads);
       setLoading(false);
     });

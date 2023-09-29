@@ -11,7 +11,6 @@ const UploadView: React.FC = () => {
     Workout.default()
   ]);
 
-  const [uploadService] = useState(new UploadService());
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
@@ -42,7 +41,7 @@ const UploadView: React.FC = () => {
     const validWorkouts = workouts.filter((w) => w.duration > 0);
 
     if (auth.currentUser != null) {
-      if (!await uploadService.create(auth.currentUser.uid, description, validWorkouts)) {
+      if (!await UploadService.create(auth.currentUser.uid, description, validWorkouts)) {
         setError("Could not add workouts");
       } else {
         // TODO: Add message

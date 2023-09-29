@@ -1,3 +1,5 @@
+import UploadService from "./lib/services/UploadService";
+
 export * from './lib/WorkoutType';
 
 // Models
@@ -11,5 +13,5 @@ export { UserInfoConverter } from './lib/converters/UserInfoConverter';
 export { WorkoutConverter } from './lib/converters/WorkoutConverter';
 
 // Services
-export { UploadService } from './lib/services/UploadService';
+export { UploadService };
 export { UserInfoService } from './lib/services/UserInfoService';

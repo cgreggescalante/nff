@@ -15,17 +15,25 @@ import { Upload } from "../models/Upload";
 import { UserInfoConverter } from "../converters/UserInfoConverter";
 import { Workout } from "../models/Workout";
 
-export class UploadService {
-  private readonly collectionRef: CollectionReference;
+class UploadServiceClass {
+  private static instance: UploadServiceClass;
+
+  private static collectionRef: CollectionReference;
 
   constructor() {
-    this.collectionRef = collection(db, "uploads").withConverter(UploadConverter);
+    if (UploadServiceClass.instance) {
+      return UploadServiceClass.instance;
+    }
+
+    UploadServiceClass.instance = this;
+
+    UploadServiceClass.collectionRef = collection(db, "uploads").withConverter(UploadConverter);
   }
   
   async getRecent(count = 25) {
     try {
       const snapshot = await getDocs(query(
-        this.collectionRef,
+        UploadServiceClass.collectionRef,
         orderBy("date", "desc"),
         limit(count)
       ))
@@ -66,3 +74,7 @@ export class UploadService {
 
   }
 }
+
+const UploadService = new UploadServiceClass();
+
+export default UploadService;
