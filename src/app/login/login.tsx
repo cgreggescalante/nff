@@ -4,14 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Button, FloatingLabel, Form } from "react-bootstrap";
-import { UserInfoService } from "@shared-data";
+import { UserInfoServiceClass } from "@shared-data";
 
 export const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
-  const [userInfoService] = useState(new UserInfoService());
+  const [userInfoService] = useState(new UserInfoServiceClass());
 
   const handleSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();

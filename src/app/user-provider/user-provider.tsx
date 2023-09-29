@@ -1,7 +1,7 @@
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import { auth } from "../../firebase";
 import UserContext from "../../userContext"
-import { UserInfo, UserInfoService } from "@shared-data";
+import { UserInfo, UserInfoServiceClass } from "@shared-data";
 import { User } from "firebase/auth";
 
 const UserProvider = ({ children }: { children: ReactElement }) => {
@@ -9,7 +9,7 @@ const UserProvider = ({ children }: { children: ReactElement }) => {
   const [user, setUser] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
   
-  const [userInfoService] = useState(new UserInfoService());
+  const [userInfoService] = useState(new UserInfoServiceClass());
   
   const refreshUser = useCallback(async (fbu: User | null = firebaseUser) => {
     if (fbu) {

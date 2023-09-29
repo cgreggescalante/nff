@@ -4,14 +4,14 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import { Button, FloatingLabel, Form } from "react-bootstrap";
-import { UserInfoService } from "@shared-data";
+import { UserInfoServiceClass } from "@shared-data";
 
 export const Signup = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | undefined>()
 
-  const [userInfoService] = useState(new UserInfoService());
+  const [userInfoService] = useState(new UserInfoServiceClass());
 
   const navigate = useNavigate();
 

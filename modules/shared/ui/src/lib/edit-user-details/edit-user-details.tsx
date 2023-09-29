@@ -1,5 +1,5 @@
 import styles from './edit-user-details.module.scss';
-import { UserInfo, UserInfoService } from "@shared-data";
+import { UserInfo, UserInfoServiceClass } from "@shared-data";
 import { User } from 'firebase/auth';
 import { useEffect, useState } from "react";
 import ManagedTextInput from "../managed-text-input/managed-text-input";
@@ -32,7 +32,7 @@ export const EditUserDetails = ({ user, userInfo, refreshUser }: EditUserDetails
   const saveChanges = () => {
     const newUser = new UserInfo(firstName, lastName, userInfo.uid, userInfo.role);
 
-    new UserInfoService().setUserDetails(user.uid, newUser)
+    new UserInfoServiceClass().setUserDetails(user.uid, newUser)
       .then(success => {
         if (success) {
           setShowAlert(true);

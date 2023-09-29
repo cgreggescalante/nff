@@ -12,16 +12,23 @@ import { UserInfoConverter } from "../converters/UserInfoConverter";
 import { UserInfo } from '../models/UserInfo';
 import { db } from "../firebase";
 
-export class UserInfoService {
-  private readonly collectionRef: CollectionReference;
+class UserInfoService {
+  private static instance: UserInfoService;
+
+  private static collectionRef: CollectionReference;
 
   constructor() {
-    this.collectionRef = collection(db, "users").withConverter(UserInfoConverter);
+    if (UserInfoService.instance)
+      return UserInfoService.instance;
+
+    UserInfoService.instance = this;
+
+    UserInfoService.collectionRef = collection(db, "users").withConverter(UserInfoConverter);
   }
 
   async create(uid: string): Promise<boolean> {
     try {
-      await setDoc(doc(this.collectionRef, uid), {
+      await setDoc(doc(UserInfoService.collectionRef, uid), {
         name: {
           firstName: "",
           lastName: ""
@@ -39,7 +46,7 @@ export class UserInfoService {
 
   async getById(id: string): Promise<UserInfo | null> {
     try {
-      const snapshot = await getDoc(doc(this.collectionRef, id));
+      const snapshot = await getDoc(doc(UserInfoService.collectionRef, id));
       return snapshot.exists() ? snapshot.data() as UserInfo : null;
     } catch (error) {
       console.error("Error getting user: ", error);
@@ -49,7 +56,7 @@ export class UserInfoService {
 
   async setUserDetails(id: string, user: UserInfo): Promise<boolean> {
     try {
-      await setDoc(doc(this.collectionRef, id), user, { merge: true })
+      await setDoc(doc(UserInfoService.collectionRef, id), user, { merge: true })
       return true;
     } catch (error) {
       console.error("Error while updating user: ", error);
@@ -59,7 +66,7 @@ export class UserInfoService {
 
   async delete(id: string): Promise<boolean> {
     try {
-      const userRef = doc(this.collectionRef, id);
+      const userRef = doc(UserInfoService.collectionRef, id);
 
       await deleteDoc(userRef);
 
@@ -81,7 +88,7 @@ export class UserInfoService {
   async getUsers(): Promise<UserInfo[]> {
     try {
       const snapshot = await getDocs(query(
-        this.collectionRef
+        UserInfoService.collectionRef
       ));
 
       return snapshot.docs.map(document => document.data() as UserInfo);
@@ -91,3 +98,5 @@ export class UserInfoService {
     }
   }
 }
+
+export default new UserInfoService();

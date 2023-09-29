@@ -1,6 +1,6 @@
 import styles from './admin-tools.module.scss';
 import { useEffect, useState } from "react";
-import { UserInfo, UserInfoService } from "@shared-data";
+import { UserInfo, UserInfoServiceClass } from "@shared-data";
 import { Button, Modal, Table } from "react-bootstrap";
 import { useUser } from "../../userContext";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,7 @@ export const AdminTools = () => {
 
   const navigate = useNavigate();
 
-  const [userInfoService] = useState(new UserInfoService());
+  const [userInfoService] = useState(new UserInfoServiceClass());
   const [authenticated, setAuthenticated] = useState<boolean>(false);
   
   useEffect(() => {

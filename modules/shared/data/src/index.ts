@@ -1,4 +1,5 @@
 import UploadService from "./lib/services/UploadService";
+import UserInfoService from './lib/services/UserInfoService';
 
 export * from './lib/WorkoutType';
 
@@ -14,4 +15,4 @@ export { WorkoutConverter } from './lib/converters/WorkoutConverter';
 
 // Services
 export { UploadService };
-export { UserInfoService } from './lib/services/UserInfoService';
+export { UserInfoService };
