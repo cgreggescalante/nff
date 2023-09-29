@@ -1,8 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { WorkoutInput } from '@shared-ui';
-import { Workout, WorkoutType } from "@shared-data";
-import { addDoc, collection, doc } from 'firebase/firestore';
-import { auth, db } from '../../firebase';
+import { UploadService, Workout, WorkoutType } from "@shared-data";
+import { auth } from '../../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,10 +11,13 @@ const UploadView: React.FC = () => {
     Workout.default()
   ]);
 
+  const [uploadService] = useState(new UploadService());
+  const [error, setError] = useState("");
+
   const navigate = useNavigate();
 
   useEffect(() =>
-    onAuthStateChanged(auth, (user) => (user ? {} : navigate('/login')))
+    onAuthStateChanged(auth, user=> (user ? {} : navigate('/login')))
   );
   
   const handleWorkoutTypeChange = (index: number, value: WorkoutType) => {
@@ -34,28 +36,18 @@ const UploadView: React.FC = () => {
   const deleteWorkout = (index: number) =>
     setWorkouts([...workouts.slice(0, index), ...workouts.slice(index + 1)]);
 
-  const addWorkout = () =>
-    setWorkouts([
-      ...workouts,
-      Workout.default(),
-    ]);
+  const addWorkout = () => setWorkouts([...workouts, Workout.default() ]);
 
   const handleSubmit = async () => {
     const validWorkouts = workouts.filter((w) => w.duration > 0);
 
     if (auth.currentUser != null) {
-      const userRef = doc(db, 'users', auth.currentUser.uid);
-
-      await addDoc(collection(db, 'uploads'), {
-        description,
-        date: new Date(),
-        user: userRef,
-        workouts: validWorkouts.map(w => ({
-          workoutType: w.workoutType.name,
-          duration: w.duration,
-          points: w.workoutType.pointsFunction(w.duration)
-        }))
-      });
+      if (!await uploadService.create(auth.currentUser.uid, description, validWorkouts)) {
+        setError("Could not add workouts");
+      } else {
+        // TODO: Add message
+        navigate("/");
+      }
     }
   };
 
@@ -85,6 +77,8 @@ const UploadView: React.FC = () => {
 
       <button onClick={addWorkout}>Add Workout</button>
       <button onClick={handleSubmit}>Submit</button>
+
+      { error && <p>{ error }</p> }
     </div>
   );
 };

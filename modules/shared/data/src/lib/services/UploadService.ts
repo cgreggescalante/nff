@@ -1,8 +1,19 @@
-import { collection, CollectionReference, getDoc, getDocs, limit, orderBy, query } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  CollectionReference,
+  doc,
+  getDoc,
+  getDocs,
+  limit,
+  orderBy,
+  query
+} from "firebase/firestore";
 import { db } from "../firebase";
 import { UploadConverter } from "../converters/UploadConverter";
 import { Upload } from "../models/Upload";
 import { UserInfoConverter } from "../converters/UserInfoConverter";
+import { Workout } from "../models/Workout";
 
 export class UploadService {
   private readonly collectionRef: CollectionReference;
@@ -30,5 +41,28 @@ export class UploadService {
       console.error("Error while fetching uploads: ", error);
       return []
     }
+  }
+
+  async create(uid: string, description: string, workouts: Workout[]) {
+    try {
+      const userRef = doc(db, 'users', uid);
+
+      await addDoc(collection(db, 'uploads'), {
+        description,
+        date: new Date(),
+        user: userRef,
+        workouts: workouts.map(w => ({
+          workoutType: w.workoutType.name,
+          duration: w.duration,
+          points: w.workoutType.pointsFunction(w.duration)
+        }))
+      });
+
+      return true;
+    } catch (error) {
+      console.error("Error while creating upload: ", error);
+      return false;
+    }
+
   }
 }
