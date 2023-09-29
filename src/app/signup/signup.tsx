@@ -57,7 +57,7 @@ export const Signup = () => {
             onChange={(e) => setPassword(e.target.value)}
             placeholder={"Password"}/>
         </FloatingLabel>
-        <Button type={"submit"}>Login</Button>
+        <Button type={"submit"}>Sign Up</Button>
       </Form>
 
       { error && <p>{ error }</p> }
