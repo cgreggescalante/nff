@@ -23,7 +23,7 @@ export const Header = ({ user, loading, auth }: HeaderProps) => {
   return (
     <Navbar expand="lg" fixed="top" className="bg-body-secondary">
       <Container>
-        <Navbar.Brand href="/">NFF</Navbar.Brand>
+        <Navbar.Brand as={Link} to="/">NFF</Navbar.Brand>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
@@ -40,13 +40,13 @@ export const Header = ({ user, loading, auth }: HeaderProps) => {
                 user ?
                   <Nav.Link onClick={handleSignOut}>Sign Out</Nav.Link> :
                   <>
-                    <Nav.Link href="/login">Login</Nav.Link>
-                    <Nav.Link href="/signup">Sign Up</Nav.Link>
+                    <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                    <Nav.Link as={Link} to="/signup">Sign Up</Nav.Link>
                   </>
             }
             {
               user?.role === 'admin' ?
-                <Nav.Link href={"/admin-tools"}>Admin</Nav.Link> : null
+                <Nav.Link as={Link} to={"/admin-tools"}>Admin</Nav.Link> : null
             }
           </Nav>
         </Navbar.Collapse>

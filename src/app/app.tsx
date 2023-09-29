@@ -36,7 +36,6 @@ export const App = () => {
         </Container>
 
         <Footer />
-
       </BrowserRouter>
     </div>
   )
