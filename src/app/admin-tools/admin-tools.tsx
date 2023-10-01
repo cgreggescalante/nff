@@ -8,27 +8,18 @@ import { useNavigate } from 'react-router-dom';
 export const AdminTools = () => {
   const [users, setUsers] = useState<UserInfo[]>([]);
 
-  const { user, loading, refreshUser } = useUser();
+  const { user, loading } = useUser();
 
   const navigate = useNavigate();
 
-  const [authenticated, setAuthenticated] = useState<boolean>(false);
+  useEffect(() => {
+    if (!loading && user?.role !== 'admin') navigate('/');
+  }, [user, navigate, loading]);
 
   useEffect(() => {
-    if (!loading && !user) refreshUser();
-    else if (!loading && (!user || user.role !== 'admin')) {
-      console.log(user, user?.role);
-      navigate('/');
-    }
-
-    if (!loading && user?.role === 'admin') setAuthenticated(true);
-  }, [user, navigate, loading, refreshUser]);
-
-  useEffect(() => {
-    if (authenticated) {
+    if (!loading && user?.role === 'admin')
       UserInfoService.getUsers().then((users) => setUsers(users));
-    }
-  }, [authenticated]);
+  }, [loading, user]);
 
   const [userId, setUserId] = useState<string | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);

@@ -1,8 +1,7 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { WorkoutInput } from './workout-input/workout-input';
 import { UploadService, Workout, WorkoutType } from '@shared-data';
 import { auth } from '../../firebase';
-import { onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
 const UploadView: React.FC = () => {
@@ -12,10 +11,6 @@ const UploadView: React.FC = () => {
   const [error, setError] = useState('');
 
   const navigate = useNavigate();
-
-  useEffect(() =>
-    onAuthStateChanged(auth, (user) => (user ? {} : navigate('/login')))
-  );
 
   const handleWorkoutTypeChange = (index: number, value: WorkoutType) => {
     const newWorkouts = [...workouts];

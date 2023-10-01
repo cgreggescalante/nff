@@ -10,7 +10,10 @@ export const UserDashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!loading && !user) navigate('/login');
+    if (!loading && user === null) {
+      console.log(loading, user);
+      navigate('/login');
+    }
   }, [user, loading, navigate]);
 
   return (

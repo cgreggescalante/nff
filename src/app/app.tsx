@@ -5,7 +5,7 @@ import About from './about/about';
 import Help from './help/help';
 import Home from './home/home';
 import Upload from './upload/upload';
-import { Footer, Header } from '@shared-ui';
+import { Footer, Header, ProtectedRoute } from '@shared-ui';
 import Signup from './signup/signup';
 import Login from './login/login';
 import { auth } from '../firebase';
@@ -28,15 +28,49 @@ export const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/help" element={<Help />} />
-            <Route path="/upload" element={<Upload />} />
+
+            <Route
+              path="/upload"
+              element={
+                <ProtectedRoute isAuthenticated={!loading && user != null}>
+                  <Upload />
+                </ProtectedRoute>
+              }
+            />
 
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
 
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/user-dashboard" element={<UserDashboard />} />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute isAuthenticated={!loading && user != null}>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
 
-            <Route path="/admin-tools" element={<AdminTools />} />
+            <Route
+              path="/user-dashboard"
+              element={
+                <ProtectedRoute isAuthenticated={!loading && user != null}>
+                  <UserDashboard />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/admin-tools"
+              element={
+                <ProtectedRoute
+                  isAuthenticated={
+                    !loading && user != null && user.role === 'admin'
+                  }
+                >
+                  <AdminTools />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </Container>
 
