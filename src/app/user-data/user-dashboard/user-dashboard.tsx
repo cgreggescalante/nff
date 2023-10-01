@@ -2,7 +2,7 @@ import styles from './user-dashboard.module.scss';
 import { useUser } from '../../../userContext';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UploadList } from '@shared-ui';
+import { LoadingWrapper, UploadList } from '@shared-ui';
 
 export const UserDashboard = () => {
   const { user, loading } = useUser();
@@ -20,20 +20,20 @@ export const UserDashboard = () => {
     <div className={styles['container']}>
       <h1>Dashboard</h1>
 
-      {loading ? (
-        <h2>Loading...</h2>
-      ) : user ? (
-        <div>
-          <h3>
-            {user.firstName} {user.lastName}
-          </h3>
-          <h6>{user.uid}</h6>
-          <h2>My Uploads</h2>
-          <UploadList uid={user.uid} />
-        </div>
-      ) : (
-        <h2>No user data found</h2>
-      )}
+      <LoadingWrapper loading={loading}>
+        {user ? (
+          <div>
+            <h3>
+              {user.firstName} {user.lastName}
+            </h3>
+            <h6>{user.uid}</h6>
+            <h2>My Uploads</h2>
+            <UploadList uid={user.uid} />
+          </div>
+        ) : (
+          <h2>No user data found</h2>
+        )}
+      </LoadingWrapper>
     </div>
   );
 };

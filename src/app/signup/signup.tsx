@@ -5,8 +5,10 @@ import { auth } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
 import { Button, FloatingLabel, Form } from 'react-bootstrap';
 import { UserInfoService } from '@shared-data';
+import { useUser } from '../../userContext';
 
 export const Signup = () => {
+  const { login } = useUser();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string | undefined>();
@@ -18,9 +20,9 @@ export const Signup = () => {
 
     createUserWithEmailAndPassword(auth, email, password)
       .then((credentials) => {
-        const user = credentials.user;
-        UserInfoService.create(user.uid).then((success) => {
-          if (success) {
+        UserInfoService.create(credentials.user.uid).then((userInfo) => {
+          if (userInfo) {
+            login(userInfo);
             navigate('/profile');
           } else {
             setError('Error while creating user');

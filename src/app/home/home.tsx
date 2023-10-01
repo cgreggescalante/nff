@@ -1,5 +1,5 @@
 import styles from './home.module.scss';
-import { UploadList } from '@shared-ui';
+import { LoadingWrapper, UploadList } from '@shared-ui';
 import { useUser } from '../../userContext';
 
 const Home = () => {
@@ -7,10 +7,8 @@ const Home = () => {
 
   return (
     <div className={styles['container']}>
-      <div>
-        {loading ? (
-          <h3>Loading...</h3>
-        ) : user ? (
+      <LoadingWrapper loading={loading}>
+        {user ? (
           <>
             <h3>Current User</h3>
             {user.uid} {user.firstName} {user.lastName} {user.role}
@@ -18,7 +16,7 @@ const Home = () => {
         ) : (
           <h3>No Current User</h3>
         )}
-      </div>
+      </LoadingWrapper>
 
       <UploadList />
     </div>

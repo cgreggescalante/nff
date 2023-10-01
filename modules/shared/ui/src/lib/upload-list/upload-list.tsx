@@ -2,6 +2,7 @@ import styles from './upload-list.module.scss';
 import { useEffect, useState } from 'react';
 import { UploadCard } from './upload-card/upload-card';
 import { Upload, UploadService } from '@shared-data';
+import LoadingWrapper from '../loading-wrapper/loading-wrapper';
 
 export interface UploadListProps {
   uid?: string;
@@ -20,13 +21,11 @@ export function UploadList({ uid }: UploadListProps) {
 
   return (
     <div className={styles['container']}>
-      {loading ? (
-        <h2>Loading...</h2>
-      ) : (
-        uploads.map((upload, index) => (
+      <LoadingWrapper loading={loading}>
+        {uploads.map((upload, index) => (
           <UploadCard key={index} upload={upload} />
-        ))
-      )}
+        ))}
+      </LoadingWrapper>
     </div>
   );
 }

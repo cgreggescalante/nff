@@ -1,19 +1,14 @@
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { Auth, signOut } from 'firebase/auth';
-import { UserInfo } from '@shared-data';
+import { useUser } from '../../userContext';
 
-export interface HeaderProps {
-  user: UserInfo | null;
-  loading: boolean;
-  auth: Auth;
-}
+export const Header = () => {
+  const { user, loading, logout } = useUser();
 
-export const Header = ({ user, loading, auth }: HeaderProps) => {
   const navigate = useNavigate();
 
   const handleSignOut = () => {
-    signOut(auth)
+    logout()
       .then(() => {
         navigate('/');
       })
@@ -21,7 +16,7 @@ export const Header = ({ user, loading, auth }: HeaderProps) => {
   };
 
   return (
-    <Navbar expand="lg" fixed="top" className="bg-body-secondary">
+    <Navbar expand="md" fixed="top" className="bg-body-secondary">
       <Container>
         <Navbar.Brand as={Link} to="/">
           NFF

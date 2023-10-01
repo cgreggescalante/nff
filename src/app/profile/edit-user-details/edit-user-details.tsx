@@ -1,5 +1,5 @@
 import styles from './edit-user-details.module.scss';
-import { UserInfo, UserInfoService } from '@shared-data';
+import { UserInfo } from '@shared-data';
 import { User } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { ManagedTextInput, TimedAlert } from '@shared-ui';
@@ -7,15 +7,13 @@ import { Button, Table } from 'react-bootstrap';
 
 /* eslint-disable-next-line */
 export interface EditUserDetailsProps {
-  user: User;
   userInfo: UserInfo;
-  refreshUser: () => void;
+  updateUser: (user: UserInfo) => Promise<boolean>;
 }
 
 export const EditUserDetails = ({
-  user,
   userInfo,
-  refreshUser,
+  updateUser,
 }: EditUserDetailsProps) => {
   const [firstName, setFirstName] = useState<string>(userInfo.firstName);
   const [lastName, setLastName] = useState<string>(userInfo.lastName);
@@ -39,11 +37,10 @@ export const EditUserDetails = ({
       userInfo.role
     );
 
-    UserInfoService.setUserDetails(user.uid, newUser).then((success) => {
+    updateUser(newUser).then((success) => {
       if (success) {
         setShowAlert(true);
         setEdited(false);
-        refreshUser();
       } else setError('Failed to update user details');
     });
   };

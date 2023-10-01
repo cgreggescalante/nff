@@ -5,8 +5,10 @@ import { auth } from '../../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Button, FloatingLabel, Form } from 'react-bootstrap';
 import { UserInfoService } from '@shared-data';
+import { useUser } from '../../userContext';
 
 export const Login = () => {
+  const { login } = useUser();
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -28,16 +30,18 @@ export const Login = () => {
       const userInfo = await UserInfoService.getById(user.uid);
 
       if (userInfo == null) {
-        UserInfoService.create(user.uid).then((success) => {
-          if (success) {
+        UserInfoService.create(user.uid).then((userInfo) => {
+          if (userInfo) {
+            login(userInfo);
             navigate('/profile');
           } else {
             setError('Error while creating user');
           }
         });
+      } else {
+        login(userInfo);
+        navigate('/');
       }
-
-      navigate('/');
     } catch (e) {
       setError(
         'Error while attempting to validate credentials. Please verify email and password and try again.'

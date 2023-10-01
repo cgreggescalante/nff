@@ -33,7 +33,7 @@ class UserInfoService {
     return doc(UserInfoService.collectionRef, uid);
   }
 
-  async create(uid: string): Promise<boolean> {
+  async create(uid: string): Promise<UserInfo | undefined> {
     try {
       await setDoc(doc(UserInfoService.collectionRef, uid), {
         name: {
@@ -44,10 +44,17 @@ class UserInfoService {
         role: '',
       });
 
-      return true;
+      return (
+        await getDoc(
+          doc(
+            UserInfoService.collectionRef.withConverter(UserInfoConverter),
+            uid
+          )
+        )
+      ).data();
     } catch (error) {
       console.error('Error creating user: ', error);
-      return false;
+      return undefined;
     }
   }
 

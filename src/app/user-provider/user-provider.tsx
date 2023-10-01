@@ -1,39 +1,45 @@
-import React, { ReactElement, useCallback, useEffect, useState } from 'react';
-import { auth } from '../../firebase';
+import React, { ReactElement, useEffect, useState } from 'react';
 import UserContext from '../../userContext';
 import { UserInfo, UserInfoService } from '@shared-data';
-import { User } from 'firebase/auth';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebase';
 
 const UserProvider = ({ children }: { children: ReactElement }) => {
-  const [firebaseUser, setFirebaseUser] = useState<User | null>(null);
-  const [user, setUser] = useState<UserInfo | null>(null);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const refreshUser = useCallback(
-    async (fbu: User | null = firebaseUser) => {
-      if (fbu) {
-        UserInfoService.getById(fbu.uid).then((userInfo) => setUser(userInfo));
-      } else {
-        setUser(null);
-      }
-      setLoading(false);
-    },
-    [firebaseUser]
-  );
-
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (firebaseUser) => {
-      await refreshUser(firebaseUser);
-      setFirebaseUser(firebaseUser);
-    });
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUserInfo(JSON.parse(storedUser) as UserInfo);
+    }
+    setLoading(false);
+  }, []);
 
-    return () => unsubscribe();
-  }, [refreshUser]);
+  const updateUser = async (user: UserInfo) => {
+    return UserInfoService.setUserDetails(user.uid, user).then((success) => {
+      if (success) login(user);
+      return success;
+    });
+  };
+
+  const login = (user: UserInfo) => {
+    setUserInfo(user);
+    localStorage.setItem('user', JSON.stringify(user));
+  };
+
+  const logout = async () => {
+    setUserInfo(null);
+    await signOut(auth);
+    localStorage.removeItem('user');
+  };
 
   const contextValue = {
-    user,
+    user: userInfo,
+    updateUser,
     loading,
-    refreshUser,
+    login,
+    logout,
   };
 
   return (

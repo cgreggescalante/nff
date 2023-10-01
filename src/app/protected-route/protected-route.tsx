@@ -1,19 +1,20 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import React, { ReactNode } from 'react';
+import { useUser } from '../../userContext';
 
 /* eslint-disable-next-line */
 interface ProtectedRouteProps {
-  isAuthenticated: boolean;
+  admin?: boolean;
   children: ReactNode;
 }
 
-export const ProtectedRoute = ({
-  isAuthenticated,
-  children,
-}: ProtectedRouteProps) => {
+export const ProtectedRoute = ({ admin, children }: ProtectedRouteProps) => {
+  const { user, loading } = useUser();
   const location = useLocation();
 
-  if (!isAuthenticated) {
+  if (loading) return null;
+
+  if (!user || (admin && user.role !== 'admin')) {
     const redirectUrl = `/login?redirect=${encodeURIComponent(
       location.pathname + location.search
     )}`;
