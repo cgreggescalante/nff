@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from '../../firebase';
-import { EditUserDetails } from '@shared-ui';
+import { EditUserDetails } from './edit-user-details/edit-user-details';
 import { useUser } from '../../userContext';
 
 export const Profile = () => {

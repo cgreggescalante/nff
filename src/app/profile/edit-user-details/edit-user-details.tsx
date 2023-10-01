@@ -2,9 +2,8 @@ import styles from './edit-user-details.module.scss';
 import { UserInfo, UserInfoService } from '@shared-data';
 import { User } from 'firebase/auth';
 import { useEffect, useState } from 'react';
-import ManagedTextInput from '../managed-text-input/managed-text-input';
+import { ManagedTextInput, TimedAlert } from '@shared-ui';
 import { Button, Table } from 'react-bootstrap';
-import TimedAlert from '../timed-alert/timed-alert';
 
 /* eslint-disable-next-line */
 export interface EditUserDetailsProps {

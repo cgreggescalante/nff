@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { WorkoutInput } from '@shared-ui';
+import { WorkoutInput } from './workout-input/workout-input';
 import { UploadService, Workout, WorkoutType } from '@shared-data';
 import { auth } from '../../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
