@@ -8,12 +8,15 @@ import {
   limit,
   orderBy,
   query,
+  where,
 } from 'firebase/firestore';
 import { db } from '../firebase';
 import { UploadConverter } from '../converters/UploadConverter';
 import { Upload } from '../models/Upload';
 import { UserInfoConverter } from '../converters/UserInfoConverter';
 import { Workout } from '../models/Workout';
+import UserInfoService from './UserInfoService';
+import { UserInfo } from '../models/UserInfo';
 
 class UploadService {
   private static instance: UploadService;
@@ -30,24 +33,36 @@ class UploadService {
     );
   }
 
-  async getRecent(count = 25) {
+  async getRecent({ uid, count }: { uid?: string; count?: number }) {
     try {
-      const snapshot = await getDocs(
-        query(
-          UploadService.collectionRef,
-          orderBy('date', 'desc'),
-          limit(count)
-        )
+      let uploadQuery = query(
+        UploadService.collectionRef,
+        orderBy('date', 'desc'),
+        limit(count === undefined ? 25 : count)
       );
 
-      const uploads = snapshot.docs.map(
-        (document) => document.data() as Upload
-      );
+      let user: UserInfo | null = null;
 
-      for (const upload of uploads) {
-        upload.user = (
-          await getDoc(upload.userRef.withConverter(UserInfoConverter))
-        ).data();
+      if (uid != undefined) {
+        const userRef = UserInfoService.getReference(uid);
+        user = await UserInfoService.getById(uid);
+        uploadQuery = query(uploadQuery, where('user', '==', userRef));
+      }
+
+      const snapshot = await getDocs(uploadQuery);
+
+      const uploads = snapshot.docs.map((document) => {
+        const upload = document.data() as Upload;
+        if (user != null) upload.user = user;
+        return upload;
+      });
+
+      if (user == null) {
+        for (const upload of uploads) {
+          upload.user = (
+            await getDoc(upload.userRef.withConverter(UserInfoConverter))
+          ).data();
+        }
       }
 
       return uploads;

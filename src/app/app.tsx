@@ -13,6 +13,7 @@ import Profile from './profile/profile';
 import AdminTools from './admin-tools/admin-tools';
 import { useUser } from '../userContext';
 import { Container } from 'react-bootstrap';
+import UserDashboard from './user-data/user-dashboard/user-dashboard';
 
 export const App = () => {
   const { user, loading } = useUser();
@@ -28,9 +29,13 @@ export const App = () => {
             <Route path="/about" element={<About />} />
             <Route path="/help" element={<Help />} />
             <Route path="/upload" element={<Upload />} />
+
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
+
             <Route path="/profile" element={<Profile />} />
+            <Route path="/user-dashboard" element={<UserDashboard />} />
+
             <Route path="/admin-tools" element={<AdminTools />} />
           </Routes>
         </Container>

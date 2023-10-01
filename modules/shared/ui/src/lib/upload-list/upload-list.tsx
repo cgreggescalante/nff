@@ -3,16 +3,20 @@ import { useEffect, useState } from 'react';
 import { UploadCard } from './upload-card/upload-card';
 import { Upload, UploadService } from '@shared-data';
 
-export function UploadList() {
+export interface UploadListProps {
+  uid?: string;
+}
+
+export function UploadList({ uid }: UploadListProps) {
   const [uploads, setUploads] = useState<Upload[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    UploadService.getRecent().then((uploads) => {
+    UploadService.getRecent({ uid }).then((uploads) => {
       setUploads(uploads);
       setLoading(false);
     });
-  });
+  }, [uid]);
 
   return (
     <div className={styles['container']}>

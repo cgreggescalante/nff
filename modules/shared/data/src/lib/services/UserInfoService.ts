@@ -1,12 +1,13 @@
 import {
-  CollectionReference,
   collection,
+  CollectionReference,
   deleteDoc,
   doc,
+  DocumentReference,
   getDoc,
-  setDoc,
   getDocs,
   query,
+  setDoc,
   where,
 } from 'firebase/firestore';
 import { UserInfoConverter } from '../converters/UserInfoConverter';
@@ -26,6 +27,10 @@ class UserInfoService {
     UserInfoService.collectionRef = collection(db, 'users').withConverter(
       UserInfoConverter
     );
+  }
+
+  getReference(uid: string): DocumentReference {
+    return doc(UserInfoService.collectionRef, uid);
   }
 
   async create(uid: string): Promise<boolean> {
