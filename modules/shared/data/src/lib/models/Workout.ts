@@ -1,4 +1,4 @@
-import { WorkoutType } from "../WorkoutType";
+import { WorkoutType } from '../WorkoutType';
 
 export class Workout {
   workoutType: WorkoutType;

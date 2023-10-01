@@ -1,9 +1,9 @@
 import styles from './footer.module.scss';
 
-import { Nav, Navbar } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Nav, Navbar } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
-export const Footer = () =>
+export const Footer = () => (
   <footer>
     <Navbar bg="body-secondary" className="h-100">
       <Nav className="w-100">
@@ -24,6 +24,6 @@ export const Footer = () =>
       </Nav>
     </Navbar>
   </footer>
-
+);
 
 export default Footer;

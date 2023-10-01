@@ -1,12 +1,12 @@
-import { Navigate } from "react-router-dom";
-import { ReactNode } from "react";
+import { Navigate } from 'react-router-dom';
+import { ReactNode } from 'react';
 
 export interface AdminRouteProps {
-  allowed: boolean,
-  children: ReactNode
+  allowed: boolean;
+  children: ReactNode;
 }
 
 export const AdminRoute = ({ allowed, children }: AdminRouteProps) =>
-  allowed ? children : <Navigate to={"/"} />
+  allowed ? children : <Navigate to={'/'} />;
 
 export default AdminRoute;

@@ -1,6 +1,6 @@
-import { FirestoreDataConverter } from "firebase/firestore";
-import { WorkoutTypeFromName } from "../WorkoutType";
-import { Upload } from "../models/Upload";
+import { FirestoreDataConverter } from 'firebase/firestore';
+import { WorkoutTypeFromName } from '../WorkoutType';
+import { Upload } from '../models/Upload';
 
 export const UploadConverter: FirestoreDataConverter<Upload> = {
   toFirestore: (upload: Upload) => ({

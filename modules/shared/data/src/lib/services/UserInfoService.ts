@@ -6,11 +6,12 @@ import {
   getDoc,
   setDoc,
   getDocs,
-  query, where
-} from "firebase/firestore";
-import { UserInfoConverter } from "../converters/UserInfoConverter";
+  query,
+  where,
+} from 'firebase/firestore';
+import { UserInfoConverter } from '../converters/UserInfoConverter';
 import { UserInfo } from '../models/UserInfo';
-import { db } from "../firebase";
+import { db } from '../firebase';
 
 class UserInfoService {
   private static instance: UserInfoService;
@@ -18,28 +19,29 @@ class UserInfoService {
   private static collectionRef: CollectionReference;
 
   constructor() {
-    if (UserInfoService.instance)
-      return UserInfoService.instance;
+    if (UserInfoService.instance) return UserInfoService.instance;
 
     UserInfoService.instance = this;
 
-    UserInfoService.collectionRef = collection(db, "users").withConverter(UserInfoConverter);
+    UserInfoService.collectionRef = collection(db, 'users').withConverter(
+      UserInfoConverter
+    );
   }
 
   async create(uid: string): Promise<boolean> {
     try {
       await setDoc(doc(UserInfoService.collectionRef, uid), {
         name: {
-          firstName: "",
-          lastName: ""
+          firstName: '',
+          lastName: '',
         },
         uid,
-        role: ""
+        role: '',
       });
 
       return true;
     } catch (error) {
-      console.error("Error creating user: ", error);
+      console.error('Error creating user: ', error);
       return false;
     }
   }
@@ -47,19 +49,21 @@ class UserInfoService {
   async getById(id: string): Promise<UserInfo | null> {
     try {
       const snapshot = await getDoc(doc(UserInfoService.collectionRef, id));
-      return snapshot.exists() ? snapshot.data() as UserInfo : null;
+      return snapshot.exists() ? (snapshot.data() as UserInfo) : null;
     } catch (error) {
-      console.error("Error getting user: ", error);
+      console.error('Error getting user: ', error);
       return null;
     }
   }
 
   async setUserDetails(id: string, user: UserInfo): Promise<boolean> {
     try {
-      await setDoc(doc(UserInfoService.collectionRef, id), user, { merge: true })
+      await setDoc(doc(UserInfoService.collectionRef, id), user, {
+        merge: true,
+      });
       return true;
     } catch (error) {
-      console.error("Error while updating user: ", error);
+      console.error('Error while updating user: ', error);
       return false;
     }
   }
@@ -70,30 +74,26 @@ class UserInfoService {
 
       await deleteDoc(userRef);
 
-      await getDocs(query(
-        collection(db, "uploads"),
-        where("user", "==", userRef)
-      ))
-        .then(docs => {
-          docs.forEach(doc => deleteDoc(doc.ref));
-        });
+      await getDocs(
+        query(collection(db, 'uploads'), where('user', '==', userRef))
+      ).then((docs) => {
+        docs.forEach((doc) => deleteDoc(doc.ref));
+      });
 
       return true;
     } catch (error) {
-      console.error("Error while deleting user: ", error);
+      console.error('Error while deleting user: ', error);
       return false;
     }
   }
 
   async getUsers(): Promise<UserInfo[]> {
     try {
-      const snapshot = await getDocs(query(
-        UserInfoService.collectionRef
-      ));
+      const snapshot = await getDocs(query(UserInfoService.collectionRef));
 
-      return snapshot.docs.map(document => document.data() as UserInfo);
+      return snapshot.docs.map((document) => document.data() as UserInfo);
     } catch (error) {
-      console.error("Error while fetching users: ", error);
+      console.error('Error while fetching users: ', error);
       return [];
     }
   }

@@ -1,4 +1,4 @@
-import UploadService from "./lib/services/UploadService";
+import UploadService from './lib/services/UploadService';
 import UserInfoService from './lib/services/UserInfoService';
 
 export * from './lib/WorkoutType';

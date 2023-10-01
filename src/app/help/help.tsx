@@ -1,7 +1,7 @@
 import styles from './help.module.scss';
-import { Button } from "react-bootstrap";
+import { Button } from 'react-bootstrap';
 
-const Help = () =>
+const Help = () => (
   <div className={styles['container']}>
     <h1>Welcome to Help!</h1>
     <Button>Primary</Button>
@@ -11,5 +11,6 @@ const Help = () =>
     <Button variant={'danger'}>Danger</Button>
     <Button variant={'info'}>Info</Button>
   </div>
+);
 
 export default Help;

@@ -1,12 +1,12 @@
-import { FirestoreDataConverter } from "firebase/firestore";
-import { WorkoutTypeFromName } from "../WorkoutType";
-import { Workout } from "../models/Workout";
+import { FirestoreDataConverter } from 'firebase/firestore';
+import { WorkoutTypeFromName } from '../WorkoutType';
+import { Workout } from '../models/Workout';
 
 export const WorkoutConverter: FirestoreDataConverter<Workout> = {
   toFirestore: (workout: Workout) => ({
     workoutType: workout.workoutType.name,
     duration: workout.duration,
-    points: workout.points
+    points: workout.points,
   }),
   fromFirestore: (snapshot, options): Workout => {
     const data = snapshot.data(options);
@@ -15,5 +15,5 @@ export const WorkoutConverter: FirestoreDataConverter<Workout> = {
       duration: data['duration'],
       points: data['points'],
     };
-  }
-}
+  },
+};
