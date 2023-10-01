@@ -50,7 +50,7 @@ const UploadView: React.FC = () => {
   };
 
   return (
-    <div>
+    <>
       <h1>Upload</h1>
       <label htmlFor="description">Description:</label>
       <textarea
@@ -77,7 +77,7 @@ const UploadView: React.FC = () => {
       <button onClick={handleSubmit}>Submit</button>
 
       {error && <p>{error}</p>}
-    </div>
+    </>
   );
 };
 

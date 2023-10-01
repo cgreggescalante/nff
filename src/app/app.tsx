@@ -4,15 +4,15 @@ import About from './about/about';
 import Help from './help/help';
 import Home from './home/home';
 import Upload from './upload/upload';
-import { Footer } from '@shared-ui';
-import Signup from './signup/signup';
-import Login from './login/login';
-import Profile from './profile/profile';
 import AdminTools from './admin-tools/admin-tools';
 import { Container } from 'react-bootstrap';
 import UserDashboard from './user-data/user-dashboard/user-dashboard';
-import ProtectedRoute from './protected-route/protected-route';
-import { Header } from './header/header';
+import { Header } from './components/header/header';
+import ProtectedRoute from './components/protected-route/protected-route';
+import Signup from './auth-pages/signup/signup';
+import Login from './auth-pages/login/login';
+import Profile from './user-data/profile/profile';
+import Footer from './components/footer/footer';
 
 export const App = () => (
   <div className={styles['app']}>

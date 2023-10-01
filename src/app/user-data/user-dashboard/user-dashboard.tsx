@@ -1,8 +1,8 @@
-import styles from './user-dashboard.module.scss';
 import { useUser } from '../../../userContext';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LoadingWrapper, UploadList } from '@shared-ui';
+import LoadingWrapper from '../../components/loading-wrapper/loading-wrapper';
+import UploadList from '../../components/upload-list/upload-list';
 
 export const UserDashboard = () => {
   const { user, loading } = useUser();
@@ -17,7 +17,7 @@ export const UserDashboard = () => {
   }, [user, loading, navigate]);
 
   return (
-    <div className={styles['container']}>
+    <>
       <h1>Dashboard</h1>
 
       <LoadingWrapper loading={loading}>
@@ -34,7 +34,7 @@ export const UserDashboard = () => {
           <h2>No user data found</h2>
         )}
       </LoadingWrapper>
-    </div>
+    </>
   );
 };
 

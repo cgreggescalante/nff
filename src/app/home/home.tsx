@@ -1,12 +1,12 @@
-import styles from './home.module.scss';
-import { LoadingWrapper, UploadList } from '@shared-ui';
 import { useUser } from '../../userContext';
+import LoadingWrapper from '../components/loading-wrapper/loading-wrapper';
+import UploadList from '../components/upload-list/upload-list';
 
 const Home = () => {
   const { user, loading } = useUser();
 
   return (
-    <div className={styles['container']}>
+    <>
       <LoadingWrapper loading={loading}>
         {user ? (
           <>
@@ -19,7 +19,7 @@ const Home = () => {
       </LoadingWrapper>
 
       <UploadList />
-    </div>
+    </>
   );
 };
 
