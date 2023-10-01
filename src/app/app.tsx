@@ -13,6 +13,7 @@ import Signup from './auth-pages/signup/signup';
 import Login from './auth-pages/login/login';
 import Profile from './user-data/profile/profile';
 import Footer from './components/footer/footer';
+import Leaderboard from './leaderboard/leaderboard';
 
 export const App = () => (
   <div className={styles['app']}>
@@ -24,6 +25,9 @@ export const App = () => (
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/help" element={<Help />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
 
           <Route
             path="/upload"
@@ -33,9 +37,6 @@ export const App = () => (
               </ProtectedRoute>
             }
           />
-
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
 
           <Route
             path="/profile"
