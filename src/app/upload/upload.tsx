@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 import { WorkoutInput } from './workout-input/workout-input';
-import { UploadService, Workout, WorkoutType } from '@shared-data';
+import { Upload, UploadService, Workout, WorkoutType } from '@shared-data';
 import { auth } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
 

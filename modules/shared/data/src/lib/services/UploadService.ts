@@ -1,8 +1,5 @@
 import {
-  addDoc,
   collection,
-  CollectionReference,
-  doc,
   getDoc,
   getDocs,
   limit,
@@ -17,26 +14,23 @@ import { UserInfoConverter } from '../converters/UserInfoConverter';
 import { Workout } from '../models/Workout';
 import UserInfoService from './UserInfoService';
 import { UserInfo } from '../models/UserInfo';
+import { FirestoreService } from './FirestoreService';
 
-class UploadService {
-  private static instance: UploadService;
-
-  private static collectionRef: CollectionReference;
-
-  constructor() {
-    if (UploadService.instance) return UploadService.instance;
-
-    UploadService.instance = this;
-
-    UploadService.collectionRef = collection(db, 'uploads').withConverter(
-      UploadConverter
-    );
+class UploadService extends FirestoreService<Upload> {
+  public constructor() {
+    super(collection(db, 'uploads'), UploadConverter);
   }
 
-  async getRecent({ uid, count }: { uid?: string; count?: number }) {
+  async getRecent({
+    uid,
+    count,
+  }: {
+    uid?: string;
+    count?: number;
+  }): Promise<Upload[]> {
     try {
       let uploadQuery = query(
-        UploadService.collectionRef,
+        super.collectionReference.withConverter(super.converter),
         orderBy('date', 'desc'),
         limit(count === undefined ? 25 : count)
       );
@@ -67,32 +61,30 @@ class UploadService {
 
       return uploads;
     } catch (error) {
-      console.error('Error while fetching uploads: ', error);
-      return [];
+      return Promise.reject(error);
     }
   }
 
-  async create(uid: string, description: string, workouts: Workout[]) {
+  createFromComponents = async (
+    uid: string,
+    description: string,
+    workouts: Workout[]
+  ) => {
     try {
-      const userRef = doc(db, 'users', uid);
+      const userRef = UserInfoService.getReference(uid);
 
-      await addDoc(collection(db, 'uploads'), {
-        description,
-        date: new Date(),
-        user: userRef,
-        workouts: workouts.map((w) => ({
-          workoutType: w.workoutType.name,
-          duration: w.duration,
-          points: w.workoutType.pointsFunction(w.duration),
-        })),
+      workouts = workouts.map((workout) => {
+        workout.points = workout.workoutType.pointsFunction(workout.duration);
+        return workout;
       });
 
-      return true;
+      const upload = new Upload(userRef, description, new Date(), workouts);
+
+      return super.create(upload);
     } catch (error) {
-      console.error('Error while creating upload: ', error);
-      return false;
+      return Promise.reject(error);
     }
-  }
+  };
 }
 
 export default new UploadService();

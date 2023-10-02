@@ -11,8 +11,8 @@ import { FirestoreDataConverter } from 'firebase/firestore';
 
 export abstract class FirestoreService<T> {
   protected constructor(
-    private collectionReference: CollectionReference,
-    private converter: FirestoreDataConverter<T>
+    protected collectionReference: CollectionReference,
+    protected converter: FirestoreDataConverter<T>
   ) {}
 
   public create = async (document: T): Promise<T> => {

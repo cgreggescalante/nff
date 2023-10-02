@@ -14,7 +14,7 @@ export class Upload {
     userRef: DocumentReference,
     description: string,
     date: Date,
-    workouts: []
+    workouts: Workout[]
   ) {
     this.userRef = userRef;
     this.description = description;
