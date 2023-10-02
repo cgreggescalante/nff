@@ -1,6 +1,7 @@
 import { Button, Modal, Table } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { UserInfo, UserInfoService } from '@shared-data';
+import { ConfirmDelete } from '../confirm-delete/confirm-delete';
 
 export const ManageUsers = () => {
   const [users, setUsers] = useState<UserInfo[]>([]);
@@ -78,40 +79,13 @@ const UserRow = ({ user, index, deleteUser }: UserRowProps) => {
       <td>{user.role}</td>
       <ConfirmDelete
         onConfirm={onConfirm}
-        userId={user.uid}
+        message={`Are you sure you want to delete user ${user.uid} and all associated uploads?
+      Note that the user's identity will still exist in Firebase Authentication.`}
         show={show}
         setShow={setShow}
       />
     </tr>
   );
 };
-
-interface ConfirmDeleteProps {
-  onConfirm: () => void;
-  userId: string;
-  show: boolean;
-  setShow: (value: boolean) => void;
-}
-
-const ConfirmDelete = ({
-  onConfirm,
-  userId,
-  show,
-  setShow,
-}: ConfirmDeleteProps) => (
-  <Modal show={show} onHide={() => setShow(false)}>
-    <Modal.Header closeButton>
-      <Modal.Title>Confirm Delete User</Modal.Title>
-    </Modal.Header>
-    <Modal.Body>
-      Are you sure you want to delete user {userId} and all associated uploads?
-      Note that the user's identity will still exist in Firebase Authentication.
-    </Modal.Body>
-    <Modal.Footer>
-      <Button onClick={() => setShow(false)}>Cancel</Button>
-      <Button onClick={onConfirm}>Delete User</Button>
-    </Modal.Footer>
-  </Modal>
-);
 
 export default ManageUsers;
