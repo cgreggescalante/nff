@@ -12,7 +12,6 @@ type WorkoutTypesCollection = {
   BIKE: WorkoutType;
   SKI: WorkoutType;
   SWIM: WorkoutType;
-  BAD_WORKOUT_TYPE: WorkoutType;
 };
 
 export const WorkoutTypes: WorkoutTypesCollection = {
