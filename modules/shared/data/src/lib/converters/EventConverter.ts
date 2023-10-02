@@ -16,11 +16,15 @@ export const EventConverter: FirestoreDataConverter<Event> = {
     return {
       uid: snapshot.id,
       name: data.name,
-      startDate: data.startDate.toDate(),
-      endDate: data.endDate.toDate(),
+      startDate: data.startDate ? data.startDate.toDate() : new Date(0),
+      endDate: data.endDate ? data.endDate.toDate() : new Date(0),
       description: data.description,
-      registrationStart: data.registrationStart.toDate(),
-      registrationEnd: data.registrationEnd.toDate(),
+      registrationStart: data.registrationStart
+        ? data.registrationStart.toDate()
+        : new Date(0),
+      registrationEnd: data.registrationEnd
+        ? data.registrationEnd.toDate()
+        : new Date(0),
     };
   },
 };

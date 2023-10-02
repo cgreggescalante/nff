@@ -1,5 +1,6 @@
 import UploadService from './lib/services/UploadService';
 import UserInfoService from './lib/services/UserInfoService';
+import EventService from './lib/services/EventService';
 import UploadConverter from './lib/converters/UploadConverter';
 
 // Models
@@ -20,3 +21,4 @@ export { WorkoutConverter } from './lib/converters/WorkoutConverter';
 // Services
 export { UploadService };
 export { UserInfoService };
+export { EventService };

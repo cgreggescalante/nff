@@ -25,8 +25,6 @@ export const ManageUsers = () => {
 
   return (
     <div>
-      <h2>Manage Users</h2>
-
       <Table bordered>
         <thead>
           <tr>
@@ -41,7 +39,11 @@ export const ManageUsers = () => {
           {users.map((user, index) => (
             <tr key={index}>
               <td>
-                <Button size={'sm'} onClick={() => beginDelete(user.uid)}>
+                <Button
+                  size={'sm'}
+                  variant={'danger'}
+                  onClick={() => beginDelete(user.uid)}
+                >
                   Delete
                 </Button>
               </td>

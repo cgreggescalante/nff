@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import ManageUsers from './manage-users/manage-users';
 import ManageEvents from './manage-events/manage-events';
 import LoadingWrapper from '../components/loading-wrapper/loading-wrapper';
+import CollapsibleContainer from './collapsible-container/collapsible-container';
+import { Accordion } from 'react-bootstrap';
 
 export const AdminTools = () => {
   const { user, loading } = useUser();
@@ -23,8 +25,13 @@ export const AdminTools = () => {
       <h1>Admin Tools</h1>
 
       <LoadingWrapper loading={!authenticated}>
-        <ManageUsers />
-        <ManageEvents />
+        <CollapsibleContainer title={'Users'}>
+          <ManageUsers />
+        </CollapsibleContainer>
+
+        <CollapsibleContainer title={'Events'}>
+          <ManageEvents />
+        </CollapsibleContainer>
       </LoadingWrapper>
     </div>
   );
