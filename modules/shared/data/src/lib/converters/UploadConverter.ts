@@ -2,7 +2,7 @@ import { FirestoreDataConverter } from 'firebase/firestore';
 import { WorkoutTypeFromName } from '../WorkoutType';
 import { Upload } from '../models/Upload';
 
-export const UploadConverter: FirestoreDataConverter<Upload> = {
+const UploadConverter: FirestoreDataConverter<Upload> = {
   toFirestore: (upload: Upload) => ({
     user: upload.user,
     description: upload.description,
@@ -26,3 +26,5 @@ export const UploadConverter: FirestoreDataConverter<Upload> = {
     );
   },
 };
+
+export default UploadConverter;

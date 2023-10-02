@@ -1,5 +1,6 @@
 import UploadService from './lib/services/UploadService';
 import UserInfoService from './lib/services/UserInfoService';
+import UploadConverter from './lib/converters/UploadConverter';
 
 export * from './lib/WorkoutType';
 
@@ -9,7 +10,7 @@ export { UserInfo } from './lib/models/UserInfo';
 export { Workout } from './lib/models/Workout';
 
 // Converters
-export { UploadConverter } from './lib/converters/UploadConverter';
+export { UploadConverter };
 export { UserInfoConverter } from './lib/converters/UserInfoConverter';
 export { WorkoutConverter } from './lib/converters/WorkoutConverter';
 

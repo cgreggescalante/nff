@@ -20,14 +20,14 @@ class UserInfoService extends FirestoreService<UserInfo> {
   }
 
   getReference(uid: string): DocumentReference {
-    return doc(super.collectionReference, uid);
+    return doc(this.collectionReference, uid);
   }
 
   async createFromId(id: string): Promise<UserInfo> {
     try {
       const userInfo = new UserInfo('', '', id, '', 0);
 
-      return super.create(userInfo);
+      return this.create(userInfo);
     } catch (error) {
       return Promise.reject(error);
     }
@@ -43,7 +43,7 @@ class UserInfoService extends FirestoreService<UserInfo> {
         docs.forEach((doc) => deleteDoc(doc.ref));
       });
 
-      return super.delete(id);
+      return this.delete(id);
     } catch (error) {
       return Promise.reject(error);
     }

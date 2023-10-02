@@ -18,7 +18,7 @@ export function UploadList({ uid }: UploadListProps) {
         setLoading(false);
       })
       .catch((error) => {
-        console.error(error);
+        console.error('Error while fetching uploads:', error);
         setLoading(false);
       });
   }, [uid]);

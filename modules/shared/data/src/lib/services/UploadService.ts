@@ -8,7 +8,7 @@ import {
   where,
 } from 'firebase/firestore';
 import { db } from '../firebase';
-import { UploadConverter } from '../converters/UploadConverter';
+import UploadConverter from '../converters/UploadConverter';
 import { Upload } from '../models/Upload';
 import { UserInfoConverter } from '../converters/UserInfoConverter';
 import { Workout } from '../models/Workout';
@@ -30,7 +30,7 @@ class UploadService extends FirestoreService<Upload> {
   }): Promise<Upload[]> {
     try {
       let uploadQuery = query(
-        super.collectionReference.withConverter(super.converter),
+        this.collectionReference.withConverter(this.converter),
         orderBy('date', 'desc'),
         limit(count === undefined ? 25 : count)
       );
