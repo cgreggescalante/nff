@@ -73,11 +73,8 @@ export abstract class FirestoreService<T> {
 
   public async delete(documentId: string): Promise<void> {
     try {
-      const docRef = doc(
-        this.collectionReference.withConverter(this.converter),
-        documentId
-      );
-      await deleteDoc(docRef);
+      const docRef = doc(this.collectionReference, documentId);
+      return deleteDoc(docRef);
     } catch (error) {
       return Promise.reject(error);
     }

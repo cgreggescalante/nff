@@ -35,9 +35,9 @@ export const WorkoutInput: React.FC<WorkoutProps> = ({
           handleWorkoutTypeChange(index, WorkoutTypeFromName(e.target.value))
         }
       >
-        {Object.entries(WorkoutTypes).map(([name]) => (
-          <option key={name} value={name}>
-            {name}
+        {Object.entries(WorkoutTypes).map(([name, workoutType]) => (
+          <option key={workoutType.name} value={workoutType.name}>
+            {workoutType.name}
           </option>
         ))}
       </select>

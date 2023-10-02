@@ -1,5 +1,6 @@
 import {
   collection,
+  doc,
   getDoc,
   getDocs,
   limit,
@@ -53,9 +54,11 @@ class UploadService extends FirestoreService<Upload> {
 
       if (user == null) {
         for (const upload of uploads) {
-          upload.user = (
-            await getDoc(upload.userRef.withConverter(UserInfoConverter))
-          ).data();
+          if (upload.userRef != undefined) {
+            upload.user = (
+              await getDoc(upload.userRef.withConverter(UserInfoConverter))
+            ).data();
+          }
         }
       }
 
@@ -66,20 +69,18 @@ class UploadService extends FirestoreService<Upload> {
   }
 
   createFromComponents = async (
-    uid: string,
+    user: UserInfo,
     description: string,
     workouts: Workout[]
   ) => {
     try {
-      const userRef = UserInfoService.getReference(uid);
-
       workouts = workouts.map((workout) => {
         workout.points = workout.workoutType.pointsFunction(workout.duration);
         return workout;
       });
 
-      const upload: Upload = {
-        userRef,
+      const upload = {
+        userRef: UserInfoService.getReference(user.uid),
         description,
         date: new Date(),
         workouts,

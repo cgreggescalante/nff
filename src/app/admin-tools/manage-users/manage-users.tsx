@@ -5,22 +5,22 @@ import { UserInfo, UserInfoService } from '@shared-data';
 export const ManageUsers = () => {
   const [users, setUsers] = useState<UserInfo[]>([]);
 
+  const [error, setError] = useState<string>();
+
   useEffect(() => {
     UserInfoService.list().then((users) => setUsers(users));
   }, []);
 
-  const [userId, setUserId] = useState<string | null>(null);
-  const [showModal, setShowModal] = useState<boolean>(false);
-
-  const beginDelete = (uid: string) => {
-    setUserId(uid);
-    setShowModal(true);
-  };
-
-  const deleteUser = async () => {
-    setShowModal(false);
-
-    if (userId) await UserInfoService.delete(userId);
+  const deleteUser = async (user: UserInfo) => {
+    UserInfoService.delete(user.uid)
+      .then(() => {
+        console.log('Deleted user');
+        setUsers(users.filter((u) => u.uid !== user.uid));
+      })
+      .catch((error) => {
+        console.error('Error while deleting user:', error);
+        setError(error.message);
+      });
   };
 
   return (
@@ -37,33 +37,52 @@ export const ManageUsers = () => {
         </thead>
         <tbody>
           {users.map((user, index) => (
-            <tr key={index}>
-              <td>
-                <Button
-                  size={'sm'}
-                  variant={'danger'}
-                  onClick={() => beginDelete(user.uid)}
-                >
-                  Delete
-                </Button>
-              </td>
-              <td>{user.name.firstName}</td>
-              <td>{user.name.lastName}</td>
-              <td>{user.uid}</td>
-              <td>{user.role}</td>
-            </tr>
+            <UserRow
+              key={index}
+              user={user}
+              index={index}
+              deleteUser={() => deleteUser(user)}
+            />
           ))}
         </tbody>
       </Table>
-      {userId && (
-        <ConfirmDelete
-          onConfirm={deleteUser}
-          userId={userId}
-          show={showModal}
-          setShow={setShowModal}
-        />
-      )}
+      {error && <p>{error}</p>}
     </div>
+  );
+};
+
+interface UserRowProps {
+  user: UserInfo;
+  index: number;
+  deleteUser: () => void;
+}
+
+const UserRow = ({ user, index, deleteUser }: UserRowProps) => {
+  const [show, setShow] = useState<boolean>(false);
+
+  const onConfirm = () => {
+    setShow(false);
+    deleteUser();
+  };
+
+  return (
+    <tr key={index}>
+      <td>
+        <Button size={'sm'} variant={'danger'} onClick={() => setShow(true)}>
+          Delete
+        </Button>
+      </td>
+      <td>{user.name.firstName}</td>
+      <td>{user.name.lastName}</td>
+      <td>{user.uid}</td>
+      <td>{user.role}</td>
+      <ConfirmDelete
+        onConfirm={onConfirm}
+        userId={user.uid}
+        show={show}
+        setShow={setShow}
+      />
+    </tr>
   );
 };
 
@@ -86,6 +105,7 @@ const ConfirmDelete = ({
     </Modal.Header>
     <Modal.Body>
       Are you sure you want to delete user {userId} and all associated uploads?
+      Note that the user's identity will still exist in Firebase Authentication.
     </Modal.Body>
     <Modal.Footer>
       <Button onClick={() => setShow(false)}>Cancel</Button>

@@ -11,7 +11,7 @@ import {
 } from 'firebase/firestore';
 import { UserInfoConverter } from '../converters/UserInfoConverter';
 import type UserInfo from '../models/UserInfo';
-import { db } from '../firebase';
+import { auth, db } from '../firebase';
 import { FirestoreService } from './FirestoreService';
 
 class UserInfoService extends FirestoreService<UserInfo> {
@@ -38,15 +38,21 @@ class UserInfoService extends FirestoreService<UserInfo> {
 
   override delete = async (id: string): Promise<void> => {
     try {
-      const userRef = this.getReference(id);
+      const user = auth.currentUser;
 
-      await getDocs(
+      if (!user) throw new Error('No authenticated user found');
+
+      const userRef = doc(this.collectionReference, id);
+
+      const snapshot = await getDocs(
         query(collection(db, 'uploads'), where('user', '==', userRef))
-      ).then((docs) => {
-        docs.forEach((doc) => deleteDoc(doc.ref));
-      });
+      );
 
-      return this.delete(id);
+      for (const key in snapshot.docs) {
+        await deleteDoc(snapshot.docs[key].ref);
+      }
+
+      return super.delete(id);
     } catch (error) {
       return Promise.reject(error);
     }

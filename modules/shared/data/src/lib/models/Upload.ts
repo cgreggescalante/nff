@@ -4,7 +4,7 @@ import { DocumentReference } from 'firebase/firestore';
 
 export interface Upload {
   user?: UserInfo;
-  userRef: DocumentReference;
+  userRef?: DocumentReference;
   description: string;
   date: Date;
   workouts: Workout[];

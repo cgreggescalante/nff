@@ -1,13 +1,16 @@
 import { FirestoreDataConverter } from 'firebase/firestore';
 import { WorkoutTypeFromName } from '../WorkoutType';
 import type Upload from '../models/Upload';
+import { WorkoutConverter } from './WorkoutConverter';
 
 const UploadConverter: FirestoreDataConverter<Upload> = {
   toFirestore: (upload: Upload) => ({
-    user: upload.user,
+    user: upload.userRef,
     description: upload.description,
     date: upload.date,
-    workouts: upload.workouts,
+    workouts: upload.workouts.map((workout) =>
+      WorkoutConverter.toFirestore(workout)
+    ),
   }),
   fromFirestore: (snapshot, options): Upload => {
     const data = snapshot.data(options);
