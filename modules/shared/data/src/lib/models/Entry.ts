@@ -3,6 +3,16 @@ import { WorkoutType } from '../WorkoutType';
 import { UserInfo } from './UserInfo';
 import { Event } from './Event';
 
+export interface EntryData {
+  uid: string;
+  userRef: DocumentReference;
+  user: UserInfo | undefined;
+  eventRef: DocumentReference;
+  event: Event | undefined;
+  points: Record<string, number>;
+  goals: Record<string, number>;
+}
+
 export class Entry {
   uid: string;
   userRef: DocumentReference;

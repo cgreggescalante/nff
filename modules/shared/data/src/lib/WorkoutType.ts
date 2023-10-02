@@ -25,7 +25,7 @@ export class WorkoutType {
     'INVALID',
     'INVALID',
     'INVALID',
-    (d) => -1
+    () => -1
   );
 }
 
