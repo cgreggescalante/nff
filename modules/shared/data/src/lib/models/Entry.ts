@@ -1,6 +1,6 @@
 import { DocumentReference } from 'firebase/firestore';
 import { WorkoutType } from '../WorkoutType';
-import { UserInfo } from './UserInfo';
+import UserInfo from './UserInfo';
 import { Event } from './Event';
 
 export interface EntryData {

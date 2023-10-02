@@ -13,7 +13,7 @@ import { Upload } from '../models/Upload';
 import { UserInfoConverter } from '../converters/UserInfoConverter';
 import { Workout } from '../models/Workout';
 import UserInfoService from './UserInfoService';
-import { UserInfo } from '../models/UserInfo';
+import UserInfo from '../models/UserInfo';
 import { FirestoreService } from './FirestoreService';
 
 class UploadService extends FirestoreService<Upload> {

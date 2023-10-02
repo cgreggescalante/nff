@@ -10,7 +10,7 @@ import {
   where,
 } from 'firebase/firestore';
 import { UserInfoConverter } from '../converters/UserInfoConverter';
-import { UserInfo } from '../models/UserInfo';
+import UserInfo from '../models/UserInfo';
 import { db } from '../firebase';
 import { FirestoreService } from './FirestoreService';
 

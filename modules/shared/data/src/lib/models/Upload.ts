@@ -1,4 +1,4 @@
-import { UserInfo } from './UserInfo';
+import UserInfo from './UserInfo';
 import { Workout } from './Workout';
 import { DocumentReference } from 'firebase/firestore';
 

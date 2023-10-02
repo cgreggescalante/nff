@@ -54,8 +54,8 @@ export const AdminTools = () => {
               <td>
                 <Button onClick={() => beginDelete(user.uid)}>Delete</Button>
               </td>
-              <td>{user.firstName}</td>
-              <td>{user.lastName}</td>
+              <td>{user.name.firstName}</td>
+              <td>{user.name.lastName}</td>
               <td>{user.uid}</td>
               <td>{user.role}</td>
             </tr>

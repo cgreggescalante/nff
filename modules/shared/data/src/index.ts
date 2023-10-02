@@ -5,8 +5,8 @@ import UploadConverter from './lib/converters/UploadConverter';
 export * from './lib/WorkoutType';
 
 // Models
+export type { UserInfo } from './lib/models/UserInfo';
 export { Upload } from './lib/models/Upload';
-export { UserInfo } from './lib/models/UserInfo';
 export { Workout } from './lib/models/Workout';
 
 // Converters

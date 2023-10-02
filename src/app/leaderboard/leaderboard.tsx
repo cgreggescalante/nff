@@ -38,7 +38,7 @@ export const Leaderboard = () => {
               <tr key={index}>
                 <td>{index + 1}</td>
                 <td>
-                  {user.firstName} {user.lastName}
+                  {user.name.firstName} {user.name.lastName}
                 </td>
                 <td>{user.totalPoints}</td>
               </tr>

@@ -7,3 +7,5 @@ export interface UserInfo {
   role: string;
   totalPoints: number;
 }
+
+export default UserInfo;
