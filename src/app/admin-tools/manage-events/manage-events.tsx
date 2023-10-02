@@ -3,10 +3,12 @@ import type { Event } from '@shared-data';
 import { Button, Table } from 'react-bootstrap';
 import { EventService } from '@shared-data';
 import { ConfirmDelete } from '../confirm-delete/confirm-delete';
+import CreateEvent from './create-event/create-event';
 
 export function ManageEvents() {
   const [events, setEvents] = useState<Event[]>([]);
   const [error, setError] = useState<string>();
+  const [showCreateEvent, setShowCreateEvent] = useState<boolean>(false);
 
   useEffect(() => {
     EventService.list().then((events) => setEvents(events));
@@ -45,7 +47,11 @@ export function ManageEvents() {
           ))}
           <tr>
             <td colSpan={3}>
-              <Button variant={'success'} size={'sm'}>
+              <Button
+                variant={'success'}
+                size={'sm'}
+                onClick={() => setShowCreateEvent(true)}
+              >
                 Add Event
               </Button>
             </td>
@@ -54,6 +60,8 @@ export function ManageEvents() {
       </Table>
 
       {error && <p>{error}</p>}
+
+      {showCreateEvent && <CreateEvent />}
     </div>
   );
 }
