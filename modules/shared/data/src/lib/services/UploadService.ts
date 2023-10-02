@@ -39,7 +39,7 @@ class UploadService extends FirestoreService<Upload> {
 
       if (uid != undefined) {
         const userRef = UserInfoService.getReference(uid);
-        user = await UserInfoService.getById(uid);
+        user = await UserInfoService.read(uid);
         uploadQuery = query(uploadQuery, where('user', '==', userRef));
       }
 

@@ -27,7 +27,7 @@ export const Login = () => {
 
       if (!user) throw new Error('No user found with that email and password');
 
-      const userInfo = await UserInfoService.getById(user.uid);
+      const userInfo = await UserInfoService.read(user.uid);
 
       if (userInfo == null) {
         UserInfoService.create(user.uid).then((userInfo) => {

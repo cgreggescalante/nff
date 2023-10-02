@@ -18,7 +18,7 @@ export const AdminTools = () => {
 
   useEffect(() => {
     if (!loading && user?.role === 'admin')
-      UserInfoService.getUsers().then((users) => setUsers(users));
+      UserInfoService.list().then((users) => setUsers(users));
   }, [loading, user]);
 
   const [userId, setUserId] = useState<string | null>(null);

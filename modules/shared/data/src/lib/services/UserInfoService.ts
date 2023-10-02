@@ -1,93 +1,30 @@
 import {
   collection,
-  CollectionReference,
   deleteDoc,
   doc,
   DocumentReference,
-  getDoc,
   getDocs,
   limit,
   orderBy,
   query,
-  setDoc,
   where,
 } from 'firebase/firestore';
 import { UserInfoConverter } from '../converters/UserInfoConverter';
 import { UserInfo } from '../models/UserInfo';
 import { db } from '../firebase';
+import { FirestoreService } from './FirestoreService';
 
-class UserInfoService {
-  private static instance: UserInfoService;
-
-  private static collectionRef: CollectionReference;
-
-  constructor() {
-    if (UserInfoService.instance) return UserInfoService.instance;
-
-    UserInfoService.instance = this;
-
-    UserInfoService.collectionRef = collection(db, 'users').withConverter(
-      UserInfoConverter
-    );
+class UserInfoService extends FirestoreService<UserInfo> {
+  public constructor() {
+    super(collection(db, 'users'), UserInfoConverter);
   }
 
-  getReference(uid: string): DocumentReference {
-    return doc(UserInfoService.collectionRef, uid);
-  }
+  getReference = (uid: string): DocumentReference =>
+    doc(super.collectionReference, uid);
 
-  async create(uid: string): Promise<UserInfo | undefined> {
+  override delete = async (id: string): Promise<void> => {
     try {
-      await setDoc(doc(UserInfoService.collectionRef, uid), {
-        name: {
-          firstName: '',
-          lastName: '',
-        },
-        uid,
-        role: '',
-        totalPoints: 0,
-      });
-
-      return (
-        await getDoc(
-          doc(
-            UserInfoService.collectionRef.withConverter(UserInfoConverter),
-            uid
-          )
-        )
-      ).data();
-    } catch (error) {
-      console.error('Error creating user: ', error);
-      return undefined;
-    }
-  }
-
-  async getById(id: string): Promise<UserInfo | null> {
-    try {
-      const snapshot = await getDoc(doc(UserInfoService.collectionRef, id));
-      return snapshot.exists() ? (snapshot.data() as UserInfo) : null;
-    } catch (error) {
-      console.error('Error getting user: ', error);
-      return null;
-    }
-  }
-
-  async setUserDetails(id: string, user: UserInfo): Promise<boolean> {
-    try {
-      await setDoc(doc(UserInfoService.collectionRef, id), user, {
-        merge: true,
-      });
-      return true;
-    } catch (error) {
-      console.error('Error while updating user: ', error);
-      return false;
-    }
-  }
-
-  async delete(id: string): Promise<boolean> {
-    try {
-      const userRef = doc(UserInfoService.collectionRef, id);
-
-      await deleteDoc(userRef);
+      const userRef = this.getReference(id);
 
       await getDocs(
         query(collection(db, 'uploads'), where('user', '==', userRef))
@@ -95,40 +32,27 @@ class UserInfoService {
         docs.forEach((doc) => deleteDoc(doc.ref));
       });
 
-      return true;
+      return super.delete(id);
     } catch (error) {
-      console.error('Error while deleting user: ', error);
-      return false;
+      return Promise.reject(error);
     }
-  }
+  };
 
-  async getUsers(): Promise<UserInfo[]> {
-    try {
-      const snapshot = await getDocs(query(UserInfoService.collectionRef));
-
-      return snapshot.docs.map((document) => document.data() as UserInfo);
-    } catch (error) {
-      console.error('Error while fetching users: ', error);
-      return [];
-    }
-  }
-
-  async getUsersByTotalPoints(count = 25): Promise<UserInfo[]> {
+  getUsersByTotalPoints = async (count = 25): Promise<UserInfo[]> => {
     try {
       const snapshot = await getDocs(
         query(
-          UserInfoService.collectionRef,
-          orderBy('totalPoints', 'desc'),
+          this.collectionReference,
+          orderBy('points.total', 'desc'),
           limit(count)
         )
       );
 
       return snapshot.docs.map((document) => document.data() as UserInfo);
     } catch (error) {
-      console.error('Error while fetching leaderboard: ', error);
-      return [];
+      return Promise.reject(error);
     }
-  }
+  };
 }
 
 export default new UserInfoService();

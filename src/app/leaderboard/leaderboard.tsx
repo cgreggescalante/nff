@@ -9,10 +9,15 @@ export const Leaderboard = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    UserInfoService.getUsersByTotalPoints().then((users) => {
-      setRankings(users);
-      setLoading(false);
-    });
+    UserInfoService.getUsersByTotalPoints()
+      .then((users) => {
+        setRankings(users);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error while loading leaderboard: ', error);
+        setLoading(false);
+      });
   }, []);
 
   return (

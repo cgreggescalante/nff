@@ -17,7 +17,7 @@ const UserProvider = ({ children }: { children: ReactElement }) => {
   }, []);
 
   const updateUser = async (user: UserInfo) => {
-    return UserInfoService.setUserDetails(user.uid, user).then((success) => {
+    return UserInfoService.update(user.uid, user).then((success) => {
       if (success) login(user);
       return success;
     });

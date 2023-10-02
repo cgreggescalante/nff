@@ -12,10 +12,15 @@ export function UploadList({ uid }: UploadListProps) {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    UploadService.getRecent({ uid }).then((uploads) => {
-      setUploads(uploads);
-      setLoading(false);
-    });
+    UploadService.getRecent({ uid })
+      .then((uploads) => {
+        setUploads(uploads);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+      });
   }, [uid]);
 
   return (
