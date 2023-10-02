@@ -1,5 +1,5 @@
 import { FirestoreDataConverter } from 'firebase/firestore';
-import { Event, EventData } from '../models/Event';
+import type { Event, EventData } from '../models/Event';
 
 export const EventConverter: FirestoreDataConverter<Event> = {
   toFirestore: (event: Event) => ({
@@ -13,14 +13,14 @@ export const EventConverter: FirestoreDataConverter<Event> = {
   fromFirestore: (snapshot, options): Event => {
     const data = snapshot.data(options) as EventData;
 
-    return new Event(
-      snapshot.id,
-      data.name,
-      data.startDate.toDate(),
-      data.endDate.toDate(),
-      data.description,
-      data.registrationStart.toDate(),
-      data.registrationEnd.toDate()
-    );
+    return {
+      uid: snapshot.id,
+      name: data.name,
+      startDate: data.startDate.toDate(),
+      endDate: data.endDate.toDate(),
+      description: data.description,
+      registrationStart: data.registrationStart.toDate(),
+      registrationEnd: data.registrationEnd.toDate(),
+    };
   },
 };

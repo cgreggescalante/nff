@@ -8,6 +8,7 @@ export * from './lib/WorkoutType';
 export type { UserInfo } from './lib/models/UserInfo';
 export type { Upload } from './lib/models/Upload';
 export type { Workout } from './lib/models/Workout';
+export type { Event } from './lib/models/Event';
 
 export { DefaultWorkout } from './lib/models/Workout';
 
