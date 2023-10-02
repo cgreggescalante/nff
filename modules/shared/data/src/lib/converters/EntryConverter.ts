@@ -13,15 +13,15 @@ export const EntryConverter: FirestoreDataConverter<Entry> = {
     const data = snapshot.data(options) as EntryData;
 
     const points = new Map<WorkoutType, number>(
-      WorkoutTypes.map((workoutType) => [
+      Object.entries(WorkoutTypes).map(([name, workoutType]) => [
         workoutType,
-        data.points[workoutType.name] ? data.points[workoutType.name] : 0,
+        data.points[name] ? data.points[name] : 0,
       ])
     );
     const goals = new Map<WorkoutType, number>(
-      WorkoutTypes.map((workoutType) => [
+      Object.entries(WorkoutTypes).map(([name, workoutType]) => [
         workoutType,
-        data.goals[workoutType.name] ? data.goals[workoutType.name] : 0,
+        data.goals[name] ? data.goals[name] : 0,
       ])
     );
 
