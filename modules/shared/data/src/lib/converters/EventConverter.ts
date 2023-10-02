@@ -9,6 +9,7 @@ export const EventConverter: FirestoreDataConverter<Event> = {
     description: event.description,
     registrationStart: event.registrationStart,
     registrationEnd: event.registrationEnd,
+    registeredUsers: event.registeredUsers,
   }),
   fromFirestore: (snapshot, options): Event => {
     const data = snapshot.data(options) as EventData;
@@ -25,6 +26,7 @@ export const EventConverter: FirestoreDataConverter<Event> = {
       registrationEnd: data.registrationEnd
         ? data.registrationEnd.toDate()
         : new Date(0),
+      registeredUsers: data.registeredUsers ? data.registeredUsers : [],
     };
   },
 };

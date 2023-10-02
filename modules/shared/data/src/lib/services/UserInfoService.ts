@@ -30,6 +30,7 @@ class UserInfoService extends FirestoreService<UserInfo> {
         role: '',
         totalPoints: 0,
         uid: id,
+        registeredEvents: [],
       });
     } catch (error) {
       return Promise.reject(error);

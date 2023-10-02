@@ -1,4 +1,3 @@
-import styles from './confirm-delete.module.scss';
 import { Button, Modal } from 'react-bootstrap';
 
 interface ConfirmDeleteProps {

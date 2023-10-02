@@ -1,4 +1,4 @@
-import { Button, Modal, Table } from 'react-bootstrap';
+import { Button, Table } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { UserInfo, UserInfoService } from '@shared-data';
 import { ConfirmDelete } from '../confirm-delete/confirm-delete';
@@ -67,7 +67,7 @@ const UserRow = ({ user, index, deleteUser }: UserRowProps) => {
   };
 
   return (
-    <tr key={index}>
+    <tr>
       <td>
         <Button size={'sm'} variant={'danger'} onClick={() => setShow(true)}>
           Delete

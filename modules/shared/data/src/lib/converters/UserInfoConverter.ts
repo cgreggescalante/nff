@@ -7,6 +7,7 @@ export const UserInfoConverter: FirestoreDataConverter<UserInfo> = {
     uid: user.uid,
     role: user.role,
     totalPoints: user.totalPoints,
+    registeredEvents: user.registeredEvents,
   }),
   fromFirestore: (snapshot, options): UserInfo => {
     return snapshot.data(options) as UserInfo;
