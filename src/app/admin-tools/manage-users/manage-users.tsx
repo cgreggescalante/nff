@@ -2,18 +2,12 @@ import { Button, Modal, Table } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { UserInfo, UserInfoService } from '@shared-data';
 
-export interface ManageUsersProps {
-  user: UserInfo | null;
-  loading: boolean;
-}
-
-export const ManageUsers = ({ user, loading }: ManageUsersProps) => {
+export const ManageUsers = () => {
   const [users, setUsers] = useState<UserInfo[]>([]);
 
   useEffect(() => {
-    if (!loading && user?.role === 'admin')
-      UserInfoService.list().then((users) => setUsers(users));
-  }, [loading, user]);
+    UserInfoService.list().then((users) => setUsers(users));
+  }, []);
 
   const [userId, setUserId] = useState<string | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
