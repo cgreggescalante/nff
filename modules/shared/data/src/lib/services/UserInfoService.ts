@@ -6,6 +6,8 @@ import {
   DocumentReference,
   getDoc,
   getDocs,
+  limit,
+  orderBy,
   query,
   setDoc,
   where,
@@ -42,6 +44,7 @@ class UserInfoService {
         },
         uid,
         role: '',
+        totalPoints: 0,
       });
 
       return (
@@ -106,6 +109,23 @@ class UserInfoService {
       return snapshot.docs.map((document) => document.data() as UserInfo);
     } catch (error) {
       console.error('Error while fetching users: ', error);
+      return [];
+    }
+  }
+
+  async getUsersByTotalPoints(count = 25): Promise<UserInfo[]> {
+    try {
+      const snapshot = await getDocs(
+        query(
+          UserInfoService.collectionRef,
+          orderBy('totalPoints', 'desc'),
+          limit(count)
+        )
+      );
+
+      return snapshot.docs.map((document) => document.data() as UserInfo);
+    } catch (error) {
+      console.error('Error while fetching leaderboard: ', error);
       return [];
     }
   }
