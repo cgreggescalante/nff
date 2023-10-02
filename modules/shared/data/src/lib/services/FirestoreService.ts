@@ -7,7 +7,12 @@ import {
   deleteDoc,
   getDocs,
 } from '@firebase/firestore';
-import { FirestoreDataConverter, setDoc } from 'firebase/firestore';
+import {
+  FirestoreDataConverter,
+  PartialWithFieldValue,
+  WithFieldValue,
+  setDoc,
+} from 'firebase/firestore';
 
 export abstract class FirestoreService<T> {
   protected constructor(
@@ -22,7 +27,7 @@ export abstract class FirestoreService<T> {
         id
       );
       return setDoc(docRef, document)
-        .then((_) => document)
+        .then(() => document)
         .catch((error) => error);
     } catch (error) {
       return Promise.reject(error);

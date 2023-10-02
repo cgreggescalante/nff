@@ -25,9 +25,12 @@ class UserInfoService extends FirestoreService<UserInfo> {
 
   async createFromId(id: string): Promise<UserInfo> {
     try {
-      const userInfo = new UserInfo('', '', id, '', 0);
-
-      return this.createWithId(id, userInfo);
+      return this.createWithId(id, {
+        name: { firstName: '', lastName: '' },
+        role: '',
+        totalPoints: 0,
+        uid: id,
+      });
     } catch (error) {
       return Promise.reject(error);
     }
@@ -73,10 +76,7 @@ class UserInfoService extends FirestoreService<UserInfo> {
       uid: document.uid,
       role: document.role,
       totalPoints: document.totalPoints,
-      name: {
-        firstName: document.firstName,
-        lastName: document.lastName,
-      },
+      name: document.name,
     });
   }
 }

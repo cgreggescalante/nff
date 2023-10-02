@@ -11,7 +11,7 @@ const Home = () => {
         {user ? (
           <>
             <h3>Current User</h3>
-            {user.uid} {user.firstName} {user.lastName} {user.role}
+            {user.uid} {user.name.firstName} {user.name.lastName} {user.role}
           </>
         ) : (
           <h3>No Current User</h3>

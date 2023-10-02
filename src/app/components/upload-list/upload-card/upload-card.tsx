@@ -8,9 +8,10 @@ export interface UploadCardProps {
 export const UploadCard = ({ upload }: UploadCardProps) => (
   <Card>
     <Card.Body>
-      {upload.user && upload.user.firstName ? (
+      {upload.user && upload.user.name.firstName ? (
         <span>
-          {upload.user.firstName} {upload.user.lastName} {upload.user.uid}
+          {upload.user.name.firstName} {upload.user.name.lastName}{' '}
+          {upload.user.uid}
           {'  '}
         </span>
       ) : (
