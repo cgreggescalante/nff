@@ -19,8 +19,19 @@ class UserInfoService extends FirestoreService<UserInfo> {
     super(collection(db, 'users'), UserInfoConverter);
   }
 
-  getReference = (uid: string): DocumentReference =>
-    doc(super.collectionReference, uid);
+  getReference(uid: string): DocumentReference {
+    return doc(super.collectionReference, uid);
+  }
+
+  async createFromId(id: string): Promise<UserInfo> {
+    try {
+      const userInfo = new UserInfo('', '', id, '', 0);
+
+      return super.create(userInfo);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
 
   override delete = async (id: string): Promise<void> => {
     try {

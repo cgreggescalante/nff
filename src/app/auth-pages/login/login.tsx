@@ -3,7 +3,7 @@ import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Button, FloatingLabel, Form } from 'react-bootstrap';
-import { UserInfoService } from '@shared-data';
+import { UserInfo, UserInfoService } from '@shared-data';
 import { useUser } from '../../../userContext';
 import { auth } from '../../../firebase';
 
@@ -30,14 +30,18 @@ export const Login = () => {
       const userInfo = await UserInfoService.read(user.uid);
 
       if (userInfo == null) {
-        UserInfoService.create(user.uid).then((userInfo) => {
-          if (userInfo) {
+        UserInfoService.createFromId(user.uid)
+          .then((userInfo) => {
             login(userInfo);
+            // TODO: Add message to input name
             navigate('/profile');
-          } else {
-            setError('Error while creating user');
-          }
-        });
+          })
+          .catch((error) => {
+            console.error('Error while creating user document: ', error);
+            setError(
+              'No user information found, could not create new document.'
+            );
+          });
       } else {
         login(userInfo);
         navigate('/');

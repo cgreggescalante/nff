@@ -15,7 +15,7 @@ export abstract class FirestoreService<T> {
     protected converter: FirestoreDataConverter<T>
   ) {}
 
-  public create = async (document: T): Promise<T> => {
+  public async create(document: T): Promise<T> {
     try {
       const docRef = await addDoc(
         this.collectionReference.withConverter(this.converter),
@@ -25,9 +25,9 @@ export abstract class FirestoreService<T> {
     } catch (error) {
       return Promise.reject(error);
     }
-  };
+  }
 
-  public read = async (documentId: string): Promise<T | null> => {
+  public async read(documentId: string): Promise<T | null> {
     try {
       const docRef = doc(
         this.collectionReference.withConverter(this.converter),
@@ -43,12 +43,9 @@ export abstract class FirestoreService<T> {
     } catch (error) {
       return Promise.reject(error);
     }
-  };
+  }
 
-  public update = async (
-    documentId: string,
-    document: Partial<T>
-  ): Promise<void> => {
+  public async update(documentId: string, document: Partial<T>): Promise<void> {
     try {
       const docRef = doc(
         this.collectionReference.withConverter(this.converter),
@@ -58,9 +55,9 @@ export abstract class FirestoreService<T> {
     } catch (error) {
       return Promise.reject(error);
     }
-  };
+  }
 
-  public delete = async (documentId: string): Promise<void> => {
+  public async delete(documentId: string): Promise<void> {
     try {
       const docRef = doc(
         this.collectionReference.withConverter(this.converter),
@@ -70,9 +67,9 @@ export abstract class FirestoreService<T> {
     } catch (error) {
       return Promise.reject(error);
     }
-  };
+  }
 
-  public list = async (): Promise<T[]> => {
+  public async list(): Promise<T[]> {
     try {
       const querySnapshot = await getDocs(
         this.collectionReference.withConverter(this.converter)
@@ -81,5 +78,5 @@ export abstract class FirestoreService<T> {
     } catch (error) {
       return Promise.reject(error);
     }
-  };
+  }
 }

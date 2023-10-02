@@ -20,16 +20,18 @@ export const Signup = () => {
 
     createUserWithEmailAndPassword(auth, email, password)
       .then((credentials) => {
-        UserInfoService.create(credentials.user.uid).then((userInfo) => {
-          if (userInfo) {
+        UserInfoService.createFromId(credentials.user.uid)
+          .then((userInfo) => {
             login(userInfo);
             navigate('/profile');
-          } else {
-            setError('Error while creating user');
-          }
-        });
+          })
+          .catch((error) => {
+            console.error('Error while creating user document: ', error);
+            setError('Could not create user document');
+          });
       })
       .catch((err) => {
+        console.error('Error while creating user: ', err);
         setError(err.message);
       });
   };
