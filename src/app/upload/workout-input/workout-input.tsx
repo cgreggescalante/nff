@@ -24,7 +24,7 @@ export const WorkoutInput: React.FC<WorkoutProps> = ({
   handleDelete,
 }) => {
   return (
-    <>
+    <div>
       <button onClick={() => handleDelete(index)}>X</button>
       <label htmlFor={`workoutType${index}`}>Workout Type:</label>
       <select
@@ -53,6 +53,6 @@ export const WorkoutInput: React.FC<WorkoutProps> = ({
           handleDurationChange(index, parseInt(e.target.value, 10))
         }
       />
-    </>
+    </div>
   );
 };

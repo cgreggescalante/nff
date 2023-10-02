@@ -40,12 +40,13 @@ export const WorkoutTypes: WorkoutTypesCollection = {
     units: 'Miles',
     pointsFunction: (d) => d * 4,
   },
-  BAD_WORKOUT_TYPE: {
-    name: 'INVALID',
-    pastTense: 'INVALID',
-    units: 'INVALID',
-    pointsFunction: () => -1,
-  },
+};
+
+const BAD_WORKOUT_TYPE: WorkoutType = {
+  name: 'INVALID',
+  pastTense: 'INVALID',
+  units: 'INVALID',
+  pointsFunction: () => -1,
 };
 
 export const WorkoutTypeFromName = (name: string): WorkoutType => {
@@ -59,6 +60,6 @@ export const WorkoutTypeFromName = (name: string): WorkoutType => {
     case 'Swim':
       return WorkoutTypes.SWIM;
     default:
-      return WorkoutTypes.BAD_WORKOUT_TYPE;
+      return BAD_WORKOUT_TYPE;
   }
 };
