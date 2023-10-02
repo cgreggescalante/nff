@@ -8,7 +8,6 @@ export class Upload {
   description: string;
   date: Date;
   workouts: Workout[];
-  resolved: boolean;
 
   constructor(
     userRef: DocumentReference,
@@ -20,7 +19,5 @@ export class Upload {
     this.description = description;
     this.date = date;
     this.workouts = workouts;
-
-    this.resolved = false;
   }
 }
