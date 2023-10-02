@@ -7,13 +7,27 @@ import {
   deleteDoc,
   getDocs,
 } from '@firebase/firestore';
-import { FirestoreDataConverter } from 'firebase/firestore';
+import { FirestoreDataConverter, setDoc } from 'firebase/firestore';
 
 export abstract class FirestoreService<T> {
   protected constructor(
     protected collectionReference: CollectionReference,
     protected converter: FirestoreDataConverter<T>
   ) {}
+
+  public async createWithId(id: string, document: T): Promise<T> {
+    try {
+      const docRef = doc(
+        this.collectionReference.withConverter(this.converter),
+        id
+      );
+      return setDoc(docRef, document)
+        .then((_) => document)
+        .catch((error) => error);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
 
   public async create(document: T): Promise<T> {
     try {
@@ -45,12 +59,12 @@ export abstract class FirestoreService<T> {
     }
   }
 
-  public async update(documentId: string, document: Partial<T>): Promise<void> {
+  public async update(
+    documentId: string,
+    document: Partial<any & T>
+  ): Promise<void> {
     try {
-      const docRef = doc(
-        this.collectionReference.withConverter(this.converter),
-        documentId
-      );
+      const docRef = doc(this.collectionReference, documentId);
       await updateDoc(docRef, document);
     } catch (error) {
       return Promise.reject(error);

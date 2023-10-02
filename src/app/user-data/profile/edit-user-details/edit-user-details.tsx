@@ -7,7 +7,7 @@ import TimedAlert from '../../../components/timed-alert/timed-alert';
 /* eslint-disable-next-line */
 export interface EditUserDetailsProps {
   userInfo: UserInfo;
-  updateUser: (user: UserInfo) => Promise<boolean>;
+  updateUser: (user: UserInfo) => Promise<void>;
 }
 
 export const EditUserDetails = ({
@@ -37,12 +37,15 @@ export const EditUserDetails = ({
       userInfo.totalPoints
     );
 
-    updateUser(newUser).then((success) => {
-      if (success) {
+    updateUser(newUser)
+      .then((_) => {
         setShowAlert(true);
         setEdited(false);
-      } else setError('Failed to update user details');
-    });
+      })
+      .catch((error) => {
+        console.error('Error while updating user details:', error);
+        setError('Failed to update user details');
+      });
   };
 
   return (

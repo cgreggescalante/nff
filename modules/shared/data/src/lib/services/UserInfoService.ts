@@ -27,7 +27,7 @@ class UserInfoService extends FirestoreService<UserInfo> {
     try {
       const userInfo = new UserInfo('', '', id, '', 0);
 
-      return this.create(userInfo);
+      return this.createWithId(id, userInfo);
     } catch (error) {
       return Promise.reject(error);
     }
@@ -64,6 +64,21 @@ class UserInfoService extends FirestoreService<UserInfo> {
       return Promise.reject(error);
     }
   };
+
+  override async update(
+    documentId: string,
+    document: Partial<UserInfo>
+  ): Promise<void> {
+    return super.update(documentId, {
+      uid: document.uid,
+      role: document.role,
+      totalPoints: document.totalPoints,
+      name: {
+        firstName: document.firstName,
+        lastName: document.lastName,
+      },
+    });
+  }
 }
 
 export default new UserInfoService();

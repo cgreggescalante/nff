@@ -17,10 +17,9 @@ const UserProvider = ({ children }: { children: ReactElement }) => {
   }, []);
 
   const updateUser = async (user: UserInfo) => {
-    return UserInfoService.update(user.uid, user).then((success) => {
-      if (success) login(user);
-      return success;
-    });
+    return UserInfoService.update(user.uid, user)
+      .then((_) => login(user))
+      .catch((error) => Promise.reject(error));
   };
 
   const login = (user: UserInfo) => {
