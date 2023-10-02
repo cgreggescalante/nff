@@ -33,7 +33,8 @@ export const EditUserDetails = ({
       firstName,
       lastName,
       userInfo.uid,
-      userInfo.role
+      userInfo.role,
+      userInfo.totalPoints
     );
 
     updateUser(newUser).then((success) => {
