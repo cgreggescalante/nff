@@ -7,12 +7,7 @@ import {
   deleteDoc,
   getDocs,
 } from '@firebase/firestore';
-import {
-  FirestoreDataConverter,
-  PartialWithFieldValue,
-  WithFieldValue,
-  setDoc,
-} from 'firebase/firestore';
+import { FirestoreDataConverter, setDoc } from 'firebase/firestore';
 
 export abstract class FirestoreService<T> {
   protected constructor(

@@ -6,8 +6,10 @@ export * from './lib/WorkoutType';
 
 // Models
 export type { UserInfo } from './lib/models/UserInfo';
-export { Upload } from './lib/models/Upload';
-export { Workout } from './lib/models/Workout';
+export type { Upload } from './lib/models/Upload';
+export type { Workout } from './lib/models/Workout';
+
+export { DefaultWorkout } from './lib/models/Workout';
 
 // Converters
 export { UploadConverter };

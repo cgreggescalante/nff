@@ -9,11 +9,11 @@ import {
 } from 'firebase/firestore';
 import { db } from '../firebase';
 import UploadConverter from '../converters/UploadConverter';
-import { Upload } from '../models/Upload';
+import type Upload from '../models/Upload';
 import { UserInfoConverter } from '../converters/UserInfoConverter';
-import { Workout } from '../models/Workout';
+import type Workout from '../models/Workout';
 import UserInfoService from './UserInfoService';
-import UserInfo from '../models/UserInfo';
+import type UserInfo from '../models/UserInfo';
 import { FirestoreService } from './FirestoreService';
 
 class UploadService extends FirestoreService<Upload> {
@@ -78,7 +78,12 @@ class UploadService extends FirestoreService<Upload> {
         return workout;
       });
 
-      const upload = new Upload(userRef, description, new Date(), workouts);
+      const upload: Upload = {
+        userRef,
+        description,
+        date: new Date(),
+        workouts,
+      };
 
       return super.create(upload);
     } catch (error) {

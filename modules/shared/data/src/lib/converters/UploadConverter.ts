@@ -1,6 +1,6 @@
 import { FirestoreDataConverter } from 'firebase/firestore';
 import { WorkoutTypeFromName } from '../WorkoutType';
-import { Upload } from '../models/Upload';
+import type Upload from '../models/Upload';
 
 const UploadConverter: FirestoreDataConverter<Upload> = {
   toFirestore: (upload: Upload) => ({
@@ -18,12 +18,12 @@ const UploadConverter: FirestoreDataConverter<Upload> = {
       })
     );
 
-    return new Upload(
-      data['user'],
-      data['description'],
-      new Date(data['date']['seconds'] * 1000),
-      workouts
-    );
+    return {
+      userRef: data['user'],
+      description: data['description'],
+      date: new Date(data['date']['seconds'] * 1000),
+      workouts,
+    };
   },
 };
 

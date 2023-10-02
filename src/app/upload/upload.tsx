@@ -1,12 +1,13 @@
 import React, { ChangeEvent, useState } from 'react';
 import { WorkoutInput } from './workout-input/workout-input';
-import { Upload, UploadService, Workout, WorkoutType } from '@shared-data';
+import type { Workout } from '@shared-data';
+import { DefaultWorkout, UploadService, WorkoutType } from '@shared-data';
 import { auth } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
 
 const UploadView: React.FC = () => {
   const [description, setDescription] = useState<string>('');
-  const [workouts, setWorkouts] = useState<Workout[]>([Workout.default()]);
+  const [workouts, setWorkouts] = useState<Workout[]>([DefaultWorkout()]);
 
   const [error, setError] = useState('');
 
@@ -28,7 +29,7 @@ const UploadView: React.FC = () => {
   const deleteWorkout = (index: number) =>
     setWorkouts([...workouts.slice(0, index), ...workouts.slice(index + 1)]);
 
-  const addWorkout = () => setWorkouts([...workouts, Workout.default()]);
+  const addWorkout = () => setWorkouts([...workouts, DefaultWorkout()]);
 
   const handleSubmit = async () => {
     const validWorkouts = workouts.filter((w) => w.duration > 0);

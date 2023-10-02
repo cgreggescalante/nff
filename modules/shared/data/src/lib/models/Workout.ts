@@ -1,15 +1,15 @@
 import { WorkoutType } from '../WorkoutType';
 
-export class Workout {
+export interface Workout {
   workoutType: WorkoutType;
   duration: number;
   points: number;
-
-  constructor(workoutType: WorkoutType, duration: number, points: number) {
-    this.workoutType = workoutType;
-    this.duration = duration;
-    this.points = points;
-  }
-
-  static default = () => new Workout(WorkoutType.RUN, 0, 0);
 }
+
+export const DefaultWorkout = () => ({
+  workoutType: WorkoutType.RUN,
+  duration: 0,
+  points: 0,
+});
+
+export default Workout;
