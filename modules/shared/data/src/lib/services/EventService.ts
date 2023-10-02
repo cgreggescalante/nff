@@ -1,7 +1,7 @@
 import { FirestoreService } from './FirestoreService';
 import { db } from '../firebase';
 import { collection } from 'firebase/firestore';
-import { Event } from '../models/Event';
+import type Event from '../models/Event';
 import { EventConverter } from '../converters/EventConverter';
 
 class EventService extends FirestoreService<Event> {

@@ -1,52 +1,64 @@
-export class WorkoutType {
+export interface WorkoutType {
   name: string;
   pastTense: string;
-
   units: string;
   pointsFunction: (duration: number) => number;
-
-  constructor(
-    name: string,
-    pastTense: string,
-    units: string,
-    pointsFunction: (duration: number) => number
-  ) {
-    this.name = name;
-    this.pastTense = pastTense;
-    this.units = units;
-    this.pointsFunction = pointsFunction;
-  }
-
-  static RUN = new WorkoutType('Run', 'Ran', 'Miles', (d) => d);
-  static BIKE = new WorkoutType('Bike', 'Biked', 'Miles', (d) => d / 3);
-  static SKI = new WorkoutType('Ski', 'Skied', 'Miles', (d) => d / 2);
-  static SWIM = new WorkoutType('Swim', 'Swam', 'Miles', (d) => d * 4);
-  static BAD_WORKOUT_TYPE = new WorkoutType(
-    'INVALID',
-    'INVALID',
-    'INVALID',
-    () => -1
-  );
 }
 
-export const WorkoutTypes = [
-  WorkoutType.RUN,
-  WorkoutType.BIKE,
-  WorkoutType.SKI,
-  WorkoutType.SWIM,
-];
+export default WorkoutType;
+
+type WorkoutTypesCollection = {
+  RUN: WorkoutType;
+  BIKE: WorkoutType;
+  SKI: WorkoutType;
+  SWIM: WorkoutType;
+  BAD_WORKOUT_TYPE: WorkoutType;
+};
+
+export const WorkoutTypes: WorkoutTypesCollection = {
+  RUN: {
+    name: 'Run',
+    pastTense: 'Ran',
+    units: 'Miles',
+    pointsFunction: (d) => d,
+  },
+  BIKE: {
+    name: 'Bike',
+    pastTense: 'Biked',
+    units: 'Miles',
+    pointsFunction: (d) => d / 3,
+  },
+  SKI: {
+    name: 'Ski',
+    pastTense: 'Skied',
+    units: 'Miles',
+    pointsFunction: (d) => d / 2,
+  },
+  SWIM: {
+    name: 'Swim',
+    pastTense: 'Swam',
+    units: 'Miles',
+    pointsFunction: (d) => d * 4,
+  },
+  BAD_WORKOUT_TYPE: {
+    name: 'INVALID',
+    pastTense: 'INVALID',
+    units: 'INVALID',
+    pointsFunction: () => -1,
+  },
+};
 
 export const WorkoutTypeFromName = (name: string): WorkoutType => {
   switch (name) {
     case 'Run':
-      return WorkoutType.RUN;
+      return WorkoutTypes.RUN;
     case 'Bike':
-      return WorkoutType.BIKE;
+      return WorkoutTypes.BIKE;
     case 'Ski':
-      return WorkoutType.SKI;
+      return WorkoutTypes.SKI;
     case 'Swim':
-      return WorkoutType.SWIM;
+      return WorkoutTypes.SWIM;
     default:
-      return WorkoutType.BAD_WORKOUT_TYPE;
+      return WorkoutTypes.BAD_WORKOUT_TYPE;
   }
 };

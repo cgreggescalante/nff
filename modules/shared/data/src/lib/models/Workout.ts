@@ -1,4 +1,4 @@
-import { WorkoutType } from '../WorkoutType';
+import { WorkoutType, WorkoutTypes } from '../WorkoutType';
 
 export interface Workout {
   workoutType: WorkoutType;
@@ -7,7 +7,7 @@ export interface Workout {
 }
 
 export const DefaultWorkout = () => ({
-  workoutType: WorkoutType.RUN,
+  workoutType: WorkoutTypes.RUN,
   duration: 0,
   points: 0,
 });

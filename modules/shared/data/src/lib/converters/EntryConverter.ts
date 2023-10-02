@@ -1,5 +1,5 @@
 import { FirestoreDataConverter } from 'firebase/firestore';
-import { Entry, EntryData } from '../models/Entry';
+import type { Entry, EntryData } from '../models/Entry';
 import { WorkoutType, WorkoutTypes } from '../WorkoutType';
 
 export const EntryConverter: FirestoreDataConverter<Entry> = {
@@ -25,6 +25,12 @@ export const EntryConverter: FirestoreDataConverter<Entry> = {
       ])
     );
 
-    return new Entry(snapshot.id, data.userRef, data.eventRef, points, goals);
+    return {
+      uid: snapshot.id,
+      userRef: data.userRef,
+      eventRef: data.eventRef,
+      points,
+      goals,
+    };
   },
 };

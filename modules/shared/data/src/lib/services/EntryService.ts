@@ -1,5 +1,5 @@
 import { FirestoreService } from './FirestoreService';
-import { Entry } from '../models/Entry';
+import type Entry from '../models/Entry';
 import { EntryConverter } from '../converters/EntryConverter';
 import { db } from '../firebase';
 import { collection } from 'firebase/firestore';
