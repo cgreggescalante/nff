@@ -12,7 +12,7 @@ export interface EventData {
 }
 
 export interface Event {
-  uid: string;
+  uid?: string;
   name: string;
   startDate: Date;
   endDate: Date;

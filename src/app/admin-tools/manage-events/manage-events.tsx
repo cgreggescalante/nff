@@ -14,11 +14,11 @@ export function ManageEvents() {
     EventService.list().then((events) => setEvents(events));
   }, []);
 
-  const deleteEvent = (event: Event) => {
-    EventService.delete(event.uid)
+  const deleteEvent = (uid: string) => {
+    EventService.delete(uid)
       .then(() => {
         console.log('Deleted event');
-        setEvents(events.filter((e) => e.uid !== event.uid));
+        setEvents(events.filter((e) => e.uid !== uid));
       })
       .catch((error) => {
         console.error('Error while deleting Event:', error);
@@ -42,7 +42,7 @@ export function ManageEvents() {
               key={index}
               event={event}
               index={index}
-              onDelete={() => deleteEvent(event)}
+              onDelete={() => deleteEvent(event.uid ? event.uid : '')}
             />
           ))}
           <tr>
@@ -61,7 +61,9 @@ export function ManageEvents() {
 
       {error && <p>{error}</p>}
 
-      {showCreateEvent && <CreateEvent />}
+      {showCreateEvent && (
+        <CreateEvent completed={() => setShowCreateEvent(false)} />
+      )}
     </div>
   );
 }
