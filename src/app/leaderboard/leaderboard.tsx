@@ -1,4 +1,3 @@
-import styles from './leaderboard.module.scss';
 import { useEffect, useState } from 'react';
 import { UserInfo, UserInfoService } from '@shared-data';
 import LoadingWrapper from '../components/loading-wrapper/loading-wrapper';
@@ -21,8 +20,8 @@ export const Leaderboard = () => {
   }, []);
 
   return (
-    <div className={styles['container']}>
-      <h1>Welcome to Leaderboard!</h1>
+    <div>
+      <h1>Leaderboard</h1>
 
       <LoadingWrapper loading={loading}>
         <Table>

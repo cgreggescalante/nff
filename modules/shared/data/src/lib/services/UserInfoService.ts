@@ -64,7 +64,7 @@ class UserInfoService extends FirestoreService<UserInfo> {
       const snapshot = await getDocs(
         query(
           this.collectionReference,
-          orderBy('points.total', 'desc'),
+          orderBy('totalPoints', 'desc'),
           limit(count)
         )
       );
