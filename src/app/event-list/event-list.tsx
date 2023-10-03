@@ -4,10 +4,7 @@ import { EventService } from '@shared-data';
 import EventCard from './event-card/event-card';
 import LoadingWrapper from '../components/loading-wrapper/loading-wrapper';
 
-// eslint-disable-next-line
-export interface EventListProps {}
-
-export function EventList(props: EventListProps) {
+export const EventList = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -25,7 +22,7 @@ export function EventList(props: EventListProps) {
 
   return (
     <div>
-      <h1>Welcome to EventList!</h1>
+      <h1>Events</h1>
 
       <LoadingWrapper loading={loading}>
         {events.map((event, index) => (
@@ -34,6 +31,6 @@ export function EventList(props: EventListProps) {
       </LoadingWrapper>
     </div>
   );
-}
+};
 
 export default EventList;
