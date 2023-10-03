@@ -15,6 +15,7 @@ import Profile from './user-data/profile/profile';
 import Footer from './components/footer/footer';
 import Leaderboard from './leaderboard/leaderboard';
 import EventList from './event-list/event-list';
+import EventDetail from './event-pages/event-detail/event-detail';
 
 export const App = () => (
   <div className={styles['app']}>
@@ -30,6 +31,7 @@ export const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/events" element={<EventList />} />
+          <Route path="/events/:eventId" element={<EventDetail />} />
 
           <Route
             path="/upload"
