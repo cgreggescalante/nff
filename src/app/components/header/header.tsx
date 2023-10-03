@@ -26,14 +26,11 @@ export const Header = () => {
 
         <Navbar.Collapse>
           <Nav className="mr-auto">
-            <Nav.Link as={Link} to="/">
-              Home
+            <Nav.Link as={Link} to="/events">
+              Events
             </Nav.Link>
-            <Nav.Link as={Link} to="/about">
-              About
-            </Nav.Link>
-            <Nav.Link as={Link} to="/help">
-              Help
+            <Nav.Link as={Link} to="/leaderboard">
+              Leaderboard
             </Nav.Link>
           </Nav>
 

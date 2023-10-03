@@ -1,7 +1,5 @@
 import styles from './app.module.scss';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import About from './about/about';
-import Help from './help/help';
 import Home from './home/home';
 import Upload from './upload/upload';
 import AdminTools from './admin-tools/admin-tools';
@@ -25,8 +23,6 @@ export const App = () => (
       <Container className={styles['content']}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/help" element={<Help />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
