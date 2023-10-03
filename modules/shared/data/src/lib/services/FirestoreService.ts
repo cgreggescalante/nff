@@ -9,6 +9,8 @@ import {
 } from '@firebase/firestore';
 import { FirestoreDataConverter, setDoc } from 'firebase/firestore';
 
+// TODO: Pass queries to list method for easy expansion
+// TODO: Separate functions by Service, no Services touching other collections
 export abstract class FirestoreService<T> {
   protected constructor(
     protected collectionReference: CollectionReference,
