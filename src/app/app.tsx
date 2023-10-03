@@ -14,6 +14,7 @@ import Login from './auth-pages/login/login';
 import Profile from './user-data/profile/profile';
 import Footer from './components/footer/footer';
 import Leaderboard from './leaderboard/leaderboard';
+import EventList from './event-list/event-list';
 
 export const App = () => (
   <div className={styles['app']}>
@@ -28,6 +29,7 @@ export const App = () => (
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/events" element={<EventList />} />
 
           <Route
             path="/upload"
