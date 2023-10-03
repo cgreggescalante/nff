@@ -2,6 +2,7 @@ import { FirestoreService } from './FirestoreService';
 import { db } from '../firebase';
 import {
   arrayRemove,
+  arrayUnion,
   collection,
   deleteDoc,
   doc,
@@ -13,15 +14,20 @@ import type Event from '../models/Event';
 import { EventConverter } from '../converters/EventConverter';
 import UserInfoService from './UserInfoService';
 import { updateDoc } from '@firebase/firestore';
+import UserInfo from '../models/UserInfo';
 
 class EventService extends FirestoreService<Event> {
   public constructor() {
     super(collection(db, 'events'), EventConverter);
   }
 
+  getReference(uid: string) {
+    return doc(this.collectionReference, uid);
+  }
+
   override async delete(documentId: string): Promise<void> {
     try {
-      const eventRef = doc(this.collectionReference, documentId);
+      const eventRef = this.getReference(documentId);
       const event = await super.read(documentId);
 
       if (!event) throw new Error(`No event with ID: ${documentId}`);
@@ -42,6 +48,24 @@ class EventService extends FirestoreService<Event> {
       }
 
       return super.delete(documentId);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async addUser(event: Event, user: UserInfo): Promise<void> {
+    try {
+      if (!event.uid)
+        throw new Error('Attempting to add UserInfo to Event with no ID');
+
+      const eventRef = this.getReference(event.uid);
+      const userRef = UserInfoService.getReference(user.uid);
+
+      await updateDoc(eventRef, {
+        registeredUsers: arrayUnion(userRef),
+      });
+
+      await UserInfoService.addEvent(userRef, eventRef);
     } catch (error) {
       return Promise.reject(error);
     }

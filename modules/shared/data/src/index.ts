@@ -22,3 +22,5 @@ export { WorkoutConverter } from './lib/converters/WorkoutConverter';
 export { UploadService };
 export { UserInfoService };
 export { EventService };
+
+export { generateTestData } from './lib/testData';

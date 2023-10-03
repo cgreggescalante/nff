@@ -6,7 +6,8 @@ import ManageUsers from './manage-users/manage-users';
 import ManageEvents from './manage-events/manage-events';
 import LoadingWrapper from '../components/loading-wrapper/loading-wrapper';
 import CollapsibleContainer from './collapsible-container/collapsible-container';
-import { Accordion } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
+import { generateTestData } from '@shared-data';
 
 export const AdminTools = () => {
   const { user, loading } = useUser();
@@ -33,6 +34,8 @@ export const AdminTools = () => {
           <ManageEvents />
         </CollapsibleContainer>
       </LoadingWrapper>
+
+      <Button onClick={() => generateTestData()}>Generate Test Data</Button>
     </div>
   );
 };

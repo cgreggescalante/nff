@@ -1,4 +1,5 @@
 import {
+  arrayUnion,
   collection,
   deleteDoc,
   doc,
@@ -13,6 +14,12 @@ import { UserInfoConverter } from '../converters/UserInfoConverter';
 import type UserInfo from '../models/UserInfo';
 import { auth, db } from '../firebase';
 import { FirestoreService } from './FirestoreService';
+import Event from '../models/Event';
+import Entry from '../models/Entry';
+import EventService from './EventService';
+import WorkoutType from '../WorkoutType';
+import EntryService from './EntryService';
+import { updateDoc } from '@firebase/firestore';
 
 class UserInfoService extends FirestoreService<UserInfo> {
   public constructor() {
@@ -85,6 +92,21 @@ class UserInfoService extends FirestoreService<UserInfo> {
       totalPoints: document.totalPoints,
       name: document.name,
     });
+  }
+
+  async addEvent(
+    userRef: DocumentReference,
+    eventRef: DocumentReference
+  ): Promise<void> {
+    try {
+      const entryRef = await EntryService.createEmpty(userRef, eventRef);
+
+      return updateDoc(userRef, {
+        registeredEvents: arrayUnion(entryRef),
+      });
+    } catch (error) {
+      return Promise.reject(error);
+    }
   }
 }
 

@@ -91,6 +91,21 @@ class UploadService extends FirestoreService<Upload> {
       return Promise.reject(error);
     }
   };
+
+  createTest = async (user: UserInfo, upload: Upload): Promise<Upload> => {
+    try {
+      const u = {
+        userRef: UserInfoService.getReference(user.uid),
+        description: upload.description,
+        date: upload.date,
+        workouts: upload.workouts,
+      };
+
+      return super.create(u);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
 }
 
 export default new UploadService();
