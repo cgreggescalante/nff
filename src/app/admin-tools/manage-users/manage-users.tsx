@@ -2,6 +2,10 @@ import { Button, Table } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { UserInfo, UserInfoService } from '@shared-data';
 import { ConfirmDelete } from '../confirm-delete/confirm-delete';
+import { functions } from '../../../firebase';
+import { httpsCallable } from 'firebase/functions';
+
+const deleteUserFunction = httpsCallable(functions, 'deleteUser');
 
 export const ManageUsers = () => {
   const [users, setUsers] = useState<UserInfo[]>([]);
@@ -12,8 +16,8 @@ export const ManageUsers = () => {
     UserInfoService.list().then((users) => setUsers(users));
   }, []);
 
-  const deleteUser = async (user: UserInfo) => {
-    UserInfoService.delete(user.uid)
+  const deleteUser = async (user: UserInfo) =>
+    deleteUserFunction({ userId: user.uid })
       .then(() => {
         console.log('Deleted user');
         setUsers(users.filter((u) => u.uid !== user.uid));
@@ -22,7 +26,6 @@ export const ManageUsers = () => {
         console.error('Error while deleting user:', error);
         setError(error.message);
       });
-  };
 
   return (
     <div>

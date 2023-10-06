@@ -6,7 +6,11 @@
     "outDir": "lib",
     "sourceMap": true,
     "strict": true,
-    "target": "es2017"
+    "target": "es2017",
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@shared-data": ["../modules/shared/data/src/index.ts"]
+    }
   },
   "compileOnSave": true,
   "include": [
