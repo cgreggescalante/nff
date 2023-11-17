@@ -1,6 +1,5 @@
 import {
   collection,
-  doc,
   getDoc,
   getDocs,
   limit,
@@ -22,6 +21,11 @@ class UploadService extends FirestoreService<Upload> {
     super(collection(db, 'uploads'), UploadConverter);
   }
 
+  /**
+   * Returns the most recent uploads.
+   * @param uid
+   * @param count
+   */
   async getRecent({
     uid,
     count,
@@ -38,7 +42,7 @@ class UploadService extends FirestoreService<Upload> {
 
       let user: UserInfo | null = null;
 
-      if (uid != undefined) {
+      if (uid !== undefined) {
         const userRef = UserInfoService.getReference(uid);
         user = await UserInfoService.read(uid);
         uploadQuery = query(uploadQuery, where('user', '==', userRef));
@@ -68,6 +72,12 @@ class UploadService extends FirestoreService<Upload> {
     }
   }
 
+  /**
+   * Creates an upload from the user, description, and workouts.
+   * @param user
+   * @param description
+   * @param workouts
+   */
   createFromComponents = async (
     user: UserInfo,
     description: string,
@@ -92,6 +102,12 @@ class UploadService extends FirestoreService<Upload> {
     }
   };
 
+  /**
+   * Creates an upload from the user and upload.
+   * ONLY USED FOR TESTING.
+   * @param user
+   * @param upload
+   */
   createTest = async (user: UserInfo, upload: Upload): Promise<Upload> => {
     try {
       const u = {

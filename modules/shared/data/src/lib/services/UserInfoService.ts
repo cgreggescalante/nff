@@ -14,20 +14,12 @@ import { UserInfoConverter } from '../converters/UserInfoConverter';
 import type UserInfo from '../models/UserInfo';
 import { auth, db } from '../firebase';
 import { FirestoreService } from './FirestoreService';
-import Event from '../models/Event';
-import Entry from '../models/Entry';
-import EventService from './EventService';
-import WorkoutType from '../WorkoutType';
 import EntryService from './EntryService';
 import { updateDoc } from '@firebase/firestore';
 
 class UserInfoService extends FirestoreService<UserInfo> {
   public constructor() {
     super(collection(db, 'users'), UserInfoConverter);
-  }
-
-  getReference(uid: string): DocumentReference {
-    return doc(this.collectionReference, uid);
   }
 
   async createFromId(id: string): Promise<UserInfo> {
@@ -45,6 +37,7 @@ class UserInfoService extends FirestoreService<UserInfo> {
   }
 
   override delete = async (id: string): Promise<void> => {
+    console.log(`Attempting to delete user ${id}`);
     try {
       const user = auth.currentUser;
 
@@ -66,6 +59,10 @@ class UserInfoService extends FirestoreService<UserInfo> {
     }
   };
 
+  /**
+   * Returns the top users by total points.
+   * @param count
+   */
   getUsersByTotalPoints = async (count = 25): Promise<UserInfo[]> => {
     try {
       const snapshot = await getDocs(
@@ -94,6 +91,11 @@ class UserInfoService extends FirestoreService<UserInfo> {
     });
   }
 
+  /**
+   * Adds an event to a user's registered events.
+   * @param userRef
+   * @param eventRef
+   */
   async addEvent(
     userRef: DocumentReference,
     eventRef: DocumentReference

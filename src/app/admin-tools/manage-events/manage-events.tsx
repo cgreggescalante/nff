@@ -4,6 +4,10 @@ import { Button, Table } from 'react-bootstrap';
 import { EventService } from '@shared-data';
 import { ConfirmDelete } from '../confirm-delete/confirm-delete';
 import CreateEvent from './create-event/create-event';
+import { httpsCallable } from 'firebase/functions';
+import { functions } from '../../../firebase';
+
+const deleteEventFunction = httpsCallable(functions, 'deleteEvent');
 
 export function ManageEvents() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -15,7 +19,7 @@ export function ManageEvents() {
   }, []);
 
   const deleteEvent = (uid: string) => {
-    EventService.delete(uid)
+    deleteEventFunction({ eventId: uid })
       .then(() => {
         console.log('Deleted event');
         setEvents(events.filter((e) => e.uid !== uid));

@@ -5,7 +5,6 @@ import {
   arrayUnion,
   collection,
   deleteDoc,
-  doc,
   getDocs,
   query,
   where,
@@ -19,10 +18,6 @@ import UserInfo from '../models/UserInfo';
 class EventService extends FirestoreService<Event> {
   public constructor() {
     super(collection(db, 'events'), EventConverter);
-  }
-
-  getReference(uid: string) {
-    return doc(this.collectionReference, uid);
   }
 
   override async delete(documentId: string): Promise<void> {

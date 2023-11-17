@@ -34,9 +34,11 @@ const UploadView: React.FC = () => {
   const addWorkout = () => setWorkouts([...workouts, DefaultWorkout()]);
 
   const handleSubmit = () => {
+    console.log('submitting', auth.currentUser, user);
     const validWorkouts = workouts.filter((w) => w.duration > 0);
 
     if (auth.currentUser && user) {
+      console.log('creating upload');
       UploadService.createFromComponents(user, description, validWorkouts)
         .then((_) => navigate('/')) // TODO: Add message
         .catch((error) => {

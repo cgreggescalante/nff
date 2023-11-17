@@ -7,9 +7,12 @@ import {
   deleteDoc,
   getDocs,
 } from '@firebase/firestore';
-import { FirestoreDataConverter, setDoc } from 'firebase/firestore';
+import {
+  DocumentReference,
+  FirestoreDataConverter,
+  setDoc,
+} from 'firebase/firestore';
 
-// TODO: Pass queries to list method for easy expansion
 // TODO: Separate functions by Service, no Services touching other collections
 export abstract class FirestoreService<T> {
   protected constructor(
@@ -17,6 +20,22 @@ export abstract class FirestoreService<T> {
     protected converter: FirestoreDataConverter<T>
   ) {}
 
+  /**
+   * Returns the reference to a document by ID.
+   */
+  public getReference(documentId: string): DocumentReference<T> {
+    return doc(
+      this.collectionReference.withConverter(this.converter),
+      documentId
+    );
+  }
+
+  /**
+   * Creates a document with a custom ID
+   * Returns the document created.
+   * @param id
+   * @param document
+   */
   public async createWithId(id: string, document: T): Promise<T> {
     try {
       const docRef = doc(
@@ -31,6 +50,11 @@ export abstract class FirestoreService<T> {
     }
   }
 
+  /**
+   * Creates a document with a generated ID
+   * Returns the document created.
+   * @param document
+   */
   public async create(document: T): Promise<T> {
     try {
       const docRef = await addDoc(
@@ -43,6 +67,11 @@ export abstract class FirestoreService<T> {
     }
   }
 
+  /**
+   * Reads a document by ID.
+   * Returns the document if it exists, otherwise returns null.
+   * @param documentId
+   */
   public async read(documentId: string): Promise<T | null> {
     try {
       const docRef = doc(
@@ -61,6 +90,12 @@ export abstract class FirestoreService<T> {
     }
   }
 
+  /**
+   * Updates a document by ID.
+   * Returns void or an error if the document does not exist.
+   * @param documentId
+   * @param document
+   */
   public async update(
     documentId: string,
     document: Partial<any & T>
@@ -73,6 +108,11 @@ export abstract class FirestoreService<T> {
     }
   }
 
+  /**
+   * Deletes a document by ID.
+   * Returns void or an error if the document does not exist.
+   * @param documentId
+   */
   public async delete(documentId: string): Promise<void> {
     try {
       const docRef = doc(this.collectionReference, documentId);
@@ -82,6 +122,10 @@ export abstract class FirestoreService<T> {
     }
   }
 
+  /**
+   * Lists all documents in a collection.
+   * TODO: Add query support
+   */
   public async list(): Promise<T[]> {
     try {
       const querySnapshot = await getDocs(

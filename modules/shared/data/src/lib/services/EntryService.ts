@@ -10,6 +10,11 @@ class EntryService extends FirestoreService<Entry> {
     super(collection(db, 'entries'), EntryConverter);
   }
 
+  /**
+   * Creates an empty entry for a user and event.
+   * @param userRef
+   * @param eventRef
+   */
   async createEmpty(
     userRef: DocumentReference,
     eventRef: DocumentReference
