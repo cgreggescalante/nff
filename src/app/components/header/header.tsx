@@ -40,6 +40,9 @@ export const Header = () => {
                 <Nav.Link as={Link} to="/user-dashboard">
                   Dashboard
                 </Nav.Link>
+                <Nav.Link as={Link} to="/upload">
+                  Upload
+                </Nav.Link>
                 <Nav.Link onClick={handleSignOut}>Sign Out</Nav.Link>
               </>
             ) : (

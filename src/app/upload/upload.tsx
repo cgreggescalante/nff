@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { WorkoutInput } from './workout-input/workout-input';
 import type { Workout } from '@shared-data';
 import { DefaultWorkout, UploadService, WorkoutType } from '@shared-data';
@@ -6,7 +6,7 @@ import { auth } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../userContext';
 
-const UploadView: React.FC = () => {
+const UploadView = () => {
   const [description, setDescription] = useState<string>('');
   const [workouts, setWorkouts] = useState<Workout[]>([DefaultWorkout()]);
 

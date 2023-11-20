@@ -3,10 +3,11 @@ import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Button, FloatingLabel, Form } from 'react-bootstrap';
-import { UserInfo, UserInfoService } from '@shared-data';
+import { UserInfoService } from '@shared-data';
 import { useUser } from '../../../userContext';
 import { auth } from '../../../firebase';
 
+// TODO: Use firestore auth pages
 export const Login = () => {
   const { login } = useUser();
   const navigate = useNavigate();
