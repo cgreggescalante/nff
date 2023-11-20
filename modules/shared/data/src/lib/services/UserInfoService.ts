@@ -22,10 +22,14 @@ class UserInfoService extends FirestoreService<UserInfo> {
     super(collection(db, 'users'), UserInfoConverter);
   }
 
-  async createFromId(id: string): Promise<UserInfo> {
+  async createFromId(
+    id: string,
+    firstName = '',
+    lastName = ''
+  ): Promise<UserInfo> {
     try {
       return this.createWithId(id, {
-        name: { firstName: '', lastName: '' },
+        name: { firstName, lastName },
         role: '',
         totalPoints: 0,
         uid: id,

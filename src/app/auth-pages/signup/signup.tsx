@@ -2,15 +2,20 @@ import styles from './signup.module.scss';
 import { ChangeEvent, useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import { Button, FloatingLabel, Form } from 'react-bootstrap';
+import { Button, FloatingLabel, Form, InputGroup } from 'react-bootstrap';
 import { UserInfoService } from '@shared-data';
 import { useUser } from '../../../userContext';
 import { auth } from '../../../firebase';
 
 export const Signup = () => {
   const { login } = useUser();
+
+  const [firstName, setFirstName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [passwordConfirm, setPasswordConfirm] = useState<string>('');
+
   const [error, setError] = useState<string | undefined>();
 
   const navigate = useNavigate();
@@ -18,12 +23,21 @@ export const Signup = () => {
   const handleSubmit = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    if (password !== passwordConfirm) {
+      setError('Passwords do not match');
+      return;
+    }
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long');
+      return;
+    }
+
     createUserWithEmailAndPassword(auth, email, password)
       .then((credentials) => {
-        UserInfoService.createFromId(credentials.user.uid)
+        UserInfoService.createFromId(credentials.user.uid, firstName, lastName)
           .then((userInfo) => {
             login(userInfo);
-            navigate('/profile');
+            navigate('/');
           })
           .catch((error) => {
             console.error('Error while creating user document: ', error);
@@ -41,7 +55,28 @@ export const Signup = () => {
       <h1>Sign Up</h1>
 
       <Form onSubmit={handleSubmit}>
-        <FloatingLabel label={'Email'} className={'mb-3'}>
+        <InputGroup className={'mb-2 mt-4'}>
+          <FloatingLabel label={'First Name'} className={'me-2'}>
+            <Form.Control
+              required
+              type={'text'}
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              placeholder={'First Name'}
+            />
+          </FloatingLabel>
+          <FloatingLabel label={'Last Name'}>
+            <Form.Control
+              required
+              type={'text'}
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              placeholder={'Last Name'}
+            />
+          </FloatingLabel>
+        </InputGroup>
+
+        <FloatingLabel label={'Email'} className={'mb-2'}>
           <Form.Control
             required
             type={'email'}
@@ -51,7 +86,7 @@ export const Signup = () => {
           />
         </FloatingLabel>
 
-        <FloatingLabel label={'Password'}>
+        <FloatingLabel label={'Password'} className={'mb-2'}>
           <Form.Control
             required
             type={'password'}
@@ -60,6 +95,17 @@ export const Signup = () => {
             placeholder={'Password'}
           />
         </FloatingLabel>
+
+        <FloatingLabel label={'Confirm Password'} className={'mb-2'}>
+          <Form.Control
+            required
+            type={'password'}
+            value={passwordConfirm}
+            onChange={(e) => setPasswordConfirm(e.target.value)}
+            placeholder={'Password'}
+          />
+        </FloatingLabel>
+
         <Button type={'submit'}>Sign Up</Button>
       </Form>
 
