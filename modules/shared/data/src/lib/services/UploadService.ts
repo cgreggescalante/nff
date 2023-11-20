@@ -1,6 +1,5 @@
 import {
   collection,
-  getDoc,
   getDocs,
   limit,
   orderBy,
@@ -10,7 +9,6 @@ import {
 import { db } from '../firebase';
 import UploadConverter from '../converters/UploadConverter';
 import type Upload from '../models/Upload';
-import { UserInfoConverter } from '../converters/UserInfoConverter';
 import type Workout from '../models/Workout';
 import UserInfoService from './UserInfoService';
 import type UserInfo from '../models/UserInfo';
@@ -50,23 +48,11 @@ class UploadService extends FirestoreService<Upload> {
 
       const snapshot = await getDocs(uploadQuery);
 
-      const uploads = snapshot.docs.map((document) => {
+      return snapshot.docs.map((document) => {
         const upload = document.data() as Upload;
-        if (user != null) upload.user = user;
+        upload.user = user != null ? user : undefined;
         return upload;
       });
-
-      if (user == null) {
-        for (const upload of uploads) {
-          if (upload.userRef != undefined) {
-            upload.user = (
-              await getDoc(upload.userRef.withConverter(UserInfoConverter))
-            ).data();
-          }
-        }
-      }
-
-      return uploads;
     } catch (error) {
       return Promise.reject(error);
     }
@@ -89,8 +75,10 @@ class UploadService extends FirestoreService<Upload> {
         return workout;
       });
 
-      const upload = {
+      const upload: Upload = {
         userRef: UserInfoService.getReference(user.uid),
+        userFirstName: user.name.firstName,
+        userLastName: user.name.lastName,
         description,
         date: new Date(),
         workouts,
@@ -110,8 +98,10 @@ class UploadService extends FirestoreService<Upload> {
    */
   createTest = async (user: UserInfo, upload: Upload): Promise<Upload> => {
     try {
-      const u = {
+      const u: Upload = {
         userRef: UserInfoService.getReference(user.uid),
+        userFirstName: user.name.firstName,
+        userLastName: user.name.lastName,
         description: upload.description,
         date: upload.date,
         workouts: upload.workouts,

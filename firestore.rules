@@ -20,6 +20,15 @@ service cloud.firestore {
         allow read;
         match /{eventId} {
             allow read;
+            allow write;
+        }
+    }
+
+    match /entries {
+        allow read;
+        match /{entryId} {
+            allow read;
+            allow write;
         }
     }
   }

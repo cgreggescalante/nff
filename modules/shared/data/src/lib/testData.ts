@@ -50,9 +50,11 @@ const generateUpload = (user: UserInfo, workoutCount: number): Upload => {
 
   return {
     user,
+    userFirstName: user.name.firstName,
+    userLastName: user.name.lastName,
     description: faker.lorem.sentence(),
     date,
-    workouts: Array.from({ length: workoutCount }).map((_) => {
+    workouts: Array.from({ length: workoutCount }).map(() => {
       const workoutType = faker.helpers.objectValue(WorkoutTypes);
       const duration = randomDistribution(1, 50, 10)();
       return {
