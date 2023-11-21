@@ -1,10 +1,10 @@
 import styles from './event-detail.module.scss';
 import { useLocation, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { Event, EventService } from '@shared-data';
+import { Event, EventService, UserInfo } from '@shared-data';
 import LoadingWrapper from '../../components/loading-wrapper/loading-wrapper';
 import { useUser } from '../../../userContext';
-import { Button } from 'react-bootstrap';
+import { Button, Table } from 'react-bootstrap';
 
 export function EventDetail() {
   const location = useLocation();
@@ -14,12 +14,18 @@ export function EventDetail() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>();
 
+  const [leaderboard, setLeaderboard] = useState<
+    { user: UserInfo; points: Map<string, number> }[]
+  >([]);
+  const [leaderboardLoading, setLeaderboardLoading] = useState<boolean>(true);
+
   useEffect(() => {
     if (!event && eventId) {
       EventService.read(eventId)
         .then((event) => {
           if (event != null) {
             setEvent(event);
+            document.title = event.name;
           } else setError('No event found with the given ID');
           setLoading(false);
         })
@@ -31,10 +37,19 @@ export function EventDetail() {
     }
   }, [event, eventId]);
 
+  useEffect(() => {
+    if (eventId) {
+      EventService.getLeaderboard(eventId).then((leaderboard) => {
+        setLeaderboard(leaderboard);
+        setLeaderboardLoading(false);
+      });
+    }
+  }, [eventId]);
+
   return (
     <div className={styles['container']}>
       <LoadingWrapper loading={loading}>
-        {event ? (
+        {event && (
           <>
             <h1>{event.name}</h1>
             <p>{event.description}</p>
@@ -55,7 +70,36 @@ export function EventDetail() {
               <>Registration is closed for this event</>
             )}
           </>
-        ) : null}
+        )}
+      </LoadingWrapper>
+
+      <LoadingWrapper loading={leaderboardLoading}>
+        {leaderboard.length > 0 && (
+          <>
+            <h2>Leaderboard</h2>
+            <Table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>User</th>
+                  <th>Total Points</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {leaderboard.map((entry, index) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>
+                      {entry.user.name.firstName} {entry.user.name.lastName}
+                    </td>
+                    <td>{entry.points.get('TOTAL')}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </>
+        )}
       </LoadingWrapper>
 
       {error && <p>{error}</p>}

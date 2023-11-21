@@ -5,6 +5,7 @@ import {
   arrayUnion,
   collection,
   deleteDoc,
+  DocumentReference,
   getDocs,
   query,
   where,
@@ -14,6 +15,8 @@ import { EventConverter } from '../converters/EventConverter';
 import UserInfoService from './UserInfoService';
 import { updateDoc } from '@firebase/firestore';
 import UserInfo from '../models/UserInfo';
+import EntryService from './EntryService';
+import { WorkoutTypeName } from '../WorkoutType';
 
 class EventService extends FirestoreService<Event> {
   public constructor() {
@@ -61,6 +64,39 @@ class EventService extends FirestoreService<Event> {
       });
 
       await UserInfoService.addEvent(userRef, eventRef);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  /*
+   * Get the leaderboard for a given event.
+   * Query all the entries for the event, and sort them by points.
+   */
+  async getLeaderboard(
+    eventId: string
+  ): Promise<{ user: UserInfo; points: Map<WorkoutTypeName, number> }[]> {
+    try {
+      const ref = this.getReference(eventId);
+
+      const entries = await EntryService.getByEvent(ref);
+      entries.sort((a, b) => {
+        const aPoints = a.points.get('TOTAL');
+        const bPoints = b.points.get('TOTAL');
+        return (bPoints ? bPoints : 0) - (aPoints ? aPoints : 0);
+      });
+
+      const leaderboard = [];
+
+      for (const entry of entries) {
+        const user = await UserInfoService.read(
+          entry.userRef as DocumentReference<UserInfo>
+        );
+        if (!user) continue;
+        leaderboard.push({ user, points: entry.points });
+      }
+
+      return leaderboard;
     } catch (error) {
       return Promise.reject(error);
     }

@@ -5,6 +5,16 @@ export interface WorkoutType {
   pointsFunction: (duration: number) => number;
 }
 
+export type WorkoutTypeName = 'TOTAL' | 'RUN' | 'BIKE' | 'SKI' | 'SWIM';
+
+export const WorkoutTypeNames: WorkoutTypeName[] = [
+  'TOTAL',
+  'RUN',
+  'BIKE',
+  'SKI',
+  'SWIM',
+];
+
 export default WorkoutType;
 
 type WorkoutTypesCollection = {

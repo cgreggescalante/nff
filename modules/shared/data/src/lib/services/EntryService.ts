@@ -2,7 +2,13 @@ import { FirestoreService } from './FirestoreService';
 import type Entry from '../models/Entry';
 import { EntryConverter } from '../converters/EntryConverter';
 import { db } from '../firebase';
-import { collection, DocumentReference } from 'firebase/firestore';
+import {
+  collection,
+  DocumentReference,
+  getDocs,
+  query,
+  where,
+} from 'firebase/firestore';
 import { addDoc } from '@firebase/firestore';
 
 class EntryService extends FirestoreService<Entry> {
@@ -26,6 +32,17 @@ class EntryService extends FirestoreService<Entry> {
         points: {},
         goals: {},
       });
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async getByEvent(eventRef: DocumentReference): Promise<Entry[]> {
+    try {
+      const docs = await getDocs(
+        query(this.collectionReference, where('eventRef', '==', eventRef))
+      );
+      return docs.docs.map((doc) => this.converter.fromFirestore(doc));
     } catch (error) {
       return Promise.reject(error);
     }

@@ -72,12 +72,17 @@ export abstract class FirestoreService<T> {
    * Returns the document if it exists, otherwise returns null.
    * @param documentId
    */
-  public async read(documentId: string): Promise<T | null> {
+  public async read(
+    documentId: string | DocumentReference<T>
+  ): Promise<T | null> {
     try {
-      const docRef = doc(
-        this.collectionReference.withConverter(this.converter),
-        documentId
-      );
+      const docRef =
+        typeof documentId == 'string'
+          ? doc(
+              this.collectionReference.withConverter(this.converter),
+              documentId
+            )
+          : documentId;
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {

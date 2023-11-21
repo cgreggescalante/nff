@@ -1,6 +1,6 @@
 import { FirestoreDataConverter } from 'firebase/firestore';
 import type { Entry, EntryData } from '../models/Entry';
-import { WorkoutType, WorkoutTypes } from '../WorkoutType';
+import { WorkoutTypeName, WorkoutTypeNames } from '../WorkoutType';
 
 export const EntryConverter: FirestoreDataConverter<Entry> = {
   toFirestore: (entry: Entry) => ({
@@ -12,15 +12,15 @@ export const EntryConverter: FirestoreDataConverter<Entry> = {
   fromFirestore: (snapshot, options): Entry => {
     const data = snapshot.data(options) as EntryData;
 
-    const points = new Map<WorkoutType, number>(
-      Object.entries(WorkoutTypes).map(([name, workoutType]) => [
-        workoutType,
+    const points = new Map<WorkoutTypeName, number>(
+      WorkoutTypeNames.map((name) => [
+        name,
         data.points[name] ? data.points[name] : 0,
       ])
     );
-    const goals = new Map<WorkoutType, number>(
-      Object.entries(WorkoutTypes).map(([name, workoutType]) => [
-        workoutType,
+    const goals = new Map<WorkoutTypeName, number>(
+      WorkoutTypeNames.map((name) => [
+        name,
         data.goals[name] ? data.goals[name] : 0,
       ])
     );
