@@ -10,7 +10,6 @@ export const EventCard = ({ event }: EventCardProps) => (
   <Card style={{ marginTop: '2%' }}>
     <Link
       to={`/events/${event.uid}`}
-      state={event}
       style={{ textDecoration: 'none', color: 'inherit' }}
     >
       <Card.Header as={'h3'}>{event.name}</Card.Header>

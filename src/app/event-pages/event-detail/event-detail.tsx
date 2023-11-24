@@ -11,7 +11,7 @@ import LoadingWrapper from '../../components/loading-wrapper/loading-wrapper';
 import { useUser } from '../../../userContext';
 import { Button, Table } from 'react-bootstrap';
 
-export function EventDetail() {
+export const EventDetail = () => {
   const location = useLocation();
   const { eventId } = useParams();
   const { user } = useUser();
@@ -110,6 +110,6 @@ export function EventDetail() {
       {error && <p>{error}</p>}
     </div>
   );
-}
+};
 
 export default EventDetail;
