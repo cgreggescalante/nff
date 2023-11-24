@@ -16,6 +16,7 @@ import UserInfoService from './UserInfoService';
 import { updateDoc } from '@firebase/firestore';
 import UserInfo from '../models/UserInfo';
 import EntryService from './EntryService';
+import { WorkoutTypeToNumber } from '../models/Entry';
 
 class EventService extends FirestoreService<Event> {
   public constructor() {
@@ -74,15 +75,15 @@ class EventService extends FirestoreService<Event> {
    */
   async getLeaderboard(
     eventId: string
-  ): Promise<{ user: UserInfo; points: Map<string, number> }[]> {
+  ): Promise<{ user: UserInfo; points: WorkoutTypeToNumber }[]> {
     try {
       const ref = this.getReference(eventId);
 
       // TODO: Use scoring rates to sort entries
       const entries = await EntryService.getByEvent(ref);
       entries.sort((a, b) => {
-        const aPoints = a.duration.get('Bike');
-        const bPoints = b.duration.get('Bike');
+        const aPoints = a.duration.Run;
+        const bPoints = b.duration.Run;
         return (bPoints ? bPoints : 0) - (aPoints ? aPoints : 0);
       });
 

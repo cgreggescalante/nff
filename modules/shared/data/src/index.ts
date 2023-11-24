@@ -10,6 +10,7 @@ export type { Upload } from './lib/models/Upload';
 export type { Workout } from './lib/models/Workout';
 export type { Event } from './lib/models/Event';
 export type { Entry } from './lib/models/Entry';
+export type { WorkoutTypeToNumber } from './lib/models/Entry';
 
 export { DefaultWorkout } from './lib/models/Workout';
 export { WorkoutTypeNames } from './lib/WorkoutType';

@@ -8,8 +8,8 @@ export interface EntryData {
   user?: UserInfo;
   eventRef: DocumentReference;
   event?: Event;
-  duration: Record<string, number>;
-  goals: Record<string, number>;
+  duration: WorkoutTypeToNumber;
+  goals: WorkoutTypeToNumber;
 }
 
 export interface Entry {
@@ -18,8 +18,15 @@ export interface Entry {
   user?: UserInfo;
   eventRef: DocumentReference;
   event?: Event;
-  duration: Map<string, number>;
-  goals: Map<string, number>;
+  duration: WorkoutTypeToNumber;
+  goals: WorkoutTypeToNumber;
+}
+
+export interface WorkoutTypeToNumber {
+  Run?: number;
+  Bike?: number;
+  Ski?: number;
+  Swim?: number;
 }
 
 export default Entry;

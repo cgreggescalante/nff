@@ -1,7 +1,12 @@
 import styles from './event-detail.module.scss';
 import { useLocation, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { Event, EventService, UserInfo } from '@shared-data';
+import {
+  Event,
+  EventService,
+  UserInfo,
+  WorkoutTypeToNumber,
+} from '@shared-data';
 import LoadingWrapper from '../../components/loading-wrapper/loading-wrapper';
 import { useUser } from '../../../userContext';
 import { Button, Table } from 'react-bootstrap';
@@ -15,7 +20,7 @@ export function EventDetail() {
   const [error, setError] = useState<string>();
 
   const [leaderboard, setLeaderboard] = useState<
-    { user: UserInfo; points: Map<string, number> }[]
+    { user: UserInfo; points: WorkoutTypeToNumber }[]
   >([]);
   const [leaderboardLoading, setLeaderboardLoading] = useState<boolean>(true);
 
@@ -82,7 +87,7 @@ export function EventDetail() {
                 <tr>
                   <th>#</th>
                   <th>User</th>
-                  <th>Total Points</th>
+                  <th>Run Duration</th>
                 </tr>
               </thead>
 
@@ -93,7 +98,7 @@ export function EventDetail() {
                     <td>
                       {entry.user.name.firstName} {entry.user.name.lastName}
                     </td>
-                    <td>{entry.points.get('TOTAL')}</td>
+                    <td>{entry.points.Run}</td>
                   </tr>
                 ))}
               </tbody>
