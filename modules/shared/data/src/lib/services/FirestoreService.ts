@@ -5,11 +5,11 @@ import {
   addDoc,
   updateDoc,
   deleteDoc,
-  getDocs,
 } from '@firebase/firestore';
 import {
   DocumentReference,
   FirestoreDataConverter,
+  getDocs,
   setDoc,
 } from 'firebase/firestore';
 
@@ -108,6 +108,23 @@ export abstract class FirestoreService<T> {
     try {
       const docRef = doc(this.collectionReference, documentId);
       await updateDoc(docRef, document);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  /**
+   * Set a document by ID.
+   * @param documentId
+   * @param document
+   */
+  public async set(
+    documentId: string,
+    document: Partial<any & T>
+  ): Promise<void> {
+    try {
+      const docRef = doc(this.collectionReference, documentId);
+      await setDoc(docRef, document);
     } catch (error) {
       return Promise.reject(error);
     }

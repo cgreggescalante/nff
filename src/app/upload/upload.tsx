@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 import { WorkoutInput } from './workout-input/workout-input';
 import type { Workout } from '@shared-data';
-import { DefaultWorkout, UploadService, WorkoutType } from '@shared-data';
+import { DefaultWorkout, UploadService } from '@shared-data';
 import { auth } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../userContext';
@@ -15,10 +15,10 @@ const UploadView = () => {
 
   const navigate = useNavigate();
 
-  const handleWorkoutTypeChange = (index: number, value: WorkoutType) => {
+  const handleWorkoutTypeChange = (index: number, value: string) => {
     const newWorkouts = [...workouts];
     console.log(value);
-    newWorkouts[index].workoutType = value;
+    newWorkouts[index].type = value;
     setWorkouts(newWorkouts);
   };
 

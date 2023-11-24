@@ -1,24 +1,26 @@
 import { FirestoreDataConverter } from 'firebase/firestore';
 import type { Entry, EntryData } from '../models/Entry';
-import { WorkoutTypeName, WorkoutTypeNames } from '../WorkoutType';
+import { WorkoutTypeNames } from '../WorkoutType';
 
 export const EntryConverter: FirestoreDataConverter<Entry> = {
-  toFirestore: (entry: Entry) => ({
-    user: entry.user,
-    event: entry.event,
-    points: entry.points,
-    goals: entry.goals,
-  }),
+  toFirestore: (entry: Entry) => {
+    return {
+      userRef: entry.userRef,
+      eventRef: entry.eventRef,
+      duration: Object.fromEntries(entry.duration),
+      goals: Object.fromEntries(entry.goals),
+    };
+  },
   fromFirestore: (snapshot, options): Entry => {
     const data = snapshot.data(options) as EntryData;
 
-    const points = new Map<WorkoutTypeName, number>(
+    const duration = new Map<string, number>(
       WorkoutTypeNames.map((name) => [
         name,
-        data.points[name] ? data.points[name] : 0,
+        data.duration[name] ? data.duration[name] : 0,
       ])
     );
-    const goals = new Map<WorkoutTypeName, number>(
+    const goals = new Map<string, number>(
       WorkoutTypeNames.map((name) => [
         name,
         data.goals[name] ? data.goals[name] : 0,
@@ -29,7 +31,7 @@ export const EntryConverter: FirestoreDataConverter<Entry> = {
       uid: snapshot.id,
       userRef: data.userRef,
       eventRef: data.eventRef,
-      points,
+      duration,
       goals,
     };
   },

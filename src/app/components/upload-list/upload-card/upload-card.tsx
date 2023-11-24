@@ -28,9 +28,8 @@ export const UploadCard = ({ upload }: UploadCardProps) => (
         <tbody>
           {upload.workouts.map((workout: Workout, index) => (
             <tr key={index}>
-              <td>{workout.workoutType.name}</td>
+              <td>{workout.type}</td>
               <td>{workout.duration}</td>
-              <td>{Math.round(workout.points * 100) / 100}</td>
             </tr>
           ))}
           <tr>
@@ -41,7 +40,7 @@ export const UploadCard = ({ upload }: UploadCardProps) => (
             <td>
               {Math.round(
                 upload.workouts.reduce(
-                  (sum, workout) => sum + workout.points,
+                  (sum, workout) => sum + workout.duration,
                   0
                 ) * 100
               ) / 100}

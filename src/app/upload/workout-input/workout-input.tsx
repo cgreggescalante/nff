@@ -1,16 +1,12 @@
 import styles from './workout-input.module.scss';
 import React, { ChangeEvent } from 'react';
-import {
-  Workout,
-  WorkoutType,
-  WorkoutTypeFromName,
-  WorkoutTypes,
-} from '@shared-data';
+import { Workout } from '@shared-data';
+import { WorkoutTypeNames } from '@shared-data';
 
 export interface WorkoutProps {
   index: number;
   workoutData: Workout;
-  handleWorkoutTypeChange: (index: number, value: WorkoutType) => void;
+  handleWorkoutTypeChange: (index: number, value: string) => void;
   handleDurationChange: (index: number, value: number) => void;
   handleDelete: (index: number) => void;
 }
@@ -30,14 +26,14 @@ export const WorkoutInput: React.FC<WorkoutProps> = ({
       <select
         id={`workoutType${index}`}
         name={`workoutType${index}`}
-        value={workoutData.workoutType ? workoutData.workoutType.name : 'Run'}
+        value={workoutData.type ? workoutData.type : 'Run'}
         onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-          handleWorkoutTypeChange(index, WorkoutTypeFromName(e.target.value))
+          handleWorkoutTypeChange(index, e.target.value)
         }
       >
-        {Object.entries(WorkoutTypes).map(([name, workoutType]) => (
-          <option key={workoutType.name} value={workoutType.name}>
-            {workoutType.name}
+        {WorkoutTypeNames.map((name) => (
+          <option key={name} value={name}>
+            {name}
           </option>
         ))}
       </select>

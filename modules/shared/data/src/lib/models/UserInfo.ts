@@ -7,7 +7,7 @@ export interface UserInfo {
   };
   uid: string;
   role: string;
-  registeredEvents: DocumentReference[];
+  entries: DocumentReference[];
   totalPoints: number;
 }
 

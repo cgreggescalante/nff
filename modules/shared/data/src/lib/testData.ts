@@ -4,8 +4,8 @@ import type Event from './models/Event';
 import UserInfoService from './services/UserInfoService';
 import EventService from './services/EventService';
 import type Upload from './models/Upload';
-import { WorkoutTypes } from './WorkoutType';
 import UploadService from './services/UploadService';
+import { WorkoutTypeNames } from './WorkoutType';
 
 const generateUser = (): UserInfo => ({
   uid: faker.string.uuid(),
@@ -14,7 +14,7 @@ const generateUser = (): UserInfo => ({
     lastName: faker.person.lastName(),
   },
   role: '',
-  registeredEvents: [],
+  entries: [],
   totalPoints: 0,
 });
 
@@ -48,19 +48,21 @@ const generateUpload = (user: UserInfo, workoutCount: number): Upload => {
   const date = new Date();
   date.setDate(date.getDate() + faker.number.int({ min: -30, max: 60 }));
 
+  const workoutTypes = faker.helpers
+    .shuffle(WorkoutTypeNames)
+    .slice(0, workoutCount);
+
   return {
     user,
     userFirstName: user.name.firstName,
     userLastName: user.name.lastName,
     description: faker.lorem.sentence(),
     date,
-    workouts: Array.from({ length: workoutCount }).map(() => {
-      const workoutType = faker.helpers.objectValue(WorkoutTypes);
+    workouts: workoutTypes.map((type) => {
       const duration = randomDistribution(1, 50, 10)();
       return {
-        workoutType,
+        type,
         duration,
-        points: workoutType.pointsFunction(duration),
       };
     }),
   };
@@ -76,47 +78,70 @@ const randomDistribution =
     return Math.min(Math.max(value, min), max);
   };
 
-export const generateTestData = async () => {
-  const scale = 3;
-
-  const uploadDistribution = randomDistribution(0, 75, 20);
-  const workoutDistribution = randomDistribution(1, 3, 2);
-  const eventDistribution = randomDistribution(0, 4, 1);
-
-  const users: UserInfo[] = [];
-
-  for (let i = 0; i < scale * 10; i++) {
+export const generateUsers = async (count = 10) => {
+  for (let i = 0; i < count; i++) {
     const user = generateUser();
     await UserInfoService.createWithId(user.uid, user);
-    users.push(user);
+    console.log(`Added User: ${user.name.firstName} ${user.name.lastName}`);
   }
+};
 
-  const events: Event[] = [];
-
-  for (let i = 0; i < scale; i++) {
+export const generateEvents = async (count = 1) => {
+  for (let i = 0; i < count; i++) {
     const event = generateEvent();
     if (event.uid) {
       await EventService.createWithId(event.uid, event);
-      events.push(event);
+      console.log(`Added Event: ${event.name}`);
     }
   }
+};
+
+export const registerUsersForEvents = async () => {
+  console.log('Registering users for events');
+
+  let users: UserInfo[] = [];
+  let events: Event[] = [];
+
+  await Promise.all([
+    UserInfoService.list().then((u) => {
+      users = u;
+      console.log(`Retrieved ${users.length} users`);
+    }),
+    EventService.list().then((e) => {
+      events = e;
+      console.log(`Retrieved ${events.length} events`);
+    }),
+  ]);
 
   for (const user of users) {
-    console.log(user.name);
-    for (let i = 0; i < Math.round(uploadDistribution()); i++) {
-      const upload = generateUpload(user, workoutDistribution());
-      await UploadService.createTest(user, upload);
-    }
-
     const toRegister = faker.helpers.arrayElements(
       events,
-      Math.round(eventDistribution())
+      Math.round(randomDistribution(1, 4, 1)())
     );
 
     for (const event of toRegister) {
       await EventService.addUser(event, user);
+      console.log(
+        `Registered ${user.name.firstName} ${user.name.lastName} for ${event.name}`
+      );
     }
   }
 
-  console.log('Completed');
+  console.log('Finished registering users for events');
+};
+
+export const generateUploads = async () => {
+  console.log('Generating uploads');
+
+  const users = await UserInfoService.list();
+
+  for (const user of users) {
+    const uploadCount = 10;
+    for (let i = 0; i < uploadCount; i++) {
+      const upload = generateUpload(user, 2);
+      await UploadService.createTest(user, upload);
+    }
+  }
+
+  console.log('Completed generating uploads');
 };

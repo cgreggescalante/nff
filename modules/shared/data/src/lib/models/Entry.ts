@@ -1,5 +1,4 @@
 import { DocumentReference } from 'firebase/firestore';
-import { WorkoutTypeName } from '../WorkoutType';
 import type UserInfo from './UserInfo';
 import type Event from './Event';
 
@@ -9,7 +8,7 @@ export interface EntryData {
   user?: UserInfo;
   eventRef: DocumentReference;
   event?: Event;
-  points: Record<string, number>;
+  duration: Record<string, number>;
   goals: Record<string, number>;
 }
 
@@ -19,8 +18,8 @@ export interface Entry {
   user?: UserInfo;
   eventRef: DocumentReference;
   event?: Event;
-  points: Map<WorkoutTypeName, number>;
-  goals: Map<WorkoutTypeName, number>;
+  duration: Map<string, number>;
+  goals: Map<string, number>;
 }
 
 export default Entry;

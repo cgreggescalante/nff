@@ -33,7 +33,7 @@ class UserInfoService extends FirestoreService<UserInfo> {
         role: '',
         totalPoints: 0,
         uid: id,
-        registeredEvents: [],
+        entries: [],
       });
     } catch (error) {
       return Promise.reject(error);
@@ -97,20 +97,26 @@ class UserInfoService extends FirestoreService<UserInfo> {
 
   /**
    * Adds an event to a user's registered events.
+   * @param user
    * @param userRef
    * @param eventRef
    */
   async addEvent(
+    user: UserInfo,
     userRef: DocumentReference,
     eventRef: DocumentReference
-  ): Promise<void> {
+  ): Promise<UserInfo> {
     try {
       const entryRef = await EntryService.createEmpty(userRef, eventRef);
 
       return updateDoc(userRef, {
-        registeredEvents: arrayUnion(entryRef),
+        entries: arrayUnion(entryRef),
+      }).then(() => {
+        user.entries.push(entryRef);
+        return user;
       });
     } catch (error) {
+      console.error('Error during UserInfoService.addEvent', error);
       return Promise.reject(error);
     }
   }

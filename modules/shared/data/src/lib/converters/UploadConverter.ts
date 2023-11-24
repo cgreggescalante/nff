@@ -1,5 +1,4 @@
 import { FirestoreDataConverter } from 'firebase/firestore';
-import { WorkoutTypeFromName } from '../WorkoutType';
 import type Upload from '../models/Upload';
 import { WorkoutConverter } from './WorkoutConverter';
 
@@ -18,8 +17,8 @@ const UploadConverter: FirestoreDataConverter<Upload> = {
     const data = snapshot.data(options);
     const workouts = data['workouts'].map(
       (workout: { [x: string]: string }) => ({
-        ...workout,
-        workoutType: WorkoutTypeFromName(workout['workoutType']),
+        duration: workout['duration'],
+        type: workout['type'],
       })
     );
 

@@ -16,7 +16,6 @@ import UserInfoService from './UserInfoService';
 import { updateDoc } from '@firebase/firestore';
 import UserInfo from '../models/UserInfo';
 import EntryService from './EntryService';
-import { WorkoutTypeName } from '../WorkoutType';
 
 class EventService extends FirestoreService<Event> {
   public constructor() {
@@ -51,7 +50,7 @@ class EventService extends FirestoreService<Event> {
     }
   }
 
-  async addUser(event: Event, user: UserInfo): Promise<void> {
+  async addUser(event: Event, user: UserInfo): Promise<UserInfo> {
     try {
       if (!event.uid)
         throw new Error('Attempting to add UserInfo to Event with no ID');
@@ -63,7 +62,7 @@ class EventService extends FirestoreService<Event> {
         registeredUsers: arrayUnion(userRef),
       });
 
-      await UserInfoService.addEvent(userRef, eventRef);
+      return UserInfoService.addEvent(user, userRef, eventRef);
     } catch (error) {
       return Promise.reject(error);
     }
@@ -75,14 +74,15 @@ class EventService extends FirestoreService<Event> {
    */
   async getLeaderboard(
     eventId: string
-  ): Promise<{ user: UserInfo; points: Map<WorkoutTypeName, number> }[]> {
+  ): Promise<{ user: UserInfo; points: Map<string, number> }[]> {
     try {
       const ref = this.getReference(eventId);
 
+      // TODO: Use scoring rates to sort entries
       const entries = await EntryService.getByEvent(ref);
       entries.sort((a, b) => {
-        const aPoints = a.points.get('TOTAL');
-        const bPoints = b.points.get('TOTAL');
+        const aPoints = a.duration.get('Bike');
+        const bPoints = b.duration.get('Bike');
         return (bPoints ? bPoints : 0) - (aPoints ? aPoints : 0);
       });
 
@@ -93,11 +93,12 @@ class EventService extends FirestoreService<Event> {
           entry.userRef as DocumentReference<UserInfo>
         );
         if (!user) continue;
-        leaderboard.push({ user, points: entry.points });
+        leaderboard.push({ user, points: entry.duration });
       }
 
       return leaderboard;
     } catch (error) {
+      console.error('Error while retrieving leaderboard', error);
       return Promise.reject(error);
     }
   }

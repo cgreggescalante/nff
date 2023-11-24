@@ -13,6 +13,7 @@ import type Workout from '../models/Workout';
 import UserInfoService from './UserInfoService';
 import type UserInfo from '../models/UserInfo';
 import { FirestoreService } from './FirestoreService';
+import EntryService from './EntryService';
 
 class UploadService extends FirestoreService<Upload> {
   public constructor() {
@@ -70,11 +71,6 @@ class UploadService extends FirestoreService<Upload> {
     workouts: Workout[]
   ) => {
     try {
-      workouts = workouts.map((workout) => {
-        workout.points = workout.workoutType.pointsFunction(workout.duration);
-        return workout;
-      });
-
       const upload: Upload = {
         userRef: UserInfoService.getReference(user.uid),
         userFirstName: user.name.firstName,
@@ -84,7 +80,10 @@ class UploadService extends FirestoreService<Upload> {
         workouts,
       };
 
-      return super.create(upload);
+      await super.create(upload);
+      await EntryService.updateEntries(user, upload);
+
+      return upload;
     } catch (error) {
       return Promise.reject(error);
     }
@@ -107,8 +106,12 @@ class UploadService extends FirestoreService<Upload> {
         workouts: upload.workouts,
       };
 
-      return super.create(u);
+      await super.create(u);
+      await EntryService.updateEntries(user, u);
+
+      return u;
     } catch (error) {
+      console.error('Error while creating test upload', error);
       return Promise.reject(error);
     }
   };

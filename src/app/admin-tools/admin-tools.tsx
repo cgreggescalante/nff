@@ -7,7 +7,17 @@ import ManageEvents from './manage-events/manage-events';
 import LoadingWrapper from '../components/loading-wrapper/loading-wrapper';
 import CollapsibleContainer from './collapsible-container/collapsible-container';
 import { Button } from 'react-bootstrap';
-import { generateTestData } from '@shared-data';
+import {
+  Entry,
+  EntryConverter,
+  EntryService,
+  EventService,
+  generateEvents,
+  generateUploads,
+  generateUsers,
+  registerUsersForEvents,
+  UserInfoService,
+} from '@shared-data';
 
 export const AdminTools = () => {
   const { user, loading } = useUser();
@@ -35,7 +45,32 @@ export const AdminTools = () => {
         </CollapsibleContainer>
       </LoadingWrapper>
 
-      <Button onClick={() => generateTestData()}>Generate Test Data</Button>
+      <Button onClick={() => generateUsers()}>Generate 10 Users</Button>
+      <Button onClick={() => generateEvents()}>Generate 1 Event</Button>
+      <Button onClick={() => registerUsersForEvents()}>
+        Register Users for Events
+      </Button>
+      <Button onClick={() => generateUploads()}>Generate Uploads</Button>
+      <Button
+        onClick={async () => {
+          const testEntry: Entry = {
+            uid: 'test',
+            userRef: UserInfoService.getReference('test-user'),
+            eventRef: EventService.getReference('test-event'),
+            duration: new Map<string, number>([['test', 10]]),
+            goals: new Map<string, number>([['test', 1]]),
+          };
+
+          await EntryService.set(
+            'test-entry',
+            EntryConverter.toFirestore(testEntry)
+          );
+
+          console.log('Added test entry');
+        }}
+      >
+        Create Test Entry
+      </Button>
     </div>
   );
 };
