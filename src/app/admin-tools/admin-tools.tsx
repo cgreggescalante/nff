@@ -57,8 +57,8 @@ export const AdminTools = () => {
             uid: 'test',
             userRef: UserInfoService.getReference('test-user'),
             eventRef: EventService.getReference('test-event'),
-            duration: new Map<string, number>([['test', 10]]),
-            goals: new Map<string, number>([['test', 1]]),
+            duration: { Run: 1 },
+            goals: { Run: 1 },
           };
 
           await EntryService.set(

@@ -16,8 +16,7 @@ import UserInfoService from './UserInfoService';
 import { updateDoc } from '@firebase/firestore';
 import UserInfo from '../models/UserInfo';
 import EntryService from './EntryService';
-
-import { WorkoutTypeToNumber } from '@shared-data';
+import { WorkoutTypeToNumber } from '../models/WorkoutType';
 
 class EventService extends FirestoreService<Event> {
   public constructor() {

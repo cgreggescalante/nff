@@ -1,5 +1,5 @@
 import { Card, Table } from 'react-bootstrap';
-import { Upload, Workout } from '@shared-data';
+import { Upload } from '@shared-data';
 
 export interface UploadCardProps {
   upload: Upload;
@@ -20,32 +20,17 @@ export const UploadCard = ({ upload }: UploadCardProps) => (
       <Table striped border={1}>
         <thead>
           <tr>
-            <th>Workout Type</th>
+            <th>Activity</th>
             <th>Duration</th>
-            <th>Points Earned</th>
           </tr>
         </thead>
         <tbody>
-          {upload.workouts.map((workout: Workout, index) => (
-            <tr key={index}>
-              <td>{workout.type}</td>
-              <td>{workout.duration}</td>
+          {Object.entries(upload.workouts).map(([key, value]) => (
+            <tr key={key}>
+              <td>{key}</td>
+              <td>{value}</td>
             </tr>
           ))}
-          <tr>
-            <td></td>
-            <td>
-              <b>Total</b>
-            </td>
-            <td>
-              {Math.round(
-                upload.workouts.reduce(
-                  (sum, workout) => sum + workout.duration,
-                  0
-                ) * 100
-              ) / 100}
-            </td>
-          </tr>
         </tbody>
       </Table>
     </Card.Body>
