@@ -1,6 +1,7 @@
 import type UserInfo from './UserInfo';
-import type Workout from './Workout';
 import { DocumentReference } from 'firebase/firestore';
+
+import { WorkoutTypeToNumber } from './WorkoutType';
 
 export interface Upload {
   user?: UserInfo;
@@ -9,7 +10,7 @@ export interface Upload {
   userLastName: string;
   description: string;
   date: Date;
-  workouts: Workout[];
+  workouts: WorkoutTypeToNumber;
 }
 
 export default Upload;

@@ -13,6 +13,8 @@ import { addDoc, getDoc } from '@firebase/firestore';
 import Upload from '../models/Upload';
 import UserInfo from '../models/UserInfo';
 
+import { addWorkoutTypeToNumber } from '../models/WorkoutType';
+
 class EntryService extends FirestoreService<Entry> {
   public constructor() {
     super(collection(db, 'entries'), EntryConverter);
@@ -56,17 +58,10 @@ class EntryService extends FirestoreService<Entry> {
         const entry = (await getDoc(ref.withConverter(this.converter))).data();
         if (entry == undefined) continue;
 
-        upload.workouts.map((workout) => {
-          const currentDuration = entry.duration.get(workout.type);
-          if (currentDuration == undefined) {
-            entry.duration.set(workout.type, workout.duration);
-          } else {
-            entry.duration.set(
-              workout.type,
-              currentDuration + workout.duration
-            );
-          }
-        });
+        entry.duration = addWorkoutTypeToNumber(
+          entry.duration,
+          upload.workouts
+        );
 
         await this.set(entry.uid, this.converter.toFirestore(entry));
       }

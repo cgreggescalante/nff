@@ -5,7 +5,7 @@ import UserInfoService from './services/UserInfoService';
 import EventService from './services/EventService';
 import type Upload from './models/Upload';
 import UploadService from './services/UploadService';
-import { WorkoutTypeNames } from './WorkoutType';
+import { WorkoutTypeNames, WorkoutTypeToNumber } from './models/WorkoutType';
 
 const generateUser = (): UserInfo => ({
   uid: faker.string.uuid(),
@@ -52,19 +52,18 @@ const generateUpload = (user: UserInfo, workoutCount: number): Upload => {
     .shuffle(WorkoutTypeNames)
     .slice(0, workoutCount);
 
+  const workouts: WorkoutTypeToNumber = {};
+  for (const type of workoutTypes) {
+    workouts[type] = randomDistribution(1, 50, 10)();
+  }
+
   return {
     user,
     userFirstName: user.name.firstName,
     userLastName: user.name.lastName,
     description: faker.lorem.sentence(),
     date,
-    workouts: workoutTypes.map((type) => {
-      const duration = randomDistribution(1, 50, 10)();
-      return {
-        type,
-        duration,
-      };
-    }),
+    workouts,
   };
 };
 

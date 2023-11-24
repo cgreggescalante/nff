@@ -1,6 +1,7 @@
 import { DocumentReference } from 'firebase/firestore';
 import type UserInfo from './UserInfo';
 import type Event from './Event';
+import { WorkoutTypeToNumber } from './WorkoutType';
 
 export interface EntryData {
   uid: string;
@@ -20,13 +21,6 @@ export interface Entry {
   event?: Event;
   duration: WorkoutTypeToNumber;
   goals: WorkoutTypeToNumber;
-}
-
-export interface WorkoutTypeToNumber {
-  Run?: number;
-  Bike?: number;
-  Ski?: number;
-  Swim?: number;
 }
 
 export default Entry;

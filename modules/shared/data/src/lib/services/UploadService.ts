@@ -9,11 +9,12 @@ import {
 import { db } from '../firebase';
 import UploadConverter from '../converters/UploadConverter';
 import type Upload from '../models/Upload';
-import type Workout from '../models/Workout';
 import UserInfoService from './UserInfoService';
 import type UserInfo from '../models/UserInfo';
 import { FirestoreService } from './FirestoreService';
 import EntryService from './EntryService';
+
+import { WorkoutTypeToNumber } from '@shared-data';
 
 class UploadService extends FirestoreService<Upload> {
   public constructor() {
@@ -68,7 +69,7 @@ class UploadService extends FirestoreService<Upload> {
   createFromComponents = async (
     user: UserInfo,
     description: string,
-    workouts: Workout[]
+    workouts: WorkoutTypeToNumber
   ) => {
     try {
       const upload: Upload = {

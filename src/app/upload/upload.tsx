@@ -1,44 +1,46 @@
 import React, { ChangeEvent, useState } from 'react';
 import { WorkoutInput } from './workout-input/workout-input';
-import type { Workout } from '@shared-data';
-import { DefaultWorkout, UploadService } from '@shared-data';
+import {
+  UploadService,
+  WorkoutType,
+  WorkoutTypeNames,
+  WorkoutTypeToNumber,
+} from '@shared-data';
 import { auth } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../userContext';
 
 const UploadView = () => {
   const [description, setDescription] = useState<string>('');
-  const [workouts, setWorkouts] = useState<Workout[]>([DefaultWorkout()]);
+  const [workouts, setWorkouts] = useState<WorkoutTypeToNumber>({
+    Run: 0,
+    Ski: 0,
+    Swim: 0,
+    Bike: 0,
+  });
 
   const [error, setError] = useState('');
   const { user } = useUser();
 
   const navigate = useNavigate();
 
-  const handleWorkoutTypeChange = (index: number, value: string) => {
-    const newWorkouts = [...workouts];
-    console.log(value);
-    newWorkouts[index].type = value;
+  const handleDurationChange = (workoutType: WorkoutType, value: number) => {
+    const newWorkouts = { ...workouts };
+    newWorkouts[workoutType] = value;
     setWorkouts(newWorkouts);
   };
-
-  const handleDurationChange = (index: number, value: number) => {
-    const newWorkouts = [...workouts];
-    newWorkouts[index].duration = value;
-    setWorkouts(newWorkouts);
-  };
-
-  const deleteWorkout = (index: number) =>
-    setWorkouts([...workouts.slice(0, index), ...workouts.slice(index + 1)]);
-
-  const addWorkout = () => setWorkouts([...workouts, DefaultWorkout()]);
 
   const handleSubmit = () => {
     console.log('submitting', auth.currentUser, user);
-    const validWorkouts = workouts.filter((w) => w.duration > 0);
+
+    const validWorkouts: WorkoutTypeToNumber = {};
+    WorkoutTypeNames.forEach((workout) => {
+      if (workouts[workout] !== undefined && workouts[workout] > 0) {
+        validWorkouts[workout] = workouts[workout];
+      }
+    });
 
     if (auth.currentUser && user) {
-      console.log('creating upload');
       UploadService.createFromComponents(user, description, validWorkouts)
         .then((_) => navigate('/')) // TODO: Add message
         .catch((error) => {
@@ -60,21 +62,16 @@ const UploadView = () => {
           setDescription(e.target.value)
         }
       />
-
-      {workouts.map((workout, index) => (
+      {WorkoutTypeNames.map((workout, index) => (
         <WorkoutInput
           key={index}
           index={index}
-          workoutData={workout}
-          handleWorkoutTypeChange={handleWorkoutTypeChange}
+          workoutType={workout}
+          duration={workouts[workout]}
           handleDurationChange={handleDurationChange}
-          handleDelete={() => deleteWorkout(index)}
         />
       ))}
-
-      <button onClick={addWorkout}>Add Workout</button>
       <button onClick={handleSubmit}>Submit</button>
-
       {error && <p>{error}</p>}
     </>
   );
