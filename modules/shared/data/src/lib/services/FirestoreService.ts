@@ -76,17 +76,20 @@ export abstract class FirestoreService<T> {
     documentId: string | DocumentReference<T>
   ): Promise<T | null> {
     try {
-      const docRef =
-        typeof documentId == 'string'
-          ? doc(
-              this.collectionReference.withConverter(this.converter),
-              documentId
-            )
-          : documentId;
-      const docSnap = await getDoc(docRef);
+      let snapshot;
+      if (typeof documentId == 'string') {
+        snapshot = await getDoc(
+          doc(
+            this.collectionReference.withConverter(this.converter),
+            documentId
+          )
+        );
+      } else {
+        snapshot = await getDoc(documentId.withConverter(this.converter));
+      }
 
-      if (docSnap.exists()) {
-        return docSnap.data() as T;
+      if (snapshot.exists()) {
+        return snapshot.data() as T;
       } else {
         return null;
       }

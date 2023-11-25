@@ -59,6 +59,7 @@ export const AdminTools = () => {
             eventRef: EventService.getReference('test-event'),
             duration: { Run: 1 },
             goals: { Run: 1 },
+            points: 1,
           };
 
           await EntryService.set(

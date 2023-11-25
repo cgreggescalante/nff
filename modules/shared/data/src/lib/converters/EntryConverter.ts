@@ -3,10 +3,17 @@ import type { Entry } from '../models/Entry';
 
 export const EntryConverter: FirestoreDataConverter<Entry> = {
   toFirestore: (entry: Entry) => ({
+    uid: entry.uid,
     userRef: entry.userRef,
     eventRef: entry.eventRef,
     duration: entry.duration,
     goals: entry.goals,
+    points: entry.points,
   }),
-  fromFirestore: (snapshot, options): Entry => snapshot.data(options) as Entry,
+  fromFirestore: (snapshot, options): Entry => {
+    return {
+      ...(snapshot.data(options) as Entry),
+      uid: snapshot.id,
+    };
+  },
 };

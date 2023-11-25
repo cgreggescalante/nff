@@ -9,11 +9,13 @@ import {
   query,
   where,
 } from 'firebase/firestore';
-import { addDoc, getDoc } from '@firebase/firestore';
+import { addDoc } from '@firebase/firestore';
 import Upload from '../models/Upload';
 import UserInfo from '../models/UserInfo';
 
 import { addWorkoutTypeToNumber } from '../models/WorkoutType';
+import EventService from '../services/EventService';
+import { ApplyScoring } from '../models/ScoringConfiguration';
 
 class EntryService extends FirestoreService<Entry> {
   public constructor() {
@@ -35,6 +37,7 @@ class EntryService extends FirestoreService<Entry> {
         eventRef,
         duration: {},
         goals: {},
+        points: 0,
       });
     } catch (error) {
       return Promise.reject(error);
@@ -55,11 +58,21 @@ class EntryService extends FirestoreService<Entry> {
   async updateEntries(user: UserInfo, upload: Upload): Promise<void> {
     try {
       for (const ref of user.entries) {
-        const entry = (await getDoc(ref.withConverter(this.converter))).data();
+        const entry = await this.read(ref.withConverter(this.converter));
+
         if (entry == undefined) continue;
+
+        const event = await EventService.read(entry.eventRef);
+
+        if (event == null) continue;
 
         entry.duration = addWorkoutTypeToNumber(
           entry.duration,
+          upload.workouts
+        );
+
+        entry.points += ApplyScoring(
+          event.scoringConfiguration,
           upload.workouts
         );
 

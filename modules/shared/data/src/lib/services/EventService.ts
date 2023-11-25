@@ -16,7 +16,7 @@ import UserInfoService from './UserInfoService';
 import { updateDoc } from '@firebase/firestore';
 import UserInfo from '../models/UserInfo';
 import EntryService from './EntryService';
-import { WorkoutTypeToNumber } from '../models/WorkoutType';
+import { Entry } from '../models/Entry';
 
 class EventService extends FirestoreService<Event> {
   public constructor() {
@@ -75,29 +75,25 @@ class EventService extends FirestoreService<Event> {
    */
   async getLeaderboard(
     eventId: string
-  ): Promise<{ user: UserInfo; points: WorkoutTypeToNumber }[]> {
+  ): Promise<{ user: UserInfo; entry: Entry }[]> {
     try {
       const ref = this.getReference(eventId);
 
-      // TODO: Use scoring rates to sort entries
       const entries = await EntryService.getByEvent(ref);
-      entries.sort((a, b) => {
-        const aPoints = a.duration.Run;
-        const bPoints = b.duration.Run;
-        return (bPoints ? bPoints : 0) - (aPoints ? aPoints : 0);
-      });
 
-      const leaderboard = [];
+      const leaderboardEntries = [];
 
       for (const entry of entries) {
         const user = await UserInfoService.read(
           entry.userRef as DocumentReference<UserInfo>
         );
         if (!user) continue;
-        leaderboard.push({ user, points: entry.duration });
+        leaderboardEntries.push({ user, entry });
       }
 
-      return leaderboard;
+      leaderboardEntries.sort((a, b) => b.entry.points - a.entry.points);
+
+      return leaderboardEntries;
     } catch (error) {
       console.error('Error while retrieving leaderboard', error);
       return Promise.reject(error);

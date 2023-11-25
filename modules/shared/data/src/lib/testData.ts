@@ -41,6 +41,26 @@ const generateEvent = (): Event => {
     registrationStart,
     registrationEnd,
     registeredUsers: [],
+    scoringConfiguration: {
+      scoringRules: [
+        {
+          workoutType: 'Run',
+          standardRate: 1,
+        },
+        {
+          workoutType: 'Bike',
+          standardRate: 1,
+        },
+        {
+          workoutType: 'Ski',
+          standardRate: 1,
+        },
+        {
+          workoutType: 'Swim',
+          standardRate: 1,
+        },
+      ],
+    },
   };
 };
 

@@ -19,6 +19,7 @@ export const EventConverter: FirestoreDataConverter<Event> = {
         ? data.registrationEnd.toDate()
         : new Date(0),
       registeredUsers: data.registeredUsers ? data.registeredUsers : [],
+      scoringConfiguration: data.scoringConfiguration,
     };
   },
 };

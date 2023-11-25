@@ -2,6 +2,7 @@ import styles from './event-detail.module.scss';
 import { useLocation, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import {
+  Entry,
   Event,
   EventService,
   UserInfo,
@@ -20,7 +21,7 @@ export const EventDetail = () => {
   const [error, setError] = useState<string>();
 
   const [leaderboard, setLeaderboard] = useState<
-    { user: UserInfo; points: WorkoutTypeToNumber }[]
+    { user: UserInfo; entry: Entry }[]
   >([]);
   const [leaderboardLoading, setLeaderboardLoading] = useState<boolean>(true);
 
@@ -87,18 +88,34 @@ export const EventDetail = () => {
                 <tr>
                   <th>#</th>
                   <th>User</th>
-                  <th>Run Duration</th>
+                  <th>Points</th>
+                  <th>Run</th>
+                  <th>Ski</th>
                 </tr>
               </thead>
 
               <tbody>
-                {leaderboard.map((entry, index) => (
+                {leaderboard.map((item, index) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
                     <td>
-                      {entry.user.name.firstName} {entry.user.name.lastName}
+                      {item.user.name.firstName} {item.user.name.lastName}
                     </td>
-                    <td>{entry.points.Run}</td>
+                    <td>{Math.round(item.entry.points * 10) / 10}</td>
+                    <td>
+                      {Math.round(
+                        (item.entry.duration.Run
+                          ? item.entry.duration.Run
+                          : 0) * 10
+                      ) / 10}
+                    </td>
+                    <td>
+                      {Math.round(
+                        (item.entry.duration.Ski
+                          ? item.entry.duration.Ski
+                          : 0) * 10
+                      ) / 10}
+                    </td>
                   </tr>
                 ))}
               </tbody>
