@@ -14,7 +14,7 @@ import type UserInfo from '../models/UserInfo';
 import { FirestoreService } from './FirestoreService';
 import EntryService from './EntryService';
 
-import { WorkoutTypeToNumber } from '@shared-data';
+import { WorkoutTypeToNumber } from '../models/WorkoutType';
 
 class UploadService extends FirestoreService<Upload> {
   public constructor() {

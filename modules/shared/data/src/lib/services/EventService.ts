@@ -24,12 +24,12 @@ class EventService extends FirestoreService<Event> {
   }
 
   override async delete(documentId: string): Promise<void> {
+    const eventRef = this.getReference(documentId);
+    const event = await super.read(documentId);
+
+    if (!event) throw new Error(`No event with ID: ${documentId}`);
+
     try {
-      const eventRef = this.getReference(documentId);
-      const event = await super.read(documentId);
-
-      if (!event) throw new Error(`No event with ID: ${documentId}`);
-
       for (const userId in event.registeredUsers) {
         const userRef = UserInfoService.getReference(userId);
         await updateDoc(userRef, {

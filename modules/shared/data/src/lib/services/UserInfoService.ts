@@ -42,11 +42,11 @@ class UserInfoService extends FirestoreService<UserInfo> {
 
   override delete = async (id: string): Promise<void> => {
     console.log(`Attempting to delete user ${id}`);
+
+    const user = auth.currentUser;
+    if (!user) throw new Error('No authenticated user found');
+
     try {
-      const user = auth.currentUser;
-
-      if (!user) throw new Error('No authenticated user found');
-
       const userRef = doc(this.collectionReference, id);
 
       const snapshot = await getDocs(
