@@ -3,6 +3,7 @@ import UserInfoService from './lib/services/UserInfoService';
 import EventService from './lib/services/EventService';
 import UploadConverter from './lib/converters/UploadConverter';
 import EntryService from './lib/services/EntryService';
+import TeamService from './lib/services/TeamService';
 
 // Models
 export type { UserInfo } from './lib/models/UserInfo';
@@ -24,6 +25,7 @@ export { UploadService };
 export { UserInfoService };
 export { EventService };
 export { EntryService };
+export { TeamService };
 
 export {
   generateUsers,

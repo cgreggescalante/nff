@@ -61,6 +61,7 @@ const generateEvent = (): Event => {
         },
       ],
     },
+    teamRefs: [],
   };
 };
 

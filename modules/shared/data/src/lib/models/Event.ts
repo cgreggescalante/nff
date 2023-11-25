@@ -1,5 +1,6 @@
 import { DocumentReference, Timestamp } from 'firebase/firestore';
 import { ScoringConfiguration } from './ScoringConfiguration';
+import { Team } from './Team';
 
 export interface EventData {
   uid: string;
@@ -11,6 +12,7 @@ export interface EventData {
   registrationEnd: Timestamp;
   registeredUsers: DocumentReference[];
   scoringConfiguration: ScoringConfiguration;
+  teamRefs: DocumentReference<Team>[];
 }
 
 export interface Event {
@@ -23,6 +25,7 @@ export interface Event {
   registrationEnd: Date;
   registeredUsers: DocumentReference[];
   scoringConfiguration: ScoringConfiguration;
+  teamRefs: DocumentReference<Team>[];
 }
 
 export default Event;
