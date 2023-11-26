@@ -33,7 +33,7 @@ class UserInfoService extends FirestoreService<UserInfo> {
         role: '',
         totalPoints: 0,
         uid: id,
-        entries: [],
+        entryRefs: [],
       });
     } catch (error) {
       return Promise.reject(error);
@@ -112,7 +112,7 @@ class UserInfoService extends FirestoreService<UserInfo> {
       return updateDoc(userRef, {
         entries: arrayUnion(entryRef),
       }).then(() => {
-        user.entries.push(entryRef);
+        user.entryRefs.push(entryRef);
         return user;
       });
     } catch (error) {

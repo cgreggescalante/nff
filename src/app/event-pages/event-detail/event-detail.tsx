@@ -5,6 +5,7 @@ import {
   Entry,
   Event,
   EventService,
+  Team,
   UserInfo,
   WorkoutTypeToNumber,
 } from '@shared-data';
@@ -24,6 +25,9 @@ export const EventDetail = () => {
     { user: UserInfo; entry: Entry }[]
   >([]);
   const [leaderboardLoading, setLeaderboardLoading] = useState<boolean>(true);
+
+  const [teams, setTeams] = useState<Team[]>([]);
+  const [teamsLoading, setTeamsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     if (!event && eventId) {
@@ -48,6 +52,12 @@ export const EventDetail = () => {
       EventService.getLeaderboard(eventId).then((leaderboard) => {
         setLeaderboard(leaderboard);
         setLeaderboardLoading(false);
+      });
+
+      EventService.getTeams(eventId).then((event) => {
+        console.log(event);
+        setTeams(event.teams);
+        setTeamsLoading(false);
       });
     }
   }, [eventId]);
@@ -120,6 +130,21 @@ export const EventDetail = () => {
                 ))}
               </tbody>
             </Table>
+          </>
+        )}
+      </LoadingWrapper>
+
+      <LoadingWrapper loading={teamsLoading}>
+        {teams.length > 0 && (
+          <>
+            <h2>Teams</h2>
+            <ul>
+              {teams.map((team, index) => (
+                <li key={index}>
+                  <h3>{team.name}</h3>
+                </li>
+              ))}
+            </ul>
           </>
         )}
       </LoadingWrapper>

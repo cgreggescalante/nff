@@ -28,4 +28,8 @@ export interface Event {
   teamRefs: DocumentReference<Team>[];
 }
 
+export interface EventWithTeams extends Event {
+  teams: Team[];
+}
+
 export default Event;

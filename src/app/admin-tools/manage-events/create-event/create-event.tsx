@@ -1,11 +1,22 @@
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { FormEvent, useState } from 'react';
 import ManagedFormControl from './managed-form-control/managed-form-control';
-import { EventService } from '@shared-data';
+import {
+  EventService,
+  WorkoutType,
+  WorkoutTypeNames,
+  WorkoutTypeToNumber,
+} from '@shared-data';
 
 export interface CreateEventProps {
   completed: () => void;
 }
+
+const defaultScoringConfiguration = () => {
+  const obj = {} as { [key in WorkoutType]: number };
+  WorkoutTypeNames.forEach((workoutType) => (obj[workoutType] = 1));
+  return obj;
+};
 
 export const CreateEvent = ({ completed }: CreateEventProps) => {
   const [name, setName] = useState<string>('');
@@ -14,6 +25,17 @@ export const CreateEvent = ({ completed }: CreateEventProps) => {
   const [endDate, setEndDate] = useState<string>('');
   const [registrationStart, setRegistrationStart] = useState<string>('');
   const [registrationEnd, setRegistrationEnd] = useState<string>('');
+  const [scoringConfiguration, setScoringConfiguration] =
+    useState<WorkoutTypeToNumber>(defaultScoringConfiguration());
+
+  const handleScoringConfiguration =
+    (workoutType: WorkoutType) => (value: number) => {
+      if (value < 0) return;
+      setScoringConfiguration({
+        ...scoringConfiguration,
+        [workoutType]: value,
+      });
+    };
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -26,6 +48,15 @@ export const CreateEvent = ({ completed }: CreateEventProps) => {
       registrationStart: new Date(registrationStart),
       registrationEnd: new Date(registrationEnd),
       registeredUsers: [],
+      scoringConfiguration: {
+        scoringRules: WorkoutTypeNames.map((workoutType) => ({
+          workoutType,
+          standardRate: scoringConfiguration[workoutType]
+            ? scoringConfiguration[workoutType]
+            : 0,
+        })),
+      },
+      teamRefs: [],
     };
 
     EventService.create(newEvent)
@@ -93,7 +124,21 @@ export const CreateEvent = ({ completed }: CreateEventProps) => {
           />
         </InputGroup>
 
+        <Form.Label>Scoring Rates</Form.Label>
+
+        {WorkoutTypeNames.map((workoutType) => (
+          <InputGroup key={workoutType}>
+            <InputGroup.Text>{workoutType}</InputGroup.Text>
+            <ManagedFormControl
+              value={scoringConfiguration[workoutType]}
+              setValue={handleScoringConfiguration(workoutType)}
+              type={'number'}
+            />
+          </InputGroup>
+        ))}
+
         <Button
+          className={'mt-2'}
           type={'submit'}
           active={
             !name ||

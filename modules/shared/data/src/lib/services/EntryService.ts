@@ -57,7 +57,7 @@ class EntryService extends FirestoreService<Entry> {
 
   async updateEntries(user: UserInfo, upload: Upload): Promise<void> {
     try {
-      for (const ref of user.entries) {
+      for (const ref of user.entryRefs) {
         const entry = await this.read(ref.withConverter(this.converter));
 
         if (entry == undefined) continue;

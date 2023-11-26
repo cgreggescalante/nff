@@ -13,4 +13,8 @@ export interface Upload {
   workouts: WorkoutTypeToNumber;
 }
 
+export interface UploadWithUser extends Upload {
+  user: UserInfo;
+}
+
 export default Upload;

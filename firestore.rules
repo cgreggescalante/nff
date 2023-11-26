@@ -33,5 +33,13 @@ service cloud.firestore {
             allow write;
         }
     }
+
+    match /teams {
+        allow read;
+        match /{teamId} {
+            allow read;
+            allow write;
+        }
+    }
   }
 }

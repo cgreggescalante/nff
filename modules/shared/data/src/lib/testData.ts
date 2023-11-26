@@ -14,7 +14,7 @@ const generateUser = (): UserInfo => ({
     lastName: faker.person.lastName(),
   },
   role: '',
-  entries: [],
+  entryRefs: [],
   totalPoints: 0,
 });
 

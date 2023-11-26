@@ -1,4 +1,5 @@
 import { DocumentReference } from 'firebase/firestore';
+import Entry from './Entry';
 
 export interface UserInfo {
   name: {
@@ -7,8 +8,12 @@ export interface UserInfo {
   };
   uid: string;
   role: string;
-  entries: DocumentReference[];
+  entryRefs: DocumentReference[];
   totalPoints: number;
+}
+
+export interface UserInfoWithEntries extends UserInfo {
+  entries: Entry[];
 }
 
 export default UserInfo;

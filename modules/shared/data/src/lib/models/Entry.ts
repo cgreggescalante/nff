@@ -16,4 +16,17 @@ export interface Entry {
   teamRef: DocumentReference<Team>;
 }
 
+// TODO: Use these interfaces, remove ? fields from Entry
+export interface EntryWithUser extends Entry {
+  user: UserInfo;
+}
+
+export interface EntryWithEvent extends Entry {
+  event: Event;
+}
+
+export interface EntryWithTeam extends Entry {
+  team: Team;
+}
+
 export default Entry;

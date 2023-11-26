@@ -11,12 +11,15 @@ import {
   where,
 } from 'firebase/firestore';
 import type Event from '../models/Event';
+import type { EventWithTeams } from '../models/Event';
 import { EventConverter } from '../converters/EventConverter';
 import UserInfoService from './UserInfoService';
 import { updateDoc } from '@firebase/firestore';
 import UserInfo from '../models/UserInfo';
 import EntryService from './EntryService';
 import { Entry } from '../models/Entry';
+import TeamService from './TeamService';
+import { TeamWithUid } from '../models/Team';
 
 class EventService extends FirestoreService<Event> {
   public constructor() {
@@ -98,6 +101,47 @@ class EventService extends FirestoreService<Event> {
       console.error('Error while retrieving leaderboard', error);
       return Promise.reject(error);
     }
+  }
+
+  async getTeams(eventId: string): Promise<EventWithTeams> {
+    const event = await this.read(eventId);
+
+    if (!event) throw new Error(`No event with ID: ${eventId}`);
+
+    const teamRefs = event.teamRefs;
+    const teams = await Promise.all(
+      teamRefs.map(async (teamRef) => {
+        const team = await TeamService.read(teamRef);
+        if (!team) throw new Error(`No team with ID: ${teamRef.id}`);
+        return team;
+      })
+    );
+
+    return {
+      ...event,
+      teams,
+    };
+  }
+
+  async addTeam(eventId: string, teamName: string): Promise<Event> {
+    const event = await this.read(eventId);
+
+    if (!event) throw new Error(`No event with ID: ${eventId}`);
+
+    // TODO: Create team through better interface
+    const team: TeamWithUid = await TeamService.create({
+      name: teamName,
+      ownerRef: UserInfoService.getReference(event.registeredUsers[0].id),
+      memberRefs: [],
+      eventRef: this.getReference(eventId),
+      points: 0,
+    });
+
+    await updateDoc(this.getReference(eventId), {
+      teamRefs: arrayUnion(TeamService.getReference(team.uid)),
+    });
+
+    return event;
   }
 }
 

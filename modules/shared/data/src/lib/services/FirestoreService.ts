@@ -12,6 +12,7 @@ import {
   getDocs,
   setDoc,
 } from 'firebase/firestore';
+import { WithUid } from '../models/FirestoreModel';
 
 // TODO: Separate functions by Service, no Services touching other collections
 export abstract class FirestoreService<T> {
@@ -55,13 +56,13 @@ export abstract class FirestoreService<T> {
    * Returns the document created.
    * @param document
    */
-  public async create(document: T): Promise<T> {
+  public async create(document: T): Promise<T & WithUid> {
     try {
       const docRef = await addDoc(
         this.collectionReference.withConverter(this.converter),
         document
       );
-      return { ...document, id: docRef.id };
+      return { ...document, uid: docRef.id };
     } catch (error) {
       return Promise.reject(error);
     }
