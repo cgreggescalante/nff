@@ -8,7 +8,10 @@ import TeamService from './lib/services/TeamService';
 // Models
 export type { UserInfo } from './lib/models/UserInfo';
 export type { Upload } from './lib/models/Upload';
+
 export type { Event } from './lib/models/Event';
+export type { EventWithUid } from './lib/models/Event';
+
 export type { Entry } from './lib/models/Entry';
 export type { WorkoutType } from './lib/models/WorkoutType';
 export type { WorkoutTypeToNumber } from './lib/models/WorkoutType';

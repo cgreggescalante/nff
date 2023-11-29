@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
-import type { Event } from '@shared-data';
+import type { Event, EventWithUid } from '@shared-data';
 import { Button, Table } from 'react-bootstrap';
 import { EventService } from '@shared-data';
 import { ConfirmDelete } from '../confirm-delete/confirm-delete';
 import CreateEvent from './create-event/create-event';
-import ManagedTextInput from '../../components/managed-text-input/managed-text-input';
 
 export function ManageEvents() {
-  const [events, setEvents] = useState<Event[]>([]);
+  const [events, setEvents] = useState<EventWithUid[]>([]);
   const [error, setError] = useState<string>();
   const [showCreateEvent, setShowCreateEvent] = useState<boolean>(false);
 
@@ -70,30 +69,16 @@ export function ManageEvents() {
 }
 
 interface EventRowProps {
-  event: Event;
+  event: EventWithUid;
   index: number;
   onDelete: () => void;
 }
 
 const EventRow = ({ event, index, onDelete }: EventRowProps) => {
   const [show, setShow] = useState<boolean>(false);
-  const [showCreateTeam, setShowCreateTeam] = useState<boolean>(false);
-  const [teamName, setTeamName] = useState<string>('');
-
   const onConfirm = () => {
     setShow(false);
     onDelete();
-  };
-
-  const addTeam = () => {
-    EventService.addTeam(event.uid, teamName)
-      .then(() => {
-        console.log(`Added team ${teamName} to event ${event.name}`);
-        setShowCreateTeam(false);
-      })
-      .catch((error) => {
-        console.error('Error while adding team:', error);
-      });
   };
 
   return (
@@ -102,13 +87,6 @@ const EventRow = ({ event, index, onDelete }: EventRowProps) => {
         <td>
           <Button size={'sm'} variant={'danger'} onClick={() => setShow(true)}>
             Delete
-          </Button>
-          <Button
-            size={'sm'}
-            variant={'success'}
-            onClick={() => setShowCreateTeam(true)}
-          >
-            Add Team
           </Button>
         </td>
         <td>{event.name}</td>
@@ -119,16 +97,6 @@ const EventRow = ({ event, index, onDelete }: EventRowProps) => {
           show={show}
           setShow={setShow}
         />
-      </tr>
-      <tr>
-        <td colSpan={3}>
-          {showCreateTeam && (
-            <>
-              <ManagedTextInput value={teamName} setValue={setTeamName} />
-              <Button onClick={addTeam}>Add</Button>
-            </>
-          )}
-        </td>
       </tr>
     </>
   );
