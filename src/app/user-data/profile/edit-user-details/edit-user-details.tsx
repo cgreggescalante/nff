@@ -36,9 +36,8 @@ export const EditUserDetails = ({
         lastName,
       },
       uid: userInfo.uid,
-      role: userInfo.role,
       totalPoints: userInfo.totalPoints,
-      registeredEvents: userInfo.entryRefs,
+      entryRefs: userInfo.entryRefs,
     };
 
     updateUser(newUser)

@@ -8,7 +8,6 @@ export interface UserInfo {
     lastName: string;
   };
   uid: string;
-  role: string;
   entryRefs: DocumentReference[];
   totalPoints: number;
 }

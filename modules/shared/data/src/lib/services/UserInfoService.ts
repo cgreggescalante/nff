@@ -30,7 +30,6 @@ class UserInfoService extends FirestoreService<UserInfo> {
     try {
       return this.createWithId(id, {
         name: { firstName, lastName },
-        role: '',
         totalPoints: 0,
         uid: id,
         entryRefs: [],
@@ -89,7 +88,6 @@ class UserInfoService extends FirestoreService<UserInfo> {
   ): Promise<void> {
     return super.update(documentId, {
       uid: document.uid,
-      role: document.role,
       totalPoints: document.totalPoints,
       name: document.name,
     });

@@ -1,9 +1,13 @@
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUser } from '../../../userContext';
+import { useState } from 'react';
+import { auth } from '../../../firebase';
+import { CheckAdminStatus } from '@shared-data';
 
 export const Header = () => {
   const { user, loading, logout } = useUser();
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -14,6 +18,15 @@ export const Header = () => {
       })
       .catch((err) => console.error(err));
   };
+
+  auth.onAuthStateChanged((user) => {
+    if (user !== null) {
+      CheckAdminStatus(user.uid).then((isAdmin) => {
+        if (!isAdmin) navigate('/');
+        else setIsAdmin(true);
+      });
+    }
+  });
 
   return (
     <Navbar expand="md" fixed="top" className="bg-body-secondary">
@@ -55,11 +68,11 @@ export const Header = () => {
                 </Nav.Link>
               </>
             )}
-            {user?.role === 'admin' ? (
+            {isAdmin && (
               <Nav.Link as={Link} to={'/admin-tools'}>
                 Admin
               </Nav.Link>
-            ) : null}
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>

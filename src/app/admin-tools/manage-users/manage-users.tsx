@@ -75,7 +75,6 @@ const UserRow = ({ user, index, deleteUser }: UserRowProps) => {
       <td>{user.name.firstName}</td>
       <td>{user.name.lastName}</td>
       <td>{user.uid}</td>
-      <td>{user.role}</td>
       <ConfirmDelete
         onConfirm={onConfirm}
         message={`Are you sure you want to delete user ${user.uid} and all associated uploads?

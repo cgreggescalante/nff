@@ -14,6 +14,7 @@ import Footer from './components/footer/footer';
 import Leaderboard from './leaderboard/leaderboard';
 import EventList from './event-list/event-list';
 import EventDetail from './event-pages/event-detail/event-detail';
+import { AdminRoute } from './components/protected-route/admin-route';
 
 export const App = () => (
   <div className={styles['app']}>
@@ -59,9 +60,9 @@ export const App = () => (
           <Route
             path="/admin-tools"
             element={
-              <ProtectedRoute admin={true}>
+              <AdminRoute>
                 <AdminTools />
-              </ProtectedRoute>
+              </AdminRoute>
             }
           />
         </Routes>

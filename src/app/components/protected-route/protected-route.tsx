@@ -4,17 +4,16 @@ import { useUser } from '../../../userContext';
 
 /* eslint-disable-next-line */
 interface ProtectedRouteProps {
-  admin?: boolean;
   children: ReactNode;
 }
 
-export const ProtectedRoute = ({ admin, children }: ProtectedRouteProps) => {
+export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const { user, loading } = useUser();
   const location = useLocation();
 
   if (loading) return null;
 
-  if (!user || (admin && user.role !== 'admin')) {
+  if (!user) {
     const redirectUrl = `/login?redirect=${encodeURIComponent(
       location.pathname + location.search
     )}`;

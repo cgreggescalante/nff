@@ -13,7 +13,6 @@ const generateUser = (): UserInfo => ({
     firstName: faker.person.firstName(),
     lastName: faker.person.lastName(),
   },
-  role: '',
   entryRefs: [],
   totalPoints: 0,
 });
@@ -61,6 +60,7 @@ const generateEvent = (): Event => {
       ],
     },
     teamRefs: [],
+    ownerIds: [],
   };
 };
 
