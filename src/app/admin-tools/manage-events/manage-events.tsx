@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { Event, EventWithUid } from '@shared-data';
+import type { EventWithUid } from '@shared-data';
 import { Button, Table } from 'react-bootstrap';
 import { EventService } from '@shared-data';
 import { ConfirmDelete } from '../confirm-delete/confirm-delete';
@@ -82,23 +82,21 @@ const EventRow = ({ event, index, onDelete }: EventRowProps) => {
   };
 
   return (
-    <>
-      <tr key={index}>
-        <td>
-          <Button size={'sm'} variant={'danger'} onClick={() => setShow(true)}>
-            Delete
-          </Button>
-        </td>
-        <td>{event.name}</td>
-        <td>{event.uid}</td>
-        <ConfirmDelete
-          onConfirm={onConfirm}
-          message={`Are you sure you want to delete event ${event.uid} and all associated entries?`}
-          show={show}
-          setShow={setShow}
-        />
-      </tr>
-    </>
+    <tr key={index}>
+      <td>
+        <Button size={'sm'} variant={'danger'} onClick={() => setShow(true)}>
+          Delete
+        </Button>
+      </td>
+      <td>{event.name}</td>
+      <td>{event.uid}</td>
+      <ConfirmDelete
+        onConfirm={onConfirm}
+        message={`Are you sure you want to delete event ${event.uid} and all associated entries?`}
+        show={show}
+        setShow={setShow}
+      />
+    </tr>
   );
 };
 
