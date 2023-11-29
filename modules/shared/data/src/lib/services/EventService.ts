@@ -11,6 +11,7 @@ import {
   where,
 } from 'firebase/firestore';
 import type Event from '../models/Event';
+import type { EventWithUid } from '../models/Event';
 import type { EventWithTeams } from '../models/Event';
 import { EventConverter } from '../converters/EventConverter';
 import UserInfoService from './UserInfoService';
@@ -33,7 +34,7 @@ class EventService extends FirestoreService<Event> {
     if (!event) throw new Error(`No event with ID: ${documentId}`);
 
     try {
-      for (const userId in event.registeredUsers) {
+      for (const userId in event.registeredUserRefs) {
         const userRef = UserInfoService.getReference(userId);
         await updateDoc(userRef, {
           registeredEvents: arrayRemove(eventRef),
@@ -41,7 +42,7 @@ class EventService extends FirestoreService<Event> {
       }
 
       const snapshot = await getDocs(
-        query(collection(db, 'entries'), where('event', '==', eventRef))
+        query(collection(db, 'entries'), where('eventRef', '==', eventRef))
       );
 
       for (const key in snapshot.docs) {
@@ -54,7 +55,7 @@ class EventService extends FirestoreService<Event> {
     }
   }
 
-  async addUser(event: Event, user: UserInfo): Promise<UserInfo> {
+  async addUser(event: EventWithUid, user: UserInfo): Promise<UserInfo> {
     try {
       if (!event.uid)
         throw new Error('Attempting to add UserInfo to Event with no ID');
@@ -131,7 +132,7 @@ class EventService extends FirestoreService<Event> {
     // TODO: Create team through better interface
     const team: TeamWithUid = await TeamService.create({
       name: teamName,
-      ownerRef: UserInfoService.getReference(event.registeredUsers[0].id),
+      ownerRef: UserInfoService.getReference(event.registeredUserRefs[0].id),
       memberRefs: [],
       eventRef: this.getReference(eventId),
       points: 0,

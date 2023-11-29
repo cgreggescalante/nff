@@ -50,7 +50,7 @@ class UserInfoService extends FirestoreService<UserInfo> {
       const userRef = doc(this.collectionReference, id);
 
       const snapshot = await getDocs(
-        query(collection(db, 'uploads'), where('user', '==', userRef))
+        query(collection(db, 'uploads'), where('userRef', '==', userRef))
       );
 
       for (const key in snapshot.docs) {

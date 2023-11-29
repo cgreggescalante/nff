@@ -3,17 +3,15 @@ import type UserInfo from './UserInfo';
 import type Event from './Event';
 import { WorkoutTypeToNumber } from './WorkoutType';
 import { Team } from './Team';
+import { WithUid } from './FirestoreModel';
 
-export interface Entry {
-  uid: string;
-  userRef: DocumentReference;
-  user?: UserInfo;
+export interface Entry extends WithUid {
+  userRef: DocumentReference<UserInfo>;
   eventRef: DocumentReference<Event>;
-  event?: Event;
+  teamRef: DocumentReference<Team>;
   duration: WorkoutTypeToNumber;
   goals: WorkoutTypeToNumber;
   points: number;
-  teamRef: DocumentReference<Team>;
 }
 
 // TODO: Use these interfaces, remove ? fields from Entry

@@ -58,10 +58,13 @@ export abstract class FirestoreService<T> {
    */
   public async create(document: T): Promise<T & WithUid> {
     try {
-      const docRef = await addDoc(
-        this.collectionReference.withConverter(this.converter),
-        document
-      );
+      const docRef = doc(this.collectionReference);
+
+      await setDoc(docRef, {
+        ...document,
+        uid: docRef.id,
+      });
+
       return { ...document, uid: docRef.id };
     } catch (error) {
       return Promise.reject(error);
@@ -152,12 +155,17 @@ export abstract class FirestoreService<T> {
    * Lists all documents in a collection.
    * TODO: Add query support
    */
-  public async list(): Promise<T[]> {
+  public async list(): Promise<(T & WithUid)[]> {
     try {
       const querySnapshot = await getDocs(
         this.collectionReference.withConverter(this.converter)
       );
-      return querySnapshot.docs.map((doc) => doc.data() as T);
+      return querySnapshot.docs.map((doc) => {
+        return {
+          ...(doc.data() as T),
+          uid: doc.id,
+        };
+      });
     } catch (error) {
       return Promise.reject(error);
     }

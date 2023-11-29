@@ -3,6 +3,7 @@ import { DocumentReference } from 'firebase/firestore';
 
 import { WorkoutTypeToNumber } from './WorkoutType';
 
+// TODO: Remove user
 export interface Upload {
   user?: UserInfo;
   userRef?: DocumentReference;

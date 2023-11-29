@@ -3,9 +3,9 @@ import type { Entry } from '../models/Entry';
 
 export const EntryConverter: FirestoreDataConverter<Entry> = {
   toFirestore: (entry: Entry) => ({
-    uid: entry.uid,
     userRef: entry.userRef,
     eventRef: entry.eventRef,
+    teamRef: entry.teamRef,
     duration: entry.duration,
     goals: entry.goals,
     points: entry.points,

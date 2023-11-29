@@ -1,6 +1,6 @@
 import type UserInfo from './models/UserInfo';
 import { faker } from '@faker-js/faker';
-import type Event from './models/Event';
+import type { Event, EventWithUid } from './models/Event';
 import UserInfoService from './services/UserInfoService';
 import EventService from './services/EventService';
 import type Upload from './models/Upload';
@@ -33,14 +33,13 @@ const generateEvent = (): Event => {
   endDate.setDate(endDate.getDate() + rs + rLength + 1 + eventLength);
 
   return {
-    uid: faker.string.uuid(),
     name: faker.airline.airline().name + ' Event',
     description: faker.lorem.paragraph(),
     startDate,
     endDate,
     registrationStart,
     registrationEnd,
-    registeredUsers: [],
+    registeredUserRefs: [],
     scoringConfiguration: {
       scoringRules: [
         {
@@ -109,10 +108,8 @@ export const generateUsers = async (count = 10) => {
 export const generateEvents = async (count = 1) => {
   for (let i = 0; i < count; i++) {
     const event = generateEvent();
-    if (event.uid) {
-      await EventService.createWithId(event.uid, event);
-      console.log(`Added Event: ${event.name}`);
-    }
+    await EventService.create(event);
+    console.log(`Added Event: ${event.name}`);
   }
 };
 
@@ -120,7 +117,7 @@ export const registerUsersForEvents = async () => {
   console.log('Registering users for events');
 
   let users: UserInfo[] = [];
-  let events: Event[] = [];
+  let events: EventWithUid[] = [];
 
   await Promise.all([
     UserInfoService.list().then((u) => {

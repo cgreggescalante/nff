@@ -1,9 +1,9 @@
 import { FirestoreDataConverter } from 'firebase/firestore';
-import type { Event, EventData } from '../models/Event';
+import type { Event, EventData, EventWithUid } from '../models/Event';
 
 export const EventConverter: FirestoreDataConverter<Event> = {
   toFirestore: (event: Event) => Object.assign({}, event),
-  fromFirestore: (snapshot, options): Event => {
+  fromFirestore: (snapshot, options): EventWithUid => {
     const data = snapshot.data(options) as EventData;
 
     return {
@@ -18,7 +18,9 @@ export const EventConverter: FirestoreDataConverter<Event> = {
       registrationEnd: data.registrationEnd
         ? data.registrationEnd.toDate()
         : new Date(0),
-      registeredUsers: data.registeredUsers ? data.registeredUsers : [],
+      registeredUserRefs: data.registeredUserRefs
+        ? data.registeredUserRefs
+        : [],
       scoringConfiguration: data.scoringConfiguration,
       teamRefs: data.teamRefs ? data.teamRefs : [],
     };
