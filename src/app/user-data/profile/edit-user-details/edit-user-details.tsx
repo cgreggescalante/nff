@@ -1,7 +1,7 @@
 import { UserInfo } from '@shared-data';
 import { useEffect, useState } from 'react';
 import { Button, Table } from 'react-bootstrap';
-import ManagedTextInput from '../../../components/managed-text-input/managed-text-input';
+import ManagedTextInput from '../../../components/managed-inputs/managed-text-input';
 import TimedAlert from '../../../components/timed-alert/timed-alert';
 
 /* eslint-disable-next-line */

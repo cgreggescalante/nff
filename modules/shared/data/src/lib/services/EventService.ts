@@ -8,6 +8,7 @@ import {
   DocumentReference,
   getDocs,
   query,
+  setDoc,
   where,
 } from 'firebase/firestore';
 import type Event from '../models/Event';
@@ -20,7 +21,7 @@ import UserInfo from '../models/UserInfo';
 import EntryService from './EntryService';
 import { Entry } from '../models/Entry';
 import TeamService from './TeamService';
-import { TeamWithUid } from '../models/Team';
+import { Team, TeamWithUid } from '../models/Team';
 
 class EventService extends FirestoreService<Event> {
   public constructor() {
@@ -124,15 +125,19 @@ class EventService extends FirestoreService<Event> {
     };
   }
 
-  async addTeam(eventId: string, teamName: string): Promise<Event> {
+  async addTeam(eventId: string, ownerUid: string): Promise<Event> {
     const event = await this.read(eventId);
 
     if (!event) throw new Error(`No event with ID: ${eventId}`);
 
+    const owner = await UserInfoService.read(ownerUid);
+
+    if (!owner) throw new Error(`No user with ID: ${ownerUid}`);
+
     // TODO: Create team through better interface
     const team: TeamWithUid = await TeamService.create({
-      name: teamName,
-      ownerRef: UserInfoService.getReference(event.registeredUserRefs[0].id),
+      name: `${owner.name.firstName} ${owner.name.lastName}'s Team`,
+      ownerRef: UserInfoService.getReference(ownerUid),
       memberRefs: [],
       eventRef: this.getReference(eventId),
       points: 0,
@@ -143,6 +148,15 @@ class EventService extends FirestoreService<Event> {
     });
 
     return event;
+  }
+
+  async deleteTeamRef(
+    eventRef: DocumentReference<Event>,
+    teamRef: DocumentReference<Team>
+  ): Promise<void> {
+    return updateDoc(eventRef, {
+      teamRefs: arrayRemove(teamRef),
+    });
   }
 }
 

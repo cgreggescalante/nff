@@ -1,11 +1,12 @@
 import { DocumentReference } from 'firebase/firestore';
 import UserInfo from './UserInfo';
+import Event from './Event';
 
 export interface Team {
   name: string;
-  ownerRef: DocumentReference;
-  memberRefs: DocumentReference[];
-  eventRef: DocumentReference;
+  ownerRef: DocumentReference<UserInfo>;
+  memberRefs: DocumentReference<UserInfo>[];
+  eventRef: DocumentReference<Event>;
   points: number;
 }
 

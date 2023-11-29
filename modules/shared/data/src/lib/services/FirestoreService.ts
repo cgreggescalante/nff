@@ -78,7 +78,7 @@ export abstract class FirestoreService<T> {
    */
   public async read(
     documentId: string | DocumentReference<T>
-  ): Promise<T | null> {
+  ): Promise<(T & WithUid) | null> {
     try {
       let snapshot;
       if (typeof documentId == 'string') {
@@ -93,7 +93,7 @@ export abstract class FirestoreService<T> {
       }
 
       if (snapshot.exists()) {
-        return snapshot.data() as T;
+        return { ...(snapshot.data() as T), uid: snapshot.id };
       } else {
         return null;
       }

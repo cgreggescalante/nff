@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import type { EventWithUid } from '@shared-data';
 import { Button, Table } from 'react-bootstrap';
 import { EventService } from '@shared-data';
-import { ConfirmDelete } from '../confirm-delete/confirm-delete';
 import CreateEvent from './create-event/create-event';
+import { ConfirmDelete } from '../../components/confirm-delete/confirm-delete';
 
 export function ManageEvents() {
   const [events, setEvents] = useState<EventWithUid[]>([]);

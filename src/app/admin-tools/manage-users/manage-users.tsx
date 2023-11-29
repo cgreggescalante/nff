@@ -1,7 +1,7 @@
 import { Button, Table } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { UserInfo, UserInfoService } from '@shared-data';
-import { ConfirmDelete } from '../confirm-delete/confirm-delete';
+import { ConfirmDelete } from '../../components/confirm-delete/confirm-delete';
 
 export const ManageUsers = () => {
   const [users, setUsers] = useState<UserInfo[]>([]);

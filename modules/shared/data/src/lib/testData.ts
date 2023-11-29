@@ -60,7 +60,6 @@ const generateEvent = (): Event => {
       ],
     },
     teamRefs: [],
-    ownerIds: [],
   };
 };
 

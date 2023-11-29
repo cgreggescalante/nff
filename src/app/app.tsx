@@ -15,6 +15,7 @@ import Leaderboard from './leaderboard/leaderboard';
 import EventList from './event-list/event-list';
 import EventDetail from './event-pages/event-detail/event-detail';
 import { AdminRoute } from './components/protected-route/admin-route';
+import { EditEvent } from './event-pages/edit-event';
 
 export const App = () => (
   <div className={styles['app']}>
@@ -29,7 +30,8 @@ export const App = () => (
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/events" element={<EventList />} />
           <Route path="/events/:eventId" element={<EventDetail />} />
-
+          // TODO: Require event owner
+          <Route path="/events/:eventId/edit" element={<EditEvent />} />
           <Route
             path="/upload"
             element={
@@ -38,7 +40,6 @@ export const App = () => (
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/profile"
             element={
@@ -47,7 +48,6 @@ export const App = () => (
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/user-dashboard"
             element={
@@ -56,7 +56,6 @@ export const App = () => (
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/admin-tools"
             element={

@@ -1,14 +1,7 @@
 import styles from './event-detail.module.scss';
 import { useLocation, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import {
-  Entry,
-  Event,
-  EventService,
-  Team,
-  UserInfo,
-  WorkoutTypeToNumber,
-} from '@shared-data';
+import { Entry, Event, EventService, Team, UserInfo } from '@shared-data';
 import LoadingWrapper from '../../components/loading-wrapper/loading-wrapper';
 import { useUser } from '../../../userContext';
 import { Button, Table } from 'react-bootstrap';

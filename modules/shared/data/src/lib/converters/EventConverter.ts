@@ -23,7 +23,6 @@ export const EventConverter: FirestoreDataConverter<Event> = {
         : [],
       scoringConfiguration: data.scoringConfiguration,
       teamRefs: data.teamRefs ? data.teamRefs : [],
-      ownerIds: data.ownerIds ? data.ownerIds : [],
     };
   },
 };
