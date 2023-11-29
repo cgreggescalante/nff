@@ -14,6 +14,7 @@ import { Button, Card } from 'react-bootstrap';
 import LoadingWrapper from '../components/loading-wrapper/loading-wrapper';
 import { ConfirmDelete } from '../components/confirm-delete/confirm-delete';
 
+// TODO: add route protection to check if the user is an event owner
 export const EditEvent = () => {
   const location = useLocation();
   const { eventId } = useParams();

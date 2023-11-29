@@ -34,6 +34,7 @@ export { EntryService };
 export { TeamService };
 
 export { CheckAdminStatus } from './lib/services/AuthService';
+export { CheckIsEventOwner } from './lib/services/AuthService';
 
 export {
   generateUsers,

@@ -41,8 +41,10 @@ class TeamService extends FirestoreService<Team> {
     }
   }
 
-  async getByEvent(eventRef: DocumentReference<Event>): Promise<Team[]> {
+  async getByEvent(eventUid: string): Promise<Team[]> {
     try {
+      const eventRef = EventService.getReference(eventUid);
+
       const docs = await getDocs(
         query(this.collectionReference, where('eventRef', '==', eventRef))
       );

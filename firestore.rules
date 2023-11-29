@@ -28,6 +28,9 @@ service cloud.firestore {
         match /{eventId} {
             allow read;
             allow write;
+            match /owners/{ownerUid} {
+                allow read: if request.auth.uid == ownerUid;
+            }
         }
     }
 

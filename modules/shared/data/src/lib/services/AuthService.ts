@@ -10,7 +10,25 @@ export const CheckAdminStatus = async (userUid: string): Promise<boolean> => {
       return doc.exists();
     })
     .catch((error) => {
-      console.log(error);
+      console.error(error);
+      return false;
+    });
+};
+
+export const CheckIsEventOwner = async (
+  userUid: string,
+  eventUid: string
+): Promise<boolean> => {
+  const eventRef = doc(collection(db, 'events'), eventUid);
+
+  const ownerRef = doc(eventRef, 'owners', userUid);
+
+  return getDoc(ownerRef)
+    .then((doc) => {
+      return doc.exists();
+    })
+    .catch((error) => {
+      console.error(error);
       return false;
     });
 };

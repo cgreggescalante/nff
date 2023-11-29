@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import type { Event } from '@shared-data';
+import type { EventWithUid } from '@shared-data';
 import { EventService } from '@shared-data';
 import EventCard from './event-card/event-card';
 import LoadingWrapper from '../components/loading-wrapper/loading-wrapper';
 
 export const EventList = () => {
-  const [events, setEvents] = useState<Event[]>([]);
+  const [events, setEvents] = useState<EventWithUid[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
