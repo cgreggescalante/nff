@@ -2,6 +2,11 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Allow all users to check if they are admins
+    match /admins/{adminUid} {
+        allow read: if request.auth.uid == adminUid;
+    }
+
     // Disallows users from editing other's user documents
     match /users/{userId} {
         allow read;

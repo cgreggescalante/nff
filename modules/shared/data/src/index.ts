@@ -31,6 +31,8 @@ export { EventService };
 export { EntryService };
 export { TeamService };
 
+export { CheckAdminStatus } from './lib/services/AuthService';
+
 export {
   generateUsers,
   generateEvents,

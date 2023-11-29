@@ -8,6 +8,7 @@ import LoadingWrapper from '../components/loading-wrapper/loading-wrapper';
 import CollapsibleContainer from './collapsible-container/collapsible-container';
 import { Button } from 'react-bootstrap';
 import {
+  CheckAdminStatus,
   Entry,
   EntryConverter,
   EntryService,
@@ -16,6 +17,7 @@ import {
   generateUploads,
   generateUsers,
   registerUsersForEvents,
+  TeamService,
   UserInfoService,
 } from '@shared-data';
 
@@ -27,9 +29,13 @@ export const AdminTools = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!loading && user?.role !== 'admin') navigate('/');
-    if (!loading && user?.role === 'admin') setAuthenticated(true);
-  }, [user, navigate, loading]);
+    if (!loading && user !== null) {
+      CheckAdminStatus(user).then((isAdmin) => {
+        if (!isAdmin) navigate('/');
+        else setAuthenticated(true);
+      });
+    }
+  }, [loading, navigate, user]);
 
   return (
     <div className={styles['container']}>
@@ -57,6 +63,7 @@ export const AdminTools = () => {
             uid: 'test',
             userRef: UserInfoService.getReference('test-user'),
             eventRef: EventService.getReference('test-event'),
+            teamRef: TeamService.getReference('test-team'),
             duration: { Run: 1 },
             goals: { Run: 1 },
             points: 1,
