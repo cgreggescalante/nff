@@ -1,26 +1,18 @@
-import { ReactNode, useState } from 'react';
-import { auth } from '../../../firebase';
-import { CheckAdminStatus } from '@shared-data';
+import { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useAuth from '../../../useAuth';
 
 interface AdminRouteProps {
   children: ReactNode;
 }
 
 export const AdminRoute = ({ children }: AdminRouteProps): ReactNode => {
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const { isAdmin, loading } = useAuth();
+
   const navigate = useNavigate();
 
-  auth.onAuthStateChanged((user) => {
-    if (user === null) {
-      navigate('/');
-    } else {
-      CheckAdminStatus(user.uid).then((isAdmin) => {
-        if (!isAdmin) navigate('/');
-        else setIsAdmin(true);
-      });
-    }
-  });
+  if (loading) return;
 
   if (isAdmin) return children;
+  else navigate('/');
 };
