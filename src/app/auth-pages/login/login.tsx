@@ -7,7 +7,6 @@ import { UserInfoService } from '@shared-data';
 import { useUser } from '../../../userContext';
 import { auth } from '../../../firebase';
 
-// TODO: Use firestore auth pages
 export const Login = () => {
   const { login } = useUser();
   const navigate = useNavigate();

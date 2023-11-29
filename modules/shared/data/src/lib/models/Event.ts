@@ -15,6 +15,7 @@ export interface EventData {
   registeredUserRefs: DocumentReference<UserInfo>[];
   scoringConfiguration: ScoringConfiguration;
   teamRefs: DocumentReference<Team>[];
+  ownerRefs: DocumentReference<UserInfo>[];
 }
 
 export interface Event {
@@ -25,8 +26,9 @@ export interface Event {
   registrationStart: Date;
   registrationEnd: Date;
   registeredUserRefs: DocumentReference<UserInfo>[];
-  scoringConfiguration: ScoringConfiguration;
   teamRefs: DocumentReference<Team>[];
+  ownerRefs: DocumentReference<UserInfo>[];
+  scoringConfiguration: ScoringConfiguration;
 }
 
 export interface EventWithTeams extends Event {
