@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { EventWithUid } from '@shared-data';
-import { EventService } from '@shared-data';
+import { listEvents } from '@shared-data';
 import EventCard from './event-card';
 import { LoadingWrapper } from '@shared-ui';
 
@@ -9,7 +9,7 @@ export const EventList = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    EventService.list()
+    listEvents()
       .then((events) => {
         setEvents(events);
         setLoading(false);

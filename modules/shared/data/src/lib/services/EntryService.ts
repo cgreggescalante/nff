@@ -9,12 +9,11 @@ import {
   query,
   where,
 } from 'firebase/firestore';
-import { addDoc } from '@firebase/firestore';
+import { addDoc, getDoc } from '@firebase/firestore';
 import Upload from '../models/Upload';
 import UserInfo from '../models/UserInfo';
 
 import { addWorkoutTypeToNumber } from '../models/WorkoutType';
-import EventService from '../services/EventService';
 import { ApplyScoring } from '../models/ScoringConfiguration';
 import TeamService from './TeamService';
 
@@ -70,9 +69,9 @@ class EntryService extends FirestoreService<Entry> {
 
         if (entry == undefined) continue;
 
-        const event = await EventService.read(entry.eventRef);
+        const event = (await getDoc(entry.eventRef)).data();
 
-        if (event == null) continue;
+        if (!event) continue;
 
         entry.duration = addWorkoutTypeToNumber(
           entry.duration,

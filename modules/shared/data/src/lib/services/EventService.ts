@@ -1,9 +1,7 @@
-import { FirestoreService } from './FirestoreService';
 import { db } from '../firebase';
 import {
   arrayRemove,
   arrayUnion,
-  collection,
   DocumentReference,
   getDocs,
   query,
@@ -12,34 +10,17 @@ import {
 } from 'firebase/firestore';
 import type Event from '../models/Event';
 import type { EventWithUid } from '../models/Event';
-import { EventConverter } from '../converters/EventConverter';
 import UserInfoService from './UserInfoService';
-import { addDoc, doc, updateDoc } from '@firebase/firestore';
+import { addDoc, doc, getDoc, updateDoc } from '@firebase/firestore';
 import UserInfo from '../models/UserInfo';
 import { Entry, EntryWithUid } from '../models/Entry';
 import { Team, TeamWithUid } from '../models/Team';
-import { UserInfoConverter } from '../converters/UserInfoConverter';
-import { EntryConverter } from '../converters/EntryConverter';
-import { TeamConverter } from '../converters/TeamConverter';
-
-class EventService extends FirestoreService<Event> {
-  public constructor() {
-    super(collection(db, 'events'), EventConverter);
-  }
-}
-
-export default new EventService();
-
-const EventCollectionRef = collection(db, 'events').withConverter(
-  EventConverter
-);
-const UserCollectionRef = collection(db, 'users').withConverter(
-  UserInfoConverter
-);
-const EntryCollectionRef = collection(db, 'entries').withConverter(
-  EntryConverter
-);
-const TeamCollectionRef = collection(db, 'teams').withConverter(TeamConverter);
+import {
+  EntryCollectionRef,
+  EventCollectionRef,
+  TeamCollectionRef,
+  UserCollectionRef,
+} from './CollectionRefs';
 
 export const createEvent = async (event: Event): Promise<EventWithUid> => {
   const docRef = await addDoc(EventCollectionRef, event);
@@ -182,4 +163,14 @@ export const getUserLeaderboard = async (
   leaderboardEntries.sort((a, b) => b.entry.points - a.entry.points);
 
   return leaderboardEntries;
+};
+
+export const listEvents = async (): Promise<EventWithUid[]> => {
+  const events = await getDocs(EventCollectionRef);
+  return events.docs.map((doc) => ({ ...doc.data(), uid: doc.id }));
+};
+
+export const readEvent = async (uid: string): Promise<EventWithUid | null> => {
+  const event = await getDoc(doc(EventCollectionRef, uid));
+  return event.exists() ? { ...event.data(), uid } : null;
 };

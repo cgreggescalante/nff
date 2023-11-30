@@ -2,7 +2,11 @@ import type UserInfo from './models/UserInfo';
 import { faker } from '@faker-js/faker';
 import type { Event, EventWithUid } from './models/Event';
 import UserInfoService from './services/UserInfoService';
-import EventService, { registerUserForEvent } from './services/EventService';
+import {
+  createEvent,
+  listEvents,
+  registerUserForEvent,
+} from './services/EventService';
 import type Upload from './models/Upload';
 import UploadService from './services/UploadService';
 import { WorkoutTypeNames, WorkoutTypeToNumber } from './models/WorkoutType';
@@ -106,7 +110,7 @@ export const generateUsers = async (count = 10) => {
 export const generateEvents = async (count = 1) => {
   for (let i = 0; i < count; i++) {
     const event = generateEvent();
-    await EventService.create(event);
+    await createEvent(event);
     console.log(`Added Event: ${event.name}`);
   }
 };
@@ -122,8 +126,8 @@ export const registerUsers = async () => {
       users = u;
       console.log(`Retrieved ${users.length} users`);
     }),
-    EventService.list().then((e) => {
-      events = e;
+    listEvents().then((list) => {
+      events = list;
       console.log(`Retrieved ${events.length} events`);
     }),
   ]);

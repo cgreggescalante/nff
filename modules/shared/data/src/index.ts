@@ -1,6 +1,5 @@
 import UploadService from './lib/services/UploadService';
 import UserInfoService from './lib/services/UserInfoService';
-import EventService from './lib/services/EventService';
 import UploadConverter from './lib/converters/UploadConverter';
 import EntryService from './lib/services/EntryService';
 import TeamService from './lib/services/TeamService';
@@ -29,7 +28,6 @@ export { EntryConverter } from './lib/converters/EntryConverter';
 // Services
 export { UploadService };
 export { UserInfoService };
-export { EventService };
 export { EntryService };
 export { TeamService };
 
@@ -44,3 +42,4 @@ export {
 } from './lib/testData';
 
 export * from './lib/services/EventService';
+export * from './lib/services/CollectionRefs';

@@ -2,8 +2,8 @@ import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import {
   CheckIsEventOwner,
-  EventService,
   EventWithUid,
+  readEvent,
   registerUserForEvent,
 } from '@shared-data';
 import { LoadingWrapper } from '@shared-ui';
@@ -26,7 +26,7 @@ export const EventDetail = () => {
 
   useEffect(() => {
     if (!event && eventId) {
-      EventService.read(eventId)
+      readEvent(eventId)
         .then((event) => {
           if (event != null) {
             setEvent(event);

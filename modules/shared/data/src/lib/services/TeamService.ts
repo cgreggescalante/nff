@@ -12,9 +12,9 @@ import {
 } from 'firebase/firestore';
 import { db } from '../firebase';
 import { TeamConverter } from '../converters/TeamConverter';
-import { updateDoc } from '@firebase/firestore';
-import EventService from './EventService';
+import { doc, updateDoc } from '@firebase/firestore';
 import EntryService from './EntryService';
+import { EventCollectionRef } from './CollectionRefs';
 
 class TeamService extends FirestoreService<Team> {
   public constructor() {
@@ -48,7 +48,7 @@ class TeamService extends FirestoreService<Team> {
 
   async getByEvent(eventUid: string): Promise<Team[]> {
     try {
-      const eventRef = EventService.getReference(eventUid);
+      const eventRef = doc(EventCollectionRef, eventUid);
 
       const docs = await getDocs(
         query(this.collectionReference, where('eventRef', '==', eventRef))

@@ -2,7 +2,6 @@ import { Button, Form, InputGroup } from 'react-bootstrap';
 import { FormEvent, useState } from 'react';
 import {
   createEvent,
-  EventService,
   WorkoutType,
   WorkoutTypeNames,
   WorkoutTypeToNumber,

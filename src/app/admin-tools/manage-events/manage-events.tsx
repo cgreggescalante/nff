@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { EventWithUid } from '@shared-data';
 import { Button, Table } from 'react-bootstrap';
-import { deleteEvent, EventService } from '@shared-data';
+import { deleteEvent, listEvents } from '@shared-data';
 import CreateEvent from './create-event/create-event';
 import { ConfirmPopup } from '@shared-ui';
 
@@ -11,7 +11,7 @@ export function ManageEvents() {
   const [showCreateEvent, setShowCreateEvent] = useState<boolean>(false);
 
   useEffect(() => {
-    EventService.list().then((events) => setEvents(events));
+    listEvents().then((events) => setEvents(events));
   }, []);
 
   const handleDelete = (uid: string) => {

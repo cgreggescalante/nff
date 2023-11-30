@@ -7,14 +7,17 @@ import {
   Entry,
   EntryConverter,
   EntryService,
-  EventService,
   generateEvents,
   generateUploads,
   generateUsers,
   registerUsers,
-  TeamService,
-  UserInfoService,
 } from '@shared-data';
+import {
+  EventCollectionRef,
+  TeamCollectionRef,
+  UserCollectionRef,
+} from '../../../modules/shared/data/src/lib/services/CollectionRefs';
+import { doc } from '@firebase/firestore';
 
 export const AdminTools = () => {
   return (
@@ -36,10 +39,9 @@ export const AdminTools = () => {
       <Button
         onClick={async () => {
           const testEntry: Entry = {
-            uid: 'test',
-            userRef: UserInfoService.getReference('test-user'),
-            eventRef: EventService.getReference('test-event'),
-            teamRef: TeamService.getReference('test-team'),
+            userRef: doc(UserCollectionRef, 'test-user'),
+            eventRef: doc(EventCollectionRef, 'test-event'),
+            teamRef: doc(TeamCollectionRef, 'test-team'),
             duration: { Run: 1 },
             goals: { Run: 1 },
             points: 1,
