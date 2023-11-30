@@ -1,8 +1,7 @@
 import { UserInfo } from '@shared-data';
 import { useEffect, useState } from 'react';
 import { Button, Table } from 'react-bootstrap';
-import ManagedTextInput from '../../../components/managed-inputs/managed-text-input';
-import TimedAlert from '../../../components/timed-alert/timed-alert';
+import { ManagedTextInput, TimedAlert } from '@shared-ui';
 
 /* eslint-disable-next-line */
 export interface EditUserDetailsProps {

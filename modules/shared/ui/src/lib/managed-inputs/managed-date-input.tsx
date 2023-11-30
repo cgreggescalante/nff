@@ -1,6 +1,3 @@
-import { ManagedTextInputProps } from './managed-text-input';
-import { useState } from 'react';
-
 interface ManagedDateInputProps {
   value: Date;
   setValue: (e: Date) => void;

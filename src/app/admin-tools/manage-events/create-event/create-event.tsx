@@ -1,12 +1,12 @@
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { FormEvent, useState } from 'react';
-import ManagedFormControl from './managed-form-control/managed-form-control';
 import {
   EventService,
   WorkoutType,
   WorkoutTypeNames,
   WorkoutTypeToNumber,
 } from '@shared-data';
+import { ManagedFormControl } from '@shared-ui';
 
 export interface CreateEventProps {
   completed: () => void;

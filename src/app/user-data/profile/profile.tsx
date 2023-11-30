@@ -1,4 +1,4 @@
-import { EditUser } from './edit-user/edit-user';
+import { EditUser } from './edit-user';
 import { LoadingWrapper } from '@shared-ui';
 import useUser from '../../../providers/useUser';
 

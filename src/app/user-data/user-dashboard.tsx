@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LoadingWrapper } from '@shared-ui';
-import UploadList from '../../components/upload-list/upload-list';
-import useUser from '../../../providers/useUser';
+import useUser from '../../providers/useUser';
+import UploadList from '../components/upload-list/upload-list';
 
 export const UserDashboard = () => {
   const { user, loading } = useUser();
