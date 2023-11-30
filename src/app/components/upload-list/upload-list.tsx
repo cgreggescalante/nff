@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { UploadCard } from './upload-card/upload-card';
 import { Upload, UploadService } from '@shared-data';
-import LoadingWrapper from '../loading-wrapper/loading-wrapper';
+import { LoadingWrapper } from '@shared-ui';
 
 export interface UploadListProps {
   uid?: string;

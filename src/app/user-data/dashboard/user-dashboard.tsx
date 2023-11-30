@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import LoadingWrapper from '../../components/loading-wrapper/loading-wrapper';
+import { LoadingWrapper } from '@shared-ui';
 import UploadList from '../../components/upload-list/upload-list';
 import useUser from '../../../providers/useUser';
 

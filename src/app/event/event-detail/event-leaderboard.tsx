@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Entry, EventService, UserInfo } from '@shared-data';
-import LoadingWrapper from '../../components/loading-wrapper/loading-wrapper';
+import { LoadingWrapper } from '@shared-ui';
 import { Table } from 'react-bootstrap';
 
 interface EventLeaderboardProps {

@@ -11,8 +11,8 @@ import { DocumentReference } from 'firebase/firestore';
 import { Button, Card } from 'react-bootstrap';
 import ManagedTextInput from '../../components/managed-inputs/managed-text-input';
 import { ManagedDateInput } from '../../components/managed-inputs/managed-date-input';
-import LoadingWrapper from '../../components/loading-wrapper/loading-wrapper';
 import { ConfirmDelete } from '../../components/confirm-delete/confirm-delete';
+import { LoadingWrapper } from '@shared-ui';
 
 // TODO: add route protection to check if the user is an event owner
 export const EditEvent = () => {

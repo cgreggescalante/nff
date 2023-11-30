@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Team, TeamService } from '@shared-data';
-import LoadingWrapper from '../../components/loading-wrapper/loading-wrapper';
+import { LoadingWrapper } from '@shared-ui';
 
 interface TeamsListProps {
   eventUid: string;

@@ -1,5 +1,5 @@
 import { EditUser } from './edit-user/edit-user';
-import LoadingWrapper from '../../components/loading-wrapper/loading-wrapper';
+import { LoadingWrapper } from '@shared-ui';
 import useUser from '../../../providers/useUser';
 
 export const Profile = () => {

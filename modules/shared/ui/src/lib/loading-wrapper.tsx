@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
 /* eslint-disable-next-line */
-export interface LoadingWrapperProps {
+interface LoadingWrapperProps {
   loading: boolean;
   children: ReactNode;
 }
@@ -14,5 +14,3 @@ export const LoadingWrapper = ({
 
   return children;
 };
-
-export default LoadingWrapper;

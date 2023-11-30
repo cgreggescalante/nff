@@ -1,7 +1,7 @@
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { CheckIsEventOwner, Event, EventService } from '@shared-data';
-import LoadingWrapper from '../../components/loading-wrapper/loading-wrapper';
+import { LoadingWrapper } from '@shared-ui';
 import { Button } from 'react-bootstrap';
 import { EventLeaderboard } from './event-leaderboard';
 import { TeamsList } from './teams-list';
