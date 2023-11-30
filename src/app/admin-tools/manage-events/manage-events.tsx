@@ -3,7 +3,7 @@ import type { EventWithUid } from '@shared-data';
 import { Button, Table } from 'react-bootstrap';
 import { EventService } from '@shared-data';
 import CreateEvent from './create-event/create-event';
-import { ConfirmDelete } from '../../components/confirm-delete/confirm-delete';
+import { ConfirmPopup } from '@shared-ui';
 
 export function ManageEvents() {
   const [events, setEvents] = useState<EventWithUid[]>([]);
@@ -90,11 +90,12 @@ const EventRow = ({ event, index, onDelete }: EventRowProps) => {
       </td>
       <td>{event.name}</td>
       <td>{event.uid}</td>
-      <ConfirmDelete
+      <ConfirmPopup
         onConfirm={onConfirm}
         message={`Are you sure you want to delete event ${event.uid} and all associated entries?`}
         show={show}
         setShow={setShow}
+        action={'Delete'}
       />
     </tr>
   );

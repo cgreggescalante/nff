@@ -1,26 +1,31 @@
 import { Button, Modal } from 'react-bootstrap';
 
-interface ConfirmDeleteProps {
+interface ConfirmPopupProps {
   onConfirm: () => void;
   message: string;
   show: boolean;
   setShow: (value: boolean) => void;
+  action: 'Delete' | 'Confirm';
 }
 
-export const ConfirmDelete = ({
+export const ConfirmPopup = ({
   onConfirm,
   message,
   show,
   setShow,
-}: ConfirmDeleteProps) => (
+  action,
+}: ConfirmPopupProps) => (
   <Modal show={show} onHide={() => setShow(false)}>
     <Modal.Header closeButton>
-      <Modal.Title>Confirm Delete</Modal.Title>
+      <Modal.Title>Confirm Action</Modal.Title>
     </Modal.Header>
     <Modal.Body>{message}</Modal.Body>
     <Modal.Footer>
       <Button onClick={() => setShow(false)}>Cancel</Button>
-      <Button variant={'danger'} onClick={onConfirm}>
+      <Button
+        variant={action === 'Delete' ? 'danger' : 'success'}
+        onClick={onConfirm}
+      >
         Delete
       </Button>
     </Modal.Footer>

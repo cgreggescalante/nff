@@ -11,8 +11,7 @@ import { DocumentReference } from 'firebase/firestore';
 import { Button, Card } from 'react-bootstrap';
 import ManagedTextInput from '../../components/managed-inputs/managed-text-input';
 import { ManagedDateInput } from '../../components/managed-inputs/managed-date-input';
-import { ConfirmDelete } from '../../components/confirm-delete/confirm-delete';
-import { LoadingWrapper } from '@shared-ui';
+import { LoadingWrapper, ConfirmPopup } from '@shared-ui';
 
 // TODO: add route protection to check if the user is an event owner
 export const EditEvent = () => {
@@ -167,11 +166,12 @@ const EditTeam = ({ team }: { team: TeamWithUid }) => {
         <Button variant={'danger'} onClick={() => setShow(true)}>
           X
         </Button>
-        <ConfirmDelete
+        <ConfirmPopup
           onConfirm={deleteTeam}
           message={`Are you sure you want to delete team '${team.name}'?`}
           show={show}
           setShow={setShow}
+          action={'Delete'}
         />
         {team.ownerRef.path}
         <br />

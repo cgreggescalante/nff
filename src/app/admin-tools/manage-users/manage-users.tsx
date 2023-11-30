@@ -1,7 +1,7 @@
 import { Button, Table } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { UserInfo, UserInfoService } from '@shared-data';
-import { ConfirmDelete } from '../../components/confirm-delete/confirm-delete';
+import { ConfirmPopup } from '@shared-ui';
 
 export const ManageUsers = () => {
   const [users, setUsers] = useState<UserInfo[]>([]);
@@ -75,12 +75,13 @@ const UserRow = ({ user, index, deleteUser }: UserRowProps) => {
       <td>{user.name.firstName}</td>
       <td>{user.name.lastName}</td>
       <td>{user.uid}</td>
-      <ConfirmDelete
+      <ConfirmPopup
         onConfirm={onConfirm}
         message={`Are you sure you want to delete user ${user.uid} and all associated uploads?
       Note that the user's identity will still exist in Firebase Authentication.`}
         show={show}
         setShow={setShow}
+        action={'Delete'}
       />
     </tr>
   );
