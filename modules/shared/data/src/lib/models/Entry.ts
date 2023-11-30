@@ -5,10 +5,10 @@ import { WorkoutTypeToNumber } from './WorkoutType';
 import { Team } from './Team';
 import { WithUid } from './FirestoreModel';
 
-export interface Entry extends WithUid {
+export interface Entry {
   userRef: DocumentReference<UserInfo>;
   eventRef: DocumentReference<Event>;
-  teamRef: DocumentReference<Team>;
+  teamRef?: DocumentReference<Team>;
   duration: WorkoutTypeToNumber;
   goals: WorkoutTypeToNumber;
   points: number;
@@ -26,5 +26,7 @@ export interface EntryWithEvent extends Entry {
 export interface EntryWithTeam extends Entry {
   team: Team;
 }
+
+export interface EntryWithUid extends Entry, WithUid {}
 
 export default Entry;

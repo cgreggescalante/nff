@@ -11,7 +11,7 @@ import {
   generateEvents,
   generateUploads,
   generateUsers,
-  registerUsersForEvents,
+  registerUsers,
   TeamService,
   UserInfoService,
 } from '@shared-data';
@@ -31,9 +31,7 @@ export const AdminTools = () => {
 
       <Button onClick={() => generateUsers()}>Generate 10 Users</Button>
       <Button onClick={() => generateEvents()}>Generate 1 Event</Button>
-      <Button onClick={() => registerUsersForEvents()}>
-        Register Users for Events
-      </Button>
+      <Button onClick={() => registerUsers()}>Register Users for Events</Button>
       <Button onClick={() => generateUploads()}>Generate Uploads</Button>
       <Button
         onClick={async () => {

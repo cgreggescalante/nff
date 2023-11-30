@@ -1,24 +1,29 @@
 import { useEffect, useState } from 'react';
-import { Entry, EventService, UserInfo } from '@shared-data';
+import {
+  Entry,
+  EventWithUid,
+  getUserLeaderboard,
+  UserInfo,
+} from '@shared-data';
 import { LoadingWrapper } from '@shared-ui';
 import { Table } from 'react-bootstrap';
 
 interface EventLeaderboardProps {
-  eventUid: string;
+  event: EventWithUid;
 }
 
-export const EventLeaderboard = ({ eventUid }: EventLeaderboardProps) => {
+export const EventLeaderboard = ({ event }: EventLeaderboardProps) => {
   const [leaderboard, setLeaderboard] = useState<
     { user: UserInfo; entry: Entry }[]
   >([]);
   const [leaderboardLoading, setLeaderboardLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    EventService.getLeaderboard(eventUid).then((leaderboard) => {
+    getUserLeaderboard(event).then((leaderboard) => {
       setLeaderboard(leaderboard);
       setLeaderboardLoading(false);
     });
-  }, [eventUid]);
+  }, [event]);
 
   return (
     <LoadingWrapper loading={leaderboardLoading}>

@@ -1,6 +1,11 @@
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { CheckIsEventOwner, Event, EventService } from '@shared-data';
+import {
+  CheckIsEventOwner,
+  EventService,
+  EventWithUid,
+  registerUserForEvent,
+} from '@shared-data';
 import { LoadingWrapper } from '@shared-ui';
 import { Button } from 'react-bootstrap';
 import { EventLeaderboard } from './event-leaderboard';
@@ -9,11 +14,11 @@ import useAuth from '../../../providers/useAuth';
 import useUser from '../../../providers/useUser';
 
 export const EventDetail = () => {
-  const location = useLocation();
   const { eventId } = useParams();
   const authData = useAuth();
   const { user } = useUser();
-  const [event, setEvent] = useState<Event>(location.state as Event);
+
+  const [event, setEvent] = useState<EventWithUid>();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>();
 
@@ -72,7 +77,9 @@ export const EventDetail = () => {
             ) : event.registrationEnd > new Date() ? (
               <>
                 {user ? (
-                  <Button>Register Now</Button>
+                  <Button onClick={() => registerUserForEvent(event, user)}>
+                    Register Now
+                  </Button>
                 ) : (
                   <p>Please login to register</p>
                 )}
@@ -81,13 +88,11 @@ export const EventDetail = () => {
             ) : (
               <>Registration is closed for this event</>
             )}
+            <EventLeaderboard event={event} />
+            <TeamLeaderboard event={event} />
           </>
         )}
       </LoadingWrapper>
-
-      {eventId && <EventLeaderboard eventUid={eventId} />}
-
-      {eventId && <TeamLeaderboard eventUid={eventId} />}
 
       {error && <p>{error}</p>}
     </>

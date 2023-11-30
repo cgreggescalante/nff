@@ -28,6 +28,7 @@ export const UserDashboard = () => {
             </h3>
             <h6>{user.uid}</h6>
             <h2>My Uploads</h2>
+            // TODO: Fix this
             <UploadList uid={user.uid} />
           </div>
         ) : (

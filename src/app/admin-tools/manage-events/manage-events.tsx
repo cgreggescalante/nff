@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { EventWithUid } from '@shared-data';
 import { Button, Table } from 'react-bootstrap';
-import { EventService } from '@shared-data';
+import { deleteEvent, EventService } from '@shared-data';
 import CreateEvent from './create-event/create-event';
 import { ConfirmPopup } from '@shared-ui';
 
@@ -14,8 +14,10 @@ export function ManageEvents() {
     EventService.list().then((events) => setEvents(events));
   }, []);
 
-  const deleteEvent = (uid: string) => {
-    EventService.delete(uid)
+  const handleDelete = (uid: string) => {
+    const event = events.find((e) => e.uid === uid);
+    if (!event) return;
+    deleteEvent(event)
       .then(() => {
         console.log('Deleted event');
         setEvents(events.filter((e) => e.uid !== uid));
@@ -42,7 +44,7 @@ export function ManageEvents() {
               key={index}
               event={event}
               index={index}
-              onDelete={() => deleteEvent(event.uid ? event.uid : '')}
+              onDelete={() => handleDelete(event.uid ? event.uid : '')}
             />
           ))}
           <tr>

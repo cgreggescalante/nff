@@ -1,21 +1,21 @@
 import { useEffect, useState } from 'react';
-import { Team, TeamService } from '@shared-data';
+import { EventWithUid, Team, TeamService } from '@shared-data';
 import { LoadingWrapper } from '@shared-ui';
 
 interface TeamsListProps {
-  eventUid: string;
+  event: EventWithUid;
 }
 
-export const TeamLeaderboard = ({ eventUid }: TeamsListProps) => {
+export const TeamLeaderboard = ({ event }: TeamsListProps) => {
   const [teams, setTeams] = useState<Team[]>([]);
   const [teamsLoading, setTeamsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    TeamService.getLeaderboard(eventUid).then((teams) => {
+    TeamService.getLeaderboard(event.uid).then((teams) => {
       setTeams(teams);
       setTeamsLoading(false);
     });
-  }, [eventUid]);
+  }, [event]);
 
   return (
     <LoadingWrapper loading={teamsLoading}>

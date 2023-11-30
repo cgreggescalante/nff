@@ -32,7 +32,6 @@ export const EditUser = ({ userInfo, updateUser }: EditUserDetailsProps) => {
         lastName,
       },
       uid: userInfo.uid,
-      totalPoints: userInfo.totalPoints,
       entryRefs: userInfo.entryRefs,
     };
 

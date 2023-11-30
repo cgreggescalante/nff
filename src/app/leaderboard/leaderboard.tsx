@@ -39,7 +39,6 @@ export const Leaderboard = () => {
                 <td>
                   {user.name.firstName} {user.name.lastName}
                 </td>
-                <td>{user.totalPoints}</td>
               </tr>
             ))}
           </tbody>

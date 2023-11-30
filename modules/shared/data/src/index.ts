@@ -40,5 +40,7 @@ export {
   generateUsers,
   generateEvents,
   generateUploads,
-  registerUsersForEvents,
+  registerUsers,
 } from './lib/testData';
+
+export * from './lib/services/EventService';

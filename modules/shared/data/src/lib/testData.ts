@@ -2,7 +2,7 @@ import type UserInfo from './models/UserInfo';
 import { faker } from '@faker-js/faker';
 import type { Event, EventWithUid } from './models/Event';
 import UserInfoService from './services/UserInfoService';
-import EventService from './services/EventService';
+import EventService, { registerUserForEvent } from './services/EventService';
 import type Upload from './models/Upload';
 import UploadService from './services/UploadService';
 import { WorkoutTypeNames, WorkoutTypeToNumber } from './models/WorkoutType';
@@ -14,7 +14,6 @@ const generateUser = (): UserInfo => ({
     lastName: faker.person.lastName(),
   },
   entryRefs: [],
-  totalPoints: 0,
 });
 
 const generateEvent = (): Event => {
@@ -112,7 +111,7 @@ export const generateEvents = async (count = 1) => {
   }
 };
 
-export const registerUsersForEvents = async () => {
+export const registerUsers = async () => {
   console.log('Registering users for events');
 
   let users: UserInfo[] = [];
@@ -136,7 +135,7 @@ export const registerUsersForEvents = async () => {
     );
 
     for (const event of toRegister) {
-      await EventService.addUser(event, user);
+      await registerUserForEvent(event, user);
       console.log(
         `Registered ${user.name.firstName} ${user.name.lastName} for ${event.name}`
       );

@@ -9,7 +9,6 @@ export interface UserInfo {
   };
   uid: string;
   entryRefs: DocumentReference[];
-  totalPoints: number;
 }
 
 export interface UserInfoWithEntries extends UserInfo {

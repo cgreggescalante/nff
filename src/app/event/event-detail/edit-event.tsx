@@ -1,11 +1,13 @@
 import { useLocation, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import {
-  Event,
+  createTeamByOwner,
   EventService,
+  EventWithUid,
   Team,
   TeamService,
   TeamWithUid,
+  UserInfoService,
 } from '@shared-data';
 import { DocumentReference } from 'firebase/firestore';
 import { Button, Card } from 'react-bootstrap';
@@ -21,7 +23,9 @@ export const EditEvent = () => {
   const location = useLocation();
   const { eventId } = useParams();
 
-  const [event, setEvent] = useState<Event>(location.state as Event);
+  const [event, setEvent] = useState<EventWithUid>(
+    location.state as EventWithUid
+  );
   const [eventLoading, setEventLoading] = useState<boolean>(true);
 
   const [error, setError] = useState<string>();
@@ -81,7 +85,7 @@ export const EditEvent = () => {
             setValue={(value) => setEvent({ ...event, registrationEnd: value })}
           />
 
-          <EditTeams eventUid={eventId} teamRefs={event.teamRefs} />
+          <EditTeams event={event} teamRefs={event.teamRefs} />
         </>
       )}
     </>
@@ -89,10 +93,10 @@ export const EditEvent = () => {
 };
 
 const EditTeams = ({
-  eventUid,
+  event,
   teamRefs,
 }: {
-  eventUid: string;
+  event: EventWithUid;
   teamRefs: DocumentReference<Team>[];
 }) => {
   const [teams, setTeams] = useState<TeamWithUid[]>([]);
@@ -108,12 +112,16 @@ const EditTeams = ({
       .catch((error) => console.error(error));
   }, [teamRefs]);
 
-  const addTeam = () => {
-    EventService.addTeam(eventUid, newTeamOwner)
-      .then((team) => {
-        setNewTeamOwner('');
-      })
-      .catch((error) => console.error(error));
+  const addTeam = async () => {
+    const owner = await UserInfoService.read(newTeamOwner);
+
+    if (!owner) console.error('No user found with the given ID');
+    else
+      createTeamByOwner(event, owner)
+        .then((team) => {
+          setNewTeamOwner('');
+        })
+        .catch((error) => console.error(error));
   };
 
   return (

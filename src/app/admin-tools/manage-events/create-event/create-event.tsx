@@ -1,6 +1,7 @@
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { FormEvent, useState } from 'react';
 import {
+  createEvent,
   EventService,
   WorkoutType,
   WorkoutTypeNames,
@@ -65,7 +66,7 @@ export const CreateEvent = ({ completed }: CreateEventProps) => {
       teamRefs: [],
     };
 
-    EventService.create(newEvent)
+    createEvent(newEvent)
       .then(() => completed())
       .catch((error) => {
         console.error(error);

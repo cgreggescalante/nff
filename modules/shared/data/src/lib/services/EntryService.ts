@@ -16,6 +16,7 @@ import UserInfo from '../models/UserInfo';
 import { addWorkoutTypeToNumber } from '../models/WorkoutType';
 import EventService from '../services/EventService';
 import { ApplyScoring } from '../models/ScoringConfiguration';
+import TeamService from './TeamService';
 
 class EntryService extends FirestoreService<Entry> {
   public constructor() {
@@ -55,6 +56,13 @@ class EntryService extends FirestoreService<Entry> {
     }
   }
 
+  async getByTeam(teamRef: DocumentReference): Promise<Entry[]> {
+    const docs = await getDocs(
+      query(this.collectionReference, where('teamRef', '==', teamRef))
+    );
+    return docs.docs.map((doc) => this.converter.fromFirestore(doc));
+  }
+
   async updateEntries(user: UserInfo, upload: Upload): Promise<void> {
     try {
       for (const ref of user.entryRefs) {
@@ -77,6 +85,7 @@ class EntryService extends FirestoreService<Entry> {
         );
 
         await this.set(entry.uid, this.converter.toFirestore(entry));
+        if (entry.teamRef) await TeamService.updateScoring(entry.teamRef);
       }
     } catch (error) {
       console.error('Error during EntryService.updateEntries', error);
