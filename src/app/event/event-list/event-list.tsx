@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import type { EventWithUid } from '@shared-data';
 import { EventService } from '@shared-data';
-import EventCard from './event-card/event-card';
-import LoadingWrapper from '../components/loading-wrapper/loading-wrapper';
+import EventCard from './event-card';
+import LoadingWrapper from '../../components/loading-wrapper/loading-wrapper';
 
 export const EventList = () => {
   const [events, setEvents] = useState<EventWithUid[]>([]);

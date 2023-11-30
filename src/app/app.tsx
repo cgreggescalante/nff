@@ -12,10 +12,10 @@ import Login from './auth-pages/login/login';
 import Profile from './user-data/profile/profile';
 import Footer from './components/footer/footer';
 import Leaderboard from './leaderboard/leaderboard';
-import EventList from './event-list/event-list';
-import EventDetail from './event-pages/event-detail/event-detail';
 import { AdminRoute } from './components/routes/admin-route';
-import { EditEvent } from './event-pages/edit-event';
+import EventList from './event/event-list/event-list';
+import EventDetail from './event/event-detail/event-detail';
+import { EditEvent } from './event/event-detail/edit-event';
 
 export const App = () => (
   <div className={styles['app']}>
