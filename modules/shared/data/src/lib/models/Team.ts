@@ -4,10 +4,10 @@ import Event from './Event';
 
 export interface Team {
   name: string;
+  points: number;
   ownerRef: DocumentReference<UserInfo>;
   memberRefs: DocumentReference<UserInfo>[];
   eventRef: DocumentReference<Event>;
-  points: number;
 }
 
 export interface TeamWithUid extends Team {

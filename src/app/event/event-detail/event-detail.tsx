@@ -4,7 +4,7 @@ import { CheckIsEventOwner, Event, EventService } from '@shared-data';
 import { LoadingWrapper } from '@shared-ui';
 import { Button } from 'react-bootstrap';
 import { EventLeaderboard } from './event-leaderboard';
-import { TeamsList } from './teams-list';
+import { TeamLeaderboard } from './team-leaderboard';
 import useAuth from '../../../providers/useAuth';
 import useUser from '../../../providers/useUser';
 
@@ -87,7 +87,7 @@ export const EventDetail = () => {
 
       {eventId && <EventLeaderboard eventUid={eventId} />}
 
-      {eventId && <TeamsList eventUid={eventId} />}
+      {eventId && <TeamLeaderboard eventUid={eventId} />}
 
       {error && <p>{error}</p>}
     </>

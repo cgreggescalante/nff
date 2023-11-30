@@ -8,7 +8,6 @@ import {
   DocumentReference,
   getDocs,
   query,
-  setDoc,
   where,
 } from 'firebase/firestore';
 import type Event from '../models/Event';
@@ -140,7 +139,6 @@ class EventService extends FirestoreService<Event> {
       ownerRef: UserInfoService.getReference(ownerUid),
       memberRefs: [],
       eventRef: this.getReference(eventId),
-      points: 0,
     });
 
     await updateDoc(this.getReference(eventId), {

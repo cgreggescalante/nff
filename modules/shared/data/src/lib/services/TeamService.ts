@@ -3,7 +3,6 @@ import { Team } from '../models/Team';
 import {
   collection,
   deleteField,
-  DocumentReference,
   getDocs,
   query,
   where,
@@ -52,6 +51,14 @@ class TeamService extends FirestoreService<Team> {
     } catch (error) {
       return Promise.reject(error);
     }
+  }
+
+  async getLeaderboard(eventUid: string): Promise<Team[]> {
+    const teams = await this.getByEvent(eventUid);
+
+    teams.sort((a, b) => b.points - a.points);
+
+    return teams;
   }
 }
 
