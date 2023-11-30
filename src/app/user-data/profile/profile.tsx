@@ -1,6 +1,6 @@
 import { EditUserDetails } from './edit-user-details/edit-user-details';
-import { useUser } from '../../../userContext';
 import LoadingWrapper from '../../components/loading-wrapper/loading-wrapper';
+import useUser from '../../../providers/useUser';
 
 export const Profile = () => {
   const { user, loading, updateUser } = useUser();

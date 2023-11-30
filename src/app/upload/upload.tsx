@@ -8,7 +8,7 @@ import {
 } from '@shared-data';
 import { auth } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from '../../userContext';
+import useUser from '../../providers/useUser';
 
 const UploadView = () => {
   const [description, setDescription] = useState<string>('');
@@ -31,8 +31,6 @@ const UploadView = () => {
   };
 
   const handleSubmit = () => {
-    console.log('submitting', auth.currentUser, user);
-
     const validWorkouts: WorkoutTypeToNumber = {};
     WorkoutTypeNames.forEach((workout) => {
       if (workouts[workout] !== undefined && workouts[workout] > 0) {

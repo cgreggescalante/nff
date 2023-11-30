@@ -1,32 +1,19 @@
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { useUser } from '../../../userContext';
-import { useState } from 'react';
-import { auth } from '../../../firebase';
-import { CheckAdminStatus } from '@shared-data';
+import useAuth from '../../../providers/useAuth';
+import useUser from '../../../providers/useUser';
 
 export const Header = () => {
   const { user, loading, logout } = useUser();
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const { isAdmin } = useAuth();
 
   const navigate = useNavigate();
 
   const handleSignOut = () => {
     logout()
-      .then(() => {
-        navigate('/');
-      })
+      .then(() => navigate('/'))
       .catch((err) => console.error(err));
   };
-
-  auth.onAuthStateChanged((user) => {
-    if (user !== null) {
-      CheckAdminStatus(user.uid).then((isAdmin) => {
-        if (!isAdmin) navigate('/');
-        else setIsAdmin(true);
-      });
-    }
-  });
 
   return (
     <Navbar expand="md" fixed="top" className="bg-body-secondary">

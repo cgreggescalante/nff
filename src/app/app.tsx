@@ -6,7 +6,7 @@ import AdminTools from './admin-tools/admin-tools';
 import { Container } from 'react-bootstrap';
 import UserDashboard from './user-data/user-dashboard/user-dashboard';
 import { Header } from './components/header/header';
-import ProtectedRoute from './components/protected-route/protected-route';
+import ProtectedRoute from './components/routes/protected-route';
 import Signup from './auth-pages/signup/signup';
 import Login from './auth-pages/login/login';
 import Profile from './user-data/profile/profile';
@@ -14,7 +14,7 @@ import Footer from './components/footer/footer';
 import Leaderboard from './leaderboard/leaderboard';
 import EventList from './event-list/event-list';
 import EventDetail from './event-pages/event-detail/event-detail';
-import { AdminRoute } from './components/protected-route/admin-route';
+import { AdminRoute } from './components/routes/admin-route';
 import { EditEvent } from './event-pages/edit-event';
 
 export const App = () => (

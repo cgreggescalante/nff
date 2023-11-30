@@ -1,10 +1,33 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  ReactElement,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { UserInfo, UserInfoService } from '@shared-data';
 import { signOut } from 'firebase/auth';
-import { auth } from '../../../firebase';
-import UserContext from '../../../userContext';
+import { auth } from '../firebase';
 
-const UserProvider = ({ children }: { children: ReactElement }) => {
+const UserContext = createContext<{
+  user: UserInfo | null;
+  updateUser: (user: UserInfo) => Promise<void>;
+  loading: boolean;
+  login: (user: UserInfo) => void;
+  logout: () => Promise<void>;
+}>({
+  user: null,
+  updateUser: () => new Promise<void>((_) => null),
+  loading: true,
+  login: (_: UserInfo) => null,
+  logout: () => new Promise<void>(() => null),
+});
+
+export const useUser = () => {
+  return useContext(UserContext);
+};
+
+export const UserProvider = ({ children }: { children: ReactElement }) => {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -46,4 +69,4 @@ const UserProvider = ({ children }: { children: ReactElement }) => {
   );
 };
 
-export default UserProvider;
+export default useUser;

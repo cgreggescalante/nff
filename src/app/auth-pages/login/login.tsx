@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Button, FloatingLabel, Form } from 'react-bootstrap';
 import { UserInfoService } from '@shared-data';
-import { useUser } from '../../../userContext';
 import { auth } from '../../../firebase';
+import useUser from '../../../providers/useUser';
 
 export const Login = () => {
   const { login } = useUser();

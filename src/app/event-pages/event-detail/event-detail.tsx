@@ -2,11 +2,11 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { CheckIsEventOwner, Event, EventService } from '@shared-data';
 import LoadingWrapper from '../../components/loading-wrapper/loading-wrapper';
-import { useUser } from '../../../userContext';
 import { Button } from 'react-bootstrap';
 import { EventLeaderboard } from './event-leaderboard';
 import { TeamsList } from './teams-list';
-import useAuth from '../../../useAuth';
+import useAuth from '../../../providers/useAuth';
+import useUser from '../../../providers/useUser';
 
 export const EventDetail = () => {
   const location = useLocation();

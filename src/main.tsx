@@ -2,7 +2,8 @@ import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 
 import App from './app/app';
-import UserProvider from './app/components/user-provider/user-provider';
+import { UserProvider } from './providers/useUser';
+import { AuthProvider } from './providers/useAuth';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -10,7 +11,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <StrictMode>
     <UserProvider>
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </UserProvider>
   </StrictMode>
 );

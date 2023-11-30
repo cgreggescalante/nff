@@ -4,8 +4,8 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { Button, FloatingLabel, Form, InputGroup } from 'react-bootstrap';
 import { UserInfoService } from '@shared-data';
-import { useUser } from '../../../userContext';
 import { auth } from '../../../firebase';
+import useUser from '../../../providers/useUser';
 
 export const Signup = () => {
   const { login } = useUser();

@@ -1,6 +1,6 @@
-import { useUser } from '../../userContext';
 import LoadingWrapper from '../components/loading-wrapper/loading-wrapper';
 import UploadList from '../components/upload-list/upload-list';
+import useUser from '../../providers/useUser';
 
 const Home = () => {
   const { user, loading } = useUser();

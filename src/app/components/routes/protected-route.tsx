@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import React, { ReactNode } from 'react';
-import { useUser } from '../../../userContext';
+import useUser from '../../../providers/useUser';
 
 /* eslint-disable-next-line */
 interface ProtectedRouteProps {
