@@ -1,4 +1,4 @@
-import { EditUserDetails } from './edit-user-details/edit-user-details';
+import { EditUser } from './edit-user/edit-user';
 import LoadingWrapper from '../../components/loading-wrapper/loading-wrapper';
 import useUser from '../../../providers/useUser';
 
@@ -9,7 +9,7 @@ export const Profile = () => {
     <LoadingWrapper loading={loading}>
       <h1>User Details</h1>
 
-      {user && <EditUserDetails userInfo={user} updateUser={updateUser} />}
+      {user && <EditUser userInfo={user} updateUser={updateUser} />}
     </LoadingWrapper>
   );
 };

@@ -4,7 +4,7 @@ import Home from './home/home';
 import Upload from './upload/upload';
 import AdminTools from './admin-tools/admin-tools';
 import { Container } from 'react-bootstrap';
-import UserDashboard from './user-data/user-dashboard/user-dashboard';
+import UserDashboard from './user-data/dashboard/user-dashboard';
 import { Header } from './components/header/header';
 import ProtectedRoute from './components/routes/protected-route';
 import Signup from './auth-pages/signup/signup';

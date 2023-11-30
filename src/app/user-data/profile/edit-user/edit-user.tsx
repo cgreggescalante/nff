@@ -10,10 +10,7 @@ export interface EditUserDetailsProps {
   updateUser: (user: UserInfo) => Promise<void>;
 }
 
-export const EditUserDetails = ({
-  userInfo,
-  updateUser,
-}: EditUserDetailsProps) => {
+export const EditUser = ({ userInfo, updateUser }: EditUserDetailsProps) => {
   const [firstName, setFirstName] = useState<string>(userInfo.name.firstName);
   const [lastName, setLastName] = useState<string>(userInfo.name.lastName);
 
@@ -86,4 +83,4 @@ export const EditUserDetails = ({
   );
 };
 
-export default EditUserDetails;
+export default EditUser;
