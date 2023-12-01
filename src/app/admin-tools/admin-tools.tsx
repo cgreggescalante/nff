@@ -16,7 +16,7 @@ import {
   EventCollectionRef,
   TeamCollectionRef,
   UserCollectionRef,
-} from '../../../modules/shared/data/src/lib/services/CollectionRefs';
+} from '@shared-data';
 import { doc } from '@firebase/firestore';
 
 export const AdminTools = () => {

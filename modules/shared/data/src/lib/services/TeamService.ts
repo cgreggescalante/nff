@@ -4,7 +4,6 @@ import {
   arrayRemove,
   collection,
   deleteField,
-  DocumentReference,
   getDocs,
   query,
   where,
@@ -12,7 +11,6 @@ import {
 import { db } from '../firebase';
 import { TeamConverter } from '../converters/TeamConverter';
 import { doc, updateDoc } from '@firebase/firestore';
-import EntryService from './EntryService';
 import { EventCollectionRef } from './CollectionRefs';
 
 class TeamService extends FirestoreService<Team> {
@@ -21,12 +19,12 @@ class TeamService extends FirestoreService<Team> {
   }
 
   override async delete(teamId: string): Promise<void> {
+    const teamRef = this.getReference(teamId);
+    const team = await this.read(teamId);
+
+    if (!team) throw new Error(`No team with ID: ${teamId}`);
+
     try {
-      const teamRef = this.getReference(teamId);
-      const team = await this.read(teamId);
-
-      if (!team) throw new Error(`No team with ID: ${teamId}`);
-
       await updateDoc(team.eventRef, {
         teamRefs: arrayRemove(teamRef),
       });
@@ -64,19 +62,6 @@ class TeamService extends FirestoreService<Team> {
     teams.sort((a, b) => b.points - a.points);
 
     return teams;
-  }
-
-  /*
-   * Should be called whenever an entry is updated.
-   */
-  async updateScoring(teamRef: DocumentReference<Team>): Promise<void> {
-    const entries = await EntryService.getByTeam(teamRef);
-
-    console.log('Entries: ', entries);
-
-    const points = entries.reduce((acc, entry) => acc + entry.points, 0);
-
-    await updateDoc(teamRef, { points });
   }
 }
 

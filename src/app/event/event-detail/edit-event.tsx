@@ -118,7 +118,7 @@ const EditTeams = ({
     if (!owner) console.error('No user found with the given ID');
     else
       createTeamByOwner(event, owner)
-        .then((team) => {
+        .then(() => {
           setNewTeamOwner('');
         })
         .catch((error) => console.error(error));

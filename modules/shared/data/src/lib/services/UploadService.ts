@@ -14,12 +14,8 @@ import type Upload from '../models/Upload';
 import UserInfoService from './UserInfoService';
 import type UserInfo from '../models/UserInfo';
 import { FirestoreService } from './FirestoreService';
-import EntryService from './EntryService';
 
-import {
-  addWorkoutTypeToNumber,
-  WorkoutTypeToNumber,
-} from '../models/WorkoutType';
+import { addWorkoutTypeToNumber } from '../models/WorkoutType';
 import { EntryCollectionRef, UploadCollectionRef } from './CollectionRefs';
 import { doc } from '@firebase/firestore';
 import { EntryWithUid } from '../models/Entry';
