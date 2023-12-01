@@ -4,6 +4,7 @@ import { Button, Table } from 'react-bootstrap';
 import { deleteEvent, listEvents } from '@shared-data';
 import CreateEvent from './create-event/create-event';
 import { ConfirmPopup } from '@shared-ui';
+import { toast } from 'react-toastify';
 
 export function ManageEvents() {
   const [events, setEvents] = useState<EventWithUid[]>([]);
@@ -19,7 +20,7 @@ export function ManageEvents() {
     if (!event) return;
     deleteEvent(event)
       .then(() => {
-        console.log('Deleted event');
+        toast.success('Event deleted');
         setEvents(events.filter((e) => e.uid !== uid));
       })
       .catch((error) => {

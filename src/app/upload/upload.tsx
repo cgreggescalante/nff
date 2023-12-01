@@ -13,13 +13,12 @@ import {
 import { auth } from '../../firebase';
 import { doc } from '@firebase/firestore';
 import { Button, Form, InputGroup } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
 const UploadView = () => {
   const [description, setDescription] = useState<string>('');
   const [workouts, setWorkouts] = useState<WorkoutTypeToNumber>({});
   const [selectedWorkout, setSelectedWorkout] = useState<WorkoutType>();
-
-  const [message, setMessage] = useState('');
 
   const handleDurationChange = (workoutType: WorkoutType, value: number) => {
     const newWorkouts = { ...workouts };
@@ -51,13 +50,13 @@ const UploadView = () => {
 
       createUpload(upload, user)
         .then((_) => {
-          setMessage('Workouts added successfully');
+          toast.success('Workouts added successfully');
           setDescription('');
           setWorkouts(emptyWorkoutTypeToNumber());
         })
         .catch((error) => {
           console.error('Error while creating upload: ', error);
-          setMessage('Could not add workouts');
+          toast.error('Could not add workouts');
         });
     }
   };
@@ -133,7 +132,6 @@ const UploadView = () => {
       </InputGroup>
 
       <Button onClick={handleSubmit}>Submit</Button>
-      {message && <p>{message}</p>}
     </>
   );
 };

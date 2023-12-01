@@ -12,6 +12,7 @@ import { EventLeaderboard } from './event-leaderboard';
 import { TeamLeaderboard } from './team-leaderboard';
 import useAuth from '../../../providers/useAuth';
 import useUser from '../../../providers/useUser';
+import { toast } from 'react-toastify';
 
 export const EventDetail = () => {
   const { eventId } = useParams();
@@ -20,7 +21,6 @@ export const EventDetail = () => {
 
   const [event, setEvent] = useState<EventWithUid>();
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>();
 
   const [canEdit, setCanEdit] = useState<boolean>(false);
 
@@ -31,7 +31,8 @@ export const EventDetail = () => {
           if (event != null) {
             setEvent(event);
             document.title = event.name;
-          } else setError('No event found with the given ID');
+          } else
+            toast.error('Could not find event', { toastId: 'event-detail' });
           setLoading(false);
         })
         .catch((error) => {
@@ -93,8 +94,6 @@ export const EventDetail = () => {
           </>
         )}
       </LoadingWrapper>
-
-      {error && <p>{error}</p>}
     </>
   );
 };

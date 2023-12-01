@@ -1,7 +1,8 @@
 import { UserInfo } from '@shared-data';
 import { useEffect, useState } from 'react';
 import { Button, Table } from 'react-bootstrap';
-import { ManagedTextInput, TimedAlert } from '@shared-ui';
+import { ManagedTextInput } from '@shared-ui';
+import { toast } from 'react-toastify';
 
 /* eslint-disable-next-line */
 export interface EditUserDetailsProps {
@@ -14,9 +15,6 @@ export const EditUser = ({ userInfo, updateUser }: EditUserDetailsProps) => {
   const [lastName, setLastName] = useState<string>(userInfo.name.lastName);
 
   const [edited, setEdited] = useState<boolean>(false);
-
-  const [showAlert, setShowAlert] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
 
   useEffect(() => {
     setEdited(
@@ -37,12 +35,12 @@ export const EditUser = ({ userInfo, updateUser }: EditUserDetailsProps) => {
 
     updateUser(newUser)
       .then((_) => {
-        setShowAlert(true);
+        toast.success('User details updated successfully');
         setEdited(false);
       })
       .catch((error) => {
         console.error('Error while updating user details:', error);
-        setError('Failed to update user details');
+        toast.error('Failed to update user details');
       });
   };
 
@@ -51,13 +49,13 @@ export const EditUser = ({ userInfo, updateUser }: EditUserDetailsProps) => {
       <Table>
         <tbody>
           <tr>
-            <td> First Name </td>
+            <td>First Name</td>
             <td>
               <ManagedTextInput value={firstName} setValue={setFirstName} />
             </td>
           </tr>
           <tr>
-            <td> Last Name </td>
+            <td>Last Name</td>
             <td>
               <ManagedTextInput value={lastName} setValue={setLastName} />
             </td>
@@ -68,15 +66,6 @@ export const EditUser = ({ userInfo, updateUser }: EditUserDetailsProps) => {
       <Button disabled={!edited} onClick={saveChanges}>
         Save Changes
       </Button>
-
-      {error && <p>{error}</p>}
-
-      <TimedAlert
-        show={showAlert}
-        setShow={setShowAlert}
-        message={'Your profile was updated successfully'}
-        duration={5000}
-      />
     </>
   );
 };

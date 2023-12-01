@@ -1,6 +1,7 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import React, { ReactNode } from 'react';
 import useUser from '../../../providers/useUser';
+import { toast } from 'react-toastify';
 
 /* eslint-disable-next-line */
 interface ProtectedRouteProps {
@@ -17,6 +18,9 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     const redirectUrl = `/login?redirect=${encodeURIComponent(
       location.pathname + location.search
     )}`;
+    toast.error('You must be logged in to view this page.', {
+      toastId: 'protected-route',
+    });
     return <Navigate to={redirectUrl} replace />;
   }
 

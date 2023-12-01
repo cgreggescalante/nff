@@ -12,7 +12,6 @@ import Signup from './auth-pages/signup/signup';
 import Login from './auth-pages/login/login';
 import Profile from './user-data/profile/profile';
 import Footer from './components/footer/footer';
-import Leaderboard from './leaderboard/leaderboard';
 import { AdminRoute } from './components/routes/admin-route';
 import EventList from './event/event-list/event-list';
 import EventDetail from './event/event-detail/event-detail';
@@ -36,7 +35,6 @@ export const App = () => (
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/events" element={<EventList />} />
           <Route path="/events/:eventId" element={<EventDetail />} />
           // TODO: Require event owner

@@ -17,6 +17,7 @@ import {
   ManagedTextInput,
   ManagedDateInput,
 } from '@shared-ui';
+import { toast } from 'react-toastify';
 
 // TODO: add route protection to check if the user is an event owner
 export const EditEvent = () => {
@@ -28,8 +29,6 @@ export const EditEvent = () => {
   );
   const [eventLoading, setEventLoading] = useState<boolean>(true);
 
-  const [error, setError] = useState<string>();
-
   useEffect(() => {
     if (!event && eventId)
       readEvent(eventId)
@@ -37,7 +36,7 @@ export const EditEvent = () => {
           if (event != null) {
             setEvent(event);
             document.title = event.name;
-          } else setError('No event found with the given ID');
+          } else toast.error('Could not find event', { toastId: 'edit-event' });
           setEventLoading(false);
         })
         .catch((error) => {
@@ -50,7 +49,7 @@ export const EditEvent = () => {
   return (
     <>
       <h2>Edit Event</h2>
-      {!eventLoading && eventId && (
+      {!eventLoading && eventId && event && (
         <>
           <ManagedTextInput
             label={'Name'}

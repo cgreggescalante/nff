@@ -2,6 +2,7 @@ import { Container, Nav, Navbar } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../../../providers/useAuth';
 import useUser from '../../../providers/useUser';
+import { toast } from 'react-toastify';
 
 export const Header = () => {
   const { user, loading, logout } = useUser();
@@ -11,7 +12,10 @@ export const Header = () => {
 
   const handleSignOut = () => {
     logout()
-      .then(() => navigate('/'))
+      .then(() => {
+        toast.success('Signed out successfully');
+        navigate('/');
+      })
       .catch((err) => console.error(err));
   };
 
@@ -28,9 +32,6 @@ export const Header = () => {
           <Nav className="mr-auto">
             <Nav.Link as={Link} to="/events">
               Events
-            </Nav.Link>
-            <Nav.Link as={Link} to="/leaderboard">
-              Leaderboard
             </Nav.Link>
           </Nav>
 
