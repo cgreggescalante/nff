@@ -1,6 +1,8 @@
 import { LoadingWrapper } from '@shared-ui';
 import UploadList from '../components/upload-list/upload-list';
 import useUser from '../../providers/useUser';
+import { toast } from 'react-toastify';
+import { Button } from 'react-bootstrap';
 
 const Home = () => {
   const { user, loading } = useUser();
@@ -18,6 +20,9 @@ const Home = () => {
         )}
       </LoadingWrapper>
 
+      <Button onClick={() => toast('Hello World!', { type: 'success' })}>
+        Toast
+      </Button>
       <UploadList />
     </>
   );

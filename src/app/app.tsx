@@ -1,4 +1,6 @@
 import styles from './app.module.scss';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './home/home';
 import Upload from './upload/upload';
@@ -16,9 +18,16 @@ import EventList from './event/event-list/event-list';
 import EventDetail from './event/event-detail/event-detail';
 import { EditEvent } from './event/event-detail/edit-event';
 import UserDashboard from './user-data/user-dashboard';
+import { Slide, ToastContainer } from 'react-toastify';
 
 export const App = () => (
   <div className={styles['app']}>
+    <ToastContainer
+      position="bottom-right"
+      hideProgressBar
+      newestOnTop
+      transition={Slide}
+    />
     <BrowserRouter basename={'/'}>
       <Header />
 

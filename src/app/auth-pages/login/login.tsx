@@ -1,4 +1,3 @@
-import styles from './login.module.scss';
 import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -6,13 +5,13 @@ import { Button, FloatingLabel, Form } from 'react-bootstrap';
 import { UserInfoService } from '@shared-data';
 import { auth } from '../../../firebase';
 import useUser from '../../../providers/useUser';
+import { toast } from 'react-toastify';
 
 export const Login = () => {
   const { login } = useUser();
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [error, setError] = useState<string>('');
 
   const handleSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -25,39 +24,36 @@ export const Login = () => {
       );
       const user = credentials.user;
 
-      if (!user) throw new Error('No user found with that email and password');
-
       const userInfo = await UserInfoService.read(user.uid);
 
       if (userInfo == null) {
         UserInfoService.createFromId(user.uid)
           .then((userInfo) => {
             login(userInfo);
-            // TODO: Add message to input name
+            toast.success('Welcome! Please enter your name.');
             navigate('/profile');
           })
-          .catch((error) => {
-            console.error('Error while creating user document: ', error);
-            setError(
-              'No user information found, could not create new document.'
-            );
-          });
+          .catch(() =>
+            toast.error(
+              'Could not find user profile. A new profile could not be created at this time.'
+            )
+          );
       } else {
         login(userInfo);
         navigate('/');
       }
     } catch (e) {
-      setError(
-        'Error while attempting to validate credentials. Please verify email and password and try again.'
+      toast.error(
+        'Could not login. Please verify email and password and try again.'
       );
     }
   };
 
   return (
-    <div className={styles['container']}>
+    <>
       <h1>Login</h1>
       <Form onSubmit={handleSubmit}>
-        <FloatingLabel label={'Email'} className={'mb-3'}>
+        <FloatingLabel label={'Email'} className={'mb-2'}>
           <Form.Control
             required
             type={'email'}
@@ -67,7 +63,7 @@ export const Login = () => {
           />
         </FloatingLabel>
 
-        <FloatingLabel label={'Password'}>
+        <FloatingLabel label={'Password'} className={'mb-2'}>
           <Form.Control
             required
             type={'password'}
@@ -78,9 +74,7 @@ export const Login = () => {
         </FloatingLabel>
         <Button type={'submit'}>Login</Button>
       </Form>
-
-      {error && <p>{error}</p>}
-    </div>
+    </>
   );
 };
 
