@@ -9,13 +9,7 @@ import {
   query,
   where,
 } from 'firebase/firestore';
-import { addDoc, getDoc } from '@firebase/firestore';
-import Upload from '../models/Upload';
-import UserInfo from '../models/UserInfo';
-
-import { addWorkoutTypeToNumber } from '../models/WorkoutType';
-import { ApplyScoring } from '../models/ScoringConfiguration';
-import TeamService from './TeamService';
+import { addDoc } from '@firebase/firestore';
 
 class EntryService extends FirestoreService<Entry> {
   public constructor() {
@@ -44,52 +38,11 @@ class EntryService extends FirestoreService<Entry> {
     }
   }
 
-  async getByEvent(eventRef: DocumentReference): Promise<Entry[]> {
-    try {
-      const docs = await getDocs(
-        query(this.collectionReference, where('eventRef', '==', eventRef))
-      );
-      return docs.docs.map((doc) => this.converter.fromFirestore(doc));
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
   async getByTeam(teamRef: DocumentReference): Promise<Entry[]> {
     const docs = await getDocs(
       query(this.collectionReference, where('teamRef', '==', teamRef))
     );
     return docs.docs.map((doc) => this.converter.fromFirestore(doc));
-  }
-
-  async updateEntries(user: UserInfo, upload: Upload): Promise<void> {
-    try {
-      for (const ref of user.entryRefs) {
-        const entry = await this.read(ref.withConverter(this.converter));
-
-        if (entry == undefined) continue;
-
-        const event = (await getDoc(entry.eventRef)).data();
-
-        if (!event) continue;
-
-        entry.duration = addWorkoutTypeToNumber(
-          entry.duration,
-          upload.workouts
-        );
-
-        entry.points += ApplyScoring(
-          event.scoringConfiguration,
-          upload.workouts
-        );
-
-        await this.set(entry.uid, this.converter.toFirestore(entry));
-        if (entry.teamRef) await TeamService.updateScoring(entry.teamRef);
-      }
-    } catch (error) {
-      console.error('Error during EntryService.updateEntries', error);
-      return Promise.reject(error);
-    }
   }
 }
 

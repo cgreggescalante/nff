@@ -69,63 +69,6 @@ class UploadService extends FirestoreService<Upload> {
       return Promise.reject(error);
     }
   }
-
-  /**
-   * Creates an upload from the user, description, and workouts.
-   * @param user
-   * @param description
-   * @param workouts
-   */
-  createFromComponents = async (
-    user: UserInfo,
-    description: string,
-    workouts: WorkoutTypeToNumber
-  ) => {
-    try {
-      const upload: Upload = {
-        userRef: UserInfoService.getReference(user.uid),
-        userFirstName: user.name.firstName,
-        userLastName: user.name.lastName,
-        description,
-        date: new Date(),
-        workouts,
-      };
-
-      await super.create(upload);
-      await EntryService.updateEntries(user, upload);
-
-      return upload;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
-
-  /**
-   * Creates an upload from the user and upload.
-   * ONLY USED FOR TESTING.
-   * @param user
-   * @param upload
-   */
-  createTest = async (user: UserInfo, upload: Upload): Promise<Upload> => {
-    try {
-      const u: Upload = {
-        userRef: UserInfoService.getReference(user.uid),
-        userFirstName: user.name.firstName,
-        userLastName: user.name.lastName,
-        description: upload.description,
-        date: upload.date,
-        workouts: upload.workouts,
-      };
-
-      await super.create(u);
-      await EntryService.updateEntries(user, u);
-
-      return u;
-    } catch (error) {
-      console.error('Error while creating test upload', error);
-      return Promise.reject(error);
-    }
-  };
 }
 
 export default new UploadService();
@@ -158,4 +101,14 @@ export const createUpload = async (upload: Upload, user: UserInfo) => {
 
     transaction.set(doc(UploadCollectionRef), upload);
   });
+};
+
+export const listRecentUploads = async ({
+  userUid,
+  count,
+}: {
+  userUid?: string;
+  count?: number;
+}) => {
+  // TODO: Replace method of UploadService, don't need to return userInfo
 };

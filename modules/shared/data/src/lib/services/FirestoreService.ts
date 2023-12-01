@@ -2,7 +2,6 @@ import {
   CollectionReference,
   doc,
   getDoc,
-  addDoc,
   updateDoc,
   deleteDoc,
 } from '@firebase/firestore';

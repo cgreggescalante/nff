@@ -3,7 +3,7 @@ import { WorkoutInput } from './workout-input/workout-input';
 import {
   createUpload,
   Upload,
-  UploadCollectionRef,
+  UserCollectionRef,
   UserInfoService,
   WorkoutType,
   WorkoutTypeNames,
@@ -46,7 +46,7 @@ const UploadView = () => {
       if (!user) return;
 
       const upload: Upload = {
-        userRef: doc(UploadCollectionRef, auth.currentUser.uid),
+        userRef: doc(UserCollectionRef, auth.currentUser.uid),
         userFirstName: user.name.firstName,
         userLastName: user.name.lastName,
         description,

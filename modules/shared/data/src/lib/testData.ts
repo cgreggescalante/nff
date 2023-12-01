@@ -8,7 +8,7 @@ import {
   registerUserForEvent,
 } from './services/EventService';
 import type Upload from './models/Upload';
-import UploadService from './services/UploadService';
+import { createUpload } from './services/UploadService';
 import { WorkoutTypeNames, WorkoutTypeToNumber } from './models/WorkoutType';
 
 const generateUser = (): UserInfo => ({
@@ -158,7 +158,7 @@ export const generateUploads = async () => {
     const uploadCount = 10;
     for (let i = 0; i < uploadCount; i++) {
       const upload = generateUpload(user, 2);
-      await UploadService.createTest(user, upload);
+      await createUpload(upload, user);
     }
   }
 
