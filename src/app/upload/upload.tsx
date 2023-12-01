@@ -1,14 +1,17 @@
 import React, { ChangeEvent, useState } from 'react';
 import { WorkoutInput } from './workout-input/workout-input';
 import {
-  UploadService,
+  createUpload,
+  Upload,
+  UploadCollectionRef,
+  UserInfoService,
   WorkoutType,
   WorkoutTypeNames,
   WorkoutTypeToNumber,
 } from '@shared-data';
 import { auth } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
-import useUser from '../../providers/useUser';
+import { doc } from '@firebase/firestore';
 
 const UploadView = () => {
   const [description, setDescription] = useState<string>('');
@@ -20,7 +23,6 @@ const UploadView = () => {
   });
 
   const [error, setError] = useState('');
-  const { user } = useUser();
 
   const navigate = useNavigate();
 
@@ -30,16 +32,29 @@ const UploadView = () => {
     setWorkouts(newWorkouts);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const validWorkouts: WorkoutTypeToNumber = {};
     WorkoutTypeNames.forEach((workout) => {
-      if (workouts[workout] !== undefined && workouts[workout] > 0) {
+      if (workouts[workout] !== undefined && workouts[workout]! > 0) {
         validWorkouts[workout] = workouts[workout];
       }
     });
 
-    if (auth.currentUser && user) {
-      UploadService.createFromComponents(user, description, validWorkouts)
+    if (auth.currentUser) {
+      const user = await UserInfoService.read(auth.currentUser.uid);
+
+      if (!user) return;
+
+      const upload: Upload = {
+        userRef: doc(UploadCollectionRef, auth.currentUser.uid),
+        userFirstName: user.name.firstName,
+        userLastName: user.name.lastName,
+        description,
+        workouts: validWorkouts,
+        date: new Date(),
+      };
+
+      createUpload(upload, user)
         .then((_) => navigate('/')) // TODO: Add message
         .catch((error) => {
           console.error('Error while creating upload: ', error);

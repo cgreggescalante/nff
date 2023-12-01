@@ -27,10 +27,6 @@ export const createEvent = async (event: Event): Promise<EventWithUid> => {
   return { ...event, uid: docRef.id };
 };
 
-// Delete event
-// Delete teams
-// Delete entries
-// Remove entries from users
 export const deleteEvent = async (event: EventWithUid): Promise<void> => {
   return runTransaction(db, async (transaction) => {
     const eventRef = doc(EventCollectionRef, event.uid);
@@ -58,9 +54,6 @@ export const deleteEvent = async (event: EventWithUid): Promise<void> => {
   });
 };
 
-// Add userRef to registeredUsers array
-// Create new entry for user
-// Add entryRef to user's entryRefs array
 export const registerUserForEvent = async (
   event: EventWithUid,
   user: UserInfo
@@ -89,10 +82,6 @@ export const registerUserForEvent = async (
   return { ...entry, uid: entryRef.id };
 };
 
-// Create the team
-// Add to event's teamRefs array
-// Register the user if they aren't already registered
-// Update the user's entry
 export const createTeamByOwner = async (
   event: EventWithUid,
   owner: UserInfo

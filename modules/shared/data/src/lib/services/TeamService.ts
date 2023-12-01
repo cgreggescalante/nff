@@ -1,8 +1,7 @@
 import { FirestoreService } from './FirestoreService';
-import { Team, TeamWithUid } from '../models/Team';
+import { Team } from '../models/Team';
 import {
   arrayRemove,
-  arrayUnion,
   collection,
   deleteField,
   DocumentReference,
@@ -71,28 +70,13 @@ class TeamService extends FirestoreService<Team> {
    * Should be called whenever an entry is updated.
    */
   async updateScoring(teamRef: DocumentReference<Team>): Promise<void> {
-    // Points should be the sum of all the points of the entries
-
     const entries = await EntryService.getByTeam(teamRef);
+
+    console.log('Entries: ', entries);
 
     const points = entries.reduce((acc, entry) => acc + entry.points, 0);
 
     await updateDoc(teamRef, { points });
-  }
-
-  async addUser(team: TeamWithUid, userRef: DocumentReference): Promise<void> {
-    try {
-      if (!team.uid)
-        throw new Error('Attempting to add UserInfo to Event with no ID');
-
-      const teamRef = this.getReference(team.uid);
-
-      await updateDoc(teamRef, {
-        memberRefs: arrayUnion(userRef),
-      });
-    } catch (error) {
-      return Promise.reject(error);
-    }
   }
 }
 

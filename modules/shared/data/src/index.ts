@@ -42,4 +42,6 @@ export {
 } from './lib/testData';
 
 export * from './lib/services/EventService';
+export * from './lib/services/UploadService';
+
 export * from './lib/services/CollectionRefs';

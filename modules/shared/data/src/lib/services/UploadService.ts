@@ -1,9 +1,11 @@
 import {
   collection,
   getDocs,
+  increment,
   limit,
   orderBy,
   query,
+  runTransaction,
   where,
 } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -14,7 +16,15 @@ import type UserInfo from '../models/UserInfo';
 import { FirestoreService } from './FirestoreService';
 import EntryService from './EntryService';
 
-import { WorkoutTypeToNumber } from '../models/WorkoutType';
+import {
+  addWorkoutTypeToNumber,
+  WorkoutTypeToNumber,
+} from '../models/WorkoutType';
+import { EntryCollectionRef, UploadCollectionRef } from './CollectionRefs';
+import { doc } from '@firebase/firestore';
+import { EntryWithUid } from '../models/Entry';
+import { ApplyScoring } from '../models/ScoringConfiguration';
+import { readEvent } from './EventService';
 
 class UploadService extends FirestoreService<Upload> {
   public constructor() {
@@ -119,3 +129,33 @@ class UploadService extends FirestoreService<Upload> {
 }
 
 export default new UploadService();
+
+export const createUpload = async (upload: Upload, user: UserInfo) => {
+  return runTransaction(db, async (transaction) => {
+    const entries: EntryWithUid[] = [];
+
+    for (const entryRef of user.entryRefs) {
+      const entry = (await transaction.get(entryRef)).data();
+      if (entry) entries.push({ ...entry, uid: entryRef.id });
+    }
+
+    for (const entry of entries) {
+      const event = await readEvent(entry.eventRef.id);
+
+      if (!event) continue;
+
+      const points = ApplyScoring(event.scoringConfiguration, upload.workouts);
+
+      transaction.update(doc(EntryCollectionRef, entry.uid), {
+        duration: addWorkoutTypeToNumber(entry.duration, upload.workouts),
+        points: entry.points + points,
+      });
+
+      if (entry.teamRef) {
+        transaction.update(entry.teamRef, { points: increment(points) });
+      }
+    }
+
+    transaction.set(doc(UploadCollectionRef), upload);
+  });
+};

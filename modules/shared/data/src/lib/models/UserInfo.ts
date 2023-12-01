@@ -8,7 +8,7 @@ export interface UserInfo {
     lastName: string;
   };
   uid: string;
-  entryRefs: DocumentReference[];
+  entryRefs: DocumentReference<Entry>[];
 }
 
 export interface UserInfoWithEntries extends UserInfo {
