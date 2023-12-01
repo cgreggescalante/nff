@@ -14,6 +14,7 @@ export type { EventWithUid } from './lib/models/Event';
 export type { Entry } from './lib/models/Entry';
 export type { WorkoutType } from './lib/models/WorkoutType';
 export type { WorkoutTypeToNumber } from './lib/models/WorkoutType';
+export { emptyWorkoutTypeToNumber } from './lib/models/WorkoutType';
 
 export type { Team } from './lib/models/Team';
 export type { TeamWithUid } from './lib/models/Team';

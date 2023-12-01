@@ -2,6 +2,7 @@ import React, { ChangeEvent, useState } from 'react';
 import { WorkoutInput } from './workout-input/workout-input';
 import {
   createUpload,
+  emptyWorkoutTypeToNumber,
   Upload,
   UserCollectionRef,
   UserInfoService,
@@ -10,21 +11,15 @@ import {
   WorkoutTypeToNumber,
 } from '@shared-data';
 import { auth } from '../../firebase';
-import { useNavigate } from 'react-router-dom';
 import { doc } from '@firebase/firestore';
+import { Button, Form, InputGroup } from 'react-bootstrap';
 
 const UploadView = () => {
   const [description, setDescription] = useState<string>('');
-  const [workouts, setWorkouts] = useState<WorkoutTypeToNumber>({
-    Run: 0,
-    Ski: 0,
-    Swim: 0,
-    Bike: 0,
-  });
+  const [workouts, setWorkouts] = useState<WorkoutTypeToNumber>({});
+  const [selectedWorkout, setSelectedWorkout] = useState<WorkoutType>();
 
-  const [error, setError] = useState('');
-
-  const navigate = useNavigate();
+  const [message, setMessage] = useState('');
 
   const handleDurationChange = (workoutType: WorkoutType, value: number) => {
     const newWorkouts = { ...workouts };
@@ -55,37 +50,90 @@ const UploadView = () => {
       };
 
       createUpload(upload, user)
-        .then((_) => navigate('/')) // TODO: Add message
+        .then((_) => {
+          setMessage('Workouts added successfully');
+          setDescription('');
+          setWorkouts(emptyWorkoutTypeToNumber());
+        })
         .catch((error) => {
           console.error('Error while creating upload: ', error);
-          setError('Could not add workouts');
+          setMessage('Could not add workouts');
         });
     }
+  };
+
+  const handleAddWorkout = () => {
+    if (selectedWorkout) {
+      const newWorkouts = { ...workouts };
+      newWorkouts[selectedWorkout] = 0;
+      setWorkouts(newWorkouts);
+      setSelectedWorkout(undefined);
+    }
+  };
+
+  const deleteWorkoutInput = (workoutType: keyof WorkoutTypeToNumber) => () => {
+    const newWorkouts = { ...workouts };
+    delete newWorkouts[workoutType];
+    setWorkouts(newWorkouts);
   };
 
   return (
     <>
       <h1>Upload</h1>
-      <label htmlFor="description">Description:</label>
-      <textarea
-        id="description"
-        name="description"
-        value={description}
-        onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-          setDescription(e.target.value)
-        }
-      />
-      {WorkoutTypeNames.map((workout, index) => (
+
+      <InputGroup className={'mb-2'}>
+        <InputGroup.Text>Description</InputGroup.Text>
+        <Form.Control
+          as={'textarea'}
+          id="description"
+          name="description"
+          value={description}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setDescription(e.target.value)
+          }
+        />
+      </InputGroup>
+
+      {WorkoutTypeNames.filter(
+        (workout) => workouts[workout] !== undefined
+      ).map((workout, index) => (
         <WorkoutInput
           key={index}
           index={index}
           workoutType={workout}
           duration={workouts[workout]}
           handleDurationChange={handleDurationChange}
+          deleteWorkoutInput={deleteWorkoutInput(workout)}
         />
       ))}
-      <button onClick={handleSubmit}>Submit</button>
-      {error && <p>{error}</p>}
+
+      <InputGroup className={'mb-2'}>
+        <InputGroup.Text>Workout Type</InputGroup.Text>
+        <Form.Select
+          value={selectedWorkout}
+          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+            setSelectedWorkout(e.target.value as keyof WorkoutTypeToNumber)
+          }
+        >
+          <option value={undefined}></option>
+          {WorkoutTypeNames.filter(
+            (workout) => workouts[workout] === undefined
+          ).map((workout, index) => (
+            <option key={index} value={workout}>
+              {workout}
+            </option>
+          ))}
+        </Form.Select>
+        <Button
+          disabled={selectedWorkout === undefined}
+          onClick={handleAddWorkout}
+        >
+          Add Workout
+        </Button>
+      </InputGroup>
+
+      <Button onClick={handleSubmit}>Submit</Button>
+      {message && <p>{message}</p>}
     </>
   );
 };
