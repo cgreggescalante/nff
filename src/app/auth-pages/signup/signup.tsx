@@ -1,4 +1,3 @@
-import styles from './signup.module.scss';
 import { ChangeEvent, useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
@@ -6,6 +5,7 @@ import { Button, FloatingLabel, Form, InputGroup } from 'react-bootstrap';
 import { UserInfoService } from '@shared-data';
 import { auth } from '../../../firebase';
 import useUser from '../../../providers/useUser';
+import { toast } from 'react-toastify';
 
 export const Signup = () => {
   const { login } = useUser();
@@ -16,19 +16,17 @@ export const Signup = () => {
   const [password, setPassword] = useState<string>('');
   const [passwordConfirm, setPasswordConfirm] = useState<string>('');
 
-  const [error, setError] = useState<string | undefined>();
-
   const navigate = useNavigate();
 
   const handleSubmit = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (password !== passwordConfirm) {
-      setError('Passwords do not match');
+      toast.error('Passwords do not match');
       return;
     }
     if (password.length < 6) {
-      setError('Password must be at least 6 characters long');
+      toast.error('Password must be at least 6 characters long');
       return;
     }
 
@@ -41,17 +39,17 @@ export const Signup = () => {
           })
           .catch((error) => {
             console.error('Error while creating user document: ', error);
-            setError('Could not create user document');
+            toast.error('Could not create user profile at this time.');
           });
       })
       .catch((err) => {
         console.error('Error while creating user: ', err);
-        setError(err.message);
+        toast.error('Could not create user at this time.');
       });
   };
 
   return (
-    <div className={styles['container']}>
+    <>
       <h1>Sign Up</h1>
 
       <Form onSubmit={handleSubmit}>
@@ -108,9 +106,7 @@ export const Signup = () => {
 
         <Button type={'submit'}>Sign Up</Button>
       </Form>
-
-      {error && <p>{error}</p>}
-    </div>
+    </>
   );
 };
 
