@@ -1,7 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import { connectAuthEmulator, getAuth } from 'firebase/auth';
-import { connectFunctionsEmulator, getFunctions } from 'firebase/functions';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyB85bcexC2tYSJSeaM1MBCtKHt-YyThEfU',
@@ -15,11 +14,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const functions = getFunctions(app);
 
 connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: false });
-connectFunctionsEmulator(functions, '127.0.0.1', 5001);
 
-export { auth, functions };
+export { auth };
 
 export default app;
