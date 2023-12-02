@@ -11,13 +11,12 @@ import { Button } from 'react-bootstrap';
 import { EventLeaderboard } from './event-leaderboard';
 import { TeamLeaderboard } from './team-leaderboard';
 import useAuth from '../../../providers/useAuth';
-import useUser from '../../../providers/useUser';
 import { toast } from 'react-toastify';
+import { auth } from '../../../firebase';
 
 export const EventDetail = () => {
   const { eventId } = useParams();
   const authData = useAuth();
-  const { user } = useUser();
 
   const [event, setEvent] = useState<EventWithUid>();
   const [loading, setLoading] = useState<boolean>(true);
@@ -63,38 +62,40 @@ export const EventDetail = () => {
   }, [authData, eventId]);
 
   return (
-    <>
-      <LoadingWrapper loading={loading}>
-        {event && (
-          <>
-            <h1>{event.name}</h1>{' '}
-            <Link to={`/events/${eventId}/edit`} hidden={!canEdit}>
-              <Button>Edit</Button>
-            </Link>
-            <p>{event.description}</p>
-            <p>{event.registeredUserRefs.length} Registered Users</p>
-            {event.registrationStart > new Date() ? (
-              <>Registration opens {event.registrationStart.toDateString()} </>
-            ) : event.registrationEnd > new Date() ? (
-              <>
-                {user ? (
-                  <Button onClick={() => registerUserForEvent(event, user)}>
-                    Register Now
-                  </Button>
-                ) : (
-                  <p>Please login to register</p>
-                )}
-                Registration ends {event.registrationEnd.toDateString()}
-              </>
-            ) : (
-              <>Registration is closed for this event</>
-            )}
-            <EventLeaderboard event={event} />
-            <TeamLeaderboard event={event} />
-          </>
-        )}
-      </LoadingWrapper>
-    </>
+    <LoadingWrapper loading={loading}>
+      {event && (
+        <>
+          <h1>{event.name}</h1>{' '}
+          <Link to={`/events/${eventId}/edit`} hidden={!canEdit}>
+            <Button>Edit</Button>
+          </Link>
+          <p>{event.description}</p>
+          <p>{event.registeredUserRefs.length} Registered Users</p>
+          {event.registrationStart > new Date() ? (
+            <>Registration opens {event.registrationStart.toDateString()} </>
+          ) : event.registrationEnd > new Date() ? (
+            <>
+              {auth.currentUser !== null ? (
+                <Button
+                  onClick={() =>
+                    registerUserForEvent(event, auth.currentUser!.uid)
+                  }
+                >
+                  Register Now
+                </Button>
+              ) : (
+                <p>Please login to register</p>
+              )}
+              Registration ends {event.registrationEnd.toDateString()}
+            </>
+          ) : (
+            <>Registration is closed for this event</>
+          )}
+          <EventLeaderboard event={event} />
+          <TeamLeaderboard event={event} />
+        </>
+      )}
+    </LoadingWrapper>
   );
 };
 

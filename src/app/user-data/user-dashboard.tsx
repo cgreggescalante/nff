@@ -1,20 +1,9 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { LoadingWrapper } from '@shared-ui';
 import useUser from '../../providers/useUser';
 import UploadList from '../components/upload-list/upload-list';
 
 export const UserDashboard = () => {
   const { user, loading } = useUser();
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!loading && user === null) {
-      console.log(loading, user);
-      navigate('/login');
-    }
-  }, [user, loading, navigate]);
 
   return (
     <>

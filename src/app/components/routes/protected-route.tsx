@@ -1,7 +1,8 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import React, { ReactNode } from 'react';
-import useUser from '../../../providers/useUser';
 import { toast } from 'react-toastify';
+import { auth } from '../../../firebase';
+import useAuth from '../../../providers/useAuth';
 
 /* eslint-disable-next-line */
 interface ProtectedRouteProps {
@@ -9,12 +10,12 @@ interface ProtectedRouteProps {
 }
 
 export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const { user, loading } = useUser();
+  const { loading } = useAuth();
   const location = useLocation();
 
   if (loading) return null;
 
-  if (!user) {
+  if (!auth.currentUser) {
     const redirectUrl = `/login?redirect=${encodeURIComponent(
       location.pathname + location.search
     )}`;

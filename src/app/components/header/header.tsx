@@ -3,9 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../../../providers/useAuth';
 import useUser from '../../../providers/useUser';
 import { toast } from 'react-toastify';
+import { auth } from '../../../firebase';
 
 export const Header = () => {
-  const { user, loading, logout } = useUser();
+  const { logout } = useUser();
   const { isAdmin } = useAuth();
 
   const navigate = useNavigate();
@@ -36,7 +37,16 @@ export const Header = () => {
           </Nav>
 
           <Nav className="ml-auto">
-            {loading ? null : user ? (
+            {auth.currentUser == null ? (
+              <>
+                <Nav.Link as={Link} to="/login">
+                  Login
+                </Nav.Link>
+                <Nav.Link as={Link} to="/signup">
+                  Sign Up
+                </Nav.Link>
+              </>
+            ) : (
               <>
                 <Nav.Link as={Link} to="/user-dashboard">
                   Dashboard
@@ -45,15 +55,6 @@ export const Header = () => {
                   Upload
                 </Nav.Link>
                 <Nav.Link onClick={handleSignOut}>Sign Out</Nav.Link>
-              </>
-            ) : (
-              <>
-                <Nav.Link as={Link} to="/login">
-                  Login
-                </Nav.Link>
-                <Nav.Link as={Link} to="/signup">
-                  Sign Up
-                </Nav.Link>
               </>
             )}
             {isAdmin && (

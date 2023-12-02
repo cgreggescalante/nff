@@ -1,4 +1,3 @@
-import styles from './admin-tools.module.scss';
 import ManageUsers from './manage-users/manage-users';
 import ManageEvents from './manage-events/manage-events';
 import CollapsibleContainer from './collapsible-container/collapsible-container';
@@ -21,7 +20,7 @@ import { doc } from '@firebase/firestore';
 
 export const AdminTools = () => {
   return (
-    <div className={styles['container']}>
+    <div>
       <h1>Admin Tools</h1>
 
       <CollapsibleContainer title={'Users'}>

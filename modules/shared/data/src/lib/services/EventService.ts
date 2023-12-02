@@ -56,9 +56,9 @@ export const deleteEvent = async (event: EventWithUid): Promise<void> => {
 
 export const registerUserForEvent = async (
   event: EventWithUid,
-  user: UserInfo
+  userUid: string
 ): Promise<EntryWithUid> => {
-  const userRef = doc(UserCollectionRef, user.uid);
+  const userRef = doc(UserCollectionRef, userUid);
   const eventRef = doc(EventCollectionRef, event.uid);
 
   await updateDoc(eventRef, {
