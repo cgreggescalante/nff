@@ -1,9 +1,7 @@
 import {
-  arrayUnion,
   collection,
   deleteDoc,
   doc,
-  DocumentReference,
   getDocs,
   limit,
   orderBy,
@@ -14,8 +12,6 @@ import { UserInfoConverter } from '../converters/UserInfoConverter';
 import type UserInfo from '../models/UserInfo';
 import { auth, db } from '../firebase';
 import { FirestoreService } from './FirestoreService';
-import EntryService from './EntryService';
-import { updateDoc } from '@firebase/firestore';
 
 class UserInfoService extends FirestoreService<UserInfo> {
   public constructor() {
@@ -89,32 +85,6 @@ class UserInfoService extends FirestoreService<UserInfo> {
       uid: document.uid,
       name: document.name,
     });
-  }
-
-  /**
-   * Adds an event to a user's registered events.
-   * @param user
-   * @param userRef
-   * @param eventRef
-   */
-  async addEvent(
-    user: UserInfo,
-    userRef: DocumentReference,
-    eventRef: DocumentReference
-  ): Promise<UserInfo> {
-    try {
-      const entryRef = await EntryService.createEmpty(userRef, eventRef);
-
-      return updateDoc(userRef, {
-        entryRefs: arrayUnion(entryRef),
-      }).then(() => {
-        user.entryRefs.push(entryRef);
-        return user;
-      });
-    } catch (error) {
-      console.error('Error during UserInfoService.addEvent', error);
-      return Promise.reject(error);
-    }
   }
 }
 

@@ -1,4 +1,3 @@
-import UploadService from './lib/services/UploadService';
 import UserInfoService from './lib/services/UserInfoService';
 import UploadConverter from './lib/converters/UploadConverter';
 import EntryService from './lib/services/EntryService';
@@ -27,7 +26,6 @@ export { UserInfoConverter } from './lib/converters/UserInfoConverter';
 export { EntryConverter } from './lib/converters/EntryConverter';
 
 // Services
-export { UploadService };
 export { UserInfoService };
 export { EntryService };
 export { TeamService };

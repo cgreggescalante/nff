@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { UploadCard } from './upload-card/upload-card';
-import { Upload, UploadService } from '@shared-data';
+import { listRecentUploads, Upload } from '@shared-data';
 import { LoadingWrapper } from '@shared-ui';
 
 export interface UploadListProps {
@@ -12,15 +12,14 @@ export function UploadList({ uid }: UploadListProps) {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    UploadService.getRecent({ uid })
+    listRecentUploads({ userUid: uid })
       .then((uploads) => {
         setUploads(uploads);
-        setLoading(false);
       })
       .catch((error) => {
         console.error('Error while fetching uploads:', error);
-        setLoading(false);
-      });
+      })
+      .finally(() => setLoading(false));
   }, [uid]);
 
   return (
