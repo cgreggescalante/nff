@@ -4,11 +4,9 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Button, FloatingLabel, Form } from 'react-bootstrap';
 import { UserInfoService } from '@shared-data';
 import { auth } from '../../../firebase';
-import useUser from '../../../providers/useUser';
 import { toast } from 'react-toastify';
 
 export const Login = () => {
-  const { login } = useUser();
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -28,8 +26,7 @@ export const Login = () => {
 
       if (userInfo == null) {
         UserInfoService.createFromId(user.uid)
-          .then((userInfo) => {
-            login(userInfo);
+          .then(() => {
             toast.success('Welcome! Please enter your name.');
             navigate('/profile');
           })
@@ -39,7 +36,6 @@ export const Login = () => {
             )
           );
       } else {
-        login(userInfo);
         navigate('/');
       }
     } catch (e) {

@@ -1,18 +1,17 @@
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../../../providers/useAuth';
-import useUser from '../../../providers/useUser';
 import { toast } from 'react-toastify';
 import { auth } from '../../../firebase';
+import { signOut } from 'firebase/auth';
 
 export const Header = () => {
-  const { logout } = useUser();
   const { isAdmin } = useAuth();
 
   const navigate = useNavigate();
 
   const handleSignOut = () => {
-    logout()
+    signOut(auth)
       .then(() => {
         toast.success('Signed out successfully');
         navigate('/');

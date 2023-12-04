@@ -4,12 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { Button, FloatingLabel, Form, InputGroup } from 'react-bootstrap';
 import { UserInfoService } from '@shared-data';
 import { auth } from '../../../firebase';
-import useUser from '../../../providers/useUser';
 import { toast } from 'react-toastify';
 
 export const Signup = () => {
-  const { login } = useUser();
-
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
@@ -33,8 +30,7 @@ export const Signup = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((credentials) => {
         UserInfoService.createFromId(credentials.user.uid, firstName, lastName)
-          .then((userInfo) => {
-            login(userInfo);
+          .then(() => {
             navigate('/');
           })
           .catch((error) => {

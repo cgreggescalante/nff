@@ -6,21 +6,16 @@ import React, {
   useState,
 } from 'react';
 import { UserInfo, UserInfoService } from '@shared-data';
-import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 
 const UserContext = createContext<{
   user: UserInfo | null;
   updateUser: (user: UserInfo) => Promise<void>;
   loading: boolean;
-  login: (user: UserInfo) => void;
-  logout: () => Promise<void>;
 }>({
   user: null,
   updateUser: () => new Promise<void>((_) => null),
   loading: true,
-  login: (_: UserInfo) => null,
-  logout: () => new Promise<void>(() => null),
 });
 
 export const useUser = () => {
@@ -30,38 +25,33 @@ export const useUser = () => {
 export const UserProvider = ({ children }: { children: ReactElement }) => {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUserInfo(JSON.parse(storedUser) as UserInfo);
+    if (!userInfo || reload) {
+      auth.onAuthStateChanged(async (user) => {
+        if (user) {
+          const userInfo = await UserInfoService.read(user.uid);
+          if (userInfo) {
+            setUserInfo(userInfo);
+          }
+        }
+        setReload(false);
+        setLoading(false);
+      });
     }
-    setLoading(false);
-  }, []);
+  }, [reload, userInfo]);
 
   const updateUser = async (user: UserInfo) => {
     return UserInfoService.update(user.uid, user)
-      .then((_) => login(user))
+      .then((_) => setReload(true))
       .catch((error) => Promise.reject(error));
-  };
-
-  const login = (user: UserInfo) => {
-    setUserInfo(user);
-    localStorage.setItem('user', JSON.stringify(user));
-  };
-
-  const logout = async () => {
-    setUserInfo(null);
-    await signOut(auth);
-    localStorage.removeItem('user');
   };
 
   const contextValue = {
     user: userInfo,
     updateUser,
     loading,
-    login,
-    logout,
   };
 
   return (
