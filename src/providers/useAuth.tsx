@@ -1,4 +1,3 @@
-import { User } from 'firebase/auth';
 import {
   createContext,
   ReactNode,
@@ -10,17 +9,15 @@ import { auth } from '../firebase';
 import { CheckAdminStatus } from '@shared-data';
 
 const AuthContext = createContext({
-  user: null,
   isAdmin: false,
   loading: true,
-} as { user: User | null; isAdmin: boolean; loading: boolean });
+} as { isAdmin: boolean; loading: boolean });
 
 const useAuth = () => {
   return useContext(AuthContext);
 };
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -31,12 +28,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           if (isAdmin) setIsAdmin(true);
         });
       }
-      setUser(user);
       setLoading(false);
     });
   }, []);
 
-  const value = { user, isAdmin, loading };
+  const value = { isAdmin, loading };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
