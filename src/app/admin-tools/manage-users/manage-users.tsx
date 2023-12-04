@@ -1,6 +1,6 @@
 import { Button, Table } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
-import { UserInfo, UserInfoService } from '@shared-data';
+import { deleteUser, listUsers, UserInfo } from '@shared-data';
 import { ConfirmPopup } from '@shared-ui';
 import { toast } from 'react-toastify';
 
@@ -10,11 +10,11 @@ export const ManageUsers = () => {
   const [error, setError] = useState<string>();
 
   useEffect(() => {
-    UserInfoService.list().then((users) => setUsers(users));
+    listUsers().then((users) => setUsers(users));
   }, []);
 
-  const deleteUser = async (user: UserInfo) =>
-    UserInfoService.delete(user.uid)
+  const handleDeleteUser = async (user: UserInfo) =>
+    deleteUser(user.uid)
       .then(() => {
         toast.success(`Deleted user ${user.uid}`);
         setUsers(users.filter((u) => u.uid !== user.uid));
@@ -41,7 +41,7 @@ export const ManageUsers = () => {
             <UserRow
               key={index}
               user={user}
-              deleteUser={() => deleteUser(user)}
+              deleteUser={() => handleDeleteUser(user)}
             />
           ))}
         </tbody>

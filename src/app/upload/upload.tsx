@@ -3,9 +3,9 @@ import { WorkoutInput } from './workout-input/workout-input';
 import {
   createUpload,
   emptyWorkoutTypeToNumber,
+  readUser,
   Upload,
   UserCollectionRef,
-  UserInfoService,
   WorkoutType,
   WorkoutTypeNames,
   WorkoutTypeToNumber,
@@ -35,7 +35,7 @@ const UploadView = () => {
     });
 
     if (auth.currentUser) {
-      const user = await UserInfoService.read(auth.currentUser.uid);
+      const user = await readUser(auth.currentUser.uid);
 
       if (!user) return;
 

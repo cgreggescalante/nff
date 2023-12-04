@@ -1,22 +1,9 @@
 import { useLocation, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import {
-  createTeamByOwner,
-  EventWithUid,
-  readEvent,
-  Team,
-  TeamService,
-  TeamWithUid,
-  UserInfoService,
-} from '@shared-data';
+import { createTeamByOwner, EventWithUid, readEvent, readUser, Team, TeamService, TeamWithUid } from '@shared-data';
 import { DocumentReference } from 'firebase/firestore';
 import { Button, Card } from 'react-bootstrap';
-import {
-  LoadingWrapper,
-  ConfirmPopup,
-  ManagedTextInput,
-  ManagedDateInput,
-} from '@shared-ui';
+import { ConfirmPopup, LoadingWrapper, ManagedDateInput, ManagedTextInput } from '@shared-ui';
 import { toast } from 'react-toastify';
 
 // TODO: add route protection to check if the user is an event owner
@@ -112,7 +99,7 @@ const EditTeams = ({
   }, [teamRefs]);
 
   const addTeam = async () => {
-    const owner = await UserInfoService.read(newTeamOwner);
+    const owner = await readUser(newTeamOwner);
 
     if (!owner) console.error('No user found with the given ID');
     else

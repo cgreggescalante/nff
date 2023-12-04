@@ -1,7 +1,7 @@
 import type UserInfo from './models/UserInfo';
 import { faker } from '@faker-js/faker';
 import type { Event, EventWithUid } from './models/Event';
-import UserInfoService from './services/UserInfoService';
+import { createUser, listUsers } from './services/UserInfoService';
 import {
   createEvent,
   listEvents,
@@ -102,7 +102,7 @@ const randomDistribution =
 export const generateUsers = async (count = 10) => {
   for (let i = 0; i < count; i++) {
     const user = generateUser();
-    await UserInfoService.createWithId(user.uid, user);
+    await createUser(user);
     console.log(`Added User: ${user.name.firstName} ${user.name.lastName}`);
   }
 };
@@ -122,7 +122,7 @@ export const registerUsers = async () => {
   let events: EventWithUid[] = [];
 
   await Promise.all([
-    UserInfoService.list().then((u) => {
+    listUsers().then((u) => {
       users = u;
       console.log(`Retrieved ${users.length} users`);
     }),
@@ -139,7 +139,7 @@ export const registerUsers = async () => {
     );
 
     for (const event of toRegister) {
-      await registerUserForEvent(event, user);
+      await registerUserForEvent(event, user.uid);
       console.log(
         `Registered ${user.name.firstName} ${user.name.lastName} for ${event.name}`
       );
@@ -152,7 +152,7 @@ export const registerUsers = async () => {
 export const generateUploads = async () => {
   console.log('Generating uploads');
 
-  const users = await UserInfoService.list();
+  const users = await listUsers();
 
   for (const user of users) {
     const uploadCount = 10;

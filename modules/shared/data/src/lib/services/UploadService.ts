@@ -9,11 +9,14 @@ import {
 } from 'firebase/firestore';
 import { db } from '../firebase';
 import type Upload from '../models/Upload';
-import UserInfoService from './UserInfoService';
 import type UserInfo from '../models/UserInfo';
 
 import { addWorkoutTypeToNumber } from '../models/WorkoutType';
-import { EntryCollectionRef, UploadCollectionRef } from './CollectionRefs';
+import {
+  EntryCollectionRef,
+  UploadCollectionRef,
+  UserCollectionRef,
+} from './CollectionRefs';
 import { doc } from '@firebase/firestore';
 import { EntryWithUid } from '../models/Entry';
 import { ApplyScoring } from '../models/ScoringConfiguration';
@@ -65,7 +68,7 @@ export const listRecentUploads = async ({
   if (userUid) {
     uploadQuery = query(
       uploadQuery,
-      where('userRef', '==', UserInfoService.getReference(userUid))
+      where('userRef', '==', doc(UserCollectionRef, userUid))
     );
   }
 

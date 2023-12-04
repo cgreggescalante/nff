@@ -1,6 +1,4 @@
-import UserInfoService from './lib/services/UserInfoService';
 import UploadConverter from './lib/converters/UploadConverter';
-import EntryService from './lib/services/EntryService';
 import TeamService from './lib/services/TeamService';
 
 // Models
@@ -26,8 +24,6 @@ export { UserInfoConverter } from './lib/converters/UserInfoConverter';
 export { EntryConverter } from './lib/converters/EntryConverter';
 
 // Services
-export { UserInfoService };
-export { EntryService };
 export { TeamService };
 
 export { CheckAdminStatus } from './lib/services/AuthService';
@@ -42,5 +38,6 @@ export {
 
 export * from './lib/services/EventService';
 export * from './lib/services/UploadService';
+export * from './lib/services/UserInfoService';
 
 export * from './lib/services/CollectionRefs';

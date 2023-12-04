@@ -2,7 +2,7 @@ import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Button, FloatingLabel, Form } from 'react-bootstrap';
-import { UserInfoService } from '@shared-data';
+import { createUserFromAuth, readUser } from '@shared-data';
 import { auth } from '../../../firebase';
 import { toast } from 'react-toastify';
 
@@ -22,10 +22,10 @@ export const Login = () => {
       );
       const user = credentials.user;
 
-      const userInfo = await UserInfoService.read(user.uid);
+      const userInfo = await readUser(user.uid);
 
       if (userInfo == null) {
-        UserInfoService.createFromId(user.uid)
+        createUserFromAuth()
           .then(() => {
             toast.success('Welcome! Please enter your name.');
             navigate('/profile');

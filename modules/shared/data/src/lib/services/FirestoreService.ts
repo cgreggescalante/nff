@@ -51,26 +51,6 @@ export abstract class FirestoreService<T> {
   }
 
   /**
-   * Creates a document with a generated ID
-   * Returns the document created.
-   * @param document
-   */
-  public async create(document: T): Promise<T & WithUid> {
-    try {
-      const docRef = doc(this.collectionReference);
-
-      await setDoc(docRef, {
-        ...document,
-        uid: docRef.id,
-      });
-
-      return { ...document, uid: docRef.id };
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
-  /**
    * Reads a document by ID.
    * Returns the document if it exists, otherwise returns null.
    * @param documentId
@@ -114,23 +94,6 @@ export abstract class FirestoreService<T> {
     try {
       const docRef = doc(this.collectionReference, documentId);
       await updateDoc(docRef, document);
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
-  /**
-   * Set a document by ID.
-   * @param documentId
-   * @param document
-   */
-  public async set(
-    documentId: string,
-    document: Partial<any & T>
-  ): Promise<void> {
-    try {
-      const docRef = doc(this.collectionReference, documentId);
-      await setDoc(docRef, document);
     } catch (error) {
       return Promise.reject(error);
     }

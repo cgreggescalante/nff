@@ -1,91 +1,95 @@
 import {
-  collection,
-  deleteDoc,
+  arrayRemove,
   doc,
   getDocs,
-  limit,
-  orderBy,
   query,
+  runTransaction,
+  setDoc,
   where,
 } from 'firebase/firestore';
-import { UserInfoConverter } from '../converters/UserInfoConverter';
 import type UserInfo from '../models/UserInfo';
 import { auth, db } from '../firebase';
-import { FirestoreService } from './FirestoreService';
+import {
+  EntryCollectionRef,
+  EventCollectionRef,
+  TeamCollectionRef,
+  UploadCollectionRef,
+  UserCollectionRef,
+} from './CollectionRefs';
+import { getDoc, updateDoc } from '@firebase/firestore';
 
-class UserInfoService extends FirestoreService<UserInfo> {
-  public constructor() {
-    super(collection(db, 'users'), UserInfoConverter);
-  }
+export const deleteUser = async (userUid: string): Promise<void> => {
+  const user = auth.currentUser;
+  if (!user) throw new Error('No authenticated user found');
 
-  async createFromId(
-    id: string,
-    firstName = '',
-    lastName = ''
-  ): Promise<UserInfo> {
-    try {
-      return this.createWithId(id, {
-        name: { firstName, lastName },
-        uid: id,
-        entryRefs: [],
+  const userRef = doc(UserCollectionRef, userUid);
+
+  const uploadRefs = await getDocs(
+    query(UploadCollectionRef, where('userRef', '==', userRef))
+  );
+
+  const entryRefs = await getDocs(
+    query(EntryCollectionRef, where('userRef', '==', userRef))
+  );
+
+  const eventRefs = await getDocs(
+    query(
+      EventCollectionRef,
+      where('registeredUserRefs', 'array-contains', userRef)
+    )
+  );
+
+  const teamRefs = await getDocs(
+    query(TeamCollectionRef, where('memberRefs', 'array-contains', userRef))
+  );
+
+  await runTransaction(db, async (transaction) => {
+    transaction.delete(userRef);
+    uploadRefs.forEach((uploadRef) => transaction.delete(uploadRef.ref));
+    entryRefs.forEach((entryRef) => transaction.delete(entryRef.ref));
+    eventRefs.forEach((eventRef) => {
+      transaction.update(eventRef.ref, {
+        registeredUserRefs: arrayRemove(userRef),
       });
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
-  override delete = async (id: string): Promise<void> => {
-    console.log(`Attempting to delete user ${id}`);
-
-    const user = auth.currentUser;
-    if (!user) throw new Error('No authenticated user found');
-
-    try {
-      const userRef = doc(this.collectionReference, id);
-
-      const snapshot = await getDocs(
-        query(collection(db, 'uploads'), where('userRef', '==', userRef))
-      );
-
-      for (const key in snapshot.docs) {
-        await deleteDoc(snapshot.docs[key].ref);
-      }
-
-      return super.delete(id);
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
-
-  /**
-   * Returns the top users by total points.
-   * @param count
-   */
-  getUsersByTotalPoints = async (count = 25): Promise<UserInfo[]> => {
-    try {
-      const snapshot = await getDocs(
-        query(
-          this.collectionReference,
-          orderBy('totalPoints', 'desc'),
-          limit(count)
-        )
-      );
-
-      return snapshot.docs.map((document) => document.data() as UserInfo);
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
-
-  override async update(
-    documentId: string,
-    document: Partial<UserInfo>
-  ): Promise<void> {
-    return super.update(documentId, {
-      uid: document.uid,
-      name: document.name,
     });
-  }
-}
+    teamRefs.forEach((teamRef) => {
+      transaction.update(teamRef.ref, { memberRefs: arrayRemove(userRef) });
+    });
+  });
+};
 
-export default new UserInfoService();
+export const updateUser = async (userUid: string, userInfo: UserInfo) => {
+  const docRef = doc(UserCollectionRef, userUid);
+  await updateDoc(docRef, { ...userInfo });
+};
+
+export const createUserFromAuth = async (firstName = '', lastName = '') => {
+  const user = auth.currentUser;
+  if (!user) throw new Error('No authenticated user found');
+
+  const userRef = doc(UserCollectionRef, user.uid);
+
+  await setDoc(userRef, {
+    name: {
+      firstName,
+      lastName,
+    },
+    uid: user.uid,
+    entryRefs: [],
+  });
+};
+
+export const readUser = async (uid: string): Promise<UserInfo | null> => {
+  const user = await getDoc(doc(UserCollectionRef, uid));
+  return user.exists() ? { ...user.data(), uid } : null;
+};
+
+export const listUsers = async (): Promise<UserInfo[]> => {
+  const users = await getDocs(UserCollectionRef);
+  return users.docs.map((doc) => doc.data());
+};
+
+export const createUser = async (userInfo: UserInfo): Promise<void> => {
+  const userRef = doc(UserCollectionRef, userInfo.uid);
+  await setDoc(userRef, userInfo);
+};

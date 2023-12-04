@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { UserInfo, UserInfoService } from '@shared-data';
+import { readUser, updateUser, UserInfo } from '@shared-data';
 import { auth } from '../firebase';
 
 const UserContext = createContext<{
@@ -31,7 +31,7 @@ export const UserProvider = ({ children }: { children: ReactElement }) => {
     if (!userInfo || reload) {
       auth.onAuthStateChanged(async (user) => {
         if (user) {
-          const userInfo = await UserInfoService.read(user.uid);
+          const userInfo = await readUser(user.uid);
           if (userInfo) {
             setUserInfo(userInfo);
           }
@@ -42,15 +42,15 @@ export const UserProvider = ({ children }: { children: ReactElement }) => {
     }
   }, [reload, userInfo]);
 
-  const updateUser = async (user: UserInfo) => {
-    return UserInfoService.update(user.uid, user)
+  const handleUpdateUser = async (user: UserInfo) => {
+    return updateUser(user.uid, user)
       .then((_) => setReload(true))
       .catch((error) => Promise.reject(error));
   };
 
   const contextValue = {
     user: userInfo,
-    updateUser,
+    updateUser: handleUpdateUser,
     loading,
   };
 

@@ -2,7 +2,6 @@ import { db } from '../firebase';
 import {
   arrayRemove,
   arrayUnion,
-  DocumentReference,
   getDocs,
   query,
   runTransaction,
@@ -10,7 +9,7 @@ import {
 } from 'firebase/firestore';
 import type Event from '../models/Event';
 import type { EventWithUid } from '../models/Event';
-import UserInfoService from './UserInfoService';
+import { readUser } from './UserInfoService';
 import { addDoc, doc, getDoc, updateDoc } from '@firebase/firestore';
 import UserInfo from '../models/UserInfo';
 import { Entry, EntryWithUid } from '../models/Entry';
@@ -139,9 +138,7 @@ export const getUserLeaderboard = async (
   const leaderboardEntries: { user: UserInfo; entry: EntryWithUid }[] = [];
 
   for (const entry of entries.docs) {
-    const user = await UserInfoService.read(
-      entry.data().userRef as DocumentReference<UserInfo>
-    );
+    const user = await readUser(entry.data().userRef.id);
     if (!user) continue;
     leaderboardEntries.push({
       user,
