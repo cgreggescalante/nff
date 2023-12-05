@@ -16,7 +16,7 @@ export const AdminRoute = ({ children }: AdminRouteProps): ReactNode => {
 
   if (isAdmin) return children;
   else {
-    toast.error('Permission denied.', { toastId: 'admin-route' });
+    toast.error('Permission denied.', { toastId: 'addUser-route' });
     navigate('/');
   }
 };

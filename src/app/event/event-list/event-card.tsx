@@ -25,7 +25,7 @@ export const EventCard = ({ event }: EventCardProps) => (
         Registration Dates: {event.registrationStart.toDateString()} to{' '}
         {event.registrationEnd.toDateString()}
       </Card.Text>
-      <Card.Text>Registered Users: {event.registeredUserRefs.length}</Card.Text>
+      <Card.Text>Registered Users: {event.entryRefs.length}</Card.Text>
     </Card.Body>
   </Card>
 );

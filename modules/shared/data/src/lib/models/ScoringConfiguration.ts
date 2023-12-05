@@ -9,16 +9,12 @@ export interface ScoringRule {
   comboRate?: number;
 }
 
-export interface ScoringConfiguration {
-  scoringRules: ScoringRule[];
-}
-
 export const ApplyScoring = (
-  scoringConfiguration: ScoringConfiguration,
+  rules: ScoringRule[],
   workouts: WorkoutTypeToNumber
 ): number => {
   let score = 0;
-  scoringConfiguration.scoringRules.forEach((rule) => {
+  rules.forEach((rule) => {
     if (!workouts[rule.workoutType]) return;
 
     if (

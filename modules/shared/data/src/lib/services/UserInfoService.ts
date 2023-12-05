@@ -8,6 +8,7 @@ import {
   where,
 } from 'firebase/firestore';
 import type UserInfo from '../models/UserInfo';
+import type { UserInfoWithUid } from '../models/UserInfo';
 import { auth, db } from '../firebase';
 import {
   EntryCollectionRef,
@@ -70,16 +71,14 @@ export const createUserFromAuth = async (firstName = '', lastName = '') => {
   const userRef = doc(UserCollectionRef, user.uid);
 
   await setDoc(userRef, {
-    name: {
-      firstName,
-      lastName,
-    },
-    uid: user.uid,
-    entryRefs: [],
+    firstName,
+    lastName,
   });
 };
 
-export const readUser = async (uid: string): Promise<UserInfo | null> => {
+export const readUser = async (
+  uid: string
+): Promise<UserInfoWithUid | null> => {
   const user = await getDoc(doc(UserCollectionRef, uid));
   return user.exists() ? { ...user.data(), uid } : null;
 };
@@ -87,9 +86,4 @@ export const readUser = async (uid: string): Promise<UserInfo | null> => {
 export const listUsers = async (): Promise<UserInfo[]> => {
   const users = await getDocs(UserCollectionRef);
   return users.docs.map((doc) => doc.data());
-};
-
-export const createUser = async (userInfo: UserInfo): Promise<void> => {
-  const userRef = doc(UserCollectionRef, userInfo.uid);
-  await setDoc(userRef, userInfo);
 };

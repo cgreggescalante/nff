@@ -5,7 +5,6 @@ export const UserInfoConverter: FirestoreDataConverter<UserInfo> = {
   toFirestore: (user: UserInfo) => Object.assign({}, user),
   fromFirestore: (snapshot, options): UserInfo => {
     const user = snapshot.data(options) as UserInfo;
-    if (!user.entryRefs) user.entryRefs = [];
     return user;
   },
 };

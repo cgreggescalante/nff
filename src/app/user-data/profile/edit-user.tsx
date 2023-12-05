@@ -11,26 +11,21 @@ export interface EditUserDetailsProps {
 }
 
 export const EditUser = ({ userInfo, updateUser }: EditUserDetailsProps) => {
-  const [firstName, setFirstName] = useState<string>(userInfo.name.firstName);
-  const [lastName, setLastName] = useState<string>(userInfo.name.lastName);
+  const [firstName, setFirstName] = useState<string>(userInfo.firstName);
+  const [lastName, setLastName] = useState<string>(userInfo.lastName);
 
   const [edited, setEdited] = useState<boolean>(false);
 
   useEffect(() => {
     setEdited(
-      firstName !== userInfo.name.firstName ||
-        lastName !== userInfo.name.lastName
+      firstName !== userInfo.firstName || lastName !== userInfo.lastName
     );
   }, [userInfo, firstName, lastName]);
 
   const saveChanges = () => {
     const newUser = {
-      name: {
-        firstName,
-        lastName,
-      },
-      uid: userInfo.uid,
-      entryRefs: userInfo.entryRefs,
+      firstName,
+      lastName,
     };
 
     updateUser(newUser)

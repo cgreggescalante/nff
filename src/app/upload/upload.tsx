@@ -2,7 +2,6 @@ import React, { ChangeEvent, useState } from 'react';
 import { WorkoutInput } from './workout-input/workout-input';
 import {
   createUpload,
-  emptyWorkoutTypeToNumber,
   readUser,
   Upload,
   UserCollectionRef,
@@ -41,8 +40,8 @@ const UploadView = () => {
 
       const upload: Upload = {
         userRef: doc(UserCollectionRef, auth.currentUser.uid),
-        userFirstName: user.name.firstName,
-        userLastName: user.name.lastName,
+        userFirstName: user.firstName,
+        userLastName: user.lastName,
         description,
         workouts: validWorkouts,
         date: new Date(),
@@ -52,7 +51,7 @@ const UploadView = () => {
         .then((_) => {
           toast.success('Workouts added successfully');
           setDescription('');
-          setWorkouts(emptyWorkoutTypeToNumber());
+          setWorkouts({});
         })
         .catch((error) => {
           console.error('Error while creating upload: ', error);

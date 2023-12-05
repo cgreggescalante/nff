@@ -13,7 +13,7 @@ export const UserDashboard = () => {
         {user ? (
           <div>
             <h3>
-              {user.name.firstName} {user.name.lastName}
+              {user.firstName} {user.lastName}
             </h3>
             <h6>{user.uid}</h6>
             <h2>My Uploads</h2>

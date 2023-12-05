@@ -2,6 +2,10 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    function signedIn() {
+        return request.auth != null;
+    }
+
     // Allow all users to check if they are admins
     match /admins/{adminUid} {
         allow read: if request.auth.uid == adminUid;
@@ -10,43 +14,33 @@ service cloud.firestore {
     // Disallows users from editing other's user documents
     match /users/{userId} {
         allow read;
-        allow write;
-        allow write: if request.auth != null && request.auth.uid == userId;
+        allow write: if signedIn() && request.auth.uid == userId;
+
+        match /uploads/{uploadId} {
+            allow read;
+            allow write: if signedIn() && string(request.resource.data.user) == '/databases/' + database + '/documents/users/' + request.auth.uid;
+        }
     }
 
-    match /uploads {
+    match /{path=**}/uploads/{uploadId} {
         allow read;
-        match /{uploadId} {
-            allow read;
-            allow write;
-            allow write: if request.auth != null && string(request.resource.data.user) == '/databases/' + database + '/documents/users/' + request.auth.uid;
-        }
+    }
+
+    match /{path=**}/entries/{entryId} {
+        allow read;
+    }
+
+    match /{path=**}/teams/{teamId} {
+        allow read;
     }
 
     match /events {
         allow read;
         match /{eventId} {
             allow read;
-            allow write;
             match /owners/{ownerUid} {
                 allow read: if request.auth.uid == ownerUid;
             }
-        }
-    }
-
-    match /entries {
-        allow read;
-        match /{entryId} {
-            allow read;
-            allow write;
-        }
-    }
-
-    match /teams {
-        allow read;
-        match /{teamId} {
-            allow read;
-            allow write;
         }
     }
   }

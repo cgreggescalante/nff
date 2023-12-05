@@ -70,7 +70,7 @@ export const EventDetail = () => {
             <Button>Edit</Button>
           </Link>
           <p>{event.description}</p>
-          <p>{event.registeredUserRefs.length} Registered Users</p>
+          <p>{event.entryRefs.length} Registered Users</p>
           {event.registrationStart > new Date() ? (
             <>Registration opens {event.registrationStart.toDateString()} </>
           ) : event.registrationEnd > new Date() ? (

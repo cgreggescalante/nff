@@ -1,15 +1,13 @@
-import { DocumentReference } from 'firebase/firestore';
 import Entry from './Entry';
+import { WithUid } from './Models';
 
 // TODO: remove uid from UserInfo
 export interface UserInfo {
-  name: {
-    firstName: string;
-    lastName: string;
-  };
-  uid: string;
-  entryRefs: DocumentReference<Entry>[];
+  firstName: string;
+  lastName: string;
 }
+
+export type UserInfoWithUid = UserInfo & WithUid;
 
 export interface UserInfoWithEntries extends UserInfo {
   entries: Entry[];

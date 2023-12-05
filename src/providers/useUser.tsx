@@ -5,11 +5,11 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { readUser, updateUser, UserInfo } from '@shared-data';
+import { readUser, updateUser, UserInfo, UserInfoWithUid } from '@shared-data';
 import { auth } from '../firebase';
 
 const UserContext = createContext<{
-  user: UserInfo | null;
+  user: UserInfoWithUid | null;
   updateUser: (user: UserInfo) => Promise<void>;
   loading: boolean;
 }>({
@@ -23,7 +23,7 @@ export const useUser = () => {
 };
 
 export const UserProvider = ({ children }: { children: ReactElement }) => {
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const [userInfo, setUserInfo] = useState<UserInfoWithUid | null>(null);
   const [loading, setLoading] = useState(true);
   const [reload, setReload] = useState(false);
 
@@ -43,7 +43,8 @@ export const UserProvider = ({ children }: { children: ReactElement }) => {
   }, [reload, userInfo]);
 
   const handleUpdateUser = async (user: UserInfo) => {
-    return updateUser(user.uid, user)
+    if (!userInfo) return Promise.reject('User not logged in');
+    return updateUser(userInfo.uid, user)
       .then((_) => setReload(true))
       .catch((error) => Promise.reject(error));
   };

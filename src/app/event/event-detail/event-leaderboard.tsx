@@ -46,7 +46,7 @@ export const EventLeaderboard = ({ event }: EventLeaderboardProps) => {
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>
-                    {item.user.name.firstName} {item.user.name.lastName}
+                    {item.user.firstName} {item.user.lastName}
                   </td>
                   <td>{Math.round(item.entry.points * 10) / 10}</td>
                   <td>

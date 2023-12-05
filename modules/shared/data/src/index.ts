@@ -2,6 +2,8 @@ import UploadConverter from './lib/converters/UploadConverter';
 
 // Models
 export type { UserInfo } from './lib/models/UserInfo';
+export type { UserInfoWithUid } from './lib/models/UserInfo';
+
 export type { Upload } from './lib/models/Upload';
 
 export type { Event } from './lib/models/Event';
@@ -23,13 +25,6 @@ export { UserInfoConverter } from './lib/converters/UserInfoConverter';
 export { EntryConverter } from './lib/converters/EntryConverter';
 
 export * from './lib/services/AuthService';
-
-export {
-  generateUsers,
-  generateEvents,
-  generateUploads,
-  registerUsers,
-} from './lib/testData';
 
 export * from './lib/services/EventService';
 export * from './lib/services/UploadService';

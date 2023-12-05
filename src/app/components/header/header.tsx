@@ -57,7 +57,7 @@ export const Header = () => {
               </>
             )}
             {isAdmin && (
-              <Nav.Link as={Link} to={'/admin-tools'}>
+              <Nav.Link as={Link} to={'/addUser-tools'}>
                 Admin
               </Nav.Link>
             )}

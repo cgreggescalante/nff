@@ -2,6 +2,7 @@ import { db } from '../firebase';
 import {
   arrayRemove,
   arrayUnion,
+  collection,
   getDocs,
   query,
   runTransaction,
@@ -17,9 +18,13 @@ import { Team, TeamWithUid } from '../models/Team';
 import {
   EntryCollectionRef,
   EventCollectionRef,
+  getEntryCollectionRef,
+  getEntryRef,
+  getTeamCollectionRef,
   TeamCollectionRef,
   UserCollectionRef,
 } from './CollectionRefs';
+import { WithUid } from '../models/Models';
 
 export const createEvent = async (event: Event): Promise<EventWithUid> => {
   const docRef = await addDoc(EventCollectionRef, event);
@@ -72,7 +77,7 @@ export const registerUserForEvent = async (
     points: 0,
   };
 
-  const entryRef = await addDoc(EntryCollectionRef, entry);
+  const entryRef = await addDoc(getEntryCollectionRef(userUid), entry);
 
   await updateDoc(userRef, {
     entryRefs: arrayUnion(entryRef),
@@ -81,28 +86,41 @@ export const registerUserForEvent = async (
   return { ...entry, uid: entryRef.id };
 };
 
+export const getEntry = async (
+  eventUid: string,
+  userUid: string
+): Promise<EntryWithUid | null> => {
+  const entryCollectionRef = collection(db, 'users', userUid, 'entries');
+  const snapshot = await getDocs(
+    query(
+      entryCollectionRef,
+      where('eventRef', '==', doc(EventCollectionRef, eventUid))
+    )
+  );
+  if (snapshot.size === 0) return null;
+  return { ...(snapshot.docs[0].data() as Entry), uid: snapshot.docs[0].id };
+};
+
 export const createTeamByOwner = async (
   event: EventWithUid,
-  owner: UserInfo
+  owner: UserInfo & WithUid
 ): Promise<TeamWithUid> => {
   const ownerRef = doc(UserCollectionRef, owner.uid);
 
-  const registered = event.registeredUserRefs
-    .map((ref) => ref.path)
-    .includes(ownerRef.path);
-  if (!registered) throw new Error('User is not registered for this event');
+  const entry = await getEntry(event.uid, owner.uid);
+  if (!entry) throw new Error('User is not registered for this event');
 
   const eventRef = doc(EventCollectionRef, event.uid);
 
   const team: Team = {
-    name: `${owner.name.firstName} ${owner.name.lastName}'s Team`,
+    name: `${owner.firstName} ${owner.lastName}'s Team`,
     ownerRef,
-    memberRefs: [ownerRef],
+    entryRefs: [getEntryRef(owner.uid, entry.uid)],
     eventRef,
     points: 0,
   };
 
-  const teamRef = await addDoc(TeamCollectionRef, team);
+  const teamRef = await addDoc(getTeamCollectionRef(event.uid), team);
 
   await updateDoc(eventRef, {
     teamRefs: arrayUnion(teamRef),

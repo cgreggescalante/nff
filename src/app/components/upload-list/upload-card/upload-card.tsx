@@ -36,5 +36,3 @@ export const UploadCard = ({ upload }: UploadCardProps) => (
     </Card.Body>
   </Card>
 );
-
-export default UploadCard;
