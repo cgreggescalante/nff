@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { EventWithUid, Team, TeamService } from '@shared-data';
+import { EventWithUid, getTeamLeaderboard, Team } from '@shared-data';
 import { LoadingWrapper } from '@shared-ui';
 
 interface TeamsListProps {
@@ -11,7 +11,7 @@ export const TeamLeaderboard = ({ event }: TeamsListProps) => {
   const [teamsLoading, setTeamsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    TeamService.getLeaderboard(event.uid).then((teams) => {
+    getTeamLeaderboard(event.uid).then((teams) => {
       setTeams(teams);
       setTeamsLoading(false);
     });

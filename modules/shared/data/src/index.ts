@@ -1,5 +1,4 @@
 import UploadConverter from './lib/converters/UploadConverter';
-import TeamService from './lib/services/TeamService';
 
 // Models
 export type { UserInfo } from './lib/models/UserInfo';
@@ -23,11 +22,7 @@ export { UploadConverter };
 export { UserInfoConverter } from './lib/converters/UserInfoConverter';
 export { EntryConverter } from './lib/converters/EntryConverter';
 
-// Services
-export { TeamService };
-
-export { CheckAdminStatus } from './lib/services/AuthService';
-export { CheckIsEventOwner } from './lib/services/AuthService';
+export * from './lib/services/AuthService';
 
 export {
   generateUsers,
@@ -39,5 +34,6 @@ export {
 export * from './lib/services/EventService';
 export * from './lib/services/UploadService';
 export * from './lib/services/UserInfoService';
+export * from './lib/services/TeamService';
 
 export * from './lib/services/CollectionRefs';

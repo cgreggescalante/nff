@@ -2,7 +2,7 @@ import { DocumentReference, Timestamp } from 'firebase/firestore';
 import { ScoringConfiguration } from './ScoringConfiguration';
 import { Team } from './Team';
 import UserInfo from './UserInfo';
-import { WithUid } from './FirestoreModel';
+import { WithUid } from './Models';
 
 export interface EventData {
   uid: string;

@@ -3,7 +3,7 @@ import type UserInfo from './UserInfo';
 import type Event from './Event';
 import { WorkoutTypeToNumber } from './WorkoutType';
 import { Team } from './Team';
-import { WithUid } from './FirestoreModel';
+import { WithUid } from './Models';
 
 export interface Entry {
   userRef: DocumentReference<UserInfo>;

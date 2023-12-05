@@ -1,6 +1,7 @@
 import { db } from '../firebase';
 import { collection } from 'firebase/firestore';
 import { doc, getDoc } from '@firebase/firestore';
+import { EventCollectionRef } from './CollectionRefs';
 
 export const CheckAdminStatus = async (userUid: string): Promise<boolean> => {
   const adminRef = doc(collection(db, 'admins'), userUid);
@@ -19,7 +20,7 @@ export const CheckIsEventOwner = async (
   userUid: string,
   eventUid: string
 ): Promise<boolean> => {
-  const eventRef = doc(collection(db, 'events'), eventUid);
+  const eventRef = doc(EventCollectionRef, eventUid);
 
   const ownerRef = doc(eventRef, 'owners', userUid);
 

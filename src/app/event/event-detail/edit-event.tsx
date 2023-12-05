@@ -1,9 +1,24 @@
 import { useLocation, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { createTeamByOwner, EventWithUid, readEvent, readUser, Team, TeamService, TeamWithUid } from '@shared-data';
+import {
+  createTeamByOwner,
+  deleteTeam,
+  EventWithUid,
+  readEvent,
+  readTeam,
+  readUser,
+  Team,
+  TeamWithUid,
+  updateTeamName,
+} from '@shared-data';
 import { DocumentReference } from 'firebase/firestore';
 import { Button, Card } from 'react-bootstrap';
-import { ConfirmPopup, LoadingWrapper, ManagedDateInput, ManagedTextInput } from '@shared-ui';
+import {
+  ConfirmPopup,
+  LoadingWrapper,
+  ManagedDateInput,
+  ManagedTextInput,
+} from '@shared-ui';
 import { toast } from 'react-toastify';
 
 // TODO: add route protection to check if the user is an event owner
@@ -90,7 +105,7 @@ const EditTeams = ({
   const [newTeamOwner, setNewTeamOwner] = useState<string>('');
 
   useEffect(() => {
-    Promise.all(teamRefs.map((teamRef) => TeamService.read(teamRef)))
+    Promise.all(teamRefs.map((teamRef) => readTeam(teamRef.id)))
       .then((teams) => {
         setTeams(teams.filter((team) => team != null) as TeamWithUid[]);
         setTeamsLoading(false);
@@ -140,7 +155,7 @@ const EditTeam = ({ team }: { team: TeamWithUid }) => {
 
   const handleSubmit = () => {
     setLoading(true);
-    TeamService.update(team.uid, { name })
+    updateTeamName(team.uid, name)
       .then(() => {
         setLoading(false);
         setError(undefined);
@@ -151,8 +166,8 @@ const EditTeam = ({ team }: { team: TeamWithUid }) => {
       });
   };
 
-  const deleteTeam = () => {
-    TeamService.delete(team.uid).then(() => {
+  const handleDeleteTeam = () => {
+    deleteTeam(team.uid).then(() => {
       setShow(false);
     });
   };
@@ -164,7 +179,7 @@ const EditTeam = ({ team }: { team: TeamWithUid }) => {
           X
         </Button>
         <ConfirmPopup
-          onConfirm={deleteTeam}
+          onConfirm={handleDeleteTeam}
           message={`Are you sure you want to delete team '${team.name}'?`}
           show={show}
           setShow={setShow}

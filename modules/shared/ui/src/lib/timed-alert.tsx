@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { Alert } from 'react-bootstrap';
 
-/* eslint-disable-next-line */
 export interface TimedAlertProps {
   message: string;
   duration: number;
@@ -22,13 +21,11 @@ export const TimedAlert = ({
   }, [duration, show, setShow]);
 
   return (
-    <>
-      {show && (
-        <Alert variant={'success'} dismissible onClose={() => setShow(false)}>
-          {message}
-        </Alert>
-      )}
-    </>
+    show && (
+      <Alert variant={'success'} dismissible onClose={() => setShow(false)}>
+        {message}
+      </Alert>
+    )
   );
 };
 
