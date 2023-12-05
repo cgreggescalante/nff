@@ -1,4 +1,4 @@
-import { Team } from '../models/Team';
+import { Team, TeamWithUid } from '../models/Team';
 import {
   arrayRemove,
   deleteField,
@@ -9,12 +9,25 @@ import {
   where,
 } from 'firebase/firestore';
 import { db } from '../firebase';
-import { doc, getDoc, updateDoc } from '@firebase/firestore';
+import { doc, updateDoc } from '@firebase/firestore';
 import {
   EntryCollectionRef,
   EventCollectionRef,
+  getTeamCollectionRef,
+  getTeamRef,
   TeamCollectionRef,
 } from './CollectionRefs';
+import { TeamConverter } from '../converters/TeamConverter';
+
+export const getTeamsByEvent = async (
+  eventUid: string
+): Promise<TeamWithUid[]> => {
+  const collectionRef = getTeamCollectionRef(eventUid);
+  const teams = await getDocs(collectionRef);
+  return teams.docs.map(
+    (doc) => TeamConverter.fromFirestore(doc) as TeamWithUid
+  );
+};
 
 export const getTeamLeaderboard = async (eventUid: string) => {
   const teams = await getDocs(
@@ -28,8 +41,8 @@ export const getTeamLeaderboard = async (eventUid: string) => {
   return teams.docs.map((doc) => doc.data() as Team);
 };
 
-export const deleteTeam = async (teamId: string) => {
-  const teamRef = doc(TeamCollectionRef, teamId);
+export const deleteTeam = async (eventId: string, teamId: string) => {
+  const teamRef = getTeamRef(eventId, teamId);
   const entryRefs = await getDocs(
     query(EntryCollectionRef, where('teamRef', '==', teamRef))
   );
@@ -50,14 +63,11 @@ export const deleteTeam = async (teamId: string) => {
   });
 };
 
-export const readTeam = async (teamUid: string) => {
-  const teamRef = doc(TeamCollectionRef, teamUid);
-  const team = await getDoc(teamRef);
-  
-  return team.data();
-}
-
-export const updateTeamName = async (teamUid: string, name: string) => {
-  const teamRef = doc(TeamCollectionRef, teamUid);
-  await updateDoc(teamRef, { name })
-}
+export const updateTeamName = async (
+  eventUid: string,
+  teamUid: string,
+  name: string
+) => {
+  const teamRef = getTeamRef(eventUid, teamUid);
+  await updateDoc(teamRef, { name });
+};

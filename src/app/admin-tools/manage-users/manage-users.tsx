@@ -1,11 +1,11 @@
 import { Button, Table } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
-import { deleteUser, listUsers, UserInfo } from '@shared-data';
+import { deleteUser, listUsers, UserInfoWithUid } from '@shared-data';
 import { ConfirmPopup } from '@shared-ui';
 import { toast } from 'react-toastify';
 
 export const ManageUsers = () => {
-  const [users, setUsers] = useState<UserInfo[]>([]);
+  const [users, setUsers] = useState<UserInfoWithUid[]>([]);
 
   const [error, setError] = useState<string>();
 
@@ -13,7 +13,7 @@ export const ManageUsers = () => {
     listUsers().then((users) => setUsers(users));
   }, []);
 
-  const handleDeleteUser = async (user: UserInfo) =>
+  const handleDeleteUser = async (user: UserInfoWithUid) =>
     deleteUser(user.uid)
       .then(() => {
         toast.success(`Deleted user ${user.uid}`);
@@ -52,7 +52,7 @@ export const ManageUsers = () => {
 };
 
 interface UserRowProps {
-  user: UserInfo;
+  user: UserInfoWithUid;
   deleteUser: () => void;
 }
 
@@ -71,8 +71,8 @@ const UserRow = ({ user, deleteUser }: UserRowProps) => {
           Delete
         </Button>
       </td>
-      <td>{user.name.firstName}</td>
-      <td>{user.name.lastName}</td>
+      <td>{user.firstName}</td>
+      <td>{user.lastName}</td>
       <td>{user.uid}</td>
       <ConfirmPopup
         onConfirm={onConfirm}

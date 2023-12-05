@@ -47,22 +47,19 @@ export const CreateEvent = ({ completed }: CreateEventProps) => {
       endDate: new Date(endDate),
       registrationStart: new Date(registrationStart),
       registrationEnd: new Date(registrationEnd),
-      registeredUserRefs: [],
-      scoringConfiguration: {
-        scoringRules: WorkoutTypeNames.map((workoutType) => {
-          let standardRate = 0;
-          const value = scoringConfiguration[workoutType];
-          if (value !== undefined) {
-            standardRate = value;
-          }
+      entryRefs: [],
+      scoringRules: WorkoutTypeNames.map((workoutType) => {
+        let standardRate = 0;
+        const value = scoringConfiguration[workoutType];
+        if (value !== undefined) {
+          standardRate = value;
+        }
 
-          return {
-            workoutType,
-            standardRate,
-          };
-        }),
-      },
-      teamRefs: [],
+        return {
+          workoutType,
+          standardRate,
+        };
+      }),
     };
 
     createEvent(newEvent)

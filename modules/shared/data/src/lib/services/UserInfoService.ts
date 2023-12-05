@@ -18,6 +18,7 @@ import {
   UserCollectionRef,
 } from './CollectionRefs';
 import { getDoc, updateDoc } from '@firebase/firestore';
+import { UserInfoConverter } from '../converters/UserInfoConverter';
 
 export const deleteUser = async (userUid: string): Promise<void> => {
   const user = auth.currentUser;
@@ -83,7 +84,9 @@ export const readUser = async (
   return user.exists() ? { ...user.data(), uid } : null;
 };
 
-export const listUsers = async (): Promise<UserInfo[]> => {
+export const listUsers = async (): Promise<UserInfoWithUid[]> => {
   const users = await getDocs(UserCollectionRef);
-  return users.docs.map((doc) => doc.data());
+  return users.docs.map(
+    (doc) => UserInfoConverter.fromFirestore(doc) as UserInfoWithUid
+  );
 };

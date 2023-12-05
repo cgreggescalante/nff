@@ -4,14 +4,12 @@ import {
   createTeamByOwner,
   deleteTeam,
   EventWithUid,
+  getTeamsByEvent,
   readEvent,
-  readTeam,
   readUser,
-  Team,
   TeamWithUid,
   updateTeamName,
 } from '@shared-data';
-import { DocumentReference } from 'firebase/firestore';
 import { Button, Card } from 'react-bootstrap';
 import {
   ConfirmPopup,
@@ -86,32 +84,26 @@ export const EditEvent = () => {
             setValue={(value) => setEvent({ ...event, registrationEnd: value })}
           />
 
-          <EditTeams event={event} teamRefs={event.teamRefs} />
+          <EditTeams event={event} />
         </>
       )}
     </>
   );
 };
 
-const EditTeams = ({
-  event,
-  teamRefs,
-}: {
-  event: EventWithUid;
-  teamRefs: DocumentReference<Team>[];
-}) => {
+const EditTeams = ({ event }: { event: EventWithUid }) => {
   const [teams, setTeams] = useState<TeamWithUid[]>([]);
   const [teamsLoading, setTeamsLoading] = useState<boolean>(true);
   const [newTeamOwner, setNewTeamOwner] = useState<string>('');
 
   useEffect(() => {
-    Promise.all(teamRefs.map((teamRef) => readTeam(teamRef.id)))
+    getTeamsByEvent(event.uid)
       .then((teams) => {
-        setTeams(teams.filter((team) => team != null) as TeamWithUid[]);
+        setTeams(teams);
         setTeamsLoading(false);
       })
       .catch((error) => console.error(error));
-  }, [teamRefs]);
+  }, [event]);
 
   const addTeam = async () => {
     const owner = await readUser(newTeamOwner);
@@ -130,7 +122,7 @@ const EditTeams = ({
       <h2>Teams</h2>
       <LoadingWrapper loading={teamsLoading}>
         {teams.map((team, index) => (
-          <EditTeam key={index} team={team} />
+          <EditTeam key={index} event={event} team={team} />
         ))}
       </LoadingWrapper>
       <ManagedTextInput
@@ -145,7 +137,13 @@ const EditTeams = ({
   );
 };
 
-const EditTeam = ({ team }: { team: TeamWithUid }) => {
+const EditTeam = ({
+  event,
+  team,
+}: {
+  event: EventWithUid;
+  team: TeamWithUid;
+}) => {
   const [name, setName] = useState<string>(team.name);
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -155,7 +153,7 @@ const EditTeam = ({ team }: { team: TeamWithUid }) => {
 
   const handleSubmit = () => {
     setLoading(true);
-    updateTeamName(team.uid, name)
+    updateTeamName(event.uid, team.uid, name)
       .then(() => {
         setLoading(false);
         setError(undefined);
@@ -167,7 +165,7 @@ const EditTeam = ({ team }: { team: TeamWithUid }) => {
   };
 
   const handleDeleteTeam = () => {
-    deleteTeam(team.uid).then(() => {
+    deleteTeam(event.uid, team.uid).then(() => {
       setShow(false);
     });
   };
