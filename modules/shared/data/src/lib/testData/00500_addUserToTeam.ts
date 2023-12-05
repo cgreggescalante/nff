@@ -1,5 +1,4 @@
 import { db } from './firebase';
-import { arrayUnion } from 'firebase/firestore';
 import { FieldValue } from 'firebase-admin/firestore';
 
 export const addUserToTeam = async (

@@ -43,22 +43,18 @@ export const EventDetail = () => {
   }, [event, eventId]);
 
   useEffect(() => {
-    if (authData.user) {
-      if (authData.isAdmin) {
-        setCanEdit(true);
-      } else if (eventId) {
-        CheckIsEventOwner(authData.user.uid, eventId)
-          .then((isOwner) => {
-            setCanEdit(isOwner);
-          })
-          .catch((error) => {
-            console.error(
-              'Error while checking if user is event owner:',
-              error
-            );
-          });
-      }
-    } else setCanEdit(false);
+    if (authData.isAdmin) setCanEdit(true);
+    else if (eventId) {
+      CheckIsEventOwner(authData.userId, eventId)
+        .then((isOwner) => {
+          setCanEdit(isOwner);
+        })
+        .catch((error) => {
+          console.error('Error while checking if user is event owner:', error);
+        });
+    } else {
+      setCanEdit(false);
+    }
   }, [authData, eventId]);
 
   return (

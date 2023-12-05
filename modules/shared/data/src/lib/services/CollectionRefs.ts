@@ -9,7 +9,7 @@ import { TeamConverter } from '../converters/TeamConverter';
 import { UserInfoConverter } from '../converters/UserInfoConverter';
 import { EntryConverter } from '../converters/EntryConverter';
 import UploadConverter from '../converters/UploadConverter';
-import { addDoc, doc } from '@firebase/firestore';
+import { doc } from '@firebase/firestore';
 import Entry from '../models/Entry';
 
 export const EventCollectionRef = collection(db, 'events').withConverter(
