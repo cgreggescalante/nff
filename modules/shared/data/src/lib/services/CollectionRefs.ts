@@ -1,17 +1,17 @@
-import {
-  collection,
-  collectionGroup,
-  CollectionReference,
-  DocumentReference,
-  FirestoreDataConverter,
-} from 'firebase/firestore';
 import { db } from '../firebase';
 import { EventConverter } from '../converters/EventConverter';
 import { TeamConverter } from '../converters/TeamConverter';
 import { UserInfoConverter } from '../converters/UserInfoConverter';
 import { EntryConverter } from '../converters/EntryConverter';
 import UploadConverter from '../converters/UploadConverter';
-import { doc } from '@firebase/firestore';
+import {
+  doc,
+  collection,
+  collectionGroup,
+  CollectionReference,
+  DocumentReference,
+  FirestoreDataConverter,
+} from '@firebase/firestore';
 
 export const EventCollectionRef = collection(db, 'events').withConverter(
   EventConverter
@@ -26,7 +26,9 @@ export const EntryCollectionRef = collectionGroup(db, 'entries').withConverter(
 /**
  * Returns the Firestore DocumentReference for the given document name
  */
-type GetDocumentReference<T> = (documentName: string) => DocumentReference<T>;
+export type GetDocumentReference<T> = (
+  documentName: string
+) => DocumentReference<T>;
 
 /**
  * Given a collection reference, returns a function that takes a document name and returns a DocumentReference

@@ -11,7 +11,7 @@ import {
 } from '../CollectionRefs';
 import { arrayUnion } from 'firebase/firestore';
 
-import { getEntry } from '../read/entry';
+import { readEntry } from '../read/entry';
 
 export const createTeamByOwner = async (
   event: EventWithUid,
@@ -19,7 +19,7 @@ export const createTeamByOwner = async (
 ): Promise<TeamWithUid> => {
   const ownerRef = getUserRef(owner.uid);
 
-  const entry = await getEntry(event.uid, owner.uid);
+  const entry = await readEntry(event.uid, owner.uid);
   if (!entry) throw new Error('User is not registered for this event');
   const entryRef = getEntryRef(owner.uid, entry.uid);
 

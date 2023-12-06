@@ -10,7 +10,7 @@ import UserInfo from '../../models/UserInfo';
 
 import { readUser } from './user';
 
-export const getEntry = async (
+export const readEntry = async (
   eventUid: string,
   userUid: string
 ): Promise<EntryWithUid | null> => {

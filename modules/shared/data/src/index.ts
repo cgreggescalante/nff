@@ -26,12 +26,8 @@ export { EntryConverter } from './lib/converters/EntryConverter';
 
 export * from './lib/services/AuthService';
 
-export * from './lib/services/EventService';
-export * from './lib/services/UploadService';
-export * from './lib/services/UserInfoService';
-export * from './lib/services/TeamService';
-
 export * from './lib/services/CollectionRefs';
+
 export { createEvent } from './lib/services/create/event';
 export { createTeamByOwner } from './lib/services/create/team';
 export { createUpload } from './lib/services/create/upload';
@@ -42,7 +38,7 @@ export { listEvents } from './lib/services/read/event';
 export { getTeamLeaderboard } from './lib/services/read/team';
 export { getTeamsByEvent } from './lib/services/read/team';
 export { getUserLeaderboard } from './lib/services/read/entry';
-export { getEntry } from './lib/services/read/entry';
+export { readEntry } from './lib/services/read/entry';
 export { listRecentUploads } from './lib/services/read/upload';
 export { listUsers } from './lib/services/read/user';
 export { readUser } from './lib/services/read/user';
