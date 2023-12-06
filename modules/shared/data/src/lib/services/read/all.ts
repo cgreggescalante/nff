@@ -6,7 +6,7 @@ import {
   QueryDocumentSnapshot,
   SnapshotOptions,
 } from '@firebase/firestore';
-import { WithMetaData } from '../../models/Models';
+import { WithMetaData } from '../../models';
 
 export const withMetaData = <T>(
   snapshot: QueryDocumentSnapshot<T>,

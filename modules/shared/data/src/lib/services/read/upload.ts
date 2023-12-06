@@ -7,10 +7,9 @@ import {
 } from '@firebase/firestore';
 import { getUploadCollectionRef } from '../CollectionRefs';
 import { db } from '../../firebase';
-import UploadConverter from '../../converters/UploadConverter';
-import { WithMetaData } from '../../models/Models';
-import Upload from '../../models/Upload';
 import { withMetaData } from './all';
+import { UploadConverter } from '../../converters';
+import { Upload, WithMetaData } from '../../models';
 
 export const listRecentUploads = async ({
   userUid,

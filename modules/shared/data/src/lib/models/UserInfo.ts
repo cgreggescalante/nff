@@ -6,5 +6,3 @@ export interface UserInfo {
 }
 
 export type UserInfoWithMetaData = UserInfo & WithMetaData<UserInfo>;
-
-export default UserInfo;

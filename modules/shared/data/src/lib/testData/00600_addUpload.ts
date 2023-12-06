@@ -1,13 +1,19 @@
 import { db } from './firebase';
 import { faker } from '@faker-js/faker';
-import { WorkoutTypeNames, WorkoutTypeToNumber } from '../models/WorkoutType';
-import Entry from '../models/Entry';
-import { ApplyScoring } from '../models/ScoringConfiguration';
-import Event from '../models/Event';
+import {
+  ApplyScoring,
+  Entry,
+  Event,
+  UserInfo,
+  WorkoutTypeNames,
+  WorkoutTypeToNumber,
+} from '../models';
 import { FieldValue } from 'firebase-admin/firestore';
-import { UserInfoWithMetaData } from '../models/UserInfo';
 
-export const addUpload = async (user: UserInfoWithMetaData, count: number) => {
+export const addUpload = async (
+  user: UserInfo & { uid: string },
+  count: number
+) => {
   // Get the user's entries
   const entries = await db
     .collection('users')

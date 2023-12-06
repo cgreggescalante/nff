@@ -1,5 +1,4 @@
-import { EventWithMetadata } from '../../models/Event';
-import { Entry, EntryWithMetaData } from '../../models/Entry';
+import { Entry, EntryWithMetaData, EventWithMetadata } from '../../models';
 import { addDoc, arrayUnion, updateDoc } from '@firebase/firestore';
 import { getEntryCollectionRef, getUserRef } from '../CollectionRefs';
 

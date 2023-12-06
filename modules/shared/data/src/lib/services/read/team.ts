@@ -1,4 +1,4 @@
-import { TeamWithMetaData } from '../../models/Team';
+import { TeamWithMetaData } from '../../models';
 import { getTeamCollectionRef } from '../CollectionRefs';
 import { getDocs, orderBy, query } from '@firebase/firestore';
 import { withMetaData } from './all';

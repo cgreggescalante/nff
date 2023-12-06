@@ -10,7 +10,7 @@ import {
   getUploadCollectionRef,
   getUserRef,
 } from '../CollectionRefs';
-import Entry from '../../models/Entry';
+import { Entry } from '../../models';
 
 export const deleteUser = async (userUid: string): Promise<void> => {
   const user = auth.currentUser;

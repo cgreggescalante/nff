@@ -1,6 +1,6 @@
 import { db } from './firebase';
 import { faker } from '@faker-js/faker';
-import Event from '../models/Event';
+import { Event } from '../models';
 
 export const addEvent = async () => {
   const rs = faker.number.int({ min: -30, max: 30 });

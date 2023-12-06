@@ -1,9 +1,4 @@
 import { db } from '../firebase';
-import { EventConverter } from '../converters/EventConverter';
-import { TeamConverter } from '../converters/TeamConverter';
-import { UserInfoConverter } from '../converters/UserInfoConverter';
-import { EntryConverter } from '../converters/EntryConverter';
-import UploadConverter from '../converters/UploadConverter';
 import {
   doc,
   collection,
@@ -12,6 +7,13 @@ import {
   DocumentReference,
   FirestoreDataConverter,
 } from '@firebase/firestore';
+import {
+  EntryConverter,
+  EventConverter,
+  TeamConverter,
+  UploadConverter,
+  UserInfoConverter,
+} from '../converters';
 
 export const EventCollectionRef = collection(db, 'events').withConverter(
   EventConverter

@@ -1,4 +1,4 @@
-import Event, { EventWithMetadata } from '../../models/Event';
+import { Event, EventWithMetadata } from '../../models';
 import { addDoc } from '@firebase/firestore';
 import { EventCollectionRef } from '../CollectionRefs';
 

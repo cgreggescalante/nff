@@ -1,9 +1,9 @@
 import { DocumentReference } from '@firebase/firestore';
-import type UserInfo from './UserInfo';
-import type Event from './Event';
 import { WorkoutTypeToNumber } from './WorkoutType';
 import { Team } from './Team';
 import { WithMetaData } from './Models';
+import { UserInfo } from './UserInfo';
+import { Event } from './Event';
 
 export interface Entry {
   userRef: DocumentReference<UserInfo>;
@@ -15,5 +15,3 @@ export interface Entry {
 }
 
 export type EntryWithMetaData = Entry & WithMetaData<Entry>;
-
-export default Entry;

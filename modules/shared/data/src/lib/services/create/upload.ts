@@ -1,5 +1,10 @@
-import Upload from '../../models/Upload';
-import { UserInfoWithMetaData } from '../../models/UserInfo';
+import {
+  addWorkoutTypeToNumber,
+  ApplyScoring,
+  EntryWithMetaData,
+  Upload,
+  UserInfoWithMetaData,
+} from '../../models';
 import { doc, getDocs, increment, runTransaction } from '@firebase/firestore';
 import { db } from '../../firebase';
 import {
@@ -7,9 +12,6 @@ import {
   getEntryRef,
   getUploadCollectionRef,
 } from '../CollectionRefs';
-import { EntryWithMetaData } from '../../models/Entry';
-import { ApplyScoring } from '../../models/ScoringConfiguration';
-import { addWorkoutTypeToNumber } from '../../models/WorkoutType';
 import { readEvent } from '../read/event';
 import { withMetaData } from '../read/all';
 

@@ -1,4 +1,4 @@
-import UserInfo from '../../models/UserInfo';
+import { UserInfo } from '../../models';
 import { getUserRef } from '../CollectionRefs';
 import { updateDoc } from '@firebase/firestore';
 

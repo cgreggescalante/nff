@@ -1,4 +1,4 @@
-import { EventWithMetadata } from '../../models/Event';
+import { EventWithMetadata } from '../../models';
 import { getDocs, runTransaction } from '@firebase/firestore';
 import { db } from '../../firebase';
 import { getTeamCollectionRef } from '../CollectionRefs';

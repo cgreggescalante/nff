@@ -5,8 +5,7 @@ import {
   getEntryCollectionRef,
   getEventRef,
 } from '../CollectionRefs';
-import { EventWithMetadata } from '../../models/Event';
-import UserInfo from '../../models/UserInfo';
+import { EventWithMetadata, UserInfo } from '../../models';
 
 import { readUser } from './user';
 import { withMetaData } from './all';

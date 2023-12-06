@@ -2,7 +2,7 @@ import { DocumentReference } from '@firebase/firestore';
 
 import { WorkoutTypeToNumber } from './WorkoutType';
 import { WithMetaData } from './Models';
-import UserInfo from './UserInfo';
+import { UserInfo } from './UserInfo';
 
 export interface Upload {
   userRef: DocumentReference<UserInfo>;
@@ -14,5 +14,3 @@ export interface Upload {
 }
 
 export type UploadWithMetaData = Upload & WithMetaData<Upload>;
-
-export default Upload;

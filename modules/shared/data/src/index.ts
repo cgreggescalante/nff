@@ -1,5 +1,3 @@
-import UploadConverter from './lib/converters/UploadConverter';
-
 // Models
 export type { UserInfo } from './lib/models/UserInfo';
 export type { UserInfoWithMetaData } from './lib/models/UserInfo';
@@ -20,9 +18,6 @@ export type { TeamWithMetaData } from './lib/models/Team';
 export { WorkoutTypeNames } from './lib/models/WorkoutType';
 
 // Converters
-export { UploadConverter };
-export { UserInfoConverter } from './lib/converters/UserInfoConverter';
-export { EntryConverter } from './lib/converters/EntryConverter';
 
 export * from './lib/services/AuthService';
 

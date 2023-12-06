@@ -1,8 +1,8 @@
 import { DocumentReference } from '@firebase/firestore';
-import UserInfo from './UserInfo';
-import Event from './Event';
-import Entry from './Entry';
+import { UserInfo } from './UserInfo';
 import { WithMetaData } from './Models';
+import { Entry } from './Entry';
+import { Event } from './Event';
 
 export interface Team {
   name: string;

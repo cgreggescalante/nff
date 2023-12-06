@@ -3,8 +3,8 @@ import { addEvent } from './00200_addEvent';
 import { db } from './firebase';
 import { registerUserForEvent } from './00300_registerUserForEvent';
 import { addTeam } from './00400_addTeam';
-import UserInfo from '../models/UserInfo';
-import Entry from '../models/Entry';
+import { UserInfo } from '../models';
+import { Entry } from '../models';
 import { addUserToTeam } from './00500_addUserToTeam';
 import { addUpload } from './00600_addUpload';
 
