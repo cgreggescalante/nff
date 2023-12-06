@@ -1,4 +1,4 @@
-import { FirestoreDataConverter } from 'firebase/firestore';
+import { FirestoreDataConverter } from '@firebase/firestore';
 import type { Entry, EntryWithUid } from '../models/Entry';
 
 export const EntryConverter: FirestoreDataConverter<Entry> = {

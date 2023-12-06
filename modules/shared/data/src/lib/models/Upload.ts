@@ -1,5 +1,5 @@
 import type UserInfo from './UserInfo';
-import { DocumentReference } from 'firebase/firestore';
+import { DocumentReference } from '@firebase/firestore';
 
 import { WorkoutTypeToNumber } from './WorkoutType';
 

@@ -1,4 +1,4 @@
-import { FirestoreDataConverter } from 'firebase/firestore';
+import { FirestoreDataConverter } from '@firebase/firestore';
 import type Upload from '../models/Upload';
 
 const UploadConverter: FirestoreDataConverter<Upload> = {

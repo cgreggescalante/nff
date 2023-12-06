@@ -1,7 +1,6 @@
 import { getTeamRef } from '../CollectionRefs';
-import { deleteField, runTransaction } from 'firebase/firestore';
+import { deleteField, getDoc, runTransaction } from '@firebase/firestore';
 import { db } from '../../firebase';
-import { getDoc } from '@firebase/firestore';
 
 export const deleteTeam = async (eventId: string, teamId: string) => {
   const teamSnapshot = await getDoc(getTeamRef(eventId, teamId));

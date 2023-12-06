@@ -4,7 +4,7 @@ import {
   DocumentReference,
   getDocs,
   runTransaction,
-} from 'firebase/firestore';
+} from '@firebase/firestore';
 import {
   getEntryCollectionRef,
   getUploadCollectionRef,

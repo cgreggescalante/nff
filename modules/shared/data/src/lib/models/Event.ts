@@ -1,4 +1,4 @@
-import { DocumentReference, Timestamp } from 'firebase/firestore';
+import { DocumentReference, Timestamp } from '@firebase/firestore';
 import { ScoringRule } from './ScoringConfiguration';
 import { Team } from './Team';
 import { WithUid } from './Models';

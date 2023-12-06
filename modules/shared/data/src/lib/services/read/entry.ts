@@ -1,5 +1,5 @@
 import { Entry, EntryWithUid } from '../../models/Entry';
-import { getDocs, query, where } from 'firebase/firestore';
+import { getDocs, query, where } from '@firebase/firestore';
 import {
   EntryCollectionRef,
   getEntryCollectionRef,

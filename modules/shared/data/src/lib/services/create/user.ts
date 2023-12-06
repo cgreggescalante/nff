@@ -1,5 +1,5 @@
 import { auth } from '../../firebase';
-import { setDoc } from 'firebase/firestore';
+import { setDoc } from '@firebase/firestore';
 import { getUserRef } from '../CollectionRefs';
 
 export const createUserFromAuth = async (firstName = '', lastName = '') => {

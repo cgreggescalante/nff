@@ -1,6 +1,5 @@
 import { db } from '../firebase';
-import { collection } from 'firebase/firestore';
-import { doc, getDoc } from '@firebase/firestore';
+import { collection, doc, getDoc } from '@firebase/firestore';
 import { getEventRef } from './CollectionRefs';
 
 export const CheckAdminStatus = async (userUid: string): Promise<boolean> => {

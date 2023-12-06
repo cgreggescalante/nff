@@ -2,14 +2,13 @@ import { EventWithUid } from '../../models/Event';
 import UserInfo from '../../models/UserInfo';
 import { WithUid } from '../../models/Models';
 import { Team, TeamWithUid } from '../../models/Team';
-import { addDoc, updateDoc } from '@firebase/firestore';
+import { addDoc, arrayUnion, updateDoc } from '@firebase/firestore';
 import {
   getEntryRef,
   getEventRef,
   getTeamCollectionRef,
   getUserRef,
 } from '../CollectionRefs';
-import { arrayUnion } from 'firebase/firestore';
 
 import { readEntry } from '../read/entry';
 

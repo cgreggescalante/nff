@@ -1,4 +1,4 @@
-import { FirestoreDataConverter } from 'firebase/firestore';
+import { FirestoreDataConverter } from '@firebase/firestore';
 import { Team, TeamWithUid } from '../models/Team';
 
 export const TeamConverter: FirestoreDataConverter<Team> = {

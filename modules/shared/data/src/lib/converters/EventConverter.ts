@@ -1,4 +1,4 @@
-import { FirestoreDataConverter } from 'firebase/firestore';
+import { FirestoreDataConverter } from '@firebase/firestore';
 import type { Event, EventData, EventWithUid } from '../models/Event';
 
 export const EventConverter: FirestoreDataConverter<Event> = {

@@ -1,4 +1,4 @@
-import { DocumentReference } from 'firebase/firestore';
+import { DocumentReference } from '@firebase/firestore';
 import type UserInfo from './UserInfo';
 import type Event from './Event';
 import { WorkoutTypeToNumber } from './WorkoutType';

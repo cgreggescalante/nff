@@ -1,4 +1,4 @@
-import { FirestoreDataConverter } from 'firebase/firestore';
+import { FirestoreDataConverter } from '@firebase/firestore';
 import UserInfo, { UserInfoWithUid } from '../models/UserInfo';
 
 export const UserInfoConverter: FirestoreDataConverter<UserInfo> = {

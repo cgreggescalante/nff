@@ -1,4 +1,4 @@
-import { DocumentReference } from 'firebase/firestore';
+import { DocumentReference } from '@firebase/firestore';
 import UserInfo from './UserInfo';
 import Event from './Event';
 import Entry from './Entry';

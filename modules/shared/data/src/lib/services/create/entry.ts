@@ -1,12 +1,11 @@
 import { EventWithUid } from '../../models/Event';
 import { Entry, EntryWithUid } from '../../models/Entry';
-import { addDoc, updateDoc } from '@firebase/firestore';
+import { addDoc, arrayUnion, updateDoc } from '@firebase/firestore';
 import {
   getEntryCollectionRef,
   getEventRef,
   getUserRef,
 } from '../CollectionRefs';
-import { arrayUnion } from 'firebase/firestore';
 
 export const registerUserForEvent = async (
   event: EventWithUid,

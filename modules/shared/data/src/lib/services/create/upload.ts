@@ -1,6 +1,6 @@
 import Upload from '../../models/Upload';
 import { UserInfoWithUid } from '../../models/UserInfo';
-import { getDocs, increment, runTransaction } from 'firebase/firestore';
+import { doc, getDocs, increment, runTransaction } from '@firebase/firestore';
 import { db } from '../../firebase';
 import {
   getEntryCollectionRef,
@@ -10,7 +10,6 @@ import {
 import { EntryWithUid } from '../../models/Entry';
 import { ApplyScoring } from '../../models/ScoringConfiguration';
 import { addWorkoutTypeToNumber } from '../../models/WorkoutType';
-import { doc } from '@firebase/firestore';
 import { readEvent } from '../read/event';
 
 export const createUpload = async (upload: Upload, user: UserInfoWithUid) => {

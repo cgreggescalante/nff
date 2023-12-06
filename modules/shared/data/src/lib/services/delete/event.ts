@@ -1,5 +1,5 @@
 import { EventWithUid } from '../../models/Event';
-import { getDocs, runTransaction } from 'firebase/firestore';
+import { getDocs, runTransaction } from '@firebase/firestore';
 import { db } from '../../firebase';
 import { getEventRef, getTeamCollectionRef } from '../CollectionRefs';
 

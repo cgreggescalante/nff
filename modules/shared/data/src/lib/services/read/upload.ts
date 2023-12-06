@@ -4,7 +4,7 @@ import {
   limit,
   orderBy,
   query,
-} from 'firebase/firestore';
+} from '@firebase/firestore';
 import { getUploadCollectionRef } from '../CollectionRefs';
 import { db } from '../../firebase';
 import UploadConverter from '../../converters/UploadConverter';
