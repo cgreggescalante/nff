@@ -7,7 +7,7 @@ import {
 import { addDoc, arrayUnion, updateDoc } from '@firebase/firestore';
 import { getEntryRef, getTeamCollectionRef } from '../CollectionRefs';
 
-import { readEntry } from '../read/entry';
+import { readEntry } from '../read';
 
 export const createTeamByOwner = async (
   event: EventWithMetadata,

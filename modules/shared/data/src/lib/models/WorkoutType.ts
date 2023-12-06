@@ -19,11 +19,4 @@ export const addWorkoutTypeToNumber = (
   };
 };
 
-export const emptyWorkoutTypeToNumber = () => ({
-  Run: 0,
-  Bike: 0,
-  Ski: 0,
-  Swim: 0,
-});
-
 export const WorkoutTypeNames: WorkoutType[] = ['Run', 'Bike', 'Ski', 'Swim'];

@@ -12,7 +12,7 @@ import {
   getEntryRef,
   getUploadCollectionRef,
 } from '../CollectionRefs';
-import { readEvent } from '../read/event';
+import { readEvent } from '../read';
 import { withMetaData } from '../read/all';
 
 export const createUpload = async (

@@ -27,5 +27,3 @@ export const ManagedTextInput = ({
     />
   </>
 );
-
-export default ManagedTextInput;

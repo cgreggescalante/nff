@@ -1,11 +1,10 @@
-import { EntryWithMetaData } from '../../models/Entry';
+import { EntryWithMetaData, EventWithMetadata, UserInfo } from '../../models';
 import { getDocs, query, where } from '@firebase/firestore';
 import {
   EntryCollectionRef,
   getEntryCollectionRef,
   getEventRef,
 } from '../CollectionRefs';
-import { EventWithMetadata, UserInfo } from '../../models';
 
 import { readUser } from './user';
 import { withMetaData } from './all';

@@ -111,12 +111,6 @@ export const getTeamRef = getSubCollectionDocumentReference(
   TeamConverter
 );
 
-export const getUploadRef = getSubCollectionDocumentReference(
-  UserCollectionRef,
-  'uploads',
-  UploadConverter
-);
-
 export const getEntryCollectionRef = getSubCollectionReference(
   UserCollectionRef,
   'entries',

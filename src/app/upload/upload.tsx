@@ -2,7 +2,6 @@ import React, { ChangeEvent, useState } from 'react';
 import { WorkoutInput } from './workout-input/workout-input';
 import {
   createUpload,
-  getUserRef,
   readUser,
   Upload,
   WorkoutType,
@@ -38,7 +37,7 @@ const UploadView = () => {
       if (!user) return;
 
       const upload: Upload = {
-        userRef: getUserRef(user.uid),
+        userRef: user.ref,
         userFirstName: user.firstName,
         userLastName: user.lastName,
         description,
