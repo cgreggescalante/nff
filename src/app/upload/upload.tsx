@@ -2,15 +2,14 @@ import React, { ChangeEvent, useState } from 'react';
 import { WorkoutInput } from './workout-input/workout-input';
 import {
   createUpload,
+  getUserRef,
   readUser,
   Upload,
-  UserCollectionRef,
   WorkoutType,
   WorkoutTypeNames,
   WorkoutTypeToNumber,
 } from '@shared-data';
 import { auth } from '../../firebase';
-import { doc } from '@firebase/firestore';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 
@@ -39,7 +38,7 @@ const UploadView = () => {
       if (!user) return;
 
       const upload: Upload = {
-        userRef: doc(UserCollectionRef, auth.currentUser.uid),
+        userRef: getUserRef(user.uid),
         userFirstName: user.firstName,
         userLastName: user.lastName,
         description,

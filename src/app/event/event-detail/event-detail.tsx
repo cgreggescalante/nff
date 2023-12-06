@@ -44,7 +44,7 @@ export const EventDetail = () => {
 
   useEffect(() => {
     if (authData.isAdmin) setCanEdit(true);
-    else if (eventId) {
+    else if (eventId && authData.userId) {
       CheckIsEventOwner(authData.userId, eventId)
         .then((isOwner) => {
           setCanEdit(isOwner);
