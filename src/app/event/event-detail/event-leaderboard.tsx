@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
   Entry,
-  EventWithUid,
+  EventWithMetadata,
   getUserLeaderboard,
   UserInfo,
 } from '@shared-data';
@@ -9,7 +9,7 @@ import { LoadingWrapper } from '@shared-ui';
 import { Table } from 'react-bootstrap';
 
 interface EventLeaderboardProps {
-  event: EventWithUid;
+  event: EventWithMetadata;
 }
 
 export const EventLeaderboard = ({ event }: EventLeaderboardProps) => {

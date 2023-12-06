@@ -1,26 +1,21 @@
-import { EventWithUid } from '../../models/Event';
-import { Entry, EntryWithUid } from '../../models/Entry';
+import { EventWithMetadata } from '../../models/Event';
+import { Entry, EntryWithMetaData } from '../../models/Entry';
 import { addDoc, arrayUnion, updateDoc } from '@firebase/firestore';
-import {
-  getEntryCollectionRef,
-  getEventRef,
-  getUserRef,
-} from '../CollectionRefs';
+import { getEntryCollectionRef, getUserRef } from '../CollectionRefs';
 
 export const registerUserForEvent = async (
-  event: EventWithUid,
+  event: EventWithMetadata,
   userUid: string
-): Promise<EntryWithUid> => {
+): Promise<EntryWithMetaData> => {
   const userRef = getUserRef(userUid);
-  const eventRef = getEventRef(event.uid);
 
-  await updateDoc(eventRef, {
+  await updateDoc(event.ref, {
     registeredUserRefs: arrayUnion(userRef),
   });
 
   const entry: Entry = {
     userRef,
-    eventRef,
+    eventRef: event.ref,
     duration: {},
     goals: {},
     points: 0,
@@ -32,5 +27,5 @@ export const registerUserForEvent = async (
     entryRefs: arrayUnion(entryRef),
   });
 
-  return { ...entry, uid: entryRef.id };
+  return { ...entry, uid: entryRef.id, ref: entryRef };
 };

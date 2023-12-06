@@ -1,14 +1,13 @@
-import { EventWithUid } from '../../models/Event';
+import { EventWithMetadata } from '../../models/Event';
 import { getDocs, runTransaction } from '@firebase/firestore';
 import { db } from '../../firebase';
-import { getEventRef, getTeamCollectionRef } from '../CollectionRefs';
+import { getTeamCollectionRef } from '../CollectionRefs';
 
-export const deleteEvent = async (event: EventWithUid): Promise<void> => {
+export const deleteEvent = async (event: EventWithMetadata): Promise<void> => {
   return runTransaction(db, async (transaction) => {
-    const eventRef = getEventRef(event.uid);
     const teams = await getDocs(getTeamCollectionRef(event.uid));
 
-    transaction.delete(eventRef);
+    transaction.delete(event.ref);
 
     teams.forEach((team) => transaction.delete(team.ref));
 

@@ -1,12 +1,12 @@
-import { FirestoreDataConverter } from '@firebase/firestore';
-import { Team, TeamWithUid } from '../models/Team';
+import {
+  FirestoreDataConverter,
+  QueryDocumentSnapshot,
+} from '@firebase/firestore';
+import { Team, TeamWithMetaData } from '../models/Team';
+import { withMetaData } from '../services/read/all';
 
 export const TeamConverter: FirestoreDataConverter<Team> = {
   toFirestore: (team: Team) => Object.assign({}, team),
-  fromFirestore: (snapshot, options): TeamWithUid => {
-    return {
-      ...(snapshot.data(options) as Team),
-      uid: snapshot.id,
-    };
-  },
+  fromFirestore: (snapshot, options): TeamWithMetaData =>
+    withMetaData(snapshot as QueryDocumentSnapshot<Team>, options),
 };

@@ -2,7 +2,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import {
   CheckIsEventOwner,
-  EventWithUid,
+  EventWithMetadata,
   readEvent,
   registerUserForEvent,
 } from '@shared-data';
@@ -18,7 +18,7 @@ export const EventDetail = () => {
   const { eventId } = useParams();
   const authData = useAuth();
 
-  const [event, setEvent] = useState<EventWithUid>();
+  const [event, setEvent] = useState<EventWithMetadata>();
   const [loading, setLoading] = useState<boolean>(true);
 
   const [canEdit, setCanEdit] = useState<boolean>(false);

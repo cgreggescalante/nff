@@ -1,9 +1,9 @@
-import { EventWithUid } from '@shared-data';
+import { EventWithMetadata } from '@shared-data';
 import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 export interface EventCardProps {
-  event: EventWithUid;
+  event: EventWithMetadata;
 }
 
 export const EventCard = ({ event }: EventCardProps) => (

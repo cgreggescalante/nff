@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import type { EventWithUid } from '@shared-data';
+import type { EventWithMetadata } from '@shared-data';
 import { listEvents } from '@shared-data';
 import EventCard from './event-card';
 import { LoadingWrapper } from '@shared-ui';
 
 export const EventList = () => {
-  const [events, setEvents] = useState<EventWithUid[]>([]);
+  const [events, setEvents] = useState<EventWithMetadata[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {

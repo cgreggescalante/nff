@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { EventWithUid, getTeamLeaderboard, Team } from '@shared-data';
+import { EventWithMetadata, getTeamLeaderboard, Team } from '@shared-data';
 import { LoadingWrapper } from '@shared-ui';
 
 interface TeamsListProps {
-  event: EventWithUid;
+  event: EventWithMetadata;
 }
 
 export const TeamLeaderboard = ({ event }: TeamsListProps) => {

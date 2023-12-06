@@ -1,46 +1,35 @@
-import { EventWithUid } from '../../models/Event';
-import UserInfo from '../../models/UserInfo';
-import { WithUid } from '../../models/Models';
-import { Team, TeamWithUid } from '../../models/Team';
+import { EventWithMetadata } from '../../models/Event';
+import { UserInfoWithMetaData } from '../../models/UserInfo';
+import { Team, TeamWithMetaData } from '../../models/Team';
 import { addDoc, arrayUnion, updateDoc } from '@firebase/firestore';
-import {
-  getEntryRef,
-  getEventRef,
-  getTeamCollectionRef,
-  getUserRef,
-} from '../CollectionRefs';
+import { getEntryRef, getTeamCollectionRef } from '../CollectionRefs';
 
 import { readEntry } from '../read/entry';
 
 export const createTeamByOwner = async (
-  event: EventWithUid,
-  owner: UserInfo & WithUid
-): Promise<TeamWithUid> => {
-  const ownerRef = getUserRef(owner.uid);
-
+  event: EventWithMetadata,
+  owner: UserInfoWithMetaData
+): Promise<TeamWithMetaData> => {
   const entry = await readEntry(event.uid, owner.uid);
   if (!entry) throw new Error('User is not registered for this event');
-  const entryRef = getEntryRef(owner.uid, entry.uid);
-
-  const eventRef = getEventRef(event.uid);
 
   const team: Team = {
     name: `${owner.firstName} ${owner.lastName}'s Team`,
-    ownerRef,
+    ownerRef: owner.ref,
     entryRefs: [getEntryRef(owner.uid, entry.uid)],
-    eventRef,
+    eventRef: event.ref,
     points: 0,
   };
 
   const teamRef = await addDoc(getTeamCollectionRef(event.uid), team);
 
-  await updateDoc(eventRef, {
+  await updateDoc(event.ref, {
     teamRefs: arrayUnion(teamRef),
   });
 
-  await updateDoc(entryRef, {
+  await updateDoc(entry.ref, {
     teamRef,
   });
 
-  return { ...team, uid: teamRef.id };
+  return { ...team, uid: teamRef.id, ref: teamRef };
 };

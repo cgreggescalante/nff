@@ -5,9 +5,9 @@ import Entry from '../models/Entry';
 import { ApplyScoring } from '../models/ScoringConfiguration';
 import Event from '../models/Event';
 import { FieldValue } from 'firebase-admin/firestore';
-import { UserInfoWithUid } from '../models/UserInfo';
+import { UserInfoWithMetaData } from '../models/UserInfo';
 
-export const addUpload = async (user: UserInfoWithUid, count: number) => {
+export const addUpload = async (user: UserInfoWithMetaData, count: number) => {
   // Get the user's entries
   const entries = await db
     .collection('users')

@@ -5,11 +5,16 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { readUser, updateUser, UserInfo, UserInfoWithUid } from '@shared-data';
+import {
+  readUser,
+  updateUser,
+  UserInfo,
+  UserInfoWithMetaData,
+} from '@shared-data';
 import { auth } from '../firebase';
 
 const UserContext = createContext<{
-  user: UserInfoWithUid | null;
+  user: UserInfoWithMetaData | null;
   updateUser: (user: UserInfo) => Promise<void>;
   loading: boolean;
 }>({
@@ -23,7 +28,7 @@ export const useUser = () => {
 };
 
 export const UserProvider = ({ children }: { children: ReactElement }) => {
-  const [userInfo, setUserInfo] = useState<UserInfoWithUid | null>(null);
+  const [userInfo, setUserInfo] = useState<UserInfoWithMetaData | null>(null);
   const [loading, setLoading] = useState(true);
   const [reload, setReload] = useState(false);
 

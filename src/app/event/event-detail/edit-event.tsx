@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react';
 import {
   createTeamByOwner,
   deleteTeam,
-  EventWithUid,
+  EventWithMetadata,
   getTeamsByEvent,
   readEvent,
   readUser,
-  TeamWithUid,
+  TeamWithMetaData,
   updateTeamName,
 } from '@shared-data';
 import { Button, Card } from 'react-bootstrap';
@@ -24,8 +24,8 @@ export const EditEvent = () => {
   const location = useLocation();
   const { eventId } = useParams();
 
-  const [event, setEvent] = useState<EventWithUid>(
-    location.state as EventWithUid
+  const [event, setEvent] = useState<EventWithMetadata>(
+    location.state as EventWithMetadata
   );
   const [eventLoading, setEventLoading] = useState<boolean>(true);
 
@@ -91,8 +91,8 @@ export const EditEvent = () => {
   );
 };
 
-const EditTeams = ({ event }: { event: EventWithUid }) => {
-  const [teams, setTeams] = useState<TeamWithUid[]>([]);
+const EditTeams = ({ event }: { event: EventWithMetadata }) => {
+  const [teams, setTeams] = useState<TeamWithMetaData[]>([]);
   const [teamsLoading, setTeamsLoading] = useState<boolean>(true);
   const [newTeamOwner, setNewTeamOwner] = useState<string>('');
 
@@ -141,8 +141,8 @@ const EditTeam = ({
   event,
   team,
 }: {
-  event: EventWithUid;
-  team: TeamWithUid;
+  event: EventWithMetadata;
+  team: TeamWithMetaData;
 }) => {
   const [name, setName] = useState<string>(team.name);
 

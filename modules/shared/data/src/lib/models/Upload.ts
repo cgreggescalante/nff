@@ -1,12 +1,10 @@
-import type UserInfo from './UserInfo';
 import { DocumentReference } from '@firebase/firestore';
 
 import { WorkoutTypeToNumber } from './WorkoutType';
+import { WithMetaData } from './Models';
 
-// TODO: Remove user
 export interface Upload {
-  user?: UserInfo;
-  userRef?: DocumentReference;
+  userRef: DocumentReference;
   userFirstName: string;
   userLastName: string;
   description: string;
@@ -14,8 +12,6 @@ export interface Upload {
   workouts: WorkoutTypeToNumber;
 }
 
-export interface UploadWithUser extends Upload {
-  user: UserInfo;
-}
+export type UploadWithMetaData = Upload & WithMetaData<Upload>;
 
 export default Upload;

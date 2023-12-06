@@ -1,19 +1,20 @@
-import { Entry, EntryWithUid } from '../../models/Entry';
+import { EntryWithMetaData } from '../../models/Entry';
 import { getDocs, query, where } from '@firebase/firestore';
 import {
   EntryCollectionRef,
   getEntryCollectionRef,
   getEventRef,
 } from '../CollectionRefs';
-import { EventWithUid } from '../../models/Event';
+import { EventWithMetadata } from '../../models/Event';
 import UserInfo from '../../models/UserInfo';
 
 import { readUser } from './user';
+import { withMetaData } from './all';
 
 export const readEntry = async (
   eventUid: string,
   userUid: string
-): Promise<EntryWithUid | null> => {
+): Promise<EntryWithMetaData | null> => {
   const entryCollectionRef = getEntryCollectionRef(userUid);
 
   const snapshot = await getDocs(
@@ -21,27 +22,25 @@ export const readEntry = async (
   );
 
   if (snapshot.size === 0) return null;
-  return { ...(snapshot.docs[0].data() as Entry), uid: snapshot.docs[0].id };
+  return withMetaData(snapshot.docs[0]);
 };
 
 export const getUserLeaderboard = async (
-  event: EventWithUid
+  event: EventWithMetadata
 ): Promise<
   {
     user: UserInfo;
-    entry: EntryWithUid;
+    entry: EntryWithMetaData;
   }[]
 > => {
-  const eventRef = getEventRef(event.uid);
-
   // TODO: Resolve list of documentReferences
   const entries = await getDocs(
-    query(EntryCollectionRef, where('eventRef', '==', eventRef))
+    query(EntryCollectionRef, where('eventRef', '==', event.ref))
   );
 
   const leaderboardEntries: {
     user: UserInfo;
-    entry: EntryWithUid;
+    entry: EntryWithMetaData;
   }[] = [];
 
   for (const entry of entries.docs) {
@@ -49,7 +48,7 @@ export const getUserLeaderboard = async (
     if (!user) continue;
     leaderboardEntries.push({
       user,
-      entry: { ...entry.data(), uid: entry.id },
+      entry: withMetaData(entry),
     });
   }
 

@@ -8,6 +8,9 @@ import {
 import { getUploadCollectionRef } from '../CollectionRefs';
 import { db } from '../../firebase';
 import UploadConverter from '../../converters/UploadConverter';
+import { WithMetaData } from '../../models/Models';
+import Upload from '../../models/Upload';
+import { withMetaData } from './all';
 
 export const listRecentUploads = async ({
   userUid,
@@ -15,7 +18,7 @@ export const listRecentUploads = async ({
 }: {
   userUid?: string;
   count?: number;
-}) => {
+}): Promise<(Upload & WithMetaData<Upload>)[]> => {
   let uploadQuery;
 
   if (userUid)
@@ -33,5 +36,5 @@ export const listRecentUploads = async ({
 
   const snapshot = await getDocs(uploadQuery.withConverter(UploadConverter));
 
-  return snapshot.docs.map((document) => document.data());
+  return snapshot.docs.map((doc) => withMetaData(doc));
 };

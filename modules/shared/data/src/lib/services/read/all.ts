@@ -1,23 +1,32 @@
 import { GetDocumentReference } from '../CollectionRefs';
-import { CollectionReference, getDoc, getDocs } from '@firebase/firestore';
-import { WithUid } from '../../models/Models';
+import {
+  CollectionReference,
+  getDoc,
+  getDocs,
+  QueryDocumentSnapshot,
+  SnapshotOptions,
+} from '@firebase/firestore';
+import { WithMetaData } from '../../models/Models';
+
+export const withMetaData = <T>(
+  snapshot: QueryDocumentSnapshot<T>,
+  options?: SnapshotOptions
+): T & WithMetaData<T> => ({
+  ...snapshot.data(options),
+  uid: snapshot.id,
+  ref: snapshot.ref,
+});
 
 export const readDocument =
   <T>(getReference: GetDocumentReference<T>) =>
-  async (documentId: string): Promise<(T & WithUid) | undefined> => {
+  async (documentId: string): Promise<(T & WithMetaData<T>) | undefined> => {
     const document = await getDoc(getReference(documentId));
-    return document.exists()
-      ? { ...document.data(), uid: document.id, ref: document.ref }
-      : undefined;
+    return document.exists() ? withMetaData(document) : undefined;
   };
 
 export const listDocuments =
   <T>(collectionReference: CollectionReference<T>) =>
-  async (): Promise<(T & WithUid)[]> => {
+  async (): Promise<(T & WithMetaData<T>)[]> => {
     const documents = await getDocs(collectionReference);
-    return documents.docs.map((doc) => ({
-      ...doc.data(),
-      uid: doc.id,
-      ref: doc.ref,
-    }));
+    return documents.docs.map((doc) => withMetaData(doc));
   };

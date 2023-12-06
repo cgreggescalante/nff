@@ -1,7 +1,6 @@
 import { DocumentReference, Timestamp } from '@firebase/firestore';
 import { ScoringRule } from './ScoringConfiguration';
-import { Team } from './Team';
-import { WithUid } from './Models';
+import { WithMetaData } from './Models';
 import Entry from './Entry';
 
 export interface EventData {
@@ -26,10 +25,6 @@ export interface Event {
   scoringRules: ScoringRule[];
 }
 
-export interface EventWithTeams extends Event {
-  teams: Team[];
-}
-
-export type EventWithUid = Event & WithUid;
+export type EventWithMetadata = Event & WithMetaData<Event>;
 
 export default Event;

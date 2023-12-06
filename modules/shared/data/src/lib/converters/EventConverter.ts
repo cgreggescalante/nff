@@ -1,13 +1,14 @@
-import { FirestoreDataConverter } from '@firebase/firestore';
-import type { Event, EventData, EventWithUid } from '../models/Event';
+import { DocumentReference, FirestoreDataConverter } from '@firebase/firestore';
+import type { Event, EventData, EventWithMetadata } from '../models/Event';
 
 export const EventConverter: FirestoreDataConverter<Event> = {
   toFirestore: (event: Event) => Object.assign({}, event),
-  fromFirestore: (snapshot, options): EventWithUid => {
+  fromFirestore: (snapshot, options): EventWithMetadata => {
     const data = snapshot.data(options) as EventData;
 
     return {
       uid: snapshot.id,
+      ref: snapshot.ref as DocumentReference<Event>,
       name: data.name,
       startDate: data.startDate ? data.startDate.toDate() : new Date(0),
       endDate: data.endDate ? data.endDate.toDate() : new Date(0),

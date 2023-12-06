@@ -3,7 +3,7 @@ import type UserInfo from './UserInfo';
 import type Event from './Event';
 import { WorkoutTypeToNumber } from './WorkoutType';
 import { Team } from './Team';
-import { WithUid } from './Models';
+import { WithMetaData } from './Models';
 
 export interface Entry {
   userRef: DocumentReference<UserInfo>;
@@ -14,19 +14,6 @@ export interface Entry {
   points: number;
 }
 
-// TODO: Use these interfaces, remove ? fields from Entry
-export interface EntryWithUser extends Entry {
-  user: UserInfo;
-}
-
-export interface EntryWithEvent extends Entry {
-  event: Event;
-}
-
-export interface EntryWithTeam extends Entry {
-  team: Team;
-}
-
-export interface EntryWithUid extends Entry, WithUid {}
+export type EntryWithMetaData = Entry & WithMetaData<Entry>;
 
 export default Entry;

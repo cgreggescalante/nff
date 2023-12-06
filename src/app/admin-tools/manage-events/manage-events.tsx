@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { EventWithUid } from '@shared-data';
+import type { EventWithMetadata } from '@shared-data';
 import { Button, Table } from 'react-bootstrap';
 import { deleteEvent, listEvents } from '@shared-data';
 import CreateEvent from './create-event/create-event';
@@ -7,7 +7,7 @@ import { ConfirmPopup } from '@shared-ui';
 import { toast } from 'react-toastify';
 
 export function ManageEvents() {
-  const [events, setEvents] = useState<EventWithUid[]>([]);
+  const [events, setEvents] = useState<EventWithMetadata[]>([]);
   const [error, setError] = useState<string>();
   const [showCreateEvent, setShowCreateEvent] = useState<boolean>(false);
 
@@ -72,7 +72,7 @@ export function ManageEvents() {
 }
 
 interface EventRowProps {
-  event: EventWithUid;
+  event: EventWithMetadata;
   index: number;
   onDelete: () => void;
 }

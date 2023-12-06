@@ -1,16 +1,10 @@
-import { FirestoreDataConverter } from '@firebase/firestore';
+import { DocumentReference, FirestoreDataConverter } from '@firebase/firestore';
 import type Upload from '../models/Upload';
+import type { UploadWithMetaData } from '../models/Upload';
 
 const UploadConverter: FirestoreDataConverter<Upload> = {
-  toFirestore: (upload: Upload) => ({
-    user: upload.userRef,
-    userFirstName: upload.userFirstName,
-    userLastName: upload.userLastName,
-    description: upload.description,
-    date: upload.date,
-    workouts: upload.workouts,
-  }),
-  fromFirestore: (snapshot, options): Upload => {
+  toFirestore: (upload: Upload) => Object.assign({}, upload),
+  fromFirestore: (snapshot, options): UploadWithMetaData => {
     const data = snapshot.data(options);
 
     return {
@@ -20,6 +14,8 @@ const UploadConverter: FirestoreDataConverter<Upload> = {
       description: data['description'],
       date: new Date(data['date']['seconds'] * 1000),
       workouts: data['workouts'],
+      uid: snapshot.id,
+      ref: snapshot.ref as DocumentReference<Upload>,
     };
   },
 };

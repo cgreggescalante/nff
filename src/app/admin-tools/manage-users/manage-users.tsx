@@ -1,11 +1,11 @@
 import { Button, Table } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
-import { deleteUser, listUsers, UserInfoWithUid } from '@shared-data';
+import { deleteUser, listUsers, UserInfoWithMetaData } from '@shared-data';
 import { ConfirmPopup } from '@shared-ui';
 import { toast } from 'react-toastify';
 
 export const ManageUsers = () => {
-  const [users, setUsers] = useState<UserInfoWithUid[]>([]);
+  const [users, setUsers] = useState<UserInfoWithMetaData[]>([]);
 
   const [error, setError] = useState<string>();
 
@@ -13,7 +13,7 @@ export const ManageUsers = () => {
     listUsers().then((users) => setUsers(users));
   }, []);
 
-  const handleDeleteUser = async (user: UserInfoWithUid) =>
+  const handleDeleteUser = async (user: UserInfoWithMetaData) =>
     deleteUser(user.uid)
       .then(() => {
         toast.success(`Deleted user ${user.uid}`);
@@ -52,7 +52,7 @@ export const ManageUsers = () => {
 };
 
 interface UserRowProps {
-  user: UserInfoWithUid;
+  user: UserInfoWithMetaData;
   deleteUser: () => void;
 }
 
