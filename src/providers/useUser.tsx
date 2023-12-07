@@ -6,12 +6,12 @@ import React, {
   useState,
 } from 'react';
 import {
+  auth,
   readUser,
   updateUser,
   UserInfo,
   UserInfoWithMetaData,
 } from '@shared-data';
-import { auth } from '../firebase';
 
 const UserContext = createContext<{
   user: UserInfoWithMetaData | null;

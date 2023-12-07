@@ -1,4 +1,4 @@
-import { db } from './firebase';
+import { db } from './admin-firebase';
 
 // User must be registered for event before adding team
 export const addTeam = async (

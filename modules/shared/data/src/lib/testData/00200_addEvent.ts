@@ -1,4 +1,4 @@
-import { db } from './firebase';
+import { db } from './admin-firebase';
 import { faker } from '@faker-js/faker';
 import { Event } from '../models';
 

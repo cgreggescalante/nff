@@ -12,6 +12,8 @@ export function UploadList({ uid }: UploadListProps) {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    // TODO: Sometimes doesn't load the uploads
+    console.log('Fetching uploads');
     listRecentUploads({ userUid: uid })
       .then((uploads) => {
         setUploads(uploads);

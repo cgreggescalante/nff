@@ -1,6 +1,6 @@
 import { addUser } from './00100_addUser';
 import { addEvent } from './00200_addEvent';
-import { db } from './firebase';
+import { db } from './admin-firebase';
 import { registerUserForEvent } from './00300_registerUserForEvent';
 import { addTeam } from './00400_addTeam';
 import { UserInfo } from '../models';

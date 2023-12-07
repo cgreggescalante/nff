@@ -24,6 +24,9 @@ export const UserCollectionRef = collection(db, 'users').withConverter(
 export const EntryCollectionRef = collectionGroup(db, 'entries').withConverter(
   EntryConverter
 );
+export const UploadCollectionRef = collectionGroup(db, 'uploads').withConverter(
+  UploadConverter
+);
 
 /**
  * Returns the Firestore DocumentReference for the given document name

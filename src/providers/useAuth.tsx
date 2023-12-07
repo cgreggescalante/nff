@@ -5,8 +5,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { auth } from '../firebase';
-import { CheckAdminStatus } from '@shared-data';
+import { auth, CheckAdminStatus } from '@shared-data';
 
 const AuthContext = createContext({
   isAdmin: false,

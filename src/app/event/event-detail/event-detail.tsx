@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import {
+  auth,
   CheckIsEventOwner,
   EventWithMetadata,
   readEvent,
@@ -12,7 +13,6 @@ import { EventLeaderboard } from './event-leaderboard';
 import { TeamLeaderboard } from './team-leaderboard';
 import useAuth from '../../../providers/useAuth';
 import { toast } from 'react-toastify';
-import { auth } from '../../../firebase';
 
 export const EventDetail = () => {
   const { eventId } = useParams();

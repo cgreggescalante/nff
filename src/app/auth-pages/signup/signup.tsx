@@ -2,8 +2,7 @@ import { ChangeEvent, useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { Button, FloatingLabel, Form, InputGroup } from 'react-bootstrap';
-import { createUserFromAuth } from '@shared-data';
-import { auth } from '../../../firebase';
+import { auth, createUserFromAuth } from '@shared-data';
 import { toast } from 'react-toastify';
 
 export const Signup = () => {

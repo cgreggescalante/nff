@@ -9,6 +9,7 @@ export const EventList = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    console.log('Fetching events');
     listEvents()
       .then((events) => {
         setEvents(events);

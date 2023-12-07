@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 import { WorkoutInput } from './workout-input/workout-input';
 import {
+  auth,
   createUpload,
   readUser,
   Upload,
@@ -8,7 +9,6 @@ import {
   WorkoutTypeNames,
   WorkoutTypeToNumber,
 } from '@shared-data';
-import { auth } from '../../firebase';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 

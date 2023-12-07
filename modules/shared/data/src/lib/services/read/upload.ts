@@ -1,12 +1,5 @@
-import {
-  collectionGroup,
-  getDocs,
-  limit,
-  orderBy,
-  query,
-} from '@firebase/firestore';
-import { getUploadCollectionRef } from '../CollectionRefs';
-import { db } from '../../firebase';
+import { getDocs, limit, orderBy, query } from '@firebase/firestore';
+import { getUploadCollectionRef, UploadCollectionRef } from '../CollectionRefs';
 import { withMetaData } from './all';
 import { UploadConverter } from '../../converters';
 import { Upload, WithMetaData } from '../../models';
@@ -28,12 +21,16 @@ export const listRecentUploads = async ({
     );
   else
     uploadQuery = query(
-      collectionGroup(db, 'uploads'),
+      UploadCollectionRef,
       orderBy('date', 'desc'),
       limit(count === undefined ? 25 : count)
     );
 
+  console.log('uploadQuery', uploadQuery);
+
   const snapshot = await getDocs(uploadQuery.withConverter(UploadConverter));
+
+  console.log('snapshot', snapshot);
 
   return snapshot.docs.map((doc) => withMetaData(doc));
 };
