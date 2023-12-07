@@ -12,52 +12,49 @@ import {
   UserInfo,
   UserInfoWithMetaData,
 } from '@shared-data';
+import { useQuery, useQueryClient } from 'react-query';
 
 const UserContext = createContext<{
-  user: UserInfoWithMetaData | null;
+  userInfo: UserInfoWithMetaData | undefined;
   updateUser: (user: UserInfo) => Promise<void>;
-  loading: boolean;
+  isLoading: boolean;
 }>({
-  user: null,
+  userInfo: undefined,
   updateUser: () => new Promise<void>((_) => null),
-  loading: true,
+  isLoading: true,
 });
 
 export const useUser = () => {
   return useContext(UserContext);
 };
 
+export const useCurrentUserQuery = () =>
+  useQuery({
+    queryKey: 'currentUser',
+    queryFn: () => readUser(auth.currentUser?.uid || ''),
+  });
+
 export const UserProvider = ({ children }: { children: ReactElement }) => {
-  const [userInfo, setUserInfo] = useState<UserInfoWithMetaData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [reload, setReload] = useState(false);
+  const { data: userInfo, isLoading } = useCurrentUserQuery();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (!userInfo || reload) {
-      auth.onAuthStateChanged(async (user) => {
-        if (user) {
-          const userInfo = await readUser(user.uid);
-          if (userInfo) {
-            setUserInfo(userInfo);
-          }
-        }
-        setReload(false);
-        setLoading(false);
-      });
-    }
-  }, [reload, userInfo]);
+    return auth.onAuthStateChanged(async (user) => {
+      await queryClient.invalidateQueries('currentUser');
+    });
+  }, [queryClient]);
 
   const handleUpdateUser = async (user: UserInfo) => {
     if (!userInfo) return Promise.reject('User not logged in');
     return updateUser(userInfo.uid, user)
-      .then((_) => setReload(true))
+      .then((_) => queryClient.invalidateQueries('currentUser'))
       .catch((error) => Promise.reject(error));
   };
 
   const contextValue = {
-    user: userInfo,
+    userInfo,
     updateUser: handleUpdateUser,
-    loading,
+    isLoading,
   };
 
   return (

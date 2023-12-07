@@ -20,6 +20,7 @@ export const withMetaData = <T>(
 export const readDocument =
   <T>(getReference: GetDocumentReference<T>) =>
   async (documentId: string): Promise<(T & WithMetaData<T>) | undefined> => {
+    if (!documentId) return undefined;
     const document = await getDoc(getReference(documentId));
     return document.exists() ? withMetaData(document) : undefined;
   };

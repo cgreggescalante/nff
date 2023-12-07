@@ -7,11 +7,11 @@ export interface UploadListProps {
 }
 
 export function UploadList({ uid }: UploadListProps) {
-  const { data, isLoading, error } = useListRecentUploads({ userUid: uid });
+  const { data: uploads, isLoading } = useListRecentUploads({ userUid: uid });
 
   return (
     <LoadingWrapper loading={isLoading}>
-      {data?.map((upload, index) => (
+      {uploads?.map((upload, index) => (
         <UploadCard key={index} upload={upload} />
       ))}
     </LoadingWrapper>

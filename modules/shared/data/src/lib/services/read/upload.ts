@@ -26,11 +26,7 @@ export const listRecentUploads = async ({
       limit(count === undefined ? 25 : count)
     );
 
-  console.log('uploadQuery', uploadQuery);
-
   const snapshot = await getDocs(uploadQuery.withConverter(UploadConverter));
-
-  console.log('snapshot', snapshot);
 
   return snapshot.docs.map((doc) => withMetaData(doc));
 };
