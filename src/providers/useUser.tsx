@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  ReactElement,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import React, { createContext, ReactNode, useContext, useEffect } from 'react';
 import {
   auth,
   readUser,
@@ -17,15 +11,22 @@ import { useQuery, useQueryClient } from 'react-query';
 const UserContext = createContext<{
   userInfo: UserInfoWithMetaData | undefined;
   updateUser: (user: UserInfo) => Promise<void>;
-  isLoading: boolean;
 }>({
   userInfo: undefined,
   updateUser: () => new Promise<void>((_) => null),
-  isLoading: true,
 });
 
-export const useUser = () => {
-  return useContext(UserContext);
+export const useCurrentUser = (): UserInfoWithMetaData => {
+  const context = useContext(UserContext);
+  if (!context.userInfo) {
+    throw new Error('useCurrentUserContext must be used within a UserProvider');
+  }
+  return context.userInfo;
+};
+
+export const useUpdateUser = () => {
+  const { updateUser } = useContext(UserContext);
+  return updateUser;
 };
 
 export const useCurrentUserQuery = () =>
@@ -34,7 +35,7 @@ export const useCurrentUserQuery = () =>
     queryFn: () => readUser(auth.currentUser?.uid || ''),
   });
 
-export const UserProvider = ({ children }: { children: ReactElement }) => {
+export const UserProvider = ({ children }: { children: ReactNode }) => {
   const { data: userInfo, isLoading } = useCurrentUserQuery();
   const queryClient = useQueryClient();
 
@@ -51,10 +52,17 @@ export const UserProvider = ({ children }: { children: ReactElement }) => {
       .catch((error) => Promise.reject(error));
   };
 
+  if (isLoading) {
+    return <div>Loading User Info</div>;
+  }
+
+  if (!userInfo) {
+    return <div>Not logged in</div>;
+  }
+
   const contextValue = {
     userInfo,
     updateUser: handleUpdateUser,
-    isLoading,
   };
 
   return (
@@ -62,4 +70,4 @@ export const UserProvider = ({ children }: { children: ReactElement }) => {
   );
 };
 
-export default useUser;
+export default useCurrentUser;

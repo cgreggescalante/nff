@@ -1,9 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 import { WorkoutInput } from './workout-input/workout-input';
 import {
-  auth,
   createUpload,
-  readUser,
   Upload,
   WorkoutType,
   WorkoutTypeNames,
@@ -11,8 +9,11 @@ import {
 } from '@shared-data';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { toast } from 'react-toastify';
+import useCurrentUser from '../../providers/useUser';
 
 const UploadView = () => {
+  const userInfo = useCurrentUser();
+
   const [description, setDescription] = useState<string>('');
   const [workouts, setWorkouts] = useState<WorkoutTypeToNumber>({});
   const [selectedWorkout, setSelectedWorkout] = useState<WorkoutType>();
@@ -31,31 +32,25 @@ const UploadView = () => {
       }
     });
 
-    if (auth.currentUser) {
-      const user = await readUser(auth.currentUser.uid);
+    const upload: Upload = {
+      userRef: userInfo.ref,
+      userFirstName: userInfo.firstName,
+      userLastName: userInfo.lastName,
+      description,
+      workouts: validWorkouts,
+      date: new Date(),
+    };
 
-      if (!user) return;
-
-      const upload: Upload = {
-        userRef: user.ref,
-        userFirstName: user.firstName,
-        userLastName: user.lastName,
-        description,
-        workouts: validWorkouts,
-        date: new Date(),
-      };
-
-      createUpload(upload, user)
-        .then((_) => {
-          toast.success('Workouts added successfully');
-          setDescription('');
-          setWorkouts({});
-        })
-        .catch((error) => {
-          console.error('Error while creating upload: ', error);
-          toast.error('Could not add workouts');
-        });
-    }
+    createUpload(upload, userInfo)
+      .then((_) => {
+        toast.success('Workouts added successfully');
+        setDescription('');
+        setWorkouts({});
+      })
+      .catch((error) => {
+        console.error('Error while creating upload: ', error);
+        toast.error('Could not add workouts');
+      });
   };
 
   const handleAddWorkout = () => {

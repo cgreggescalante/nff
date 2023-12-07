@@ -3,6 +3,7 @@ import React, { ReactNode } from 'react';
 import { toast } from 'react-toastify';
 import { auth } from '@shared-data';
 import useAuth from '../../../providers/useAuth';
+import { UserProvider } from '../../../providers/useUser';
 
 /* eslint-disable-next-line */
 interface ProtectedRouteProps {
@@ -25,7 +26,7 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     return <Navigate to={redirectUrl} replace />;
   }
 
-  return children;
+  return <UserProvider>{children}</UserProvider>;
 };
 
 export default ProtectedRoute;
