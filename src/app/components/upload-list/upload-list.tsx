@@ -1,32 +1,17 @@
-import { useEffect, useState } from 'react';
 import { UploadCard } from './upload-card/upload-card';
-import { listRecentUploads, Upload } from '@shared-data';
 import { LoadingWrapper } from '@shared-ui';
+import { useListRecentUploads } from '../../../providers/queries/useListRecentUploads';
 
 export interface UploadListProps {
   uid?: string;
 }
 
 export function UploadList({ uid }: UploadListProps) {
-  const [uploads, setUploads] = useState<Upload[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    // TODO: Sometimes doesn't load the uploads
-    console.log('Fetching uploads');
-    listRecentUploads({ userUid: uid })
-      .then((uploads) => {
-        setUploads(uploads);
-      })
-      .catch((error) => {
-        console.error('Error while fetching uploads:', error);
-      })
-      .finally(() => setLoading(false));
-  }, [uid]);
+  const { data, isLoading, error } = useListRecentUploads({ userUid: uid });
 
   return (
-    <LoadingWrapper loading={loading}>
-      {uploads.map((upload, index) => (
+    <LoadingWrapper loading={isLoading}>
+      {data?.map((upload, index) => (
         <UploadCard key={index} upload={upload} />
       ))}
     </LoadingWrapper>
