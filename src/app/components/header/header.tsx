@@ -4,6 +4,7 @@ import useAuth from '../../../providers/useAuth';
 import { toast } from 'react-toastify';
 import { auth } from '@shared-data';
 import { signOut } from 'firebase/auth';
+import { LinkContainer } from 'react-router-bootstrap';
 
 export const Header = () => {
   const { isAdmin } = useAuth();
@@ -20,48 +21,57 @@ export const Header = () => {
   };
 
   return (
-    <Navbar expand="md" fixed="top" className="bg-body-secondary">
+    <Navbar
+      collapseOnSelect
+      expand="md"
+      fixed="top"
+      className="bg-body-secondary"
+    >
       <Container>
-        <Nav className="mr-auto">
-          <Navbar.Brand as={Link} to="/">
-            NFF
-          </Navbar.Brand>
+        <LinkContainer to="/">
+          <Navbar.Brand>NFF</Navbar.Brand>
+        </LinkContainer>
 
-          <Nav.Link as={Link} to="/events">
-            Events
-          </Nav.Link>
+        <Navbar.Toggle aria-controls="navbar-nav" />
 
-          {auth.currentUser && (
-            <>
-              <Nav.Link as={Link} to="/user-dashboard">
-                Dashboard
-              </Nav.Link>
-              <Nav.Link as={Link} to="/upload">
-                Upload
-              </Nav.Link>
-            </>
-          )}
-        </Nav>
+        <Navbar.Collapse id={'navbar-nav'}>
+          <Nav className="me-auto">
+            <LinkContainer to="/events">
+              <Nav.Link>Events</Nav.Link>
+            </LinkContainer>
 
-        <Nav className="ml-auto">
-          {auth.currentUser == null ? (
-            <>
-              <Nav.Link as={Link} to="/login">
-                Login
-              </Nav.Link>
-              <Nav.Link as={Link} to="/signup">
-                Sign Up
-              </Nav.Link>
-            </>
-          ) : (
-            <Nav.Link onClick={handleSignOut}>Sign Out</Nav.Link>
-          )}
-          {isAdmin && (
-            <Nav.Link as={Link} to={'/addUser-tools'}>
-              Admin
-            </Nav.Link>
-          )}
-        </Nav>
+            {auth.currentUser && (
+              <>
+                <LinkContainer to="/user-dashboard">
+                  <Nav.Link>Dashboard</Nav.Link>
+                </LinkContainer>
+                <LinkContainer to="/upload">
+                  <Nav.Link>Upload</Nav.Link>
+                </LinkContainer>
+              </>
+            )}
+          </Nav>
+
+          <Nav className="ms-auto">
+            {auth.currentUser == null ? (
+              <>
+                <LinkContainer to="/login">
+                  <Nav.Link>Login</Nav.Link>
+                </LinkContainer>
+                <LinkContainer to="/signup">
+                  <Nav.Link>Sign Up</Nav.Link>
+                </LinkContainer>
+              </>
+            ) : (
+              <Nav.Link onClick={handleSignOut}>Sign Out</Nav.Link>
+            )}
+            {isAdmin && (
+              <LinkContainer to="/admin-tools">
+                <Nav.Link>Admin</Nav.Link>
+              </LinkContainer>
+            )}
+          </Nav>
+        </Navbar.Collapse>
       </Container>
     </Navbar>
   );
