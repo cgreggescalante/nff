@@ -1,13 +1,8 @@
 import { EntryWithMetaData, EventWithMetadata, UserInfo } from '../../models';
-import { getDocs, query, where } from '@firebase/firestore';
-import {
-  EntryCollectionRef,
-  getEntryCollectionRef,
-  getEventRef,
-} from '../CollectionRefs';
-
-import { readUser } from './user';
+import { getDocs, query, runTransaction, where } from '@firebase/firestore';
+import { getEntryCollectionRef, getEventRef } from '../CollectionRefs';
 import { withMetaData } from './all';
+import { db } from '../../firebase';
 
 export const readEntry = async (
   eventUid: string,
@@ -31,24 +26,24 @@ export const getUserLeaderboard = async (
     entry: EntryWithMetaData;
   }[]
 > => {
-  // TODO: Resolve list of documentReferences
-  const entries = await getDocs(
-    query(EntryCollectionRef, where('eventRef', '==', event.ref))
-  );
-
   const leaderboardEntries: {
     user: UserInfo;
     entry: EntryWithMetaData;
   }[] = [];
 
-  for (const entry of entries.docs) {
-    const user = await readUser(entry.data().userRef.id);
-    if (!user) continue;
-    leaderboardEntries.push({
-      user,
-      entry: withMetaData(entry),
-    });
-  }
+  await runTransaction(db, async (transaction) => {
+    for (const entryRef of event.entryRefs) {
+      const entrySnapshot = await transaction.get(entryRef);
+      if (entrySnapshot.exists()) {
+        const entry = withMetaData(entrySnapshot);
+        const user = await transaction.get(entry.userRef);
+        leaderboardEntries.push({
+          user: withMetaData(user),
+          entry,
+        });
+      }
+    }
+  });
 
   leaderboardEntries.sort((a, b) => b.entry.points - a.entry.points);
 

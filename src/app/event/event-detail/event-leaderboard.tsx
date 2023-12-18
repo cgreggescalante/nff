@@ -1,33 +1,18 @@
-import { useEffect, useState } from 'react';
-import {
-  Entry,
-  EventWithMetadata,
-  getUserLeaderboard,
-  UserInfo,
-} from '@shared-data';
+import { EventWithMetadata } from '@shared-data';
 import { LoadingWrapper } from '@shared-ui';
 import { Table } from 'react-bootstrap';
+import { useUserLeaderboard } from '../../../providers/queries/useUserLeaderboard';
 
 interface EventLeaderboardProps {
   event: EventWithMetadata;
 }
 
 export const EventLeaderboard = ({ event }: EventLeaderboardProps) => {
-  const [leaderboard, setLeaderboard] = useState<
-    { user: UserInfo; entry: Entry }[]
-  >([]);
-  const [leaderboardLoading, setLeaderboardLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    getUserLeaderboard(event).then((leaderboard) => {
-      setLeaderboard(leaderboard);
-      setLeaderboardLoading(false);
-    });
-  }, [event]);
+  const { data: leaderboard, isLoading } = useUserLeaderboard(event);
 
   return (
-    <LoadingWrapper loading={leaderboardLoading}>
-      {leaderboard.length > 0 && (
+    <LoadingWrapper loading={isLoading}>
+      {leaderboard && leaderboard.length > 0 && (
         <>
           <h2>Leaderboard</h2>
           <Table>

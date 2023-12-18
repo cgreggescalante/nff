@@ -1,46 +1,23 @@
 import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import {
-  auth,
-  CheckIsEventOwner,
-  EventWithMetadata,
-  readEvent,
-  registerUserForEvent,
-} from '@shared-data';
+import { auth, CheckIsEventOwner, registerUserForEvent } from '@shared-data';
 import { LoadingWrapper } from '@shared-ui';
 import { Button } from 'react-bootstrap';
 import { EventLeaderboard } from './event-leaderboard';
 import { TeamLeaderboard } from './team-leaderboard';
 import useAuth from '../../../providers/useAuth';
-import { toast } from 'react-toastify';
+import { useEvent } from '../../../providers/queries/useEvent';
 
 export const EventDetail = () => {
   const { eventId } = useParams();
+
+  if (!eventId) throw new Error('Event ID not provided');
+
   const authData = useAuth();
 
-  const [event, setEvent] = useState<EventWithMetadata>();
-  const [loading, setLoading] = useState<boolean>(true);
+  const { data: event, isLoading } = useEvent(eventId);
 
   const [canEdit, setCanEdit] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (!event && eventId) {
-      readEvent(eventId)
-        .then((event) => {
-          if (event != null) {
-            setEvent(event);
-            document.title = event.name;
-          } else
-            toast.error('Could not find event', { toastId: 'event-detail' });
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.error('Error while fetching event:', error);
-        });
-    } else {
-      setLoading(false);
-    }
-  }, [event, eventId]);
 
   useEffect(() => {
     if (authData.isAdmin) setCanEdit(true);
@@ -58,7 +35,7 @@ export const EventDetail = () => {
   }, [authData, eventId]);
 
   return (
-    <LoadingWrapper loading={loading}>
+    <LoadingWrapper loading={isLoading}>
       {event && (
         <>
           <h1>{event.name}</h1>{' '}
