@@ -1,25 +1,17 @@
-import { useEffect, useState } from 'react';
-import { EventWithMetadata, getTeamLeaderboard, Team } from '@shared-data';
+import { EventWithMetadata } from '@shared-data';
 import { LoadingWrapper } from '@shared-ui';
+import { useTeamLeaderboard } from '../../../providers/queries/useTeamLeaderboard';
 
 interface TeamsListProps {
   event: EventWithMetadata;
 }
 
 export const TeamLeaderboard = ({ event }: TeamsListProps) => {
-  const [teams, setTeams] = useState<Team[]>([]);
-  const [teamsLoading, setTeamsLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    getTeamLeaderboard(event.uid).then((teams) => {
-      setTeams(teams);
-      setTeamsLoading(false);
-    });
-  }, [event]);
+  const { data: teams, isLoading } = useTeamLeaderboard(event.uid);
 
   return (
-    <LoadingWrapper loading={teamsLoading}>
-      {teams.length > 0 && (
+    <LoadingWrapper loading={isLoading}>
+      {teams && teams.length > 0 && (
         <>
           <h2>Teams</h2>
           <ul>
