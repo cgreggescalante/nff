@@ -7,7 +7,10 @@ export interface UploadListProps {
 }
 
 export function UploadList({ uid }: UploadListProps) {
-  const { data: uploads, isLoading } = useListRecentUploads({ userUid: uid });
+  const { data: uploads, isLoading } = useListRecentUploads({
+    userUid: uid,
+    count: 25,
+  });
 
   return (
     <LoadingWrapper loading={isLoading}>

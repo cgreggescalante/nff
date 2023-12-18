@@ -1,16 +1,13 @@
-import { UserInfo } from '@shared-data';
 import { useEffect, useState } from 'react';
 import { Button, Table } from 'react-bootstrap';
 import { ManagedTextInput } from '@shared-ui';
 import { toast } from 'react-toastify';
+import useCurrentUser, { useUpdateUser } from '../../../providers/useUser';
 
-/* eslint-disable-next-line */
-export interface EditUserDetailsProps {
-  userInfo: UserInfo;
-  updateUser: (user: UserInfo) => Promise<void>;
-}
+export const EditUser = () => {
+  const userInfo = useCurrentUser();
+  const updateUser = useUpdateUser();
 
-export const EditUser = ({ userInfo, updateUser }: EditUserDetailsProps) => {
   const [firstName, setFirstName] = useState<string>(userInfo.firstName);
   const [lastName, setLastName] = useState<string>(userInfo.lastName);
 
@@ -22,13 +19,11 @@ export const EditUser = ({ userInfo, updateUser }: EditUserDetailsProps) => {
     );
   }, [userInfo, firstName, lastName]);
 
-  const saveChanges = () => {
-    const newUser = {
+  const saveChanges = () =>
+    updateUser({
       firstName,
       lastName,
-    };
-
-    updateUser(newUser)
+    })
       .then((_) => {
         toast.success('User details updated successfully');
         setEdited(false);
@@ -37,7 +32,6 @@ export const EditUser = ({ userInfo, updateUser }: EditUserDetailsProps) => {
         console.error('Error while updating user details:', error);
         toast.error('Failed to update user details');
       });
-  };
 
   return (
     <>
