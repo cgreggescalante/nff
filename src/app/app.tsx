@@ -18,6 +18,7 @@ import EventDetail from './event/event-detail/event-detail';
 import { EditEvent } from './event/event-detail/edit-event';
 import UserDashboard from './user-data/user-dashboard';
 import { Slide, ToastContainer } from 'react-toastify';
+import { UserProvider } from '../providers/useUser';
 
 export const App = () => (
   <div className={styles['app']}>
@@ -32,7 +33,14 @@ export const App = () => (
 
       <Container className={styles['content']}>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route
+            path="/"
+            element={
+              <UserProvider>
+                <Home />
+              </UserProvider>
+            }
+          />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/events" element={<EventList />} />
