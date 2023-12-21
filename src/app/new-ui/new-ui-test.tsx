@@ -4,14 +4,17 @@ import { SideMenu } from './side-menu';
 import { Header } from './header';
 import { BrowserRouter } from 'react-router-dom';
 
-const drawerWidth = 100;
+const drawerWidth = 150;
+const headerHeight = 57;
 
 export const NewUiTest = () => {
-  const [persistent, setPersistent] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [persistent, setPersistent] = useState(window.innerWidth > 768);
+  const [open, setOpen] = useState(window.innerWidth > 768);
 
-  const [margin, setMargin] = useState<number>(0);
-  const [width, setWidth] = useState(0);
+  const [margin, setMargin] = useState<number>(
+    window.innerWidth > 768 ? drawerWidth : 0
+  );
+  const [width, setWidth] = useState(drawerWidth);
 
   useEffect(() => {
     const onResize = () => updateMeasures(open, window.innerWidth > 768);
@@ -36,16 +39,21 @@ export const NewUiTest = () => {
 
   return (
     <BrowserRouter basename={'/'}>
-      <Header margin={margin} persistent={persistent} toggleOpen={toggleOpen} />
+      <Header
+        height={headerHeight}
+        persistent={persistent}
+        toggleOpen={toggleOpen}
+      />
 
       <SideMenu
+        headerHeight={headerHeight}
         open={open}
         persistent={persistent}
         width={width}
         toggleOpen={toggleOpen}
       />
 
-      <MainContent margin={margin} />
+      <MainContent margin={margin} headerHeight={headerHeight} />
     </BrowserRouter>
   );
 };

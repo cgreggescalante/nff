@@ -12,9 +12,24 @@ import Profile from '../user-data/profile/profile';
 import UserDashboard from '../user-data/user-dashboard';
 import { AdminRoute } from '../components/routes/admin-route';
 import AdminTools from '../admin-tools/admin-tools';
+import { Box } from '@mui/system';
 
-export const MainContent = ({ margin }: { margin: number }) => (
-  <div style={{ width: `100% - ${margin}px`, marginLeft: `${margin}px` }}>
+export const MainContent = ({
+  margin,
+  headerHeight,
+}: {
+  margin: number;
+  headerHeight: number;
+}) => (
+  <Box
+    style={{
+      width: `100% - ${margin}px`,
+      maxWidth: 800,
+      marginLeft: `${margin}px`,
+      marginTop: headerHeight,
+    }}
+    sx={{ p: 4 }}
+  >
     <Routes>
       <Route
         path="/"
@@ -63,5 +78,5 @@ export const MainContent = ({ margin }: { margin: number }) => (
         }
       />
     </Routes>
-  </div>
+  </Box>
 );

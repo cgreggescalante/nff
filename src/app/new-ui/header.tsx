@@ -8,11 +8,11 @@ import { useNavigate } from 'react-router-dom';
 import useAuth from '../../providers/useAuth';
 
 export const Header = ({
-  margin,
+  height,
   persistent,
   toggleOpen,
 }: {
-  margin: number;
+  height: number;
   persistent: boolean;
   toggleOpen: () => void;
 }) => {
@@ -30,10 +30,11 @@ export const Header = ({
 
   return (
     <AppBar
-      position="static"
+      position="fixed"
       style={{
-        width: `calc(100% - ${margin}px)`,
-        marginLeft: `${margin}px`,
+        height: `${height}px`,
+        width: '100%',
+        zIndex: 1201,
       }}
     >
       <Toolbar>
