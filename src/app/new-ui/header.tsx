@@ -1,6 +1,5 @@
 import { AppBar, Button, IconButton, Link, Toolbar } from '@mui/material';
 import { Menu } from '@mui/icons-material';
-import { LinkContainer } from 'react-router-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../providers/useAuth';
 import { UserProvider } from '../../providers/useUser';
@@ -52,12 +51,24 @@ export const Header = ({
         </Link>
         {!authData.userId ? (
           <>
-            <LinkContainer to="/login">
+            <Link
+              component={'button'}
+              color={'inherit'}
+              underline={'none'}
+              variant={'h6'}
+              onClick={() => navigate('/login')}
+            >
               <Button color={'inherit'}>Login</Button>
-            </LinkContainer>
-            <LinkContainer to="/signup">
+            </Link>
+            <Link
+              component={'button'}
+              color={'inherit'}
+              underline={'none'}
+              variant={'h6'}
+              onClick={() => navigate('/signup')}
+            >
               <Button color={'inherit'}>Sign Up</Button>
-            </LinkContainer>
+            </Link>
           </>
         ) : (
           <UserProvider>
