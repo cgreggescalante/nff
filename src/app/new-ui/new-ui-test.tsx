@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { MainContent } from './main-content';
 import { SideMenu } from './side-menu';
 import { Header } from './header';
+import { BrowserRouter } from 'react-router-dom';
 
 const drawerWidth = 100;
 
@@ -34,7 +35,7 @@ export const NewUiTest = () => {
   };
 
   return (
-    <>
+    <BrowserRouter basename={'/'}>
       <Header margin={margin} persistent={persistent} toggleOpen={toggleOpen} />
 
       <SideMenu
@@ -45,6 +46,6 @@ export const NewUiTest = () => {
       />
 
       <MainContent margin={margin} />
-    </>
+    </BrowserRouter>
   );
 };

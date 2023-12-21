@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { UserProvider } from '../../providers/useUser';
 import Home from '../home/home';
 import Signup from '../auth-pages/signup/signup';
@@ -15,55 +15,53 @@ import AdminTools from '../admin-tools/admin-tools';
 
 export const MainContent = ({ margin }: { margin: number }) => (
   <div style={{ width: `100% - ${margin}px`, marginLeft: `${margin}px` }}>
-    <BrowserRouter basename={'/'}>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <UserProvider>
-              <Home />
-            </UserProvider>
-          }
-        />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/events" element={<EventList />} />
-        <Route path="/events/:eventId" element={<EventDetail />} />
-        // TODO: Require event owner
-        <Route path="/events/:eventId/edit" element={<EditEvent />} />
-        <Route
-          path="/upload"
-          element={
-            <ProtectedRoute>
-              <Upload />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/user-dashboard"
-          element={
-            <ProtectedRoute>
-              <UserDashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin-tools"
-          element={
-            <AdminRoute>
-              <AdminTools />
-            </AdminRoute>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <UserProvider>
+            <Home />
+          </UserProvider>
+        }
+      />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/events" element={<EventList />} />
+      <Route path="/events/:eventId" element={<EventDetail />} />
+      // TODO: Require event owner
+      <Route path="/events/:eventId/edit" element={<EditEvent />} />
+      <Route
+        path="/upload"
+        element={
+          <ProtectedRoute>
+            <Upload />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/user-dashboard"
+        element={
+          <ProtectedRoute>
+            <UserDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin-tools"
+        element={
+          <AdminRoute>
+            <AdminTools />
+          </AdminRoute>
+        }
+      />
+    </Routes>
   </div>
 );
