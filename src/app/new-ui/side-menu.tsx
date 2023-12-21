@@ -1,11 +1,5 @@
-import {
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-} from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
+import { Drawer, List } from '@mui/material';
+import { ListItemLink } from './list-item-link';
 
 export const SideMenu = ({
   headerHeight,
@@ -39,40 +33,12 @@ export const SideMenu = ({
 
 const DrawerContent = ({ toggleOpen }: { toggleOpen: () => void }) => (
   <List>
-    <FunctionalRouter
-      path={'/events'}
-      name={'Events'}
-      toggleOpen={toggleOpen}
-    />
-    <FunctionalRouter
-      path={'/upload'}
-      name={'Upload'}
-      toggleOpen={toggleOpen}
-    />
-    <FunctionalRouter
+    <ListItemLink path={'/events'} name={'Events'} onClick={toggleOpen} />
+    <ListItemLink path={'/upload'} name={'Upload'} onClick={toggleOpen} />
+    <ListItemLink
       path={'/user-dashboard'}
       name={'Dashboard'}
-      toggleOpen={toggleOpen}
+      onClick={toggleOpen}
     />
   </List>
-);
-
-const FunctionalRouter = ({
-  path,
-  name,
-  toggleOpen,
-}: {
-  path: string;
-  name: string;
-  toggleOpen: () => void;
-}) => (
-  <ListItem
-    component={(props) => (
-      <RouterLink {...props} to={path} onClick={toggleOpen} />
-    )}
-  >
-    <ListItemButton sx={{ textAlign: 'center' }}>
-      <ListItemText>{name}</ListItemText>
-    </ListItemButton>
-  </ListItem>
 );

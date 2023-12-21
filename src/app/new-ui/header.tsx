@@ -1,11 +1,10 @@
 import { AppBar, Button, IconButton, Link, Toolbar } from '@mui/material';
 import { Menu } from '@mui/icons-material';
-import { auth } from '@shared-data';
 import { LinkContainer } from 'react-router-bootstrap';
-import { signOut } from 'firebase/auth';
-import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../providers/useAuth';
+import { UserProvider } from '../../providers/useUser';
+import { CurrentUserAvatar } from './current-user-avatar';
 
 export const Header = ({
   height,
@@ -18,15 +17,6 @@ export const Header = ({
 }) => {
   const navigate = useNavigate();
   const authData = useAuth();
-
-  const handleSignOut = () => {
-    signOut(auth)
-      .then(() => {
-        toast.success('Signed out successfully');
-        navigate('/');
-      })
-      .catch((err) => console.error(err));
-  };
 
   return (
     <AppBar
@@ -60,7 +50,7 @@ export const Header = ({
         >
           NFF
         </Link>
-        {authData.userId == null ? (
+        {!authData.userId ? (
           <>
             <LinkContainer to="/login">
               <Button color={'inherit'}>Login</Button>
@@ -70,9 +60,9 @@ export const Header = ({
             </LinkContainer>
           </>
         ) : (
-          <Button color={'inherit'} onClick={handleSignOut}>
-            Sign Out
-          </Button>
+          <UserProvider>
+            <CurrentUserAvatar />
+          </UserProvider>
         )}
       </Toolbar>
     </AppBar>

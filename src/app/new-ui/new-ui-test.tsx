@@ -5,7 +5,7 @@ import { Header } from './header';
 import { BrowserRouter } from 'react-router-dom';
 
 const drawerWidth = 150;
-const headerHeight = 57;
+const headerHeight = 60;
 
 export const NewUiTest = () => {
   const [persistent, setPersistent] = useState(window.innerWidth > 768);
