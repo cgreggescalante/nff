@@ -1,4 +1,4 @@
-import { AppBar, Button, IconButton, Link, Toolbar } from '@mui/material';
+import { AppBar, IconButton, Link, Toolbar } from '@mui/material';
 import { Menu } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../providers/useAuth';
@@ -58,7 +58,7 @@ export const Header = ({
               variant={'h6'}
               onClick={() => navigate('/login')}
             >
-              <Button color={'inherit'}>Login</Button>
+              Login
             </Link>
             <Link
               component={'button'}
@@ -67,7 +67,7 @@ export const Header = ({
               variant={'h6'}
               onClick={() => navigate('/signup')}
             >
-              <Button color={'inherit'}>Sign Up</Button>
+              Sign Up
             </Link>
           </>
         ) : (

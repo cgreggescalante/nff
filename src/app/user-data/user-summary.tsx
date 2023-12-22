@@ -1,5 +1,4 @@
 import useUser from '../../providers/useUser';
-import { Card } from 'react-bootstrap';
 
 export const UserSummary = () => {
   const user = useUser();
@@ -8,14 +7,5 @@ export const UserSummary = () => {
     return null;
   }
 
-  return (
-    <Card>
-      <Card.Body>
-        <Card.Title>
-          {user.firstName} {user.lastName}{' '}
-        </Card.Title>
-        <Card.Subtitle>Subtitle</Card.Subtitle>
-      </Card.Body>
-    </Card>
-  );
+  return `${user.firstName} ${user.lastName}`;
 };

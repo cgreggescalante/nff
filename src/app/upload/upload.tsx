@@ -7,16 +7,22 @@ import {
   WorkoutTypeNames,
   WorkoutTypeToNumber,
 } from '@shared-data';
-import { Button, Form, InputGroup } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import useCurrentUser from '../../providers/useUser';
+import { Button } from '@mui/material';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import { SelectChangeEvent } from '@mui/material/Select';
 
 const UploadView = () => {
   const userInfo = useCurrentUser();
 
   const [description, setDescription] = useState<string>('');
   const [workouts, setWorkouts] = useState<WorkoutTypeToNumber>({});
-  const [selectedWorkout, setSelectedWorkout] = useState<WorkoutType>();
+  const [selectedWorkout, setSelectedWorkout] = useState<WorkoutType | ''>('');
 
   const handleDurationChange = (workoutType: WorkoutType, value: number) => {
     const newWorkouts = { ...workouts };
@@ -58,7 +64,7 @@ const UploadView = () => {
       const newWorkouts = { ...workouts };
       newWorkouts[selectedWorkout] = 0;
       setWorkouts(newWorkouts);
-      setSelectedWorkout(undefined);
+      setSelectedWorkout('');
     }
   };
 
@@ -70,20 +76,17 @@ const UploadView = () => {
 
   return (
     <>
-      <h1>Upload</h1>
+      <Typography variant="h4">Upload</Typography>
 
-      <InputGroup className={'mb-2'}>
-        <InputGroup.Text>Description</InputGroup.Text>
-        <Form.Control
-          as={'textarea'}
-          id="description"
-          name="description"
-          value={description}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setDescription(e.target.value)
-          }
-        />
-      </InputGroup>
+      <TextField
+        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+          setDescription(e.target.value)
+        }
+        label={'Description'}
+        multiline
+        minRows={2}
+        maxRows={16}
+      />
 
       {WorkoutTypeNames.filter(
         (workout) => workouts[workout] !== undefined
@@ -98,32 +101,33 @@ const UploadView = () => {
         />
       ))}
 
-      <InputGroup className={'mb-2'}>
-        <InputGroup.Text>Workout Type</InputGroup.Text>
-        <Form.Select
+      <FormControl>
+        <Select
           value={selectedWorkout}
-          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+          defaultValue={''}
+          onChange={(e: SelectChangeEvent) =>
             setSelectedWorkout(e.target.value as keyof WorkoutTypeToNumber)
           }
         >
-          <option value={undefined}></option>
           {WorkoutTypeNames.filter(
             (workout) => workouts[workout] === undefined
           ).map((workout, index) => (
-            <option key={index} value={workout}>
+            <MenuItem key={index} value={workout}>
               {workout}
-            </option>
+            </MenuItem>
           ))}
-        </Form.Select>
+        </Select>
         <Button
           disabled={selectedWorkout === undefined}
           onClick={handleAddWorkout}
         >
           Add Workout
         </Button>
-      </InputGroup>
+      </FormControl>
 
-      <Button onClick={handleSubmit}>Submit</Button>
+      <div>
+        <Button onClick={handleSubmit}>Submit</Button>
+      </div>
     </>
   );
 };

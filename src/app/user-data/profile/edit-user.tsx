@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Button, Table } from 'react-bootstrap';
 import { ManagedTextInput } from '@shared-ui';
 import { toast } from 'react-toastify';
 import useCurrentUser, { useUpdateUser } from '../../../providers/useUser';
+import { Button, Table } from '@mui/material';
 
 export const EditUser = () => {
   const userInfo = useCurrentUser();

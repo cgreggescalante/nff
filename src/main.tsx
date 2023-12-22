@@ -5,8 +5,6 @@ import App from './app/app';
 import { AuthProvider } from './providers/useAuth';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { DevSupport } from '@react-buddy/ide-toolbox';
-import { ComponentPreviews, useInitial } from './dev';
 
 const queryClient = new QueryClient();
 
@@ -18,12 +16,7 @@ root.render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <DevSupport
-          ComponentPreviews={ComponentPreviews}
-          useInitialHook={useInitial}
-        >
-          <App />
-        </DevSupport>
+        <App />
       </AuthProvider>
       <ReactQueryDevtools initialIsOpen={true} />
     </QueryClientProvider>
