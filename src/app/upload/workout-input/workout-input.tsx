@@ -1,11 +1,15 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import { WorkoutType } from '@shared-data';
-import { Button, Form, InputGroup } from 'react-bootstrap';
+import Button from '@mui/material/Button';
+import ClearIcon from '@mui/icons-material/Clear';
+import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 
 export interface WorkoutProps {
   index: number;
   workoutType: WorkoutType;
-  duration: number | undefined;
+  duration: number;
   handleDurationChange: (workoutType: WorkoutType, value: number) => void;
   deleteWorkoutInput: () => void;
 }
@@ -16,23 +20,42 @@ export const WorkoutInput: React.FC<WorkoutProps> = ({
   duration,
   handleDurationChange,
   deleteWorkoutInput,
-}) => {
-  return (
-    <InputGroup className={'mb-2'}>
-      <InputGroup.Text>{workoutType}</InputGroup.Text>
+}) => (
+  <Grid container item alignItems={'center'} spacing={1} columns={32}>
+    <Grid item xs={3}>
+      {getLabel(workoutType)}
+    </Grid>
 
-      <Form.Control
-        id={`duration${index}`}
-        type="number"
-        name={`duration${index}`}
-        value={duration}
-        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-          handleDurationChange(workoutType, parseInt(e.target.value, 10))
-        }
-      />
-      <Button variant={'danger'} onClick={deleteWorkoutInput}>
-        X
-      </Button>
-    </InputGroup>
-  );
-};
+    <Grid item>
+      {getDurationInput(duration, (duration) =>
+        handleDurationChange(workoutType, duration)
+      )}
+    </Grid>
+
+    <Grid item xs={1}>
+      {getDeleteButton(deleteWorkoutInput)}
+    </Grid>
+  </Grid>
+);
+
+const getLabel = (workoutType: WorkoutType) => (
+  <Typography variant={'h6'}>{workoutType}</Typography>
+);
+
+const getDurationInput = (
+  duration: number,
+  handleChange: (duration: number) => void
+) => (
+  <TextField
+    label={'Duration'}
+    type={'number'}
+    value={duration}
+    onChange={(e) => handleChange(parseInt(e.target.value))}
+  />
+);
+
+const getDeleteButton = (onClick: () => void) => (
+  <Button onClick={onClick} style={{ height: '100%' }}>
+    <ClearIcon />
+  </Button>
+);
