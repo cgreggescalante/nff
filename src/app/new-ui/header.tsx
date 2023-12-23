@@ -4,6 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import useAuth from '../../providers/useAuth';
 import { UserProvider } from '../../providers/useUser';
 import { CurrentUserAvatar } from './current-user-avatar';
+import { Button, Stack } from '@mui/joy';
+
+// TODO: Login and signup pages as modals instead?
+// TODO: Or just landing pages when you open the site?
 
 export const Header = ({
   height,
@@ -50,26 +54,12 @@ export const Header = ({
           NFF
         </Link>
         {!authData.userId ? (
-          <>
-            <Link
-              component={'button'}
-              color={'inherit'}
-              underline={'none'}
-              variant={'h6'}
-              onClick={() => navigate('/login')}
-            >
-              Login
-            </Link>
-            <Link
-              component={'button'}
-              color={'inherit'}
-              underline={'none'}
-              variant={'h6'}
-              onClick={() => navigate('/signup')}
-            >
+          <Stack direction={'row'} spacing={1}>
+            <Button onClick={() => navigate('/login')}>Login</Button>
+            <Button color={'neutral'} onClick={() => navigate('/signup')}>
               Sign Up
-            </Link>
-          </>
+            </Button>
+          </Stack>
         ) : (
           <UserProvider>
             <CurrentUserAvatar />
