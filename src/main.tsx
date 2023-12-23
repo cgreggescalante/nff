@@ -5,6 +5,8 @@ import App from './app/app';
 import { AuthProvider } from './providers/useAuth';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const queryClient = new QueryClient();
 
@@ -14,11 +16,13 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
-      <ReactQueryDevtools initialIsOpen={true} />
-    </QueryClientProvider>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+        <ReactQueryDevtools initialIsOpen={true} />
+      </QueryClientProvider>
+    </LocalizationProvider>
   </StrictMode>
 );

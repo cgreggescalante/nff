@@ -1,4 +1,11 @@
-import { Button, Modal } from 'react-bootstrap';
+import {
+  Button,
+  DialogContent,
+  DialogTitle,
+  Modal,
+  ModalDialog,
+  Stack,
+} from '@mui/joy';
 
 interface ConfirmPopupProps {
   onConfirm: () => void;
@@ -15,19 +22,19 @@ export const ConfirmPopup = ({
   setShow,
   action,
 }: ConfirmPopupProps) => (
-  <Modal show={show} onHide={() => setShow(false)}>
-    <Modal.Header closeButton>
-      <Modal.Title>Confirm Action</Modal.Title>
-    </Modal.Header>
-    <Modal.Body>{message}</Modal.Body>
-    <Modal.Footer>
-      <Button onClick={() => setShow(false)}>Cancel</Button>
-      <Button
-        variant={action === 'Delete' ? 'danger' : 'success'}
-        onClick={onConfirm}
-      >
-        Delete
-      </Button>
-    </Modal.Footer>
+  <Modal open={show} onClose={() => setShow(false)}>
+    <ModalDialog>
+      <DialogTitle>Confirm Action</DialogTitle>
+      <DialogContent>{message}</DialogContent>
+      <Stack direction="row" spacing={1}>
+        <Button onClick={() => setShow(false)}>Cancel</Button>
+        <Button
+          color={action === 'Delete' ? 'danger' : 'success'}
+          onClick={onConfirm}
+        >
+          Confirm
+        </Button>
+      </Stack>
+    </ModalDialog>
   </Modal>
 );
