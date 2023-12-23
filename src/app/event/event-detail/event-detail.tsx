@@ -2,11 +2,11 @@ import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { auth, CheckIsEventOwner, registerUserForEvent } from '@shared-data';
 import { LoadingWrapper } from '@shared-ui';
-import { Button } from 'react-bootstrap';
 import { EventLeaderboard } from './event-leaderboard';
 import { TeamLeaderboard } from './team-leaderboard';
 import useAuth from '../../../providers/useAuth';
 import { useEvent } from '../../../providers/queries/useEvent';
+import { Typography, Button } from '@mui/joy';
 
 export const EventDetail = () => {
   const { eventId } = useParams();
@@ -38,12 +38,14 @@ export const EventDetail = () => {
     <LoadingWrapper loading={isLoading}>
       {event && (
         <>
-          <h1>{event.name}</h1>{' '}
+          <Typography level={'h2'}>{event.name}</Typography>
           <Link to={`/events/${eventId}/edit`} hidden={!canEdit}>
             <Button>Edit</Button>
           </Link>
-          <p>{event.description}</p>
-          <p>{event.entryRefs.length} Registered Users</p>
+          <Typography level={'body-md'}>{event.description}</Typography>
+          <Typography level={'body-md'}>
+            {event.entryRefs.length} Registered Users
+          </Typography>
           {event.registrationStart > new Date() ? (
             <>Registration opens {event.registrationStart.toDateString()} </>
           ) : event.registrationEnd > new Date() ? (
