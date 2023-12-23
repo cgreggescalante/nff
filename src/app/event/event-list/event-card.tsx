@@ -1,6 +1,5 @@
+import { Card, Typography, Link } from '@mui/joy';
 import { EventWithMetadata } from '@shared-data';
-import { Card } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 
 export interface EventCardProps {
   event: EventWithMetadata;
@@ -9,24 +8,26 @@ export interface EventCardProps {
 export const EventCard = ({ event }: EventCardProps) => (
   <Card style={{ marginTop: '2%' }}>
     <Link
-      to={`/events/${event.uid}`}
+      overlay
+      href={`/events/${event.uid}`}
       style={{ textDecoration: 'none', color: 'inherit' }}
     >
-      <Card.Header as={'h3'}>{event.name}</Card.Header>
+      <Typography level={'h3'}>{event.name}</Typography>
     </Link>
 
-    <Card.Body>
-      <Card.Text>{event.description}</Card.Text>
-      <Card.Text>
-        Event Dates: {event.startDate.toDateString()} to{' '}
-        {event.endDate.toDateString()}
-      </Card.Text>
-      <Card.Text>
-        Registration Dates: {event.registrationStart.toDateString()} to{' '}
-        {event.registrationEnd.toDateString()}
-      </Card.Text>
-      <Card.Text>Registered Users: {event.entryRefs.length}</Card.Text>
-    </Card.Body>
+    <Typography level={'body-md'}>{event.description}</Typography>
+
+    <Typography level={'body-md'}>
+      Event Dates: {event.startDate.toDateString()} to{' '}
+      {event.endDate.toDateString()}
+    </Typography>
+    <Typography level={'body-md'}>
+      Registration Dates: {event.registrationStart.toDateString()} to{' '}
+      {event.registrationEnd.toDateString()}
+    </Typography>
+    <Typography level={'body-md'}>
+      Registered Users: {event.entryRefs.length}
+    </Typography>
   </Card>
 );
 
