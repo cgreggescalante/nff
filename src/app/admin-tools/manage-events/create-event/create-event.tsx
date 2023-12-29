@@ -1,4 +1,3 @@
-import { Button, Form, InputGroup } from 'react-bootstrap';
 import { FormEvent, useState } from 'react';
 import {
   createEvent,
@@ -6,7 +5,15 @@ import {
   WorkoutTypeNames,
   WorkoutTypeToNumber,
 } from '@shared-data';
-import { ManagedFormControl } from '@shared-ui';
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Stack,
+  Textarea,
+  Typography,
+} from '@mui/joy';
 
 export interface CreateEventProps {
   completed: () => void;
@@ -71,90 +78,94 @@ export const CreateEvent = ({ completed }: CreateEventProps) => {
 
   return (
     <div>
-      <h3>Add Event</h3>
-      <Form onSubmit={handleSubmit}>
-        <InputGroup hasValidation className={'mb-2'}>
-          <InputGroup.Text>Event Name</InputGroup.Text>
-          <ManagedFormControl
-            isInvalid={!name}
+      <Typography level={'h2'}>Add Event</Typography>
+
+      <form onSubmit={handleSubmit}>
+        <FormControl sx={{ mt: 2 }}>
+          <FormLabel>Name</FormLabel>
+          <Input
+            required
             value={name}
-            setValue={setName}
-            placeholder={'Event Name'}
+            onChange={(e) => setName(e.target.value)}
           />
-        </InputGroup>
+        </FormControl>
 
-        <InputGroup hasValidation className={'mb-2'}>
-          <InputGroup.Text>Description</InputGroup.Text>
-          <ManagedFormControl
-            isInvalid={!description}
+        <FormControl sx={{ mt: 1 }}>
+          <FormLabel>Description</FormLabel>
+          <Textarea
+            minRows={2}
+            required
             value={description}
-            setValue={setDescription}
-            as="textarea"
-            placeholder={'Description'}
+            onChange={(e) => setDescription(e.target.value)}
           />
-        </InputGroup>
+        </FormControl>
 
-        <InputGroup hasValidation className={'mb-2'}>
-          <InputGroup.Text>Event Dates</InputGroup.Text>
-          <ManagedFormControl
-            isInvalid={!startDate}
-            value={startDate}
-            setValue={setStartDate}
-            type={'date'}
-          />
-          <InputGroup.Text>to</InputGroup.Text>
-          <ManagedFormControl
-            isInvalid={!endDate}
-            value={endDate}
-            setValue={setEndDate}
-            type={'date'}
-          />
-        </InputGroup>
-        <InputGroup className={'mb-2'}>
-          <InputGroup.Text>Registration Dates</InputGroup.Text>
-          <ManagedFormControl
-            isInvalid={!registrationStart}
-            value={registrationStart}
-            setValue={setRegistrationStart}
-            type={'date'}
-          />
-          <InputGroup.Text>to</InputGroup.Text>
-          <ManagedFormControl
-            isInvalid={!registrationEnd}
-            value={registrationEnd}
-            setValue={setRegistrationEnd}
-            type={'date'}
-          />
-        </InputGroup>
+        <Stack direction={'row'} spacing={2} sx={{ mt: 1 }}>
+          <FormControl>
+            <FormLabel>Start Date</FormLabel>
+            <Input
+              type={'date'}
+              required
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>End Date</FormLabel>
+            <Input
+              type={'date'}
+              required
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+            />
+          </FormControl>
+        </Stack>
 
-        <Form.Label>Scoring Rates</Form.Label>
+        <Stack direction={'row'} spacing={2} sx={{ mt: 1 }}>
+          <FormControl>
+            <FormLabel>Registration Start</FormLabel>
+            <Input
+              type={'date'}
+              required
+              value={registrationStart}
+              onChange={(e) => setRegistrationStart(e.target.value)}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Registration End</FormLabel>
+            <Input
+              type={'date'}
+              required
+              value={registrationEnd}
+              onChange={(e) => setRegistrationEnd(e.target.value)}
+            />
+          </FormControl>
+        </Stack>
+
+        <Typography level={'h3'} sx={{ mt: 2 }}>
+          Scoring Rates
+        </Typography>
 
         {WorkoutTypeNames.map((workoutType) => (
-          <InputGroup key={workoutType}>
-            <InputGroup.Text>{workoutType}</InputGroup.Text>
-            <ManagedFormControl
-              value={scoringConfiguration[workoutType]}
-              setValue={handleScoringConfiguration(workoutType)}
+          <Stack direction={'row'} sx={{ mt: 1 }}>
+            <FormLabel>{workoutType}</FormLabel>
+            <Input
               type={'number'}
+              required
+              value={scoringConfiguration[workoutType]}
+              onChange={(e) =>
+                handleScoringConfiguration(workoutType)(
+                  parseFloat(e.target.value)
+                )
+              }
             />
-          </InputGroup>
+          </Stack>
         ))}
 
-        <Button
-          className={'mt-2'}
-          type={'submit'}
-          active={
-            !name ||
-            !description ||
-            !startDate ||
-            !endDate ||
-            !registrationStart ||
-            !registrationEnd
-          }
-        >
+        <Button type={'submit'} sx={{ mt: 2 }}>
           Submit
         </Button>
-      </Form>
+      </form>
     </div>
   );
 };
