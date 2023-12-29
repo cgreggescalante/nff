@@ -7,16 +7,14 @@ export interface UploadCardProps {
 }
 
 export const UploadCard = ({ upload }: UploadCardProps) => (
-  <Card style={{ marginBottom: '3%' }}>
+  <Card>
     <Grid container alignItems={'flex-end'} spacing={2}>
       <Grid item>
-        {upload.userFirstName && upload.userLastName ? (
-          <Typography level={'h4'}>
-            {upload.userFirstName} {upload.userLastName}
-          </Typography>
-        ) : (
-          'Anonymous User'
-        )}
+        <Typography level={'h4'}>
+          {upload.userFirstName && upload.userLastName
+            ? `${upload.userFirstName} ${upload.userLastName}`
+            : 'Anonymous User'}
+        </Typography>
       </Grid>
       <Grid item>
         <Typography level={'body-md'} style={{ paddingBottom: '1px' }}>

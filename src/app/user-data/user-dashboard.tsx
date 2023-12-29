@@ -1,17 +1,18 @@
 import useCurrentUser from '../../providers/useUser';
 import UploadList from '../components/upload-list/upload-list';
+import { Typography } from '@mui/joy';
 
 export const UserDashboard = () => {
   const userInfo = useCurrentUser();
 
   return (
     <>
-      <h1>Dashboard</h1>
+      <Typography level={'h1'}>Dashboard</Typography>
 
       <div>
-        <h3>
+        <Typography level={'h3'}>
           {userInfo.firstName} {userInfo.lastName}
-        </h3>
+        </Typography>
         <h6>{userInfo.uid}</h6>
         <h2>My Uploads</h2>
         <UploadList uid={userInfo.uid} />

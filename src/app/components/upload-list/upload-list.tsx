@@ -1,6 +1,7 @@
-import { UploadCard } from './upload-card/upload-card';
+import { UploadCard } from './upload-card';
 import { LoadingWrapper } from '@shared-ui';
 import { useListRecentUploads } from '../../../providers/queries/useListRecentUploads';
+import { Stack } from '@mui/joy';
 
 export interface UploadListProps {
   uid?: string;
@@ -14,9 +15,11 @@ export function UploadList({ uid }: UploadListProps) {
 
   return (
     <LoadingWrapper loading={isLoading}>
-      {uploads?.map((upload, index) => (
-        <UploadCard key={index} upload={upload} />
-      ))}
+      <Stack spacing={3} sx={{ maxWidth: '500px' }}>
+        {uploads?.map((upload, index) => (
+          <UploadCard key={index} upload={upload} />
+        ))}
+      </Stack>
     </LoadingWrapper>
   );
 }
