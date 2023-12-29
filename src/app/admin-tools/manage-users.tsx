@@ -5,6 +5,7 @@ import { ConfirmPopup } from '@shared-ui';
 import { toast } from 'react-toastify';
 
 export const ManageUsers = () => {
+  // TODO: use query
   const [users, setUsers] = useState<UserInfoWithMetaData[]>([]);
 
   const [error, setError] = useState<string>();
@@ -33,7 +34,6 @@ export const ManageUsers = () => {
             <th>First Name</th>
             <th>Last Name</th>
             <th>UID</th>
-            <th>Role</th>
           </tr>
         </thead>
         <tbody>

@@ -7,6 +7,7 @@ import { ConfirmPopup } from '@shared-ui';
 import { toast } from 'react-toastify';
 
 export function ManageEvents() {
+  // TODO: use query
   const [events, setEvents] = useState<EventWithMetadata[]>([]);
   const [error, setError] = useState<string>();
   const [showCreateEvent, setShowCreateEvent] = useState<boolean>(false);
