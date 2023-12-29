@@ -1,9 +1,10 @@
 import { ChangeEvent, useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import { Button, FloatingLabel, Form, InputGroup } from 'react-bootstrap';
 import { auth, createUserFromAuth } from '@shared-data';
 import { toast } from 'react-toastify';
+import { Typography, Button, Stack } from '@mui/joy';
+import TextField from '@mui/material/TextField';
 
 export const Signup = () => {
   const [firstName, setFirstName] = useState<string>('');
@@ -44,64 +45,66 @@ export const Signup = () => {
   };
 
   return (
-    <>
-      <h1>Sign Up</h1>
+    <form
+      onSubmit={handleSubmit}
+      autoComplete={'off'}
+      style={{ maxWidth: '500px' }}
+    >
+      <Typography level={'h2'} sx={{ mb: 3 }}>
+        Sign Up
+      </Typography>
+      <Stack spacing={2} direction={'row'} sx={{ mb: 3 }}>
+        <TextField
+          label={'First Name'}
+          fullWidth
+          required
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+        <TextField
+          label={'Last Name'}
+          fullWidth
+          required
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+        />
+      </Stack>
 
-      <Form onSubmit={handleSubmit}>
-        <InputGroup className={'mb-2 mt-4'}>
-          <FloatingLabel label={'First Name'} className={'me-2'}>
-            <Form.Control
-              required
-              type={'text'}
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              placeholder={'First Name'}
-            />
-          </FloatingLabel>
-          <FloatingLabel label={'Last Name'}>
-            <Form.Control
-              required
-              type={'text'}
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              placeholder={'Last Name'}
-            />
-          </FloatingLabel>
-        </InputGroup>
+      <TextField
+        label={'Email'}
+        type={'email'}
+        fullWidth
+        required
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        sx={{ mb: 3 }}
+      />
 
-        <FloatingLabel label={'Email'} className={'mb-2'}>
-          <Form.Control
-            required
-            type={'email'}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder={'Email'}
-          />
-        </FloatingLabel>
+      <Stack spacing={2} direction={'row'} sx={{ mb: 3 }}>
+        <TextField
+          label={'Password'}
+          type={'password'}
+          fullWidth
+          required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          sx={{ mb: 3 }}
+        />
+        <TextField
+          label={'Confirm Password'}
+          type={'password'}
+          fullWidth
+          required
+          value={passwordConfirm}
+          onChange={(e) => setPasswordConfirm(e.target.value)}
+          sx={{ mb: 3 }}
+        />
+      </Stack>
 
-        <FloatingLabel label={'Password'} className={'mb-2'}>
-          <Form.Control
-            required
-            type={'password'}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder={'Password'}
-          />
-        </FloatingLabel>
-
-        <FloatingLabel label={'Confirm Password'} className={'mb-2'}>
-          <Form.Control
-            required
-            type={'password'}
-            value={passwordConfirm}
-            onChange={(e) => setPasswordConfirm(e.target.value)}
-            placeholder={'Password'}
-          />
-        </FloatingLabel>
-
-        <Button type={'submit'}>Sign Up</Button>
-      </Form>
-    </>
+      <div>
+        <Button type={'submit'}>Create Account</Button>
+      </div>
+    </form>
   );
 };
 
