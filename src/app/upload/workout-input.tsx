@@ -3,11 +3,10 @@ import { WorkoutType } from '@shared-data';
 import Button from '@mui/material/Button';
 import ClearIcon from '@mui/icons-material/Clear';
 import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import { Stack } from '@mui/joy';
 
 export interface WorkoutProps {
-  index: number;
   workoutType: WorkoutType;
   duration: number;
   handleDurationChange: (workoutType: WorkoutType, value: number) => void;
@@ -15,27 +14,18 @@ export interface WorkoutProps {
 }
 
 export const WorkoutInput: React.FC<WorkoutProps> = ({
-  index,
   workoutType,
   duration,
   handleDurationChange,
   deleteWorkoutInput,
 }) => (
-  <Grid container item alignItems={'center'} spacing={1} columns={32}>
-    <Grid item xs={3}>
-      {getLabel(workoutType)}
-    </Grid>
-
-    <Grid item>
-      {getDurationInput(duration, (duration) =>
-        handleDurationChange(workoutType, duration)
-      )}
-    </Grid>
-
-    <Grid item xs={1}>
-      {getDeleteButton(deleteWorkoutInput)}
-    </Grid>
-  </Grid>
+  <Stack direction={'row'} spacing={1} alignItems={'center'} sx={{ mb: 2 }}>
+    {getLabel(workoutType)}
+    {getDurationInput(duration, (duration) =>
+      handleDurationChange(workoutType, duration)
+    )}
+    {getDeleteButton(deleteWorkoutInput)}
+  </Stack>
 );
 
 const getLabel = (workoutType: WorkoutType) => (
@@ -49,6 +39,7 @@ const getDurationInput = (
   <TextField
     label={'Duration'}
     type={'number'}
+    fullWidth
     value={duration}
     onChange={(e) => handleChange(parseInt(e.target.value))}
   />

@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from 'react';
-import { WorkoutInput } from './workout-input/workout-input';
+import { WorkoutInput } from './workout-input';
 import {
   createUpload,
   Upload,
@@ -9,15 +9,15 @@ import {
 } from '@shared-data';
 import { toast } from 'react-toastify';
 import useCurrentUser from '../../providers/useUser';
-import { Button } from '@mui/material';
+import { Button } from '@mui/joy';
 import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
+import Typography from '@mui/joy/Typography';
 import MenuItem from '@mui/joy/MenuItem';
-import Grid from '@mui/material/Grid';
 import Dropdown from '@mui/joy/Dropdown';
 import MenuButton from '@mui/joy/MenuButton';
 import Menu from '@mui/joy/Menu';
 import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
+import Box from '@mui/joy/Box';
 
 const UploadView = () => {
   const userInfo = useCurrentUser();
@@ -74,65 +74,62 @@ const UploadView = () => {
   };
 
   return (
-    <Grid container spacing={3}>
-      <Grid container item>
-        <Typography variant="h4">Upload</Typography>
-      </Grid>
+    <Box style={{ maxWidth: '500px' }}>
+      <Typography level="h2">Upload</Typography>
 
-      <Grid container item>
-        <TextField
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setDescription(e.target.value)
-          }
-          label={'Description'}
-          multiline
-          minRows={2}
-          maxRows={16}
+      <TextField
+        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+          setDescription(e.target.value)
+        }
+        label={'Description'}
+        fullWidth
+        multiline
+        minRows={2}
+        maxRows={16}
+        sx={{ mb: 3, mt: 3 }}
+      />
+
+      {WorkoutTypeNames.filter(
+        (workout) => workouts[workout] !== undefined
+      ).map((workout, index) => (
+        <WorkoutInput
+          key={index}
+          workoutType={workout}
+          duration={workouts[workout] ? workouts[workout]! : 0}
+          handleDurationChange={handleDurationChange}
+          deleteWorkoutInput={deleteWorkoutInput(workout)}
         />
-      </Grid>
+      ))}
 
-      <Grid container item spacing={2}>
-        {WorkoutTypeNames.filter(
-          (workout) => workouts[workout] !== undefined
-        ).map((workout, index) => (
-          <WorkoutInput
-            key={index}
-            index={index}
-            workoutType={workout}
-            duration={workouts[workout] ? workouts[workout]! : 0}
-            handleDurationChange={handleDurationChange}
-            deleteWorkoutInput={deleteWorkoutInput(workout)}
-          />
-        ))}
-        <Grid item>
-          <Dropdown>
-            <MenuButton
-              endDecorator={<ArrowDropDown />}
-              disabled={
-                WorkoutTypeNames.filter(
-                  (workout) => workouts[workout] === undefined
-                ).length === 0
-              }
-            >
-              Add Workout
-            </MenuButton>
-            <Menu>
-              {WorkoutTypeNames.filter(
-                (workout) => workouts[workout] === undefined
-              ).map((workout, index) => (
-                <MenuItem key={index}>
-                  <Button onClick={handleAddWorkout(workout)}>{workout}</Button>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Dropdown>
-        </Grid>
-      </Grid>
+      <Dropdown>
+        <MenuButton
+          sx={{ mb: 2 }}
+          endDecorator={<ArrowDropDown />}
+          disabled={
+            WorkoutTypeNames.filter(
+              (workout) => workouts[workout] === undefined
+            ).length === 0
+          }
+        >
+          Add Workout
+        </MenuButton>
+        <Menu>
+          {WorkoutTypeNames.filter(
+            (workout) => workouts[workout] === undefined
+          ).map((workout, index) => (
+            <MenuItem key={index}>
+              <Typography onClick={handleAddWorkout(workout)}>
+                {workout}
+              </Typography>
+            </MenuItem>
+          ))}
+        </Menu>
+      </Dropdown>
 
-      <Grid item>
+      <Box>
         <Button onClick={handleSubmit}>Submit</Button>
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
   );
 };
 
