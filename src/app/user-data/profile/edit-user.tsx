@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { ManagedTextInput } from '@shared-ui';
 import { toast } from 'react-toastify';
 import useCurrentUser, { useUpdateUser } from '../../../providers/useUser';
-import { Button, Table } from '@mui/material';
+import { Button } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import { Input, Typography } from '@mui/joy';
 
 export const EditUser = () => {
   const userInfo = useCurrentUser();
@@ -34,28 +35,31 @@ export const EditUser = () => {
       });
 
   return (
-    <>
-      <Table>
-        <tbody>
-          <tr>
-            <td>First Name</td>
-            <td>
-              <ManagedTextInput value={firstName} setValue={setFirstName} />
-            </td>
-          </tr>
-          <tr>
-            <td>Last Name</td>
-            <td>
-              <ManagedTextInput value={lastName} setValue={setLastName} />
-            </td>
-          </tr>
-        </tbody>
-      </Table>
+    <Grid container>
+      <Grid item>
+        <Typography level={'body-md'}>Name</Typography>
+      </Grid>
+      <Grid container item>
+        <Grid item>
+          <Input
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+        </Grid>
+        <Grid item>
+          <Input
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
+        </Grid>
+      </Grid>
 
-      <Button disabled={!edited} onClick={saveChanges}>
-        Save Changes
-      </Button>
-    </>
+      <Grid item>
+        <Button disabled={!edited} onClick={saveChanges}>
+          Save Changes
+        </Button>
+      </Grid>
+    </Grid>
   );
 };
 
