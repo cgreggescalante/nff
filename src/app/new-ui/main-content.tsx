@@ -1,8 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
 import { UserProvider } from '../../providers/useUser';
 import Home from '../home/home';
-import Signup from '../auth-pages/signup/signup';
-import Login from '../auth-pages/login/login';
+import Signup from '../auth-pages/signup';
+import Login from '../auth-pages/login';
 import EventList from '../event/event-list/event-list';
 import EventDetail from '../event/event-detail/event-detail';
 import { EditEvent } from '../event/event-detail/edit-event';
