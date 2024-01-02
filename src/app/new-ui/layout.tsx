@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
-import { MainContent } from './main-content';
+import { ReactNode, useEffect, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { Header } from '../components';
 import { SideMenu } from '../components/side-menu';
+import { Box } from '@mui/system';
 
 const drawerWidth = 150;
 const headerHeight = 60;
 
-export const NewUiTest = () => {
+export const Layout = ({ children }: { children: ReactNode }) => {
   const [persistent, setPersistent] = useState(window.innerWidth > 768);
   const [open, setOpen] = useState(window.innerWidth > 768);
 
@@ -53,7 +53,17 @@ export const NewUiTest = () => {
         toggleOpen={toggleOpen}
       />
 
-      <MainContent margin={margin} headerHeight={headerHeight} />
+      <Box
+        style={{
+          width: `100% - ${margin}px`,
+          maxWidth: 800,
+          marginLeft: `${margin}px`,
+          marginTop: headerHeight,
+        }}
+        sx={{ p: 4 }}
+      >
+        {children}
+      </Box>
     </BrowserRouter>
   );
 };
