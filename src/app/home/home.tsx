@@ -1,7 +1,7 @@
-import UploadList from '../components/upload-list/upload-list';
 import { UserSummary } from '../user-data/user-summary';
 import useUser from '../../providers/useUser';
 import './home.module.scss';
+import { UploadList } from '../components';
 
 const Home = () => {
   const user = useUser();

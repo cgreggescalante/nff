@@ -1,6 +1,6 @@
 import useCurrentUser from '../../providers/useUser';
-import UploadList from '../components/upload-list/upload-list';
 import { Typography } from '@mui/joy';
+import { UploadList } from '../components';
 
 export const UserDashboard = () => {
   const userInfo = useCurrentUser();

@@ -1,18 +1,16 @@
 import { Route, Routes } from 'react-router-dom';
 import { UserProvider } from '../../providers/useUser';
 import Home from '../home/home';
-import Signup from '../auth-pages/signup';
-import Login from '../auth-pages/login';
 import EventList from '../event/event-list/event-list';
 import EventDetail from '../event/event-detail/event-detail';
 import { EditEvent } from '../event/event-detail/edit-event';
-import ProtectedRoute from '../components/routes/protected-route';
 import Upload from '../upload/upload';
 import Profile from '../user-data/profile/profile';
 import UserDashboard from '../user-data/user-dashboard';
-import { AdminRoute } from '../components/routes/admin-route';
-import AdminTools from '../admin-tools/admin-tools';
+import AdminTools from '../admin-tools';
 import { Box } from '@mui/system';
+import { AdminRoute, ProtectedRoute } from '../components';
+import { Login, Signup } from '../auth-pages';
 
 export const MainContent = ({
   margin,

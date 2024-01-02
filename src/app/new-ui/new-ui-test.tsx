@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { MainContent } from './main-content';
-import { SideMenu } from './side-menu';
-import { Header } from './header';
 import { BrowserRouter } from 'react-router-dom';
+import { Header } from '../components';
+import { SideMenu } from '../components/side-menu';
 
 const drawerWidth = 150;
 const headerHeight = 60;

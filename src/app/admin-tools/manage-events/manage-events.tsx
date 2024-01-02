@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import type { EventWithMetadata } from '@shared-data';
 import { Button, Table } from 'react-bootstrap';
 import { deleteEvent, listEvents } from '@shared-data';
-import CreateEvent from './create-event/create-event';
+import CreateEvent from './create-event';
 import { ConfirmPopup } from '@shared-ui';
 import { toast } from 'react-toastify';
 
