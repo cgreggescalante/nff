@@ -6,9 +6,7 @@ import {
   TeamWithMetaData,
 } from '@shared-data';
 import { useEffect, useState } from 'react';
-import Grid from '@mui/material/Grid';
-import { Button, Typography } from '@mui/joy';
-import { LoadingWrapper, ManagedTextInput } from '@shared-ui';
+import { Button, Grid, Input, Typography } from '@mui/joy';
 import { EditTeam } from './edit-team';
 
 export const EditTeams = ({ event }: { event: EventWithMetadata }) => {
@@ -37,29 +35,27 @@ export const EditTeams = ({ event }: { event: EventWithMetadata }) => {
         .catch((error) => console.error(error));
   };
 
+  if (teamsLoading) return <p>Loading...</p>;
+
   return (
-    <Grid container>
-      <Grid item>
-        <Typography level={'h2'}>Teams</Typography>
+    <Grid container rowSpacing={2} columnSpacing={1} columns={3}>
+      <Grid xs={3}>
+        <Typography level={'h3'}>Teams</Typography>
       </Grid>
-      <LoadingWrapper loading={teamsLoading}>
-        {teams.map((team, index) => (
-          <EditTeam key={index} event={event} team={team} />
-        ))}
-      </LoadingWrapper>
-      <Grid container>
-        <Grid item>
-          <ManagedTextInput
-            placeholder={'User ID'}
-            value={newTeamOwner}
-            setValue={setNewTeamOwner}
-          />
-        </Grid>
-        <Grid item>
-          <Button disabled={!newTeamOwner} onClick={addTeam}>
-            Add Team
-          </Button>
-        </Grid>
+      {teams.map((team, index) => (
+        <EditTeam key={index} event={event} team={team} />
+      ))}
+      <Grid xs={2}>
+        <Input
+          value={newTeamOwner}
+          placeholder={'Owner ID'}
+          onChange={(e) => setNewTeamOwner(e.target.value)}
+        />
+      </Grid>
+      <Grid>
+        <Button disabled={!newTeamOwner} onClick={addTeam}>
+          Add Team
+        </Button>
       </Grid>
     </Grid>
   );

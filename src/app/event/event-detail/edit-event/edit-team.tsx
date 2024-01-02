@@ -6,9 +6,8 @@ import {
 } from '@shared-data';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import Grid from '@mui/material/Grid';
 import { ConfirmPopup } from '@shared-ui';
-import { Button, Input } from '@mui/joy';
+import { Button, Grid, Input } from '@mui/joy';
 
 export const EditTeam = ({
   event,
@@ -38,7 +37,7 @@ export const EditTeam = ({
   };
 
   return (
-    <Grid container>
+    <>
       <ConfirmPopup
         onConfirm={handleDeleteTeam}
         message={`Are you sure you want to delete team '${team.name}'?`}
@@ -46,18 +45,16 @@ export const EditTeam = ({
         setShow={setShow}
         action={'Delete'}
       />
-      <Grid container item>
-        {team.ownerRef.path}
-      </Grid>
-      <Grid item>
+      <Grid xs={3}>Owner ID: {team.ownerRef.id}</Grid>
+      <Grid>
         <Input value={name} onChange={(e) => setName(e.target.value)} />
       </Grid>
-      <Grid item>
+      <Grid>
         <Button onClick={handleSubmit}>Save</Button>
       </Grid>
-      <Grid item>
+      <Grid>
         <Button onClick={() => setShow(true)}>X</Button>
       </Grid>
-    </Grid>
+    </>
   );
 };
