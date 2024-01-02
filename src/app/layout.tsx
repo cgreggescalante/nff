@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { Header } from '../components';
-import { SideMenu } from '../components/side-menu';
+import { Header } from './components';
+import { SideMenu } from './components/side-menu';
 import { Box } from '@mui/system';
 
 const drawerWidth = 150;
