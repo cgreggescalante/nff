@@ -6,4 +6,5 @@ export const useListEvents = () =>
   useQuery({
     queryKey: ['events'],
     queryFn: () => promiseWithTimeout(listEvents(), 5000),
+    staleTime: 120000,
   });

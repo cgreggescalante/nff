@@ -2,6 +2,10 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    function isAdmin() {
+        return exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
     function signedIn() {
         return request.auth != null;
     }
@@ -38,6 +42,7 @@ service cloud.firestore {
         allow read;
         match /{eventId} {
             allow read;
+            allow write: if isAdmin() || exists(/databases/$(database)/documents/events/$(eventId)/owners/$(request.auth.uid));
             match /owners/{ownerUid} {
                 allow read: if request.auth.uid == ownerUid;
             }

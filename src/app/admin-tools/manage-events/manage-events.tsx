@@ -1,20 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type { EventWithMetadata } from '@shared-data';
 import { Button, Table } from 'react-bootstrap';
-import { deleteEvent, listEvents } from '@shared-data';
+import { deleteEvent } from '@shared-data';
 import CreateEvent from './create-event';
 import { ConfirmPopup } from '@shared-ui';
 import { toast } from 'react-toastify';
+import { useListEvents } from '../../../providers/queries/useListEvents';
 
 export function ManageEvents() {
-  // TODO: use query
-  const [events, setEvents] = useState<EventWithMetadata[]>([]);
+  const { data: events, isLoading, refetch } = useListEvents();
   const [error, setError] = useState<string>();
   const [showCreateEvent, setShowCreateEvent] = useState<boolean>(false);
 
-  useEffect(() => {
-    listEvents().then((events) => setEvents(events));
-  }, []);
+  if (isLoading) return <p>Loading...</p>;
+  if (!events) return <p>No events found</p>;
 
   const handleDelete = (uid: string) => {
     const event = events.find((e) => e.uid === uid);
@@ -22,7 +21,7 @@ export function ManageEvents() {
     deleteEvent(event)
       .then(() => {
         toast.success('Event deleted');
-        setEvents(events.filter((e) => e.uid !== uid));
+        refetch();
       })
       .catch((error) => {
         console.error('Error while deleting Event:', error);

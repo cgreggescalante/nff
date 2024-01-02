@@ -6,4 +6,5 @@ export const useUserLeaderboard = (event: EventWithMetadata) =>
   useQuery({
     queryKey: ['userLeaderboard', event.uid],
     queryFn: () => promiseWithTimeout(getUserLeaderboard(event), 5000),
+    staleTime: 120000,
   });

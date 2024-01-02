@@ -6,4 +6,5 @@ export const useTeamLeaderboard = (id: string) =>
   useQuery({
     queryKey: ['teamLeaderboard', id],
     queryFn: () => promiseWithTimeout(getTeamLeaderboard(id), 5000),
+    staleTime: 120000,
   });

@@ -1,29 +1,28 @@
 import { Button, Table } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
-import { deleteUser, listUsers, UserInfoWithMetaData } from '@shared-data';
+import { useState } from 'react';
+import { deleteUser, UserInfoWithMetaData } from '@shared-data';
 import { ConfirmPopup } from '@shared-ui';
 import { toast } from 'react-toastify';
+import { useListUsers } from '../../providers/queries/useListUsers';
 
 export const ManageUsers = () => {
-  // TODO: use query
-  const [users, setUsers] = useState<UserInfoWithMetaData[]>([]);
+  const { data: users, isLoading, refetch } = useListUsers();
 
   const [error, setError] = useState<string>();
-
-  useEffect(() => {
-    listUsers().then((users) => setUsers(users));
-  }, []);
 
   const handleDeleteUser = async (user: UserInfoWithMetaData) =>
     deleteUser(user.uid)
       .then(() => {
         toast.success(`Deleted user ${user.uid}`);
-        setUsers(users.filter((u) => u.uid !== user.uid));
+        refetch();
       })
       .catch((error) => {
         console.error('Error while deleting user:', error);
         setError(error.message);
       });
+
+  if (isLoading) return <p>Loading...</p>;
+  if (!users) return <p>No users found</p>;
 
   return (
     <div>
