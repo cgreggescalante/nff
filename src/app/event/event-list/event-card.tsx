@@ -1,19 +1,22 @@
-import { Card, Typography, Link } from '@mui/joy';
+import { Card, Typography } from '@mui/joy';
 import { EventWithMetadata } from '@shared-data';
+import { Link as RouterLink } from 'react-router-dom';
 
 export interface EventCardProps {
   event: EventWithMetadata;
 }
 
 export const EventCard = ({ event }: EventCardProps) => (
-  <Card style={{ marginTop: '2%' }}>
-    <Link
-      overlay
-      href={`/events/${event.uid}`}
-      style={{ textDecoration: 'none', color: 'inherit' }}
-    >
-      <Typography level={'h3'}>{event.name}</Typography>
-    </Link>
+  <Card
+    component={(props) => (
+      <RouterLink
+        {...props}
+        to={`${event.uid}`}
+        style={{ textDecoration: 'none' }}
+      />
+    )}
+  >
+    <Typography level={'h3'}>{event.name}</Typography>
 
     <Typography level={'body-md'}>{event.description}</Typography>
 
