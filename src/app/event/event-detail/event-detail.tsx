@@ -5,7 +5,7 @@ import { LoadingWrapper } from '@shared-ui';
 import { EventLeaderboard } from './event-leaderboard';
 import { TeamLeaderboard } from './team-leaderboard';
 import useAuth from '../../../providers/useAuth';
-import { useEvent } from '../../../providers/queries/useEvent';
+import { useEvent } from '../../../providers/queries';
 import { Typography, Button } from '@mui/joy';
 
 export const EventDetail = () => {

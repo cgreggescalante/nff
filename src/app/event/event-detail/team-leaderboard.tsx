@@ -1,6 +1,6 @@
 import { EventWithMetadata, TeamWithMetaData } from '@shared-data';
 import { LoadingWrapper } from '@shared-ui';
-import { useTeamLeaderboard } from '../../../providers/queries/useTeamLeaderboard';
+import { useTeamLeaderboard } from '../../../providers/queries';
 import { IconButton, Sheet, Table, Typography } from '@mui/joy';
 import { useState } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';

@@ -3,7 +3,7 @@ import { FormControl, FormLabel, Grid, Input, Typography } from '@mui/joy';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { EditTeams } from './edit-event/edit-teams';
-import { useEvent } from '../../../providers/queries/useEvent';
+import { useEvent } from '../../../providers/queries';
 import { useEffect, useState } from 'react';
 import { EventWithMetadata } from '@shared-data';
 

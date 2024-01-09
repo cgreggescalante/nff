@@ -5,7 +5,7 @@ import { deleteEvent } from '@shared-data';
 import CreateEvent from './create-event';
 import { ConfirmPopup } from '@shared-ui';
 import { toast } from 'react-toastify';
-import { useListEvents } from '../../../providers/queries/useListEvents';
+import { useListEvents } from '../../../providers/queries';
 
 export function ManageEvents() {
   const { data: events, isLoading, refetch } = useListEvents();

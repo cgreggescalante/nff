@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { deleteUser, UserInfoWithMetaData } from '@shared-data';
 import { ConfirmPopup } from '@shared-ui';
 import { toast } from 'react-toastify';
-import { useListUsers } from '../../providers/queries/useListUsers';
+import { useListUsers } from '../../providers/queries';
 
 export const ManageUsers = () => {
   const { data: users, isLoading, refetch } = useListUsers();
