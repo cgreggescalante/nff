@@ -51,13 +51,19 @@ export const EventDetail = () => {
           ) : event.registrationEnd > new Date() ? (
             <>
               {auth.currentUser !== null ? (
-                <Button
-                  onClick={() =>
-                    registerUserForEvent(event, auth.currentUser!.uid)
-                  }
-                >
-                  Register Now
-                </Button>
+                event.entryRefs.some((entryRef) =>
+                  entryRef.path.startsWith(`users/${auth.currentUser?.uid}`)
+                ) ? (
+                  <p>You have already registered for this event</p>
+                ) : (
+                  <Button
+                    onClick={() =>
+                      registerUserForEvent(event, auth.currentUser!.uid)
+                    }
+                  >
+                    Register Now
+                  </Button>
+                )
               ) : (
                 <p>Please login to register</p>
               )}
