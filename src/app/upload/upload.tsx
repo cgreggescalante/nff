@@ -40,6 +40,8 @@ const UploadView = () => {
       }
     });
 
+    console.log(validWorkouts);
+
     const upload: Upload = {
       userRef: userInfo.ref,
       userFirstName: userInfo.firstName,

@@ -9,7 +9,7 @@ import { Stack } from '@mui/joy';
 export interface WorkoutProps {
   workoutType: WorkoutType;
   duration: number;
-  handleDurationChange: (workoutType: WorkoutType, value: number) => void;
+  handleDurationChange: (workoutType: WorkoutType) => (value: number) => void;
   deleteWorkoutInput: () => void;
 }
 
@@ -21,9 +21,7 @@ export const WorkoutInput: React.FC<WorkoutProps> = ({
 }) => (
   <Stack direction={'row'} spacing={1} alignItems={'center'} sx={{ mb: 2 }}>
     {getLabel(workoutType)}
-    {getDurationInput(duration, (duration) =>
-      handleDurationChange(workoutType, duration)
-    )}
+    {getDurationInput(duration, handleDurationChange(workoutType))}
     {getDeleteButton(deleteWorkoutInput)}
   </Stack>
 );

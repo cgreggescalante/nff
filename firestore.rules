@@ -22,7 +22,7 @@ service cloud.firestore {
 
         match /uploads/{uploadId} {
             allow read;
-            allow write: if signedIn() && string(request.resource.data.user) == '/databases/' + database + '/documents/users/' + request.auth.uid;
+            allow write: if signedIn() && request.auth.uid == userId;
         }
 
         match /entries/{entryId} {
