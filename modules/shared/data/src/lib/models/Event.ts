@@ -19,6 +19,7 @@ export interface Event {
   registrationEnd: Date;
   entryRefs: DocumentReference<Entry>[];
   scoringRules: ScoringRule[];
+  useGoals: boolean;
 }
 
 export type EventWithMetadata = Event & WithMetaData<Event>;

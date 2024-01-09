@@ -10,7 +10,7 @@ export interface Entry {
   eventRef: DocumentReference<Event>;
   teamRef?: DocumentReference<Team>;
   duration: WorkoutTypeToNumber;
-  goals: WorkoutTypeToNumber;
+  goal: number;
   points: number;
 }
 

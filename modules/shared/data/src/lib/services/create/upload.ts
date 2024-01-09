@@ -38,7 +38,9 @@ export const createUpload = async (
       });
 
       if (entry.teamRef) {
-        transaction.update(entry.teamRef, { points: increment(points) });
+        transaction.update(entry.teamRef, {
+          points: increment(points / entry.goal),
+        });
       }
     }
 

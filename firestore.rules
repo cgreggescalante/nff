@@ -24,6 +24,11 @@ service cloud.firestore {
             allow read;
             allow write: if signedIn() && string(request.resource.data.user) == '/databases/' + database + '/documents/users/' + request.auth.uid;
         }
+
+        match /entries/{entryId} {
+            allow read;
+            allow write: if signedIn() && request.auth.uid == userId;
+        }
     }
 
     match /{path=**}/uploads/{uploadId} {
@@ -38,14 +43,14 @@ service cloud.firestore {
         allow read;
     }
 
-    match /events {
+    match /events/{eventId} {
         allow read;
-        match /{eventId} {
-            allow read;
-            allow write: if isAdmin() || exists(/databases/$(database)/documents/events/$(eventId)/owners/$(request.auth.uid));
-            match /owners/{ownerUid} {
-                allow read: if request.auth.uid == ownerUid;
-            }
+        allow create: if isAdmin();
+        allow update: if isAdmin()
+        || exists(/databases/$(database)/documents/events/$(eventId)/owners/$(request.auth.uid))
+        || (request.resource.data.entryRefs.size() == resource.data.entryRefs.size() + 1 && request.resource.data.entryRefs.hasAll(resource.data.entryRefs));
+        match /owners/{ownerUid} {
+            allow read: if request.auth.uid == ownerUid;
         }
     }
   }
