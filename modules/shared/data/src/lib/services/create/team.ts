@@ -21,7 +21,7 @@ export const createTeamByOwner = async (
     ownerRef: owner.ref,
     entryRefs: [getEntryRef(owner.uid, entry.uid)],
     eventRef: event.ref,
-    points: 0,
+    points: entry.points,
   };
 
   const teamRef = await addDoc(getTeamCollectionRef(event.uid), team);

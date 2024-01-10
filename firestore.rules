@@ -49,8 +49,13 @@ service cloud.firestore {
         allow update: if isAdmin()
         || exists(/databases/$(database)/documents/events/$(eventId)/owners/$(request.auth.uid))
         || (request.resource.data.entryRefs.size() == resource.data.entryRefs.size() + 1 && request.resource.data.entryRefs.hasAll(resource.data.entryRefs));
+
         match /owners/{ownerUid} {
             allow read: if request.auth.uid == ownerUid;
+        }
+
+        match /teams/{teamId} {
+            allow write: if isAdmin() || exists(/databases/$(database)/documents/events/$(eventId)/owners/$(request.auth.uid));
         }
     }
   }
