@@ -45,9 +45,8 @@ export const getUserLeaderboard = async (
     }
   });
 
-  leaderboardEntries.sort(
-    (a, b) => b.entry.points / b.entry.goal - a.entry.points / a.entry.goal
-  );
+  // TODO sort by points / goal
+  leaderboardEntries.sort((a, b) => b.entry.points - a.entry.points);
 
   return leaderboardEntries;
 };
