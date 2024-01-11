@@ -55,6 +55,7 @@ export const CreateEvent = ({ completed }: CreateEventProps) => {
       registrationStart: new Date(registrationStart),
       registrationEnd: new Date(registrationEnd),
       entryRefs: [],
+      useGoals: true,
       scoringRules: WorkoutTypeNames.map((workoutType) => {
         let standardRate = 0;
         const value = scoringConfiguration[workoutType];
