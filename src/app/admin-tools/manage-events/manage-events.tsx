@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import type { EventWithMetadata } from '@shared-data';
-import { Button, Table } from 'react-bootstrap';
 import { deleteEvent } from '@shared-data';
 import CreateEvent from './create-event';
 import { ConfirmPopup } from '@shared-ui';
 import { toast } from 'react-toastify';
 import { useListEvents } from '../../../providers/queries';
+import { Button, Table } from '@mui/joy';
 
 export function ManageEvents() {
   const { data: events, isLoading, refetch } = useListEvents();
@@ -31,7 +31,7 @@ export function ManageEvents() {
 
   return (
     <div>
-      <Table bordered>
+      <Table borderAxis={'bothBetween'}>
         <thead>
           <tr>
             <th></th>
@@ -51,7 +51,7 @@ export function ManageEvents() {
           <tr>
             <td colSpan={3}>
               <Button
-                variant={'success'}
+                color={'success'}
                 size={'sm'}
                 onClick={() => setShowCreateEvent(true)}
               >
@@ -87,7 +87,7 @@ const EventRow = ({ event, index, onDelete }: EventRowProps) => {
   return (
     <tr key={index}>
       <td>
-        <Button size={'sm'} variant={'danger'} onClick={() => setShow(true)}>
+        <Button size={'sm'} color={'danger'} onClick={() => setShow(true)}>
           Delete
         </Button>
       </td>

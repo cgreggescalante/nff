@@ -1,9 +1,9 @@
-import { Button, Table } from 'react-bootstrap';
 import { useState } from 'react';
 import { deleteUser, UserInfoWithMetaData } from '@shared-data';
 import { ConfirmPopup } from '@shared-ui';
 import { toast } from 'react-toastify';
 import { useListUsers } from '../../providers/queries';
+import { Button, Table } from '@mui/joy';
 
 export const ManageUsers = () => {
   const { data: users, isLoading, refetch } = useListUsers();
@@ -26,7 +26,7 @@ export const ManageUsers = () => {
 
   return (
     <div>
-      <Table bordered>
+      <Table borderAxis={'bothBetween'}>
         <thead>
           <tr>
             <th></th>
@@ -66,7 +66,7 @@ const UserRow = ({ user, deleteUser }: UserRowProps) => {
   return (
     <tr>
       <td>
-        <Button size={'sm'} variant={'danger'} onClick={() => setShow(true)}>
+        <Button size={'sm'} color={'danger'} onClick={() => setShow(true)}>
           Delete
         </Button>
       </td>
