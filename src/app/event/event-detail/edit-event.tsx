@@ -7,7 +7,6 @@ import { useEvent } from '../../../providers/queries';
 import { useEffect, useState } from 'react';
 import { EventWithMetadata } from '@shared-data';
 
-// TODO: add route protection to check if the user is an event owner
 export const EditEvent = () => {
   const { eventId } = useParams();
 
@@ -23,7 +22,6 @@ export const EditEvent = () => {
 
   document.title = event.name;
 
-  // TODO: Make the form prettier
   return (
     event && (
       <>

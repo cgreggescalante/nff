@@ -10,6 +10,7 @@ import UserDashboard from './user-data/user-dashboard';
 import AdminTools from './admin-tools';
 import { AdminRoute, ProtectedRoute } from './components';
 import { Login, Signup } from './auth-pages';
+import { EventOwnerRoute } from './components/event-owner-route';
 
 export const MainContent = () => (
   <Routes>
@@ -25,8 +26,14 @@ export const MainContent = () => (
     <Route path="/login" element={<Login />} />
     <Route path="/events" element={<EventList />} />
     <Route path="/events/:eventId" element={<EventDetail />} />
-    // TODO: Require event owner
-    <Route path="/events/:eventId/edit" element={<EditEvent />} />
+    <Route
+      path="/events/:eventId/edit"
+      element={
+        <EventOwnerRoute>
+          <EditEvent />
+        </EventOwnerRoute>
+      }
+    />
     <Route
       path="/upload"
       element={

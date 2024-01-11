@@ -28,5 +28,3 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 
   return <UserProvider>{children}</UserProvider>;
 };
-
-export default ProtectedRoute;

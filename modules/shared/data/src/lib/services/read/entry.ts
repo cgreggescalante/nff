@@ -45,7 +45,6 @@ export const getUserLeaderboard = async (
     }
   });
 
-  // TODO sort by points / goal
   leaderboardEntries.sort((a, b) => b.entry.points - a.entry.points);
 
   return leaderboardEntries;
