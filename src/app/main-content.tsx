@@ -5,12 +5,12 @@ import EventList from './event/event-list/event-list';
 import EventDetail from './event/event-detail/event-detail';
 import { EditEvent } from './event/event-detail/edit-event';
 import Upload from './upload/upload';
-import Profile from './user-data/profile/profile';
 import UserDashboard from './user-data/user-dashboard';
 import AdminTools from './admin-tools';
 import { AdminRoute, ProtectedRoute } from './components';
 import { Login, Signup } from './auth-pages';
 import { EventOwnerRoute } from './components/event-owner-route';
+import EditProfile from './user-data/edit-profile';
 
 export const MainContent = () => (
   <Routes>
@@ -43,10 +43,10 @@ export const MainContent = () => (
       }
     />
     <Route
-      path="/profile"
+      path="/edit-profile"
       element={
         <ProtectedRoute>
-          <Profile />
+          <EditProfile />
         </ProtectedRoute>
       }
     />

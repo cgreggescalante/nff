@@ -83,8 +83,8 @@ export const CurrentUserAvatar = () => {
       >
         <List disablePadding>
           <ListItemLink
-            path={'/profile'}
-            name={'Profile'}
+            path={'/edit-profile'}
+            name={'Edit Profile'}
             onClick={() => null}
           />
           <ListItem>
