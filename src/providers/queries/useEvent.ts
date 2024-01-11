@@ -1,5 +1,5 @@
 import { promiseWithTimeout } from './all.helpers';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { readEvent } from '@shared-data';
 
 export const useEvent = (id: string) =>

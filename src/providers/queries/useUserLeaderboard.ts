@@ -1,5 +1,5 @@
 import { EventWithMetadata, getUserLeaderboard } from '@shared-data';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { promiseWithTimeout } from './all.helpers';
 
 export const useUserLeaderboard = (event: EventWithMetadata) =>

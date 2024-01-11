@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { promiseWithTimeout } from './all.helpers';
 import { getTeamLeaderboard } from '@shared-data';
 

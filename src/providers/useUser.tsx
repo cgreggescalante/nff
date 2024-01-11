@@ -6,7 +6,7 @@ import {
   UserInfo,
   UserInfoWithMetaData,
 } from '@shared-data';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const UserContext = createContext<{
   userInfo: UserInfoWithMetaData | undefined;
@@ -31,7 +31,7 @@ export const useUpdateUser = () => {
 
 export const useCurrentUserQuery = () =>
   useQuery({
-    queryKey: 'currentUser',
+    queryKey: ['currentUser'],
     queryFn: () => readUser(auth.currentUser?.uid || ''),
   });
 
@@ -41,14 +41,14 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     return auth.onAuthStateChanged(async (user) => {
-      await queryClient.invalidateQueries('currentUser');
+      await queryClient.refetchQueries({ queryKey: ['currentUser'] });
     });
   }, [queryClient]);
 
   const handleUpdateUser = async (user: UserInfo) => {
     if (!userInfo) return Promise.reject('User not logged in');
     return updateUser(userInfo.uid, user)
-      .then((_) => queryClient.invalidateQueries('currentUser'))
+      .then((_) => queryClient.refetchQueries({ queryKey: ['currentUser'] }))
       .catch((error) => Promise.reject(error));
   };
 
