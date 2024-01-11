@@ -1,7 +1,15 @@
-import { EventWithMetadata, TeamWithMetaData } from '@shared-data';
+import {
+  EntryWithMetaData,
+  EventWithMetadata,
+  TeamWithMetaData,
+  UserInfo,
+} from '@shared-data';
 import { LoadingWrapper } from '@shared-ui';
-import { useTeamLeaderboard } from '../../../providers/queries';
-import { IconButton, Sheet, Table, Typography } from '@mui/joy';
+import {
+  useTeamLeaderboard,
+  useUserLeaderboard,
+} from '../../../providers/queries';
+import { IconButton, Sheet, Table } from '@mui/joy';
 import { useState } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -11,11 +19,14 @@ interface TeamsListProps {
 }
 
 export const TeamLeaderboard = ({ event }: TeamsListProps) => {
-  const { data: teams, isLoading } = useTeamLeaderboard(event.uid);
+  const { data: teams, isLoading: teamsLoading } = useTeamLeaderboard(
+    event.uid
+  );
+  const { data: users, isLoading: usersLoading } = useUserLeaderboard(event);
 
   return (
-    <LoadingWrapper loading={isLoading}>
-      {teams && teams.length > 0 && (
+    <LoadingWrapper loading={teamsLoading && usersLoading}>
+      {teams && teams.length > 0 && users && (
         <Table hoverRow={true}>
           <thead>
             <tr>
@@ -27,7 +38,7 @@ export const TeamLeaderboard = ({ event }: TeamsListProps) => {
           </thead>
           <tbody>
             {teams.map((team, index) => (
-              <TeamWithDropdown team={team} key={index} />
+              <TeamWithDropdown team={team} users={users} key={index} />
             ))}
           </tbody>
         </Table>
@@ -36,7 +47,13 @@ export const TeamLeaderboard = ({ event }: TeamsListProps) => {
   );
 };
 
-const TeamWithDropdown = ({ team }: { team: TeamWithMetaData }) => {
+const TeamWithDropdown = ({
+  team,
+  users,
+}: {
+  team: TeamWithMetaData;
+  users: { user: UserInfo; entry: EntryWithMetaData }[];
+}) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -51,6 +68,23 @@ const TeamWithDropdown = ({ team }: { team: TeamWithMetaData }) => {
         <td>{team.points}</td>
         <td>{team.entryRefs.length}</td>
       </tr>
+      {open && (
+        <>
+          <tr>
+            <td />
+            <td>User</td>
+            <td>Points</td>
+            <td>User</td>
+          </tr>
+          {users
+            .filter((user) => user.entry.teamRef?.id === team.uid)
+            .map((user) => (
+              <tr>
+                <td>{user.user.firstName}</td>
+              </tr>
+            ))}
+        </>
+      )}
       <tr>
         <td style={{ height: 0, padding: 0 }} colSpan={4}>
           {open && (
@@ -58,7 +92,9 @@ const TeamWithDropdown = ({ team }: { team: TeamWithMetaData }) => {
               variant={'soft'}
               sx={{ p: 1, boxShadow: 'inset 0 3px 6px 0 rgba(0 0 0 / 0.08)' }}
             >
-              <Typography>TODO: List of team members here</Typography>
+              <Table>
+                <tbody>{team.entryRefs.length}</tbody>
+              </Table>
             </Sheet>
           )}
         </td>

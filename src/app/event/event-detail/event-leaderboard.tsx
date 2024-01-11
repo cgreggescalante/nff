@@ -18,6 +18,8 @@ export const EventLeaderboard = ({ event }: EventLeaderboardProps) => {
             <tr>
               <th style={{ width: '10%' }}>#</th>
               <th style={{ width: '40%' }}>User</th>
+              <th>% Goal</th>
+              <th>Goal</th>
               <th>Points</th>
               <th>Run</th>
               <th>Ski</th>
@@ -31,6 +33,11 @@ export const EventLeaderboard = ({ event }: EventLeaderboardProps) => {
                 <td>
                   {item.user.firstName} {item.user.lastName}
                 </td>
+                <td>
+                  {Math.round((item.entry.points / item.entry.goal) * 1000) /
+                    10}
+                </td>
+                <td>{item.entry.goal}</td>
                 <td>{Math.round(item.entry.points * 10) / 10}</td>
                 <td>
                   {Math.round(
