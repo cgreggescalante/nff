@@ -41,6 +41,7 @@ export const addEvent = async () => {
         standardRate: 1,
       },
     ],
+    useGoals: true,
     entryRefs: [],
   };
 

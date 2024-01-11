@@ -17,6 +17,7 @@ export const addUserToTeam = async (
     .where('eventRef', '==', eventRef)
     .get();
   const entryRef = querySnapshot.docs[0].ref;
+  const entryDoc = await entryRef.get();
 
   await db.runTransaction(async (transaction) => {
     const teamRef = db
@@ -26,6 +27,11 @@ export const addUserToTeam = async (
       .doc(teamId);
 
     transaction.update(entryRef, { teamRef });
-    transaction.update(teamRef, { entryRefs: FieldValue.arrayUnion(entryRef) });
+    transaction.update(teamRef, {
+      entryRefs: FieldValue.arrayUnion(entryRef),
+      points: FieldValue.increment(
+        entryDoc.get('points') / entryDoc.get('goal')
+      ),
+    });
   });
 };

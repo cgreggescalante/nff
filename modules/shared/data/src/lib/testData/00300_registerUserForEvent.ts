@@ -16,7 +16,7 @@ export const registerUserForEvent = async (
       userRef,
       eventRef,
       duration: {},
-      goals: {},
+      goal: Math.round(Math.random() * 600 + 1),
       points: 0,
     };
 

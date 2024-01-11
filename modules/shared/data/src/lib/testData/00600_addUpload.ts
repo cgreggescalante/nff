@@ -1,6 +1,7 @@
 import { db } from './admin-firebase';
 import { faker } from '@faker-js/faker';
 import {
+  addWorkoutTypeToNumber,
   ApplyScoring,
   Entry,
   Event,
@@ -23,6 +24,7 @@ export const addUpload = async (
 
   await db.runTransaction(async (transaction) => {
     const allWorkouts: WorkoutTypeToNumber[] = [];
+    let totalDuration: WorkoutTypeToNumber = {};
 
     for (let i = 0; i < count; i++) {
       const date = new Date();
@@ -36,6 +38,7 @@ export const addUpload = async (
       }
 
       allWorkouts.push(workouts);
+      totalDuration = addWorkoutTypeToNumber(workouts, totalDuration);
 
       transaction.create(db.collection(`users/${user.uid}/uploads`).doc(), {
         date,
@@ -61,8 +64,13 @@ export const addUpload = async (
         0
       );
 
-      transaction.update(teamRef, {
+      transaction.update(entry.ref, {
         points: FieldValue.increment(points),
+        duration: addWorkoutTypeToNumber(entryData.duration, totalDuration),
+      });
+
+      transaction.update(teamRef, {
+        points: FieldValue.increment(points / entryData.goal),
       });
     }
   });
