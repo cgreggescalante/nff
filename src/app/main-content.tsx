@@ -1,5 +1,4 @@
 import { Route, Routes } from 'react-router-dom';
-import { UserProvider } from '../providers/useUser';
 import Home from './home/home';
 import EventList from './event/event-list/event-list';
 import EventDetail from './event/event-detail/event-detail';
@@ -14,14 +13,7 @@ import EditProfile from './user-data/edit-profile';
 
 export const MainContent = () => (
   <Routes>
-    <Route
-      path="/"
-      element={
-        <UserProvider>
-          <Home />
-        </UserProvider>
-      }
-    />
+    <Route path="/" element={<Home />} />
     <Route path="/signup" element={<Signup />} />
     <Route path="/login" element={<Login />} />
     <Route path="/events" element={<EventList />} />
