@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { signOut } from 'firebase/auth';
 import { auth } from '@shared-data';
 import { toast } from 'react-toastify';
-import { Avatar, Button } from '@mui/material';
+import { Avatar } from '@mui/joy';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Popover from '@mui/material/Popover';
 import List from '@mui/material/List';
@@ -12,26 +12,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { ListItemLink } from './list-item-link';
-
-function stringToColor(string: string) {
-  let hash = 0;
-  let i;
-
-  /* eslint-disable no-bitwise */
-  for (i = 0; i < string.length; i += 1) {
-    hash = string.charCodeAt(i) + ((hash << 5) - hash);
-  }
-
-  let color = '#';
-
-  for (i = 0; i < 3; i += 1) {
-    const value = (hash >> (i * 8)) & 0xff;
-    color += `00${value.toString(16)}`.slice(-2);
-  }
-  /* eslint-enable no-bitwise */
-
-  return color;
-}
+import { Button } from '@mui/joy';
 
 export const CurrentUserAvatar = () => {
   const user = useUser();
@@ -57,17 +38,21 @@ export const CurrentUserAvatar = () => {
   };
 
   const open = Boolean(avatarEl);
-  const id = open ? 'simpe-popover' : undefined;
+  const id = open ? 'simple-popover' : undefined;
 
   return (
     <div>
-      <Button aria-describedby={id} onClick={handleAvatarClick}>
-        <Avatar
-          sx={{
-            bgcolor: stringToColor(user.firstName + ' ' + user.lastName),
-          }}
-          children={`${user.firstName[0]}${user.lastName[0]}`}
-        />
+      <Button
+        aria-describedby={id}
+        onClick={handleAvatarClick}
+        sx={{ backgroundColor: 'transparent' }}
+      >
+        <Avatar sx={{ backgroundColor: '#B8D8D8' }}>
+          <h3>
+            {user.firstName[0]}
+            {user.lastName[0]}
+          </h3>
+        </Avatar>
         <KeyboardArrowDownIcon color={'action'} />
       </Button>
 
@@ -81,7 +66,7 @@ export const CurrentUserAvatar = () => {
           horizontal: 'left',
         }}
       >
-        <List disablePadding>
+        <List disablePadding sx={{ p: 0 }}>
           <ListItemLink
             path={'/edit-profile'}
             name={'Edit Profile'}

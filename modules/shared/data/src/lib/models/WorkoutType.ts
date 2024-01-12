@@ -19,4 +19,14 @@ export const addWorkoutTypeToNumber = (
   };
 };
 
+export const getUnitType = (workoutType: WorkoutType): 'Miles' | 'Minutes' => {
+  switch (workoutType) {
+    case 'Bike':
+    case 'Run':
+    case 'Ski':
+    case 'Swim':
+      return 'Miles';
+  }
+};
+
 export const WorkoutTypeNames: WorkoutType[] = ['Run', 'Bike', 'Ski', 'Swim'];

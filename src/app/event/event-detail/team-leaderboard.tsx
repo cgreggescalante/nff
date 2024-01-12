@@ -9,7 +9,7 @@ import {
   useTeamLeaderboard,
   useUserLeaderboard,
 } from '../../../providers/queries';
-import { IconButton, Sheet, Table } from '@mui/joy';
+import { IconButton, Table } from '@mui/joy';
 import { useState } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -70,35 +70,19 @@ const TeamWithDropdown = ({
       </tr>
       {open && (
         <>
-          <tr>
-            <td />
-            <td>User</td>
-            <td>Points</td>
-            <td>User</td>
-          </tr>
           {users
             .filter((user) => user.entry.teamRef?.id === team.uid)
             .map((user) => (
               <tr>
-                <td>{user.user.firstName}</td>
+                <td />
+                <td>
+                  {user.user.firstName} {user.user.lastName}
+                </td>
+                <td>{user.entry.points}</td>
               </tr>
             ))}
         </>
       )}
-      <tr>
-        <td style={{ height: 0, padding: 0 }} colSpan={4}>
-          {open && (
-            <Sheet
-              variant={'soft'}
-              sx={{ p: 1, boxShadow: 'inset 0 3px 6px 0 rgba(0 0 0 / 0.08)' }}
-            >
-              <Table>
-                <tbody>{team.entryRefs.length}</tbody>
-              </Table>
-            </Sheet>
-          )}
-        </td>
-      </tr>
     </>
   );
 };
