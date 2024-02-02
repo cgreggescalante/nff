@@ -1,14 +1,12 @@
-$header-height: 60px;
-$footer-height: 60px;
+@use '../styles';
 
 .app {
   display: flex;
-  min-height: 100vh;
   flex-direction: column;
 }
 
 .content {
-  margin-top: $header-height;
+  margin-top: styles.$header-height;
   flex: 1;
 }
 
@@ -16,10 +14,14 @@ Header {
   position: relative;
   top: 0;
   width: 100%;
-  height: $header-height;
+  height: styles.$header-height;
 }
 
 Footer {
-  height: $footer-height;
+  height: styles.$footer-height;
   margin-top: auto;
+}
+
+html {
+  background-color: styles.$background-color;
 }

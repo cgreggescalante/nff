@@ -1,6 +1,6 @@
 import useUser from '../../providers/useUser';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { signOut } from 'firebase/auth';
 import { auth } from '@shared-data';
 import { toast } from 'react-toastify';
