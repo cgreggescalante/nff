@@ -79,8 +79,12 @@ export const Login = () => {
       <div>
         <Button type={'submit'}>Login</Button>
       </div>
+
+      <div>
+        <Button onClick={() => navigate('/forgot-password')} sx={{ mt: 3 }}>
+          Forgot password?
+        </Button>
+      </div>
     </form>
   );
 };
-
-export default Login;

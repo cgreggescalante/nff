@@ -7,7 +7,7 @@ import Upload from './upload/upload';
 import UserDashboard from './user-data/user-dashboard';
 import AdminTools from './admin-tools';
 import { AdminRoute, ProtectedRoute } from './components';
-import { Login, Signup } from './auth-pages';
+import { ForgotPassword, Login, ResetPassword, Signup } from './auth-pages';
 import { EventOwnerRoute } from './components/event-owner-route';
 import EditProfile from './user-data/edit-profile';
 
@@ -16,6 +16,8 @@ export const MainContent = () => (
     <Route path="/" element={<Home />} />
     <Route path="/signup" element={<Signup />} />
     <Route path="/login" element={<Login />} />
+    <Route path="/forgot-password" element={<ForgotPassword />} />
+    <Route path="/reset-password" element={<ResetPassword />} />
     <Route path="/events" element={<EventList />} />
     <Route path="/events/:eventId" element={<EventDetail />} />
     <Route
