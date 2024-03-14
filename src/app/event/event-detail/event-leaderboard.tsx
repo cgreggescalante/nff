@@ -13,11 +13,11 @@ export const EventLeaderboard = ({ event }: EventLeaderboardProps) => {
   return (
     <LoadingWrapper loading={isLoading}>
       {leaderboard && leaderboard.length > 0 && (
-        <Table hoverRow={true}>
+        <Table hoverRow={true} borderAxis={'bothBetween'}>
           <thead>
             <tr>
-              <th style={{ width: '10%' }}>#</th>
-              <th style={{ width: '40%' }}>User</th>
+              <th style={{ width: '5%' }}>#</th>
+              <th style={{ width: '35%' }}>User</th>
               <th>% Goal</th>
               <th>Goal</th>
               <th>Points</th>
@@ -34,8 +34,8 @@ export const EventLeaderboard = ({ event }: EventLeaderboardProps) => {
                   {item.user.firstName} {item.user.lastName}
                 </td>
                 <td>
-                  {Math.round((item.entry.points / item.entry.goal) * 1000) /
-                    10}
+                  {Math.round((item.entry.points / item.entry.goal) * 10000) /
+                    100}
                 </td>
                 <td>{item.entry.goal}</td>
                 <td>{Math.round(item.entry.points * 10) / 10}</td>
