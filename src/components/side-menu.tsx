@@ -1,5 +1,6 @@
 import { Drawer, List } from '@mui/material';
 import { ListItemLink } from './list-item-link';
+import { Divider } from '@mui/joy';
 
 export const SideMenu = ({
   headerHeight,
@@ -34,10 +35,16 @@ export const SideMenu = ({
 const DrawerContent = ({ toggleOpen }: { toggleOpen: () => void }) => (
   <List>
     <ListItemLink path={'/events'} name={'Events'} onClick={toggleOpen} />
-    <ListItemLink path={'/upload'} name={'Upload'} onClick={toggleOpen} />
+    <ListItemLink path={'/upload'} name={'Add Activity'} onClick={toggleOpen} />
     <ListItemLink
       path={'/user-dashboard'}
       name={'Dashboard'}
+      onClick={toggleOpen}
+    />
+    <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
+    <ListItemLink
+      path={'/edit-profile'}
+      name={'Profile'}
       onClick={toggleOpen}
     />
   </List>

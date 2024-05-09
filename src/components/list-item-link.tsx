@@ -11,10 +11,11 @@ export const ListItemLink = ({
   onClick: () => void;
 }) => (
   <ListItem
+    sx={{ paddingBottom: 1 }}
     component={(props) => <RouterLink {...props} to={path} onClick={onClick} />}
   >
-    <ListItemButton sx={{ textAlign: 'center' }}>
-      <ListItemText>{name}</ListItemText>
+    <ListItemButton sx={{ textAlign: 'center', padding: 0, margin: 0 }}>
+      <ListItemText primary={name} />
     </ListItemButton>
   </ListItem>
 );

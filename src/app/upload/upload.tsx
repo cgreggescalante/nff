@@ -77,7 +77,7 @@ const UploadView = () => {
 
   return (
     <Box style={{ maxWidth: '500px' }}>
-      <Typography level="h2">Upload</Typography>
+      <Typography level="h2">Add Activity</Typography>
 
       <TextField
         onChange={(e: ChangeEvent<HTMLInputElement>) =>
