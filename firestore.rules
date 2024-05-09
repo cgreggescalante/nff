@@ -19,15 +19,18 @@ service cloud.firestore {
     match /users/{userId} {
         allow read;
         allow write: if signedIn() && request.auth.uid == userId;
+        allow delete: if isAdmin();
 
         match /uploads/{uploadId} {
             allow read;
             allow write: if signedIn() && request.auth.uid == userId;
+            allow delete: if isAdmin();
         }
 
         match /entries/{entryId} {
             allow read;
             allow write: if signedIn() && request.auth.uid == userId;
+            allow delete: if isAdmin();
         }
     }
 
@@ -49,6 +52,7 @@ service cloud.firestore {
         allow update: if isAdmin()
         || exists(/databases/$(database)/documents/events/$(eventId)/owners/$(request.auth.uid))
         || (request.resource.data.entryRefs.size() == resource.data.entryRefs.size() + 1 && request.resource.data.entryRefs.hasAll(resource.data.entryRefs));
+        allow delete: if isAdmin() || exists(/databases/$(database)/documents/events/$(eventId)/owners/$(request.auth.uid));
 
         match /owners/{ownerUid} {
             allow read: if request.auth.uid == ownerUid;
