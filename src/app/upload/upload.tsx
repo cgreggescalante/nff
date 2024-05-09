@@ -1,13 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
-import {
-  createUpload,
-  Upload,
-  WorkoutType,
-  WorkoutTypeNames,
-  WorkoutTypeToNumber,
-} from '@shared-data';
-import { toast } from 'react-toastify';
-import useCurrentUser from '../../providers/useUser';
+import React, { ChangeEvent } from 'react';
 import { Button, Table } from '@mui/joy';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/joy/Typography';
@@ -18,60 +9,21 @@ import Menu from '@mui/joy/Menu';
 import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
 import Box from '@mui/joy/Box';
 import ClearIcon from '@mui/icons-material/Clear';
+import useUploadController from '../../controllers/useUploadController';
+import { WorkoutTypeNames } from '@shared-data';
 
 const UploadView = () => {
-  const userInfo = useCurrentUser();
-
-  const [description, setDescription] = useState<string>('');
-  const [workouts, setWorkouts] = useState<WorkoutTypeToNumber>({});
-
-  const handleDurationChange =
-    (workoutType: WorkoutType) => (value: number) => {
-      const newWorkouts = { ...workouts };
-      newWorkouts[workoutType] = value;
-      setWorkouts(newWorkouts);
-    };
-
-  const handleSubmit = async () => {
-    const validWorkouts: WorkoutTypeToNumber = {};
-    WorkoutTypeNames.forEach((workout) => {
-      if (workouts[workout] !== undefined && workouts[workout]! > 0) {
-        validWorkouts[workout] = workouts[workout];
-      }
-    });
-
-    const upload: Upload = {
-      userRef: userInfo.ref,
-      userFirstName: userInfo.firstName,
-      userLastName: userInfo.lastName,
-      description,
-      workouts: validWorkouts,
-      date: new Date(),
-    };
-
-    createUpload(upload, userInfo)
-      .then((_) => {
-        toast.success('Workouts added successfully');
-        setDescription('');
-        setWorkouts({});
-      })
-      .catch((error) => {
-        console.error('Error while creating upload: ', error);
-        toast.error('Could not add workouts');
-      });
-  };
-
-  const handleAddWorkout = (workoutType: WorkoutType) => () => {
-    const newWorkouts = { ...workouts };
-    newWorkouts[workoutType] = 0;
-    setWorkouts(newWorkouts);
-  };
-
-  const deleteWorkoutInput = (workoutType: keyof WorkoutTypeToNumber) => () => {
-    const newWorkouts = { ...workouts };
-    delete newWorkouts[workoutType];
-    setWorkouts(newWorkouts);
-  };
+  const {
+    description,
+    setDescription,
+    workouts,
+    includedWorkouts,
+    setWorkouts,
+    handleDurationChange,
+    handleSubmit,
+    addWorkout,
+    removeWorkout,
+  } = useUploadController();
 
   return (
     <Box style={{ maxWidth: '500px' }}>
@@ -88,9 +40,7 @@ const UploadView = () => {
           </tr>
         </thead>
         <tbody>
-          {WorkoutTypeNames.filter(
-            (workout) => workouts[workout] !== undefined
-          ).map((workout, index) => (
+          {includedWorkouts.map((workout, index) => (
             <tr key={index}>
               <td>
                 <Typography level={'body-md'}>{workout}</Typography>
@@ -102,13 +52,13 @@ const UploadView = () => {
                   type={'number'}
                   value={workouts[workout]}
                   onChange={(e) =>
-                    handleDurationChange(workout)(parseInt(e.target.value))
+                    handleDurationChange(workout, parseInt(e.target.value))
                   }
                 />
               </td>
               <td>
                 <Button
-                  onClick={deleteWorkoutInput(workout)}
+                  onClick={removeWorkout(workout)}
                   style={{ height: '100%' }}
                 >
                   <ClearIcon />
@@ -123,19 +73,15 @@ const UploadView = () => {
         <MenuButton
           sx={{ mb: 2 }}
           endDecorator={<ArrowDropDown />}
-          disabled={
-            WorkoutTypeNames.filter(
-              (workout) => workouts[workout] === undefined
-            ).length === 0
-          }
+          disabled={includedWorkouts.length === WorkoutTypeNames.length}
         >
           Add Workout
         </MenuButton>
         <Menu>
           {WorkoutTypeNames.filter(
-            (workout) => workouts[workout] === undefined
+            (workoutType) => !includedWorkouts.includes(workoutType)
           ).map((workout, index) => (
-            <MenuItem key={index} onClick={handleAddWorkout(workout)}>
+            <MenuItem key={index} onClick={addWorkout(workout)}>
               <Typography>{workout}</Typography>
             </MenuItem>
           ))}
