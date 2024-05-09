@@ -1,4 +1,3 @@
-import useUser from '../../providers/useUser';
 import { useNavigate } from 'react-router-dom';
 import { MouseEvent, useState } from 'react';
 import { signOut } from 'firebase/auth';
@@ -13,6 +12,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { ListItemLink } from './list-item-link';
 import { Button } from '@mui/joy';
+import useUser from '../providers/useUser';
 
 export const CurrentUserAvatar = () => {
   const user = useUser();

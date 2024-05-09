@@ -1,8 +1,8 @@
-import useAuth from '../../providers/useAuth';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import React, { ReactNode, useEffect, useState } from 'react';
 import { CheckIsEventOwner } from '@shared-data';
+import useAuth from '../providers/useAuth';
 
 interface EventOwnerRouteProps {
   children: ReactNode;

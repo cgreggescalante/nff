@@ -1,7 +1,7 @@
 import { UploadCard } from './upload-card';
 import { LoadingWrapper } from '@shared-ui';
-import { useListRecentUploads } from '../../providers/queries';
 import { Stack } from '@mui/joy';
+import { useListRecentUploads } from '../providers/queries';
 
 export interface UploadListProps {
   uid?: string;

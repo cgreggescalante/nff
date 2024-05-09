@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useAuth from '../../providers/useAuth';
 import { toast } from 'react-toastify';
+import useAuth from '../providers/useAuth';
 
 interface AdminRouteProps {
   children: ReactNode;

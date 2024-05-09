@@ -1,10 +1,10 @@
 import { AppBar, IconButton, Link, Toolbar } from '@mui/material';
 import { Menu } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import useAuth from '../../providers/useAuth';
-import { UserProvider } from '../../providers/useUser';
 import { CurrentUserAvatar } from './current-user-avatar';
 import { Button, Stack } from '@mui/joy';
+import { UserProvider } from '../providers/useUser';
+import useAuth from '../providers/useAuth';
 
 // TODO: Login and signup pages as modals instead?
 // TODO: Or just landing pages when you open the site?
