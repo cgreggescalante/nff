@@ -1,4 +1,5 @@
-import { Card, Typography } from '@mui/joy';
+import { Card, Stack, Typography } from '@mui/joy';
+import { Event } from '@mui/icons-material';
 import { EventWithMetadata } from '@shared-data';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -20,16 +21,24 @@ export const EventCard = ({ event }: EventCardProps) => (
 
     <Typography level={'body-md'}>{event.description}</Typography>
 
+    <Stack direction={'row'} spacing={1}>
+      <Event />
+      <Typography level={'body-md'}>
+        {event.startDate.toLocaleDateString()} to{' '}
+        {event.endDate.toLocaleDateString()}
+      </Typography>
+    </Stack>
+
     <Typography level={'body-md'}>
-      Event Dates: {event.startDate.toDateString()} to{' '}
-      {event.endDate.toDateString()}
+      {event.registrationStart > new Date()
+        ? `Registration opens ${event.registrationStart.toLocaleDateString()}`
+        : event.registrationEnd <= new Date()
+        ? 'Registration closed'
+        : `Registration closes ${event.registrationEnd.toLocaleDateString()}`}
     </Typography>
+
     <Typography level={'body-md'}>
-      Registration Dates: {event.registrationStart.toDateString()} to{' '}
-      {event.registrationEnd.toDateString()}
-    </Typography>
-    <Typography level={'body-md'}>
-      Registered Users: {event.entryRefs.length}
+      {event.entryRefs.length} people have joined
     </Typography>
   </Card>
 );
