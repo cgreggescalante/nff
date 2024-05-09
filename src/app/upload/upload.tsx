@@ -1,5 +1,4 @@
 import React, { ChangeEvent, useState } from 'react';
-import { WorkoutInput } from './workout-input';
 import {
   createUpload,
   Upload,
@@ -9,7 +8,7 @@ import {
 } from '@shared-data';
 import { toast } from 'react-toastify';
 import useCurrentUser from '../../providers/useUser';
-import { Button } from '@mui/joy';
+import { Button, Table } from '@mui/joy';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/joy/Typography';
 import MenuItem from '@mui/joy/MenuItem';
@@ -18,6 +17,7 @@ import MenuButton from '@mui/joy/MenuButton';
 import Menu from '@mui/joy/Menu';
 import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
 import Box from '@mui/joy/Box';
+import ClearIcon from '@mui/icons-material/Clear';
 
 const UploadView = () => {
   const userInfo = useCurrentUser();
@@ -39,8 +39,6 @@ const UploadView = () => {
         validWorkouts[workout] = workouts[workout];
       }
     });
-
-    console.log(validWorkouts);
 
     const upload: Upload = {
       userRef: userInfo.ref,
@@ -77,31 +75,49 @@ const UploadView = () => {
 
   return (
     <Box style={{ maxWidth: '500px' }}>
-      <Typography level="h2">Add Activity</Typography>
+      <Typography level="h2" sx={{ mb: 3 }}>
+        Add Activity
+      </Typography>
 
-      <TextField
-        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-          setDescription(e.target.value)
-        }
-        label={'Description'}
-        fullWidth
-        multiline
-        minRows={2}
-        maxRows={16}
-        sx={{ mb: 3, mt: 3 }}
-      />
-
-      {WorkoutTypeNames.filter(
-        (workout) => workouts[workout] !== undefined
-      ).map((workout, index) => (
-        <WorkoutInput
-          key={index}
-          workoutType={workout}
-          duration={workouts[workout] ? workouts[workout]! : 0}
-          handleDurationChange={handleDurationChange}
-          deleteWorkoutInput={deleteWorkoutInput(workout)}
-        />
-      ))}
+      <Table sx={{ mb: 2 }}>
+        <thead>
+          <tr>
+            <th>Sport</th>
+            <th>Duration</th>
+            <th />
+          </tr>
+        </thead>
+        <tbody>
+          {WorkoutTypeNames.filter(
+            (workout) => workouts[workout] !== undefined
+          ).map((workout, index) => (
+            <tr key={index}>
+              <td>
+                <Typography level={'body-md'}>{workout}</Typography>
+              </td>
+              <td>
+                <TextField
+                  size={'small'}
+                  fullWidth
+                  type={'number'}
+                  value={workouts[workout]}
+                  onChange={(e) =>
+                    handleDurationChange(workout)(parseInt(e.target.value))
+                  }
+                />
+              </td>
+              <td>
+                <Button
+                  onClick={deleteWorkoutInput(workout)}
+                  style={{ height: '100%' }}
+                >
+                  <ClearIcon />
+                </Button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
 
       <Dropdown>
         <MenuButton
@@ -119,17 +135,38 @@ const UploadView = () => {
           {WorkoutTypeNames.filter(
             (workout) => workouts[workout] === undefined
           ).map((workout, index) => (
-            <MenuItem key={index}>
-              <Typography onClick={handleAddWorkout(workout)}>
-                {workout}
-              </Typography>
+            <MenuItem key={index} onClick={handleAddWorkout(workout)}>
+              <Typography>{workout}</Typography>
             </MenuItem>
           ))}
         </Menu>
       </Dropdown>
 
+      <TextField
+        value={description}
+        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+          setDescription(e.target.value)
+        }
+        label={'Description'}
+        fullWidth
+        multiline
+        minRows={2}
+        maxRows={16}
+        sx={{ mb: 3 }}
+      />
+
       <Box>
         <Button onClick={handleSubmit}>Submit</Button>
+        <Button
+          sx={{ ml: 1 }}
+          variant={'plain'}
+          onClick={() => {
+            setDescription('');
+            setWorkouts({});
+          }}
+        >
+          Clear
+        </Button>
       </Box>
     </Box>
   );
