@@ -5,7 +5,6 @@ import {
   collectionGroup,
   CollectionReference,
   DocumentReference,
-  FirestoreDataConverter,
 } from '@firebase/firestore';
 import {
   EntryConverter,
@@ -13,13 +12,15 @@ import {
   TeamConverter,
   UploadConverter,
 } from '../converters';
+import { Entry, Team, Event } from '@shared-data';
 
 export const EventCollectionRef = collection(db, 'events').withConverter(
   EventConverter
 );
-export const EntryCollectionRef = collectionGroup(db, 'entries').withConverter(
-  EntryConverter
-);
+export const EntryCollectionGroupRef = collectionGroup(
+  db,
+  'entries'
+).withConverter(EntryConverter);
 export const UploadCollectionRef = collection(db, 'uploads').withConverter(
   UploadConverter
 );
@@ -31,92 +32,25 @@ export type GetDocumentReference<T> = (
   documentName: string
 ) => DocumentReference<T>;
 
-/**
- * Given a collection reference, returns a function that takes a document name and returns a DocumentReference
- * @param collectionReference - A reference to the collection to return DocumentReferences from
- */
-const getDocumentReference =
-  <T>(collectionReference: CollectionReference<T>): GetDocumentReference<T> =>
-  (documentName: string) =>
-    doc(collectionReference, documentName);
+export const getEventRef = (eventId: string): DocumentReference<Event> =>
+  doc(EventCollectionRef, eventId).withConverter(EventConverter);
 
-/**
- * Returns the Firestore DocumentReference from a subcollection when given the parent document name and the subcollection document name
- */
-type GetSubCollectionDocumentReference<T> = (
-  parentDocumentName: string,
-  documentName: string
-) => DocumentReference<T>;
+export const getTeamRef = (
+  eventId: string,
+  teamId: string
+): DocumentReference<Team> =>
+  doc(EventCollectionRef, eventId, 'teams', teamId).withConverter(
+    TeamConverter
+  );
 
-/**
- * Given a collection reference, subcollection name, and converter, returns a function that takes a parent document name and a document name and returns a DocumentReference
- * @param parentCollectionReference - A reference to the parent collection
- * @param subCollectionName - The name of the subcollection to return DocumentReferences from
- * @param converter - The converter to use for the DocumentReferences
- */
-const getSubCollectionDocumentReference =
-  <T>(
-    parentCollectionReference: CollectionReference,
-    subCollectionName: string,
-    converter: FirestoreDataConverter<T>
-  ): GetSubCollectionDocumentReference<T> =>
-  (parentDocumentId: string, documentName: string) => {
-    return doc(
-      parentCollectionReference,
-      parentDocumentId,
-      subCollectionName,
-      documentName
-    ).withConverter(converter);
-  };
+export const getEntryCollectionRef = (
+  eventId: string
+): CollectionReference<Entry> =>
+  collection(EventCollectionRef, eventId, 'entries').withConverter(
+    EntryConverter
+  );
 
-/**
- * Returns the Firestore CollectionReference for the given collection name
- */
-type GetSubCollectionReference<T> = (
-  parentDocumentName: string
-) => CollectionReference<T>;
-
-/**
- * Given a collection reference, subcollection name, and converter, returns a function that takes a parent document name and returns the CollectionReference for the specified subcollection
- * @param parentCollectionReference - A reference to the parent collection
- * @param subCollectionName - The name of the subcollection to return a CollectionReference for
- * @param converter - The converter to use for the CollectionReferences
- */
-const getSubCollectionReference =
-  <T>(
-    parentCollectionReference: CollectionReference,
-    subCollectionName: string,
-    converter: FirestoreDataConverter<T>
-  ): GetSubCollectionReference<T> =>
-  (parentDocumentName: string) =>
-    collection(
-      parentCollectionReference,
-      parentDocumentName,
-      subCollectionName
-    ).withConverter(converter);
-
-export const getEventRef = getDocumentReference(EventCollectionRef);
-
-export const getEntryRef = getSubCollectionDocumentReference(
-  EventCollectionRef,
-  'entries',
-  EntryConverter
-);
-
-export const getTeamRef = getSubCollectionDocumentReference(
-  EventCollectionRef,
-  'teams',
-  TeamConverter
-);
-
-export const getEntryCollectionRef = getSubCollectionReference(
-  EventCollectionRef,
-  'entries',
-  EntryConverter
-);
-
-export const getTeamCollectionRef = getSubCollectionReference(
-  EventCollectionRef,
-  'teams',
-  TeamConverter
-);
+export const getTeamCollectionRef = (
+  eventId: string
+): CollectionReference<Team> =>
+  collection(EventCollectionRef, eventId, 'teams').withConverter(TeamConverter);

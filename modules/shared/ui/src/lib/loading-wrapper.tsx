@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { Typography } from '@mui/joy';
 
 /* eslint-disable-next-line */
 interface LoadingWrapperProps {
@@ -10,7 +11,7 @@ export const LoadingWrapper = ({
   loading,
   children,
 }: LoadingWrapperProps): ReactNode => {
-  if (loading) return <h2>Loading...</h2>;
+  if (loading) return <Typography level={'h2'}>Loading...</Typography>;
 
   return children;
 };

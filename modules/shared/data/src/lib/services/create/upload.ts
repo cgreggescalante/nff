@@ -16,7 +16,10 @@ import {
   where,
 } from '@firebase/firestore';
 import { db } from '../../firebase';
-import { EntryCollectionRef, UploadCollectionRef } from '../CollectionRefs';
+import {
+  EntryCollectionGroupRef,
+  UploadCollectionRef,
+} from '../CollectionRefs';
 import { readEvent } from '../read';
 import { withMetaData } from '../read/all';
 import { User } from '@firebase/auth';
@@ -24,7 +27,9 @@ import { User } from '@firebase/auth';
 export const createUpload = async (upload: Upload, user: User) => {
   return runTransaction(db, async (transaction) => {
     const entries: EntryWithMetaData[] = (
-      await getDocs(query(EntryCollectionRef, where('userId', '==', user.uid)))
+      await getDocs(
+        query(EntryCollectionGroupRef, where('userId', '==', user.uid))
+      )
     ).docs.map((doc) => withMetaData(doc));
 
     for (const entry of entries) {
@@ -59,7 +64,7 @@ export const updatePoints = async (
   duration: WorkoutTypeToNumber
 ) => {
   const entries = (
-    await getDocs(query(EntryCollectionRef, where('userId', '==', userId)))
+    await getDocs(query(EntryCollectionGroupRef, where('userId', '==', userId)))
   ).docs.map((doc) => withMetaData(doc));
 
   for (const entry of entries) {
