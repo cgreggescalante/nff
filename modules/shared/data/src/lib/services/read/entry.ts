@@ -1,8 +1,7 @@
-import { EntryWithMetaData, EventWithMetadata, UserInfo } from '../../models';
-import { getDocs, query, runTransaction, where } from '@firebase/firestore';
+import { EntryWithMetaData, EventWithMetadata } from '../../models';
+import { getDocs, query, where } from '@firebase/firestore';
 import { getEntryCollectionRef, getEventRef } from '../CollectionRefs';
 import { withMetaData } from './all';
-import { db } from '../../firebase';
 
 export const readEntry = async (
   eventUid: string,
@@ -20,32 +19,20 @@ export const readEntry = async (
 
 export const getUserLeaderboard = async (
   event: EventWithMetadata
-): Promise<
-  {
-    user: UserInfo;
-    entry: EntryWithMetaData;
-  }[]
-> => {
-  const leaderboardEntries: {
-    user: UserInfo;
-    entry: EntryWithMetaData;
-  }[] = [];
+): Promise<EntryWithMetaData[]> => {
+  const snapshot = await getDocs(getEntryCollectionRef(event.uid));
 
-  await runTransaction(db, async (transaction) => {
-    for (const entryRef of event.entryRefs) {
-      const entrySnapshot = await transaction.get(entryRef);
-      if (entrySnapshot.exists()) {
-        const entry = withMetaData(entrySnapshot);
-        const user = await transaction.get(entry.userRef);
-        leaderboardEntries.push({
-          user: withMetaData(user),
-          entry,
-        });
-      }
-    }
-  });
+  const entries = snapshot.docs.map((doc) => withMetaData(doc));
 
-  leaderboardEntries.sort((a, b) => b.entry.points - a.entry.points);
+  entries.sort((a, b) => a.points - b.points);
 
-  return leaderboardEntries;
+  return entries;
+};
+
+export const getEntriesByEvent = async (
+  event: EventWithMetadata
+): Promise<EntryWithMetaData[]> => {
+  const snapshot = await getDocs(getEntryCollectionRef(event.uid));
+
+  return snapshot.docs.map((doc) => withMetaData(doc));
 };

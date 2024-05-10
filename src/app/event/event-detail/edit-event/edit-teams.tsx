@@ -2,7 +2,7 @@ import {
   createTeamByOwner,
   EventWithMetadata,
   getTeamsByEvent,
-  readUser,
+  readEntry,
   TeamWithMetaData,
 } from '@shared-data';
 import { useEffect, useState } from 'react';
@@ -24,7 +24,7 @@ export const EditTeams = ({ event }: { event: EventWithMetadata }) => {
   }, [event]);
 
   const addTeam = async () => {
-    const owner = await readUser(newTeamOwner);
+    const owner = await readEntry(event.uid, newTeamOwner);
 
     if (!owner) console.error('No user found with the given ID');
     else
@@ -48,7 +48,7 @@ export const EditTeams = ({ event }: { event: EventWithMetadata }) => {
       <Grid xs={2}>
         <Input
           value={newTeamOwner}
-          placeholder={'Owner ID'}
+          placeholder={'Entry ID for Team Owner'}
           onChange={(e) => setNewTeamOwner(e.target.value)}
         />
       </Grid>

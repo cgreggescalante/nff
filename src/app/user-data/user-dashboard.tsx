@@ -1,19 +1,19 @@
-import useCurrentUser from '../../providers/useUser';
 import { Stack, Typography } from '@mui/joy';
 import { UploadList } from '../../components';
+import useAuth from '../../providers/useAuth';
 
 export const UserDashboard = () => {
-  const userInfo = useCurrentUser();
+  const { user } = useAuth();
+
+  if (!user) return <Typography>No User</Typography>;
 
   return (
     <Stack spacing={2}>
       <Typography level={'h1'}>Dashboard</Typography>
 
-      <Typography level={'h3'}>
-        {userInfo.firstName} {userInfo.lastName}
-      </Typography>
+      <Typography level={'h3'}>{user.displayName}</Typography>
       <Typography level={'h2'}>My Uploads</Typography>
-      <UploadList uid={userInfo.uid} />
+      <UploadList uid={user?.uid} />
     </Stack>
   );
 };

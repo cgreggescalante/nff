@@ -12,19 +12,15 @@ import {
   EventConverter,
   TeamConverter,
   UploadConverter,
-  UserInfoConverter,
 } from '../converters';
 
 export const EventCollectionRef = collection(db, 'events').withConverter(
   EventConverter
 );
-export const UserCollectionRef = collection(db, 'users').withConverter(
-  UserInfoConverter
-);
 export const EntryCollectionRef = collectionGroup(db, 'entries').withConverter(
   EntryConverter
 );
-export const UploadCollectionRef = collectionGroup(db, 'uploads').withConverter(
+export const UploadCollectionRef = collection(db, 'uploads').withConverter(
   UploadConverter
 );
 
@@ -99,11 +95,10 @@ const getSubCollectionReference =
       subCollectionName
     ).withConverter(converter);
 
-export const getUserRef = getDocumentReference(UserCollectionRef);
 export const getEventRef = getDocumentReference(EventCollectionRef);
 
 export const getEntryRef = getSubCollectionDocumentReference(
-  UserCollectionRef,
+  EventCollectionRef,
   'entries',
   EntryConverter
 );
@@ -115,7 +110,7 @@ export const getTeamRef = getSubCollectionDocumentReference(
 );
 
 export const getEntryCollectionRef = getSubCollectionReference(
-  UserCollectionRef,
+  EventCollectionRef,
   'entries',
   EntryConverter
 );
@@ -124,10 +119,4 @@ export const getTeamCollectionRef = getSubCollectionReference(
   EventCollectionRef,
   'teams',
   TeamConverter
-);
-
-export const getUploadCollectionRef = getSubCollectionReference(
-  UserCollectionRef,
-  'uploads',
-  UploadConverter
 );

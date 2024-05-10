@@ -1,5 +1,11 @@
-import { getDocsFromServer, limit, orderBy, query } from '@firebase/firestore';
-import { getUploadCollectionRef, UploadCollectionRef } from '../CollectionRefs';
+import {
+  getDocsFromServer,
+  limit,
+  orderBy,
+  query,
+  where,
+} from '@firebase/firestore';
+import { UploadCollectionRef } from '../CollectionRefs';
 import { withMetaData } from './all';
 import { UploadConverter } from '../../converters';
 import { Upload, WithMetaData } from '../../models';
@@ -15,7 +21,8 @@ export const listRecentUploads = async ({
 
   if (userUid)
     uploadQuery = query(
-      getUploadCollectionRef(userUid),
+      UploadCollectionRef,
+      where('userUid', '==', userUid),
       orderBy('date', 'desc'),
       limit(count === undefined ? 25 : count)
     );

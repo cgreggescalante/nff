@@ -1,25 +1,20 @@
 import {
+  EntryWithMetaData,
   EventWithMetadata,
   Team,
   TeamWithMetaData,
-  UserInfoWithMetaData,
 } from '../../models';
 import { addDoc, arrayUnion, updateDoc } from '@firebase/firestore';
-import { getEntryRef, getTeamCollectionRef } from '../CollectionRefs';
-
-import { readEntry } from '../read';
+import { getTeamCollectionRef } from '../CollectionRefs';
 
 export const createTeamByOwner = async (
   event: EventWithMetadata,
-  owner: UserInfoWithMetaData
+  entry: EntryWithMetaData
 ): Promise<TeamWithMetaData> => {
-  const entry = await readEntry(event.uid, owner.uid);
-  if (!entry) throw new Error('User is not registered for this event');
-
   const team: Team = {
-    name: `${owner.firstName} ${owner.lastName}'s Team`,
-    ownerRef: owner.ref,
-    entryRefs: [getEntryRef(owner.uid, entry.uid)],
+    name: `${entry.userDisplayName}'s Team`,
+    ownerEntryRef: entry.ref,
+    entryRefs: [entry.ref],
     eventRef: event.ref,
     points: entry.points,
   };

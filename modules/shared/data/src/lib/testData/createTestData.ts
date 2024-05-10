@@ -1,17 +1,25 @@
-import { addUser } from './00100_addUser';
 import { addEvent } from './00200_addEvent';
-import { db } from './admin-firebase';
-import { registerUserForEvent } from './00300_registerUserForEvent';
-import { addTeam } from './00400_addTeam';
-import { UserInfo } from '../models';
-import { Entry } from '../models';
-import { addUserToTeam } from './00500_addUserToTeam';
 import { addUpload } from './00600_addUpload';
+import { faker } from '@faker-js/faker';
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import {
+  addTeamMember,
+  createEvent,
+  createTeamByOwner,
+  getEntriesByEvent,
+  getTeamsByEvent,
+  listEvents,
+  registerUserForEvent,
+} from '@shared-data';
+import { User } from '@firebase/auth';
 
-const createTestData = async () => {
+const users: { uid: string; displayName: string }[] = [];
+
+export const createTestData = async () => {
   console.log('Creating Users');
+
   for (let i = 0; i < 50; i++) {
-    await addUser();
+    users.push({ uid: `user-${i}`, displayName: faker.person.fullName() });
   }
 
   console.log('Creating Events');
@@ -21,60 +29,73 @@ const createTestData = async () => {
 
   console.log('Registering Users for Events');
   // Register Users for Events
-  let users = await db.collection('users').get();
-  let events = await db.collection('events').get();
+  const events = await listEvents();
 
-  for (const user of users.docs) {
-    const event = events.docs[Math.floor(Math.random() * events.docs.length)];
+  for (const user of users) {
+    const event = events[Math.floor(Math.random() * events.length)];
 
-    await registerUserForEvent({ uid: user.id }, { uid: event.id });
+    await registerUserForEvent(event, user as User);
   }
-
-  events = await db.collection('events').get();
 
   console.log('Creating Teams');
   // Create Teams
-  for (const event of events.docs) {
-    const entries = await db
-      .collectionGroup('entries')
-      .where('eventRef', '==', event.ref)
-      .get();
+  for (const event of events) {
+    const entries = await getEntriesByEvent(event);
 
-    for (const entry of entries.docs.slice(0, 2)) {
-      const entryData = entry.data() as Entry;
-      const user = (
-        await db.collection('users').doc(entryData.userRef.id).get()
-      ).data() as UserInfo;
-
+    for (const entry of entries.slice(0, 2)) {
       console.log('Adding Team');
-      await addTeam(
-        { uid: entryData.userRef.id, firstName: user.firstName },
-        { uid: event.id }
-      );
+      await createTeamByOwner(event, entry);
     }
 
     // Add Users to Teams
     console.log('Adding users to team');
-    const teams = await db
-      .collection('events')
-      .doc(event.id)
-      .collection('teams')
-      .get();
+    const teams = await getTeamsByEvent(event.uid);
 
-    for (const entry of entries.docs) {
-      const team = teams.docs[Math.floor(Math.random() * teams.docs.length)];
-      const entryData = entry.data() as Entry;
+    for (const entry of entries) {
+      const team = teams[Math.floor(Math.random() * teams.length)];
 
-      await addUserToTeam(event.id, team.id, entryData.userRef.id);
+      await addTeamMember(team, entry);
     }
   }
 
-  users = await db.collection('users').get();
-
-  // Add Uploads
-  for (const user of users.docs) {
-    await addUpload({ ...(user.data() as UserInfo), uid: user.id }, 25);
-  }
+  console.log('Complete');
 };
 
-createTestData().then(() => console.log('Done'));
+export const createUploads = async () => {
+  console.log('Adding uploads');
+  for (const user of users) {
+    console.log(user.displayName);
+    await addUpload(user, 25);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  }
+  console.log('Complete');
+};
+
+export const createDraftTestData = async () => {
+  const users = Array.from({ length: 50 }, (_, i) => ({
+    uid: `draft-test-${i}`,
+    displayName: faker.person.fullName(),
+  }));
+
+  const event = await createEvent({
+    name: 'Draft Event',
+    description: 'Draft Event Description',
+    startDate: new Date(),
+    endDate: new Date(),
+    registrationStart: new Date(),
+    registrationEnd: new Date(),
+    scoringRules: [],
+    entryRefs: [],
+    useGoals: false,
+  });
+
+  const entries = [];
+  for (let i = 0; i < users.length; i++) {
+    const entry = await registerUserForEvent(event, users[i] as User);
+    entries.push(entry);
+  }
+
+  for (let i = 0; i < 4; i++) {
+    await createTeamByOwner(event, entries[i]);
+  }
+};

@@ -1,5 +1,4 @@
 import { DocumentReference } from '@firebase/firestore';
-import { UserInfo } from './UserInfo';
 import { WithMetaData } from './Models';
 import { Entry } from './Entry';
 import { Event } from './Event';
@@ -7,7 +6,7 @@ import { Event } from './Event';
 export interface Team {
   name: string;
   points: number;
-  ownerRef: DocumentReference<UserInfo>;
+  ownerEntryRef: DocumentReference<Entry>;
   entryRefs: DocumentReference<Entry>[];
   eventRef: DocumentReference<Event>;
 }

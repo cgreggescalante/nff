@@ -12,11 +12,11 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { ListItemLink } from './list-item-link';
 import { Button } from '@mui/joy';
-import useUser from '../providers/useUser';
+import useAuth from '../providers/useAuth';
 
 export const CurrentUserAvatar = () => {
-  const user = useUser();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const [avatarEl, setAvatarEl] = useState<HTMLButtonElement | null>(null);
 
@@ -48,10 +48,7 @@ export const CurrentUserAvatar = () => {
         sx={{ backgroundColor: 'transparent' }}
       >
         <Avatar sx={{ backgroundColor: '#B8D8D8' }}>
-          <h3>
-            {user.firstName[0]}
-            {user.lastName[0]}
-          </h3>
+          <h3>{user?.displayName ? user.displayName[0] : 'U'}</h3>
         </Avatar>
         <KeyboardArrowDownIcon color={'action'} />
       </Button>

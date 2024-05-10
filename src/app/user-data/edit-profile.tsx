@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import useCurrentUser, { useUpdateUser } from '../../providers/useUser';
 import {
   Button,
   FormControl,
@@ -9,28 +8,26 @@ import {
   Input,
   Typography,
 } from '@mui/joy';
+import useAuth from '../../providers/useAuth';
+import { updateProfile } from 'firebase/auth';
 
 export const EditProfile = () => {
-  const userInfo = useCurrentUser();
-  const updateUser = useUpdateUser();
+  const { user } = useAuth();
 
-  const [firstName, setFirstName] = useState<string>(userInfo.firstName);
-  const [lastName, setLastName] = useState<string>(userInfo.lastName);
+  const [displayName, setDisplayName] = useState<string>(
+    user?.displayName || ''
+  );
 
   const [edited, setEdited] = useState<boolean>(false);
 
   useEffect(() => {
-    setEdited(
-      firstName !== userInfo.firstName || lastName !== userInfo.lastName
-    );
-  }, [userInfo, firstName, lastName]);
+    setEdited(displayName !== user?.displayName);
+  }, [displayName, user]);
 
-  const saveChanges = () =>
-    updateUser({
-      firstName,
-      lastName,
-    })
-      .then((_) => {
+  const saveChanges = () => {
+    if (!user) return;
+    updateProfile(user, { displayName })
+      .then(() => {
         toast.success('User details updated successfully');
         setEdited(false);
       })
@@ -38,6 +35,7 @@ export const EditProfile = () => {
         console.error('Error while updating user details:', error);
         toast.error('Failed to update user details');
       });
+  };
 
   return (
     <Grid container spacing={2}>
@@ -46,19 +44,10 @@ export const EditProfile = () => {
       </Grid>
       <Grid>
         <FormControl>
-          <FormLabel>First Name</FormLabel>
+          <FormLabel>Full Name</FormLabel>
           <Input
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-        </FormControl>
-      </Grid>
-      <Grid>
-        <FormControl>
-          <FormLabel>Last Name</FormLabel>
-          <Input
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
+            value={displayName}
+            onChange={(e) => setDisplayName(e.target.value)}
           />
         </FormControl>
       </Grid>

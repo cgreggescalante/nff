@@ -2,7 +2,6 @@ import {
   EntryWithMetaData,
   EventWithMetadata,
   TeamWithMetaData,
-  UserInfo,
 } from '@shared-data';
 import { LoadingWrapper } from '@shared-ui';
 import {
@@ -22,11 +21,11 @@ export const TeamLeaderboard = ({ event }: TeamsListProps) => {
   const { data: teams, isLoading: teamsLoading } = useTeamLeaderboard(
     event.uid
   );
-  const { data: users, isLoading: usersLoading } = useUserLeaderboard(event);
+  const { data: entries, isLoading: usersLoading } = useUserLeaderboard(event);
 
   return (
     <LoadingWrapper loading={teamsLoading && usersLoading}>
-      {teams && teams.length > 0 && users && (
+      {teams && teams.length > 0 && entries && (
         <Table hoverRow={true}>
           <thead>
             <tr>
@@ -38,7 +37,7 @@ export const TeamLeaderboard = ({ event }: TeamsListProps) => {
           </thead>
           <tbody>
             {teams.map((team, index) => (
-              <TeamWithDropdown team={team} users={users} key={index} />
+              <TeamWithDropdown team={team} entries={entries} key={index} />
             ))}
           </tbody>
         </Table>
@@ -49,10 +48,10 @@ export const TeamLeaderboard = ({ event }: TeamsListProps) => {
 
 const TeamWithDropdown = ({
   team,
-  users,
+  entries,
 }: {
   team: TeamWithMetaData;
-  users: { user: UserInfo; entry: EntryWithMetaData }[];
+  entries: EntryWithMetaData[];
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -70,15 +69,13 @@ const TeamWithDropdown = ({
       </tr>
       {open && (
         <>
-          {users
-            .filter((user) => user.entry.teamRef?.id === team.uid)
-            .map((user) => (
-              <tr>
+          {entries
+            .filter((entry) => entry.teamRef?.id === team.uid)
+            .map((entry, index) => (
+              <tr key={index}>
                 <td />
-                <td>
-                  {user.user.firstName} {user.user.lastName}
-                </td>
-                <td>{user.entry.points}</td>
+                <td>{entry.userDisplayName}</td>
+                <td>{entry.points}</td>
               </tr>
             ))}
         </>

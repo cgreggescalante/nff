@@ -10,9 +10,7 @@ export const UploadCard = ({ upload }: UploadCardProps) => (
   <Card>
     <Grid container alignItems={'flex-end'} spacing={2}>
       <Grid item>
-        <Typography level={'h4'}>
-          {upload.userFirstName} {upload.userLastName}
-        </Typography>
+        <Typography level={'h4'}>{upload.userDisplayName}</Typography>
       </Grid>
       <Grid item>
         <Typography level={'body-md'} style={{ paddingBottom: '1px' }}>

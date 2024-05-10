@@ -27,26 +27,21 @@ export const EventLeaderboard = ({ event }: EventLeaderboardProps) => {
           </thead>
 
           <tbody>
-            {leaderboard.map((item, index) => (
+            {leaderboard.map((entry, index) => (
               <tr key={index}>
                 <td>{index + 1}</td>
-                <td>
-                  {item.user.firstName} {item.user.lastName}
-                </td>
-                <td>
-                  {Math.round((item.entry.points / item.entry.goal) * 10000) /
-                    100}
-                </td>
-                <td>{item.entry.goal}</td>
-                <td>{Math.round(item.entry.points * 10) / 10}</td>
+                <td>{entry.userDisplayName}</td>
+                <td>{Math.round((entry.points / entry.goal) * 10000) / 100}</td>
+                <td>{entry.goal}</td>
+                <td>{Math.round(entry.points * 10) / 10}</td>
                 <td>
                   {Math.round(
-                    (item.entry.duration.Run ? item.entry.duration.Run : 0) * 10
+                    (entry.duration.Run ? entry.duration.Run : 0) * 10
                   ) / 10}
                 </td>
                 <td>
                   {Math.round(
-                    (item.entry.duration.Ski ? item.entry.duration.Ski : 0) * 10
+                    (entry.duration.Ski ? entry.duration.Ski : 0) * 10
                   ) / 10}
                 </td>
               </tr>

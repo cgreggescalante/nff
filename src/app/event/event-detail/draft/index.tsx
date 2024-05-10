@@ -4,14 +4,11 @@ import { useEffect, useState } from 'react';
 import {
   EntryWithMetaData,
   EventWithMetadata,
+  getEntriesByEvent,
   getTeamsByEvent,
-  getUsersByEvent,
   TeamWithMetaData,
-  UserInfoWithMetaData,
 } from '@shared-data';
 import { Stack, Table, Typography } from '@mui/joy';
-import List from '@mui/material/List';
-import ListItemText from '@mui/material/ListItemText';
 
 export default () => {
   const { eventId } = useParams();
@@ -21,9 +18,7 @@ export default () => {
 
   const [teams, setTeams] = useState<TeamWithMetaData[]>([]);
 
-  const [athleteData, setAthleteData] = useState<
-    { user: UserInfoWithMetaData; entry: EntryWithMetaData }[]
-  >([]);
+  const [entries, setEntries] = useState<EntryWithMetaData[]>([]);
 
   useEffect(() => {
     if (serverEvent) setEvent(serverEvent);
@@ -37,7 +32,7 @@ export default () => {
       })
       .catch((error) => console.error(error));
 
-    getUsersByEvent(event).then(setAthleteData);
+    getEntriesByEvent(event).then(setEntries);
   }, [event]);
 
   if (isLoading) return <p>Loading...</p>;
@@ -74,13 +69,11 @@ export default () => {
           </tr>
         </thead>
         <tbody>
-          {athleteData
-            .filter(({ entry }) => !entry.teamRef)
-            .map(({ user }) => (
+          {entries
+            .filter((entry) => !entry.teamRef)
+            .map((entry) => (
               <tr>
-                <td>
-                  {user.firstName} {user.lastName}
-                </td>
+                <td>{entry.userDisplayName}</td>
               </tr>
             ))}
         </tbody>

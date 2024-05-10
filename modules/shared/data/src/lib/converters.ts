@@ -11,7 +11,6 @@ import {
   Team,
   Upload,
   UploadWithMetaData,
-  UserInfo,
   WithMetaData,
 } from './models';
 
@@ -23,7 +22,6 @@ export const dataConverter = <T>(): FirestoreDataConverter<T> => ({
 
 export const TeamConverter = dataConverter<Team>();
 export const EntryConverter = dataConverter<Entry>();
-export const UserInfoConverter = dataConverter<UserInfo>();
 
 export const EventConverter: FirestoreDataConverter<Event> = {
   toFirestore: (event: Event) => Object.assign({}, event),

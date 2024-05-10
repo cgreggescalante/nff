@@ -17,7 +17,7 @@ export const ForgotPassword = () => {
     } else {
       sendPasswordResetEmail(auth, email)
         .then()
-        .catch((error) => null);
+        .catch(() => null);
       setEmailSent(true);
     }
   };

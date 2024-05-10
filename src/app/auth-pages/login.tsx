@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth, createUserFromAuth, readUser } from '@shared-data';
+import { auth } from '@shared-data';
 import { toast } from 'react-toastify';
 import { Button, Typography } from '@mui/joy';
 import TextField from '@mui/material/TextField';
@@ -16,29 +16,9 @@ export const Login = () => {
     event.preventDefault();
 
     try {
-      const credentials = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const user = credentials.user;
+      await signInWithEmailAndPassword(auth, email, password);
 
-      const userInfo = await readUser(user.uid);
-
-      if (userInfo == null) {
-        createUserFromAuth()
-          .then(() => {
-            toast.success('Welcome! Please enter your name.');
-            navigate('/profile');
-          })
-          .catch(() =>
-            toast.error(
-              'Could not find user profile. A new profile could not be created at this time.'
-            )
-          );
-      } else {
-        navigate('/');
-      }
+      navigate('/');
     } catch (e) {
       toast.error(
         'Could not login. Please verify email and password and try again.'

@@ -4,9 +4,9 @@ import {
   WorkoutType,
   WorkoutTypeToNumber,
 } from '@shared-data';
-import useCurrentUser from '../providers/useUser';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import useAuth from '../providers/useAuth';
 
 interface UploadController {
   description: string;
@@ -24,7 +24,7 @@ interface UploadController {
 }
 
 export default (): UploadController => {
-  const userInfo = useCurrentUser();
+  const userInfo = useAuth();
 
   const [description, setDescription] = useState<string>('');
   const [workouts, setWorkouts] = useState<WorkoutTypeToNumber>({});
@@ -53,6 +53,8 @@ export default (): UploadController => {
   };
 
   const handleSubmit = async () => {
+    if (userInfo.user === null || !userInfo.user.displayName) return;
+
     const validWorkouts: WorkoutTypeToNumber = {};
     includedWorkouts.forEach((workout) => {
       if (workouts[workout] !== undefined && workouts[workout]! > 0) {
@@ -61,15 +63,14 @@ export default (): UploadController => {
     });
 
     const upload: Upload = {
-      userRef: userInfo.ref,
-      userFirstName: userInfo.firstName,
-      userLastName: userInfo.lastName,
+      userDisplayName: userInfo.user?.displayName,
+      userId: userInfo.user?.uid,
       description,
       workouts: validWorkouts,
       date: new Date(),
     };
 
-    createUpload(upload, userInfo)
+    createUpload(upload, userInfo.user)
       .then((_) => {
         setDescription('');
         setWorkouts({});

@@ -28,16 +28,16 @@ export const EventDetail = () => {
 
   if (!eventId) throw new Error('Event ID not provided');
 
-  const authData = useAuth();
+  const { isAdmin, user } = useAuth();
 
   const { data: event, isLoading } = useEvent(eventId);
 
   const [canEdit, setCanEdit] = useState<boolean>(false);
 
   useEffect(() => {
-    if (authData.isAdmin) setCanEdit(true);
-    else if (eventId && authData.userId) {
-      CheckIsEventOwner(authData.userId, eventId)
+    if (isAdmin) setCanEdit(true);
+    else if (user && eventId && user.uid) {
+      CheckIsEventOwner(user.uid, eventId)
         .then((isOwner) => {
           setCanEdit(isOwner);
         })
@@ -47,7 +47,7 @@ export const EventDetail = () => {
     } else {
       setCanEdit(false);
     }
-  }, [authData, eventId]);
+  }, [user, isAdmin, eventId]);
 
   return (
     <LoadingWrapper loading={isLoading}>
@@ -105,7 +105,7 @@ const RegisterButton = ({ event }: { event: EventWithMetadata }) => {
   if (event.useGoals) return <RegisterForEventWithGoals event={event} />;
 
   return (
-    <Button onClick={() => registerUserForEvent(event, auth.currentUser!.uid)}>
+    <Button onClick={() => registerUserForEvent(event, auth.currentUser!)}>
       Register Now
     </Button>
   );
@@ -117,9 +117,9 @@ const RegisterForEventWithGoals = ({ event }: { event: EventWithMetadata }) => {
   const [goal, setGoal] = useState<number>(0);
 
   const register = () => {
-    registerUserForEvent(event, auth.currentUser!.uid, goal)
+    registerUserForEvent(event, auth.currentUser!, goal)
       .then(() => setOpen(false))
-      .catch((error) => {
+      .catch(() => {
         toast.error('Could not register for event');
       });
   };

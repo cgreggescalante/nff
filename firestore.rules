@@ -6,6 +6,10 @@ service cloud.firestore {
         return exists(/databases/$(database)/documents/admins/$(request.auth.uid));
     }
 
+    match /{document=**} {
+      allow read, write: if isAdmin();
+    }
+
     function signedIn() {
         return request.auth != null;
     }
@@ -15,27 +19,9 @@ service cloud.firestore {
         allow read: if request.auth.uid == adminUid;
     }
 
-    // Disallows users from editing other's user documents
-    match /users/{userId} {
+    match /uploads/{uploadId} {
         allow read;
-        allow write: if signedIn() && request.auth.uid == userId;
-        allow delete: if isAdmin();
-
-        match /uploads/{uploadId} {
-            allow read;
-            allow write: if signedIn() && request.auth.uid == userId;
-            allow delete: if isAdmin();
-        }
-
-        match /entries/{entryId} {
-            allow read;
-            allow write: if signedIn() && request.auth.uid == userId;
-            allow delete: if isAdmin();
-        }
-    }
-
-    match /{path=**}/uploads/{uploadId} {
-        allow read;
+        allow write: if signedIn() && request.auth.uid == request.resource.data.userId;
     }
 
     match /{path=**}/entries/{entryId} {
@@ -48,18 +34,22 @@ service cloud.firestore {
 
     match /events/{eventId} {
         allow read;
-        allow create: if isAdmin();
-        allow update: if isAdmin()
-        || exists(/databases/$(database)/documents/events/$(eventId)/owners/$(request.auth.uid))
+        allow update: if exists(/databases/$(database)/documents/events/$(eventId)/owners/$(request.auth.uid))
         || (request.resource.data.entryRefs.size() == resource.data.entryRefs.size() + 1 && request.resource.data.entryRefs.hasAll(resource.data.entryRefs));
-        allow delete: if isAdmin() || exists(/databases/$(database)/documents/events/$(eventId)/owners/$(request.auth.uid));
+        allow delete: if exists(/databases/$(database)/documents/events/$(eventId)/owners/$(request.auth.uid));
 
         match /owners/{ownerUid} {
             allow read: if request.auth.uid == ownerUid;
         }
 
         match /teams/{teamId} {
-            allow write: if isAdmin() || exists(/databases/$(database)/documents/events/$(eventId)/owners/$(request.auth.uid));
+            allow write: if exists(/databases/$(database)/documents/events/$(eventId)/owners/$(request.auth.uid));
+        }
+
+        match /entries/{entryId} {
+            allow read;
+            allow write: if exists(/databases/$(database)/documents/events/$(eventId)/owners/$(request.auth.uid)) || request.auth.uid == request.resource.data.userId;
+            allow delete: if exists(/databases/$(database)/documents/events/$(eventId)/owners/$(request.auth.uid));
         }
     }
   }
