@@ -1,27 +1,12 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import {
-  auth,
-  CheckIsEventOwner,
-  EventWithMetadata,
-  registerUserForEvent,
-} from '@shared-data';
+import { auth, CheckIsEventOwner, EventWithMetadata } from '@shared-data';
 import { LoadingWrapper } from '@shared-ui';
 import { EventLeaderboard } from './event-leaderboard';
 import { TeamLeaderboard } from './team-leaderboard';
 import useAuth from '../../../providers/useAuth';
 import { useEvent } from '../../../providers/queries';
-import {
-  Button,
-  DialogContent,
-  DialogTitle,
-  Input,
-  Modal,
-  ModalClose,
-  ModalDialog,
-  Typography,
-} from '@mui/joy';
-import { toast } from 'react-toastify';
+import { Button, Typography } from '@mui/joy';
 
 export const EventDetail = () => {
   const { eventId } = useParams();
@@ -74,6 +59,8 @@ export const EventDetail = () => {
 };
 
 const RegisterButton = ({ event }: { event: EventWithMetadata }) => {
+  const navigate = useNavigate();
+
   if (event.registrationStart > new Date())
     return (
       <Typography level={'body-md'}>
@@ -93,7 +80,7 @@ const RegisterButton = ({ event }: { event: EventWithMetadata }) => {
 
   if (
     event.entryRefs.some((entryRef) =>
-      entryRef.path.startsWith(`users/${auth.currentUser?.uid}`)
+      entryRef.path.endsWith(`users/${auth.currentUser?.uid}`)
     )
   )
     return (
@@ -102,48 +89,7 @@ const RegisterButton = ({ event }: { event: EventWithMetadata }) => {
       </Typography>
     );
 
-  if (event.useGoals) return <RegisterForEventWithGoals event={event} />;
-
-  return (
-    <Button onClick={() => registerUserForEvent(event, auth.currentUser!)}>
-      Register Now
-    </Button>
-  );
-};
-
-const RegisterForEventWithGoals = ({ event }: { event: EventWithMetadata }) => {
-  const [open, setOpen] = useState(false);
-
-  const [goal, setGoal] = useState<number>(0);
-
-  const register = () => {
-    registerUserForEvent(event, auth.currentUser!, goal)
-      .then(() => setOpen(false))
-      .catch(() => {
-        toast.error('Could not register for event');
-      });
-  };
-
-  return (
-    <>
-      <Button onClick={() => setOpen(true)}>Register Now</Button>
-      <Modal open={open} onClose={() => setOpen(false)}>
-        <ModalDialog>
-          <ModalClose />
-          <DialogTitle>Register for Event</DialogTitle>
-          <DialogContent>Please set a realistic goal.</DialogContent>
-          <Input
-            autoFocus
-            required
-            type={'number'}
-            value={goal}
-            onChange={(e) => setGoal(parseFloat(e.target.value))}
-          />
-          <Button onClick={register}>Register</Button>
-        </ModalDialog>
-      </Modal>
-    </>
-  );
+  return <Button onClick={() => navigate('./register')}>Register</Button>;
 };
 
 export default EventDetail;

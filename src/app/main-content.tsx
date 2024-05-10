@@ -15,6 +15,7 @@ import {
 } from '../views';
 import Draft from './event/event-detail/draft';
 import Register from '../views/register';
+import RegisterForEvent from './event/event-detail/registerForEvent';
 
 export const MainContent = () => (
   <Routes>
@@ -31,6 +32,14 @@ export const MainContent = () => (
         <EventOwnerRoute>
           <EditEvent />
         </EventOwnerRoute>
+      }
+    />
+    <Route
+      path="/events/:eventId/register"
+      element={
+        <ProtectedRoute>
+          <RegisterForEvent />
+        </ProtectedRoute>
       }
     />
     <Route
