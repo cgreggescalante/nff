@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from 'react';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import { auth, createUserFromAuth } from '@shared-data';
+import { auth } from '@shared-data';
 import { toast } from 'react-toastify';
 import { Typography, Button, Stack } from '@mui/joy';
 import TextField from '@mui/material/TextField';
@@ -28,14 +28,18 @@ export default () => {
     }
 
     createUserWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        createUserFromAuth(firstName, lastName)
+      .then((credential) => {
+        updateProfile(credential.user, {
+          displayName: `${firstName} ${lastName}`,
+        })
           .then(() => {
             navigate('/');
           })
           .catch((error) => {
-            console.error('Error while creating user document: ', error);
-            toast.error('Could not create user profile at this time.');
+            console.error('Error while updating user profile: ', error);
+            toast.error(
+              'Failed while setting display name, please update in profile.'
+            );
           });
       })
       .catch((err) => {
