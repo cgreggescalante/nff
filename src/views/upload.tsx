@@ -9,10 +9,10 @@ import Menu from '@mui/joy/Menu';
 import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
 import Box from '@mui/joy/Box';
 import ClearIcon from '@mui/icons-material/Clear';
-import useUploadController from '../../controllers/useUploadController';
+import useUploadController from '../controllers/useUploadController';
 import { WorkoutTypeNames } from '@shared-data';
 
-const UploadView = () => {
+export default () => {
   const {
     description,
     setDescription,
@@ -117,5 +117,3 @@ const UploadView = () => {
     </Box>
   );
 };
-
-export default UploadView;

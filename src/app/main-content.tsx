@@ -1,17 +1,17 @@
 import { Route, Routes } from 'react-router-dom';
-import Upload from './upload/upload';
 import UserDashboard from './user-data/user-dashboard';
 import AdminTools from './admin-tools';
-import EditProfile from './user-data/edit-profile';
 import { AdminRoute, EventOwnerRoute, ProtectedRoute } from '../components';
 import {
   EditEvent,
+  EditProfile,
   Event,
   Events,
   ForgotPassword,
   Home,
   Login,
   ResetPassword,
+  Upload,
 } from '../views';
 import Draft from './event/event-detail/draft';
 import Register from '../views/register';

@@ -1,13 +1,7 @@
-import {
-  deleteTeam,
-  EventWithMetadata,
-  TeamWithMetaData,
-  updateTeamName,
-} from '@shared-data';
-import { useState } from 'react';
-import { toast } from 'react-toastify';
+import { EventWithMetadata, TeamWithMetaData } from '@shared-data';
 import { ConfirmPopup } from '@shared-ui';
 import { Button, Grid, Input } from '@mui/joy';
+import useEditTeamController from '../../../../controllers/useEditTeamController';
 
 export const EditTeam = ({
   event,
@@ -16,25 +10,8 @@ export const EditTeam = ({
   event: EventWithMetadata;
   team: TeamWithMetaData;
 }) => {
-  const [name, setName] = useState<string>(team.name);
-
-  const [show, setShow] = useState<boolean>(false);
-
-  const handleSubmit = () => {
-    updateTeamName(event.uid, team.uid, name)
-      .then(() => {
-        toast.success('Team name updated', { toastId: 'edit-team' });
-      })
-      .catch(() => {
-        toast.error('Could not update team name', { toastId: 'edit-team' });
-      });
-  };
-
-  const handleDeleteTeam = () => {
-    deleteTeam(event.uid, team.uid).then(() => {
-      setShow(false);
-    });
-  };
+  const { handleDeleteTeam, show, setShow, name, setName, handleSubmit } =
+    useEditTeamController(event, team);
 
   return (
     <>
@@ -45,7 +22,7 @@ export const EditTeam = ({
         setShow={setShow}
         action={'Delete'}
       />
-      <Grid xs={3}>Owner ID: {team.ownerRef.id}</Grid>
+      <Grid xs={3}>Owner Entry ID: {team.ownerEntryRef.id}</Grid>
       <Grid>
         <Input value={name} onChange={(e) => setName(e.target.value)} />
       </Grid>
