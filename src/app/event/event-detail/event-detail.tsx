@@ -1,28 +1,30 @@
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { auth, CheckIsEventOwner, EventWithMetadata } from '@shared-data';
-import { LoadingWrapper } from '@shared-ui';
 import { EventLeaderboard } from './event-leaderboard';
 import { TeamLeaderboard } from './team-leaderboard';
 import useAuth from '../../../providers/useAuth';
-import { useEvent } from '../../../providers/queries';
 import { Button, Typography } from '@mui/joy';
+import useEventRoute, {
+  EventRouteProvider,
+} from '../../../providers/useEventRoute';
 
-export const EventDetail = () => {
-  const { eventId } = useParams();
+export default () => (
+  <EventRouteProvider>
+    <EventDetail />
+  </EventRouteProvider>
+);
 
-  if (!eventId) throw new Error('Event ID not provided');
+const EventDetail = () => {
+  const event = useEventRoute();
 
   const { isAdmin, user } = useAuth();
-
-  const { data: event, isLoading } = useEvent(eventId);
-
   const [canEdit, setCanEdit] = useState<boolean>(false);
 
   useEffect(() => {
     if (isAdmin) setCanEdit(true);
-    else if (user && eventId && user.uid) {
-      CheckIsEventOwner(user.uid, eventId)
+    else if (user && event && user.uid) {
+      CheckIsEventOwner(user.uid, event.uid)
         .then((isOwner) => {
           setCanEdit(isOwner);
         })
@@ -32,29 +34,25 @@ export const EventDetail = () => {
     } else {
       setCanEdit(false);
     }
-  }, [user, isAdmin, eventId]);
+  }, [user, isAdmin, event]);
 
   return (
-    <LoadingWrapper loading={isLoading}>
-      {event && (
-        <>
-          <Typography level={'h2'}>{event.name}</Typography>
-          <Link to={`/events/${eventId}/edit`} hidden={!canEdit}>
-            <Button>Edit</Button>
-          </Link>
-          <Link to={`/events/${eventId}/draft`} hidden={!canEdit}>
-            <Button sx={{ ml: 1 }}>Start Draft</Button>
-          </Link>
-          <Typography level={'body-md'}>{event.description}</Typography>
-          <Typography level={'body-md'}>
-            {event.entryRefs.length} Registered Users
-          </Typography>
-          <RegisterButton event={event} />
-          <EventLeaderboard event={event} />
-          <TeamLeaderboard event={event} />
-        </>
-      )}
-    </LoadingWrapper>
+    <>
+      <Typography level={'h2'}>{event.name}</Typography>
+      <Link to={`/events/${event.uid}/edit`} hidden={!canEdit}>
+        <Button>Edit</Button>
+      </Link>
+      <Link to={`/events/${event.uid}/draft`} hidden={!canEdit}>
+        <Button sx={{ ml: 1 }}>Start Draft</Button>
+      </Link>
+      <Typography level={'body-md'}>{event.description}</Typography>
+      <Typography level={'body-md'}>
+        {event.entryRefs.length} Registered Users
+      </Typography>
+      <RegisterButton event={event} />
+      <EventLeaderboard event={event} />
+      <TeamLeaderboard event={event} />
+    </>
   );
 };
 
@@ -91,5 +89,3 @@ const RegisterButton = ({ event }: { event: EventWithMetadata }) => {
 
   return <Button onClick={() => navigate('./register')}>Register</Button>;
 };
-
-export default EventDetail;

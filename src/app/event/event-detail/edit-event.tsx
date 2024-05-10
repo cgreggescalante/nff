@@ -1,26 +1,25 @@
-import { useParams } from 'react-router-dom';
 import { FormControl, FormLabel, Grid, Input, Typography } from '@mui/joy';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { EditTeams } from './edit-event/edit-teams';
-import { useEvent } from '../../../providers/queries';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { EventWithMetadata } from '@shared-data';
+import useEventRoute, {
+  EventRouteProvider,
+} from '../../../providers/useEventRoute';
 
-export const EditEvent = () => {
-  const { eventId } = useParams();
+export default () => (
+  <EventRouteProvider>
+    <EditEvent />
+  </EventRouteProvider>
+);
 
-  const { data: serverEvent, isLoading } = useEvent(eventId ? eventId : '');
-  const [event, setEvent] = useState<EventWithMetadata>();
+const EditEvent = () => {
+  const serverEvent = useEventRoute();
 
-  useEffect(() => {
-    if (serverEvent) setEvent(serverEvent);
-  }, [serverEvent]);
+  const [event, setEvent] = useState<EventWithMetadata>(serverEvent);
 
-  if (isLoading) return <p>Loading...</p>;
-  if (!event) return <p>No event found with id {eventId}</p>;
-
-  document.title = event.name;
+  document.title = serverEvent.name;
 
   return (
     event && (

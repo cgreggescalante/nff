@@ -3,7 +3,6 @@ import UserDashboard from './user-data/user-dashboard';
 import AdminTools from './admin-tools';
 import { AdminRoute, EventOwnerRoute, ProtectedRoute } from '../components';
 import {
-  EditEvent,
   EditProfile,
   Event,
   Events,
@@ -16,6 +15,7 @@ import {
 import Draft from './event/event-detail/draft';
 import Register from '../views/register';
 import RegisterForEvent from './event/event-detail/registerForEvent';
+import EditEvent from './event/event-detail/edit-event';
 
 export const MainContent = () => (
   <Routes>

@@ -1,4 +1,3 @@
-import EditEvent from './edit-event';
 import Event from './event';
 import Events from './events';
 import ForgotPassword from './forgot-password';
@@ -12,7 +11,6 @@ import Upload from './upload';
 export {
   EditProfile,
   Upload,
-  EditEvent,
   Event,
   Events,
   ForgotPassword,
