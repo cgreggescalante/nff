@@ -37,7 +37,7 @@ export const createUpload = async (upload: Upload, user: User) => {
 
       if (!event) continue;
 
-      const points = ApplyScoring(event.scoringRules, upload.workouts);
+      const points = ApplyScoring(upload.workouts);
 
       transaction.update(entry.ref, {
         duration: addWorkoutTypeToNumber(entry.duration, upload.workouts),
@@ -72,7 +72,7 @@ export const updatePoints = async (
 
     if (!event) continue;
 
-    const points = ApplyScoring(event.scoringRules, duration);
+    const points = ApplyScoring(duration);
 
     await updateDoc(entry.ref, {
       duration,

@@ -23,24 +23,6 @@ export const addEvent = async () => {
     endDate,
     registrationStart,
     registrationEnd,
-    scoringRules: [
-      {
-        workoutType: 'Run',
-        standardRate: 1,
-      },
-      {
-        workoutType: 'Bike',
-        standardRate: 1,
-      },
-      {
-        workoutType: 'Ski',
-        standardRate: 1,
-      },
-      {
-        workoutType: 'Swim',
-        standardRate: 1,
-      },
-    ],
     entryRefs: [],
   };
 

@@ -1,32 +1,35 @@
-export interface WorkoutTypeToNumber {
-  Run?: number;
-  Bike?: number;
-  Ski?: number;
-  Swim?: number;
-}
+import { WORKOUT_CONFIG } from '../CONFIG';
 
-export type WorkoutType = keyof WorkoutTypeToNumber;
+export type WorkoutTypeToNumber = { [k: string]: number };
 
 export const addWorkoutTypeToNumber = (
   a: WorkoutTypeToNumber,
   b: WorkoutTypeToNumber
 ): WorkoutTypeToNumber => {
-  return {
-    Run: (a.Run ?? 0) + (b.Run ?? 0),
-    Bike: (a.Bike ?? 0) + (b.Bike ?? 0),
-    Ski: (a.Ski ?? 0) + (b.Ski ?? 0),
-    Swim: (a.Swim ?? 0) + (b.Swim ?? 0),
-  };
-};
+  const result = { ...a };
 
-export const getUnitType = (workoutType: WorkoutType): 'Miles' | 'Minutes' => {
-  switch (workoutType) {
-    case 'Bike':
-    case 'Run':
-    case 'Ski':
-    case 'Swim':
-      return 'Miles';
+  for (const key in b) {
+    if (result[key]) {
+      result[key] += b[key];
+    } else {
+      result[key] = b[key];
+    }
   }
+
+  return result;
 };
 
-export const WorkoutTypeNames: WorkoutType[] = ['Run', 'Bike', 'Ski', 'Swim'];
+export const ApplyScoring = (workouts: WorkoutTypeToNumber): number =>
+  WORKOUT_CONFIG.reduce(
+    (acc, workout) =>
+      workouts[workout.name]
+        ? acc + workouts[workout.name] * workout.pointRate
+        : acc,
+    0
+  );
+
+export const getUnitType = (workoutType: string): 'distance' | 'time' => {
+  const config = WORKOUT_CONFIG.find((config) => config.name === workoutType);
+  if (!config) throw new Error(`Workout type ${workoutType} not found`);
+  return config.units;
+};

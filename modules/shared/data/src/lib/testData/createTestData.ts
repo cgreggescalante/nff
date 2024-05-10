@@ -1,5 +1,5 @@
-import { addEvent } from './00200_addEvent';
-import { addUpload } from './00600_addUpload';
+import { addEvent } from './fakeEvent';
+import { addUpload } from './fakeUpload';
 import { faker } from '@faker-js/faker';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import {
@@ -84,7 +84,6 @@ export const createDraftTestData = async () => {
     endDate: new Date(),
     registrationStart: new Date(),
     registrationEnd: new Date(),
-    scoringRules: [],
     entryRefs: [],
   });
 

@@ -5,6 +5,8 @@ export * from './lib/services/read';
 export * from './lib/services/update';
 export * from './lib/services/delete';
 
+export * from './lib/CONFIG';
+
 export * from './lib/services/AuthService';
 
 export * from './lib/firebase';

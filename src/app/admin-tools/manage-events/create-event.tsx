@@ -1,10 +1,5 @@
 import { FormEvent, useState } from 'react';
-import {
-  createEvent,
-  WorkoutType,
-  WorkoutTypeNames,
-  WorkoutTypeToNumber,
-} from '@shared-data';
+import { createEvent } from '@shared-data';
 import {
   Button,
   FormControl,
@@ -19,12 +14,6 @@ export interface CreateEventProps {
   completed: () => void;
 }
 
-const defaultScoringConfiguration = () => {
-  const obj = {} as { [key in WorkoutType]: number };
-  WorkoutTypeNames.forEach((workoutType) => (obj[workoutType] = 1));
-  return obj;
-};
-
 export const CreateEvent = ({ completed }: CreateEventProps) => {
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
@@ -32,17 +21,6 @@ export const CreateEvent = ({ completed }: CreateEventProps) => {
   const [endDate, setEndDate] = useState<string>('');
   const [registrationStart, setRegistrationStart] = useState<string>('');
   const [registrationEnd, setRegistrationEnd] = useState<string>('');
-  const [scoringConfiguration, setScoringConfiguration] =
-    useState<WorkoutTypeToNumber>(defaultScoringConfiguration());
-
-  const handleScoringConfiguration =
-    (workoutType: WorkoutType) => (value: number) => {
-      if (value < 0) return;
-      setScoringConfiguration({
-        ...scoringConfiguration,
-        [workoutType]: value,
-      });
-    };
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -56,18 +34,6 @@ export const CreateEvent = ({ completed }: CreateEventProps) => {
       registrationEnd: new Date(registrationEnd),
       entryRefs: [],
       useGoals: true,
-      scoringRules: WorkoutTypeNames.map((workoutType) => {
-        let standardRate = 0;
-        const value = scoringConfiguration[workoutType];
-        if (value !== undefined) {
-          standardRate = value;
-        }
-
-        return {
-          workoutType,
-          standardRate,
-        };
-      }),
     };
 
     createEvent(newEvent)
@@ -146,22 +112,6 @@ export const CreateEvent = ({ completed }: CreateEventProps) => {
         <Typography level={'h3'} sx={{ mt: 2 }}>
           Scoring Rates
         </Typography>
-
-        {WorkoutTypeNames.map((workoutType) => (
-          <Stack direction={'row'} sx={{ mt: 1 }}>
-            <FormLabel>{workoutType}</FormLabel>
-            <Input
-              type={'number'}
-              required
-              value={scoringConfiguration[workoutType]}
-              onChange={(e) =>
-                handleScoringConfiguration(workoutType)(
-                  parseFloat(e.target.value)
-                )
-              }
-            />
-          </Stack>
-        ))}
 
         <Button type={'submit'} sx={{ mt: 2 }}>
           Submit

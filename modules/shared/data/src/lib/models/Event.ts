@@ -1,5 +1,4 @@
 import { DocumentReference, Timestamp } from '@firebase/firestore';
-import { ScoringRule } from './ScoringConfiguration';
 import { WithMetaData } from './Models';
 import { Entry } from './Entry';
 
@@ -18,7 +17,6 @@ export interface Event {
   registrationStart: Date;
   registrationEnd: Date;
   entryRefs: DocumentReference<Entry>[];
-  scoringRules: ScoringRule[];
 }
 
 export type EventWithMetadata = Event & WithMetaData<Event>;

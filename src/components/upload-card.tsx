@@ -1,5 +1,5 @@
 import { Card, Table, Typography } from '@mui/joy';
-import { getUnitType, Upload, WorkoutType } from '@shared-data';
+import { getUnitType, Upload } from '@shared-data';
 import Grid from '@mui/material/Grid';
 
 export interface UploadCardProps {
@@ -21,11 +21,11 @@ export const UploadCard = ({ upload }: UploadCardProps) => (
 
     <Table size={'md'} variant={'outlined'} borderAxis={'bothBetween'}>
       <tbody>
-        {Object.entries(upload.workouts).map(([key, value]) => (
-          <tr key={key}>
-            <td>{key}</td>
+        {Object.entries(upload.workouts).map(([workout, value]) => (
+          <tr key={workout}>
+            <td>{workout}</td>
             <td>
-              {value} {getUnitType(key as WorkoutType)}
+              {value} {getUnitType(workout) === 'time' ? 'minutes' : 'miles'}
             </td>
           </tr>
         ))}

@@ -10,7 +10,7 @@ import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
 import Box from '@mui/joy/Box';
 import ClearIcon from '@mui/icons-material/Clear';
 import useUploadController from '../controllers/useUploadController';
-import { WorkoutTypeNames } from '@shared-data';
+import { WORKOUT_CONFIG } from '@shared-data';
 
 export default () => {
   const {
@@ -73,18 +73,22 @@ export default () => {
         <MenuButton
           sx={{ mb: 2 }}
           endDecorator={<ArrowDropDown />}
-          disabled={includedWorkouts.length === WorkoutTypeNames.length}
+          disabled={
+            includedWorkouts.length === Object.values(WORKOUT_CONFIG).length
+          }
         >
           Add Workout
         </MenuButton>
         <Menu>
-          {WorkoutTypeNames.filter(
-            (workoutType) => !includedWorkouts.includes(workoutType)
-          ).map((workout, index) => (
-            <MenuItem key={index} onClick={addWorkout(workout)}>
-              <Typography>{workout}</Typography>
-            </MenuItem>
-          ))}
+          {Object.values(WORKOUT_CONFIG)
+            .filter(
+              (workoutType) => !includedWorkouts.includes(workoutType.name)
+            )
+            .map((workout, index) => (
+              <MenuItem key={index} onClick={addWorkout(workout.name)}>
+                <Typography>{workout.name}</Typography>
+              </MenuItem>
+            ))}
         </Menu>
       </Dropdown>
 

@@ -1,33 +1,9 @@
-import { auth, registerUserForEvent } from '@shared-data';
+import { auth, DIVISIONS, registerUserForEvent } from '@shared-data';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { Button, Input, Radio, RadioGroup, Typography } from '@mui/joy';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEvent } from '../../../providers/queries';
-
-const CATEGORIES = [
-  {
-    value: 'Upperclassmen',
-    label: 'students entering junior or senior year',
-  },
-  {
-    value: 'Underclassmen',
-    label: 'students entering freshman or sophomore year',
-  },
-  {
-    value: 'Middle School',
-    label: 'students entering grades 6 though 8',
-  },
-  { value: 'Staff & VIPs', label: 'coaches, teachers, and VIPs' },
-  {
-    value: 'Parents',
-    label: 'parents of students (who are not staff)',
-  },
-  {
-    value: 'Alumni',
-    label: 'Highland alumni who do not fall into a category above',
-  },
-];
 
 export default () => {
   const { eventId } = useParams();
@@ -39,12 +15,12 @@ export default () => {
   const navigate = useNavigate();
 
   const [goal, setGoal] = useState<number>(0);
-  const [category, setCategory] = useState<string>('');
+  const [division, setDivision] = useState<string>('');
 
   const register = () => {
-    if (goal <= 0 || category === '' || !event) return;
+    if (goal <= 0 || division === '' || !event) return;
 
-    registerUserForEvent(event, auth.currentUser!, goal, category)
+    registerUserForEvent(event, auth.currentUser!, goal, division)
       .then(() => navigate(`/events/${event.uid}`))
       .catch(() => {
         toast.error('Could not register for event');
@@ -66,16 +42,16 @@ export default () => {
         onChange={(e) => setGoal(parseFloat(e.target.value))}
       />
       <Typography level={'body-lg'} sx={{ mt: 2, mb: 1 }}>
-        Select the category that best describes you.
+        Select the division that best describes you.
       </Typography>
       <RadioGroup sx={{ ml: 1 }}>
-        {CATEGORIES.map((cat) => (
+        {DIVISIONS.map((cat) => (
           <Radio
             key={cat.value}
             value={cat.value}
             label={cat.value}
-            checked={category === cat.value}
-            onChange={() => setCategory(cat.value)}
+            checked={division === cat.value}
+            onChange={() => setDivision(cat.value)}
           />
         ))}
       </RadioGroup>
