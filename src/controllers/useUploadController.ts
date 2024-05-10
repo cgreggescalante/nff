@@ -1,9 +1,4 @@
-import {
-  createUpload,
-  Upload,
-  WorkoutType,
-  WorkoutTypeToNumber,
-} from '@shared-data';
+import { createUpload, Upload, WorkoutTypeToNumber } from '@shared-data';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import useAuth from '../providers/useAuth';
@@ -13,14 +8,14 @@ interface UploadController {
   setDescription: (description: string) => void;
 
   workouts: WorkoutTypeToNumber;
-  includedWorkouts: WorkoutType[];
+  includedWorkouts: string[];
   setWorkouts: (workouts: WorkoutTypeToNumber) => void;
 
-  handleDurationChange: (workoutType: WorkoutType, value: number) => void;
+  handleDurationChange: (workoutType: string, value: number) => void;
   handleSubmit: () => void;
 
-  addWorkout: (workoutType: WorkoutType) => () => void;
-  removeWorkout: (workoutType: WorkoutType) => () => void;
+  addWorkout: (workoutType: string) => () => void;
+  removeWorkout: (workoutType: string) => () => void;
 }
 
 export default (): UploadController => {
@@ -28,9 +23,9 @@ export default (): UploadController => {
 
   const [description, setDescription] = useState<string>('');
   const [workouts, setWorkouts] = useState<WorkoutTypeToNumber>({});
-  const [includedWorkouts, setIncludedWorkouts] = useState<WorkoutType[]>([]);
+  const [includedWorkouts, setIncludedWorkouts] = useState<string[]>([]);
 
-  const addWorkout = (workoutType: WorkoutType) => () => {
+  const addWorkout = (workoutType: string) => () => {
     const newWorkouts = { ...workouts };
     newWorkouts[workoutType] = 0;
     setWorkouts(newWorkouts);
@@ -46,7 +41,7 @@ export default (): UploadController => {
     );
   };
 
-  const handleDurationChange = (workoutType: WorkoutType, value: number) => {
+  const handleDurationChange = (workoutType: string, value: number) => {
     const newWorkouts = { ...workouts };
     newWorkouts[workoutType] = value;
     setWorkouts(newWorkouts);

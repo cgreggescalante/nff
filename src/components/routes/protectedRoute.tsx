@@ -2,14 +2,14 @@ import { Navigate, useLocation } from 'react-router-dom';
 import React, { ReactNode } from 'react';
 import { toast } from 'react-toastify';
 import { auth } from '@shared-data';
-import useAuth from '../providers/useAuth';
+import useAuth from '../../providers/useAuth';
 
 /* eslint-disable-next-line */
 interface ProtectedRouteProps {
   children: ReactNode;
 }
 
-export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+export default ({ children }: ProtectedRouteProps) => {
   const { loading } = useAuth();
   const location = useLocation();
 

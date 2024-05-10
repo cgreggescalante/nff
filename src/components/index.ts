@@ -1,5 +1,4 @@
-export * from './admin-route';
-export * from './protected-route';
 export * from './upload-list';
 export * from './header';
-export * from './event-owner-route';
+
+export * from './routes';
