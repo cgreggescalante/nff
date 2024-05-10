@@ -86,7 +86,6 @@ export const createDraftTestData = async () => {
     registrationEnd: new Date(),
     scoringRules: [],
     entryRefs: [],
-    useGoals: false,
   });
 
   const entries = [];
