@@ -34,7 +34,7 @@ export const createTestData = async () => {
   for (const user of users) {
     const event = events[Math.floor(Math.random() * events.length)];
 
-    await registerUserForEvent(event, user as User);
+    await registerUserForEvent(event, user as User, 500, 'Upperclassman');
   }
 
   console.log('Creating Teams');
@@ -91,7 +91,12 @@ export const createDraftTestData = async () => {
 
   const entries = [];
   for (let i = 0; i < users.length; i++) {
-    const entry = await registerUserForEvent(event, users[i] as User);
+    const entry = await registerUserForEvent(
+      event,
+      users[i] as User,
+      100,
+      'Upperclassman'
+    );
     entries.push(entry);
   }
 

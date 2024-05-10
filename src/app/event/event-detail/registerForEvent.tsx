@@ -44,7 +44,7 @@ export default () => {
   const register = () => {
     if (goal <= 0 || category === '' || !event) return;
 
-    registerUserForEvent(event, auth.currentUser!, goal)
+    registerUserForEvent(event, auth.currentUser!, goal, category)
       .then(() => navigate(`/events/${event.uid}`))
       .catch(() => {
         toast.error('Could not register for event');

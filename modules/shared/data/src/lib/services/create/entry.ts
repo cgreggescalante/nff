@@ -6,14 +6,16 @@ import { User } from '@firebase/auth';
 export const registerUserForEvent = async (
   event: EventWithMetadata,
   user: User,
-  goal = 1
+  goal: number,
+  category: string
 ): Promise<EntryWithMetaData> => {
   const entry: Entry = {
     userId: user.uid,
     userDisplayName: user.displayName || '',
     eventRef: event.ref,
     duration: {},
-    goal: goal,
+    goal,
+    category,
     points: 0,
   };
 

@@ -11,6 +11,7 @@ export interface Entry {
   teamRef?: DocumentReference<Team>;
   duration: WorkoutTypeToNumber;
   goal: number;
+  category: string;
   points: number;
 }
 
