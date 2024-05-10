@@ -57,6 +57,9 @@ export const EventDetail = () => {
           <Link to={`/events/${eventId}/edit`} hidden={!canEdit}>
             <Button>Edit</Button>
           </Link>
+          <Link to={`/events/${eventId}/draft`} hidden={!canEdit}>
+            <Button sx={{ ml: 1 }}>Start Draft</Button>
+          </Link>
           <Typography level={'body-md'}>{event.description}</Typography>
           <Typography level={'body-md'}>
             {event.entryRefs.length} Registered Users

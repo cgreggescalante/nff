@@ -3,7 +3,7 @@ import Upload from './upload/upload';
 import UserDashboard from './user-data/user-dashboard';
 import AdminTools from './admin-tools';
 import EditProfile from './user-data/edit-profile';
-import { AdminRoute, ProtectedRoute, EventOwnerRoute } from '../components';
+import { AdminRoute, EventOwnerRoute, ProtectedRoute } from '../components';
 import {
   EditEvent,
   Event,
@@ -14,6 +14,7 @@ import {
   ResetPassword,
   Signup,
 } from '../views';
+import Draft from './event/event-detail/draft';
 
 export const MainContent = () => (
   <Routes>
@@ -29,6 +30,14 @@ export const MainContent = () => (
       element={
         <EventOwnerRoute>
           <EditEvent />
+        </EventOwnerRoute>
+      }
+    />
+    <Route
+      path="/events/:eventId/draft"
+      element={
+        <EventOwnerRoute>
+          <Draft />
         </EventOwnerRoute>
       }
     />
