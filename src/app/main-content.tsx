@@ -12,14 +12,14 @@ import {
   Home,
   Login,
   ResetPassword,
-  Signup,
 } from '../views';
 import Draft from './event/event-detail/draft';
+import Register from '../views/register';
 
 export const MainContent = () => (
   <Routes>
     <Route path="/" element={<Home />} />
-    <Route path="/signup" element={<Signup />} />
+    <Route path="/signup" element={<Register />} />
     <Route path="/login" element={<Login />} />
     <Route path="/forgot-password" element={<ForgotPassword />} />
     <Route path="/reset-password" element={<ResetPassword />} />

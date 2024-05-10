@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { Typography, Button, Stack } from '@mui/joy';
 import TextField from '@mui/material/TextField';
 
-export const Signup = () => {
+export default () => {
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [email, setEmail] = useState<string>('');

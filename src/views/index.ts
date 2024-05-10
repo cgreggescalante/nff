@@ -5,7 +5,7 @@ import ForgotPassword from './forgot-password';
 import Home from './home';
 import Login from './login';
 import ResetPassword from './reset-password';
-import Signup from './signup';
+import Signup from './register';
 
 export {
   EditEvent,
