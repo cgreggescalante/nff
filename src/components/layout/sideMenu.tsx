@@ -1,8 +1,8 @@
 import { Drawer, List } from '@mui/material';
-import { ListItemLink } from './list-item-link';
 import { Divider } from '@mui/joy';
+import ListItemLink from './listItemLink';
 
-export const SideMenu = ({
+export default ({
   headerHeight,
   open,
   persistent,

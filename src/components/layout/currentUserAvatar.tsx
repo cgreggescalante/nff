@@ -10,11 +10,11 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import { ListItemLink } from './list-item-link';
 import { Button } from '@mui/joy';
-import useAuth from '../providers/useAuth';
+import useAuth from '../../providers/useAuth';
+import ListItemLink from './listItemLink';
 
-export const CurrentUserAvatar = () => {
+export default () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 

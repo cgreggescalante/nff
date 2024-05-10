@@ -1,7 +1,7 @@
 import { ListItem, ListItemButton, ListItemText } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 
-export const ListItemLink = ({
+export default ({
   path,
   name,
   onClick,

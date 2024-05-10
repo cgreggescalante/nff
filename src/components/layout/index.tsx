@@ -1,13 +1,13 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import Box from '@mui/joy/Box';
-import { SideMenu } from '../components/side-menu';
-import { Header } from '../components';
+import Header from './header';
+import SideMenu from './sideMenu';
 
 const drawerWidth = 150;
 const headerHeight = 60;
 
-export const Layout = ({ children }: { children: ReactNode }) => {
+export default ({ children }: { children: ReactNode }) => {
   const [persistent, setPersistent] = useState(window.innerWidth > 768);
   const [open, setOpen] = useState(window.innerWidth > 768);
 
