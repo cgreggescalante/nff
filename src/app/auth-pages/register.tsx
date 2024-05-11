@@ -51,8 +51,11 @@ export default () => {
   return (
     <form onSubmit={handleSubmit} style={{ maxWidth: '500px' }}>
       <Stack alignItems={'center'}>
-        <Typography level={'h2'} sx={{ mb: 3 }}>
+        <Typography level={'h2'} sx={{ mb: 2 }}>
           Register
+        </Typography>
+        <Typography level={'body-sm'} sx={{ mb: 1 }}>
+          Name cannot be changed later.
         </Typography>
         <Stack spacing={1} direction={'row'} sx={{ mb: 2 }}>
           <TextField

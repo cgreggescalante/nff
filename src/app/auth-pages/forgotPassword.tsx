@@ -24,11 +24,11 @@ export default () => {
 
   if (emailSent) {
     return (
-      <Stack spacing={2}>
+      <Stack spacing={2} maxWidth={'400px'} alignItems={'center'}>
         <Typography level={'h2'}>Submitted successfully!</Typography>
-        <Typography level={'body-md'}>
+        <Typography level={'body-md'} align={'center'}>
           If there is an account registered to that email, you'll receive a link
-          with instructions on resetting your password.{' '}
+          with instructions on resetting your password.
         </Typography>
       </Stack>
     );
@@ -36,20 +36,18 @@ export default () => {
 
   return (
     <form onSubmit={submit} style={{ maxWidth: '400px' }}>
-      <Stack spacing={2}>
+      <Stack spacing={3} alignItems={'center'}>
         <Typography level={'h2'}>Forgot Password</Typography>
-        <Typography level={'body-sm'}>
-          Enter your email address below. If there is an account registered to
-          that email, you'll receive a link with instructions on resetting your
-          password.
-        </Typography>
-        <TextField
-          type={'email'}
-          label={'Email'}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <Button type={'submit'}>Submit</Button>
+        <Stack direction={'row'} spacing={1}>
+          <TextField
+            size={'small'}
+            type={'email'}
+            label={'Email'}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <Button type={'submit'}>Submit</Button>
+        </Stack>
       </Stack>
     </form>
   );

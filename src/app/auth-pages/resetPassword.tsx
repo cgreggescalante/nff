@@ -37,7 +37,7 @@ export default () => {
       .then(() => setSuccess(true))
       .catch((error) => {
         console.error(error);
-        toast.error('Invalid password reset link.');
+        toast.error('Could not reset your password at this time.');
       });
   };
 
@@ -51,7 +51,7 @@ export default () => {
   }
 
   if (!oobCode) {
-    return <Typography level={'h2'}>Invalid password reset link.</Typography>;
+    return <Typography level={'h4'}>Invalid password reset link :(</Typography>;
   }
 
   return (
