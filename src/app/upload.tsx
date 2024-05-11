@@ -25,6 +25,9 @@ export default () => {
     removeWorkout,
   } = useUploadController();
 
+  // TODO: add flag to tell the user if submission is still being processed
+  // TODO: clear form after submission
+
   return (
     <Box style={{ maxWidth: '500px' }}>
       <Typography level="h2" sx={{ mb: 3 }}>

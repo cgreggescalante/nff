@@ -26,7 +26,7 @@ export default () => {
     return (
       <Stack spacing={2} maxWidth={'400px'} alignItems={'center'}>
         <Typography level={'h2'}>Submitted successfully!</Typography>
-        <Typography level={'body-md'} align={'center'}>
+        <Typography level={'body-md'} textAlign={'center'}>
           If there is an account registered to that email, you'll receive a link
           with instructions on resetting your password.
         </Typography>

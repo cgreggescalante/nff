@@ -7,6 +7,7 @@ interface AdminRouteProps {
   children: ReactNode;
 }
 
+// TODO: Doesn't redirect properly
 export default ({ children }: AdminRouteProps): ReactNode => {
   const { isAdmin, loading } = useAuth();
 

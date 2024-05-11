@@ -17,7 +17,7 @@ export const addEvent = async () => {
   endDate.setDate(endDate.getDate() + rs + rLength + 1 + eventLength);
 
   const event: Event = {
-    name: faker.airline.airline().name + ' Event',
+    name: faker.airline.airline().name + ' TEST EVENT',
     description: faker.lorem.paragraph(),
     startDate,
     endDate,
