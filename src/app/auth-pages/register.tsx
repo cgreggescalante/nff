@@ -44,7 +44,12 @@ export default () => {
       })
       .catch((err) => {
         console.error('Error while creating user: ', err);
-        toast.error('Could not create user at this time.');
+
+        if (err.code === 'auth/email-already-in-use')
+          toast.error(
+            'Email is already in use, please sign in or use a different email.'
+          );
+        else toast.error('Could not create user at this time.');
       });
   };
 
