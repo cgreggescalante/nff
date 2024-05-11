@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import UserDashboard from './user-data/user-dashboard';
 import AdminTools from './admin-tools';
 import { AdminRoute, EventOwnerRoute, ProtectedRoute } from '../components';
-import { EditProfile, Event, Events, Home, Upload } from '../views';
+import { Event, Events, Home, Upload } from '../views';
 import Draft from './event/event-detail/draft';
 import RegisterForEvent from './event/event-detail/registerForEvent';
 import EditEvent from './event/event-detail/edit-event';
@@ -45,14 +45,6 @@ export const MainContent = () => (
       element={
         <ProtectedRoute>
           <Upload />
-        </ProtectedRoute>
-      }
-    />
-    <Route
-      path="/edit-profile"
-      element={
-        <ProtectedRoute>
-          <EditProfile />
         </ProtectedRoute>
       }
     />

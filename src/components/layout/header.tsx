@@ -3,10 +3,9 @@ import { Menu } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { Button, Stack } from '@mui/joy';
 import useAuth from '../../providers/useAuth';
-import CurrentUserAvatar from './currentUserAvatar';
-
-// TODO: Login and signup pages as modals instead?
-// TODO: Or just landing pages when you open the site?
+import { auth } from '@shared-data';
+import { signOut } from 'firebase/auth';
+import { toast } from 'react-toastify';
 
 export default ({
   height,
@@ -19,6 +18,15 @@ export default ({
 }) => {
   const navigate = useNavigate();
   const authData = useAuth();
+
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        toast.success('Signed out successfully');
+        navigate('/');
+      })
+      .catch((err) => console.error(err));
+  };
 
   return (
     <AppBar
@@ -60,7 +68,7 @@ export default ({
             </Button>
           </Stack>
         ) : (
-          <CurrentUserAvatar />
+          <Button onClick={handleSignOut}>Sign Out</Button>
         )}
       </Toolbar>
     </AppBar>

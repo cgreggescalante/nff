@@ -64,11 +64,6 @@ export default () => {
         }}
       >
         <List disablePadding sx={{ p: 0 }}>
-          <ListItemLink
-            path={'/edit-profile'}
-            name={'Edit Profile'}
-            onClick={() => null}
-          />
           <ListItem>
             <ListItemButton onClick={handleSignOut}>
               <ListItemText primary="Sign out" />

@@ -1,5 +1,4 @@
 import { Drawer, List } from '@mui/material';
-import { Divider } from '@mui/joy';
 import ListItemLink from './listItemLink';
 
 export default ({
@@ -39,12 +38,6 @@ const DrawerContent = ({ toggleOpen }: { toggleOpen: () => void }) => (
     <ListItemLink
       path={'/user-dashboard'}
       name={'Dashboard'}
-      onClick={toggleOpen}
-    />
-    <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
-    <ListItemLink
-      path={'/edit-profile'}
-      name={'Profile'}
       onClick={toggleOpen}
     />
   </List>
