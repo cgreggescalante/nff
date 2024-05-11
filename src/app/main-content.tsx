@@ -1,29 +1,19 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import UserDashboard from './user-data/user-dashboard';
 import AdminTools from './admin-tools';
 import { AdminRoute, EventOwnerRoute, ProtectedRoute } from '../components';
-import {
-  EditProfile,
-  Event,
-  Events,
-  ForgotPassword,
-  Home,
-  Login,
-  ResetPassword,
-  Upload,
-} from '../views';
+import { EditProfile, Event, Events, Home, Upload } from '../views';
 import Draft from './event/event-detail/draft';
-import Register from '../views/register';
 import RegisterForEvent from './event/event-detail/registerForEvent';
 import EditEvent from './event/event-detail/edit-event';
 
 export const MainContent = () => (
   <Routes>
     <Route path="/" element={<Home />} />
-    <Route path="/signup" element={<Register />} />
-    <Route path="/login" element={<Login />} />
-    <Route path="/forgot-password" element={<ForgotPassword />} />
-    <Route path="/reset-password" element={<ResetPassword />} />
+    <Route path="/register" element={<Navigate replace to={'/'} />} />
+    <Route path="/login" element={<Navigate replace to={'/'} />} />
+    <Route path="/forgot-password" element={<Navigate replace to={'/'} />} />
+    <Route path="/reset-password" element={<Navigate replace to={'/'} />} />
     <Route path="/events" element={<Events />} />
     <Route path="/events/:eventId" element={<Event />} />
     <Route

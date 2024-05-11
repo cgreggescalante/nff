@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@shared-data';
 import { toast } from 'react-toastify';
@@ -9,6 +9,7 @@ import Box from '@mui/joy/Box';
 
 export const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -19,7 +20,7 @@ export const Login = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
 
-      navigate('/');
+      navigate(location.pathname == '/login' ? '/' : location.pathname);
     } catch (e) {
       toast.error(
         'Could not login. Please verify email and password and try again.'

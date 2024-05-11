@@ -16,7 +16,7 @@ export const App = () => {
   if (loading) return null;
 
   return (
-    <div>
+    <>
       <ToastContainer
         position="bottom-right"
         hideProgressBar
@@ -34,16 +34,17 @@ export const App = () => {
         <AuthLayout>
           <BrowserRouter basename={'/'}>
             <Routes>
+              <Route path="/" element={<Landing />} />
               <Route path={'/login'} element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/" element={<Landing />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/*" element={<Login />} />
             </Routes>
           </BrowserRouter>
         </AuthLayout>
       )}
-    </div>
+    </>
   );
 };
 
