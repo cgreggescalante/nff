@@ -22,7 +22,7 @@ export const listRecentUploads = async ({
   if (userUid)
     uploadQuery = query(
       UploadCollectionRef,
-      where('userUid', '==', userUid),
+      where('userId', '==', userUid),
       orderBy('date', 'desc'),
       limit(count === undefined ? 25 : count)
     );

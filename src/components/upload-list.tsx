@@ -1,13 +1,14 @@
 import { UploadCard } from './upload-card';
 import { LoadingWrapper } from '@shared-ui';
-import { Stack } from '@mui/joy';
+import { Stack, Typography } from '@mui/joy';
 import { useListRecentUploads } from '../providers/queries';
+import React from 'react';
 
 export interface UploadListProps {
   uid?: string;
 }
 
-export function UploadList({ uid }: UploadListProps) {
+export const UploadList = ({ uid }: UploadListProps) => {
   const { data: uploads, isLoading } = useListRecentUploads({
     userUid: uid,
     count: 25,
@@ -16,12 +17,14 @@ export function UploadList({ uid }: UploadListProps) {
   return (
     <LoadingWrapper loading={isLoading}>
       <Stack spacing={3} sx={{ maxWidth: '500px' }}>
-        {uploads?.map((upload, index) => (
-          <UploadCard key={index} upload={upload} />
-        ))}
+        {uploads && uploads.length === 0 ? (
+          <Typography level={'h2'}>No uploads found</Typography>
+        ) : (
+          uploads?.map((upload, index) => (
+            <UploadCard key={index} upload={upload} />
+          ))
+        )}
       </Stack>
     </LoadingWrapper>
   );
-}
-
-export default UploadList;
+};
