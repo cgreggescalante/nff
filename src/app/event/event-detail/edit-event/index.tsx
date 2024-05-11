@@ -1,17 +1,20 @@
 import { FormControl, FormLabel, Grid, Input, Typography } from '@mui/joy';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
-import { EditTeams } from './edit-event/edit-teams';
 import { useState } from 'react';
 import { EventWithMetadata } from '@shared-data';
 import useEventRoute, {
   EventRouteProvider,
-} from '../../../providers/useEventRoute';
+} from '../../../../providers/useEventRoute';
+import { EventOwnerRoute } from '../../../../components';
+import { EditTeams } from './edit-teams';
 
 export default () => (
-  <EventRouteProvider>
-    <EditEvent />
-  </EventRouteProvider>
+  <EventOwnerRoute>
+    <EventRouteProvider>
+      <EditEvent />
+    </EventRouteProvider>
+  </EventOwnerRoute>
 );
 
 const EditEvent = () => {

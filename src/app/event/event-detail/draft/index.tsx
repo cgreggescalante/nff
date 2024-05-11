@@ -1,5 +1,3 @@
-import { useParams } from 'react-router-dom';
-import { useEvent } from '../../../../providers/queries';
 import { useEffect, useState } from 'react';
 import {
   EntryWithMetaData,
@@ -9,20 +7,27 @@ import {
   TeamWithMetaData,
 } from '@shared-data';
 import { Stack, Table, Typography } from '@mui/joy';
+import { EventOwnerRoute } from '../../../../components';
+import useEventRoute, {
+  EventRouteProvider,
+} from '../../../../providers/useEventRoute';
 
-export default () => {
-  const { eventId } = useParams();
+export default () => (
+  <EventOwnerRoute>
+    <EventRouteProvider>
+      <Draft />
+    </EventRouteProvider>
+  </EventOwnerRoute>
+);
 
-  const { data: serverEvent, isLoading } = useEvent(eventId ? eventId : '');
-  const [event, setEvent] = useState<EventWithMetadata>();
+const Draft = () => {
+  const serverEvent = useEventRoute();
+
+  const [event] = useState<EventWithMetadata>(serverEvent);
 
   const [teams, setTeams] = useState<TeamWithMetaData[]>([]);
 
   const [entries, setEntries] = useState<EntryWithMetaData[]>([]);
-
-  useEffect(() => {
-    if (serverEvent) setEvent(serverEvent);
-  }, [serverEvent]);
 
   useEffect(() => {
     if (!event) return;
@@ -34,9 +39,6 @@ export default () => {
 
     getEntriesByEvent(event).then(setEntries);
   }, [event]);
-
-  if (isLoading) return <p>Loading...</p>;
-  if (!event) return <p>No event found with id {eventId}</p>;
 
   return (
     <Stack>

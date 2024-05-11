@@ -1,18 +1,9 @@
 import styles from './app.module.scss';
 import 'react-toastify/dist/ReactToastify.css';
 import { Slide, ToastContainer } from 'react-toastify';
-import { MainContent } from './main-content';
-import { Layout } from '../components';
+import MainContent from './mainContent';
 import useAuth from '../providers/useAuth';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import {
-  AuthLayout,
-  ForgotPassword,
-  Landing,
-  Login,
-  Register,
-  ResetPassword,
-} from './auth-pages';
+import AuthPages from './auth-pages';
 
 export default () => {
   const { loading, user } = useAuth();
@@ -30,23 +21,10 @@ export default () => {
 
       {user ? (
         <div className={styles['app']}>
-          <Layout>
-            <MainContent />
-          </Layout>
+          <MainContent />
         </div>
       ) : (
-        <AuthLayout>
-          <BrowserRouter basename={'/'}>
-            <Routes>
-              <Route path="/" element={<Landing />} />
-              <Route path={'/login'} element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
-              <Route path="/*" element={<Login />} />
-            </Routes>
-          </BrowserRouter>
-        </AuthLayout>
+        <AuthPages />
       )}
     </>
   );

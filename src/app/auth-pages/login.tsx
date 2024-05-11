@@ -20,7 +20,7 @@ export default () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
 
-      navigate(location.pathname == '/login' ? '/' : location.pathname);
+      navigate(location.pathname === '/login' ? '/' : location.pathname);
     } catch (e) {
       toast.error(
         'Could not login. Please verify email and password and try again.'
