@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@shared-data';
 import { toast } from 'react-toastify';
-import { Button, Typography } from '@mui/joy';
+import { Button, Stack, Typography } from '@mui/joy';
 import TextField from '@mui/material/TextField';
+import Box from '@mui/joy/Box';
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -30,41 +31,49 @@ export const Login = () => {
     <form
       onSubmit={handleSubmit}
       autoComplete={'off'}
-      style={{ maxWidth: '500px' }}
+      style={{ width: '350px' }}
     >
-      <Typography level={'h2'} sx={{ mb: 3 }}>
-        Login
-      </Typography>
+      <Stack alignItems={'center'} minWidth={'100%'}>
+        <Typography level={'h1'} sx={{ mb: 3 }}>
+          Login
+        </Typography>
 
-      <TextField
-        label={'Email'}
-        type={'email'}
-        fullWidth
-        required
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        sx={{ mb: 3 }}
-      />
+        <TextField
+          label={'Email'}
+          type={'email'}
+          fullWidth
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          sx={{ mb: 1 }}
+        />
 
-      <TextField
-        label={'Password'}
-        type={'password'}
-        fullWidth
-        required
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        sx={{ mb: 3 }}
-      />
+        <TextField
+          label={'Password'}
+          type={'password'}
+          fullWidth
+          required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          sx={{ mb: 2 }}
+        />
 
-      <div>
-        <Button type={'submit'}>Login</Button>
-      </div>
+        <Box>
+          <Button type={'submit'}>Login</Button>
 
-      <div>
-        <Button onClick={() => navigate('/forgot-password')} sx={{ mt: 3 }}>
+          <Button onClick={() => navigate('/register')} sx={{ mt: 2, ml: 1 }}>
+            Register
+          </Button>
+        </Box>
+
+        <Button
+          onClick={() => navigate('/forgot-password')}
+          sx={{ mt: 1 }}
+          variant={'plain'}
+        >
           Forgot password?
         </Button>
-      </div>
+      </Stack>
     </form>
   );
 };

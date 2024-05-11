@@ -3,20 +3,48 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Slide, ToastContainer } from 'react-toastify';
 import { MainContent } from './main-content';
 import { Layout } from '../components';
+import useAuth from '../providers/useAuth';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Register from '../views/register';
+import { ForgotPassword, Login, ResetPassword } from '../views';
+import { AuthLayout } from './auth-pages/authLayout';
+import Landing from './auth-pages/landing';
 
-export const App = () => (
-  <div className={styles['app']}>
-    <ToastContainer
-      position="bottom-right"
-      hideProgressBar
-      newestOnTop
-      transition={Slide}
-    />
+export const App = () => {
+  const { loading, user } = useAuth();
 
-    <Layout>
-      <MainContent />
-    </Layout>
-  </div>
-);
+  if (loading) return null;
+
+  return (
+    <div>
+      <ToastContainer
+        position="bottom-right"
+        hideProgressBar
+        newestOnTop
+        transition={Slide}
+      />
+
+      {user ? (
+        <div className={styles['app']}>
+          <Layout>
+            <MainContent />
+          </Layout>
+        </div>
+      ) : (
+        <AuthLayout>
+          <BrowserRouter basename={'/'}>
+            <Routes>
+              <Route path={'/login'} element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/" element={<Landing />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
+            </Routes>
+          </BrowserRouter>
+        </AuthLayout>
+      )}
+    </div>
+  );
+};
 
 export default App;

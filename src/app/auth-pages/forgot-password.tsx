@@ -35,20 +35,22 @@ export const ForgotPassword = () => {
   }
 
   return (
-    <Stack spacing={2} maxWidth={'400px'}>
-      <Typography level={'h2'}>Forgot Password</Typography>
-      <Typography level={'body-sm'}>
-        Enter your email address below. If there is an account registered to
-        that email, you'll receive a link with instructions on resetting your
-        password.
-      </Typography>
-      <TextField
-        type={'email'}
-        label={'Email'}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <Button onClick={submit}>Submit</Button>
-    </Stack>
+    <form onSubmit={submit} style={{ maxWidth: '400px' }}>
+      <Stack spacing={2}>
+        <Typography level={'h2'}>Forgot Password</Typography>
+        <Typography level={'body-sm'}>
+          Enter your email address below. If there is an account registered to
+          that email, you'll receive a link with instructions on resetting your
+          password.
+        </Typography>
+        <TextField
+          type={'email'}
+          label={'Email'}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <Button type={'submit'}>Submit</Button>
+      </Stack>
+    </form>
   );
 };
