@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { confirmPasswordReset } from 'firebase/auth';
 import { toast } from 'react-toastify';
 
-export const ResetPassword = () => {
+export default () => {
   const location = useLocation();
   const navigate = useNavigate();
 

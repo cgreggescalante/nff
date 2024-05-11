@@ -7,7 +7,7 @@ import { Button, Stack, Typography } from '@mui/joy';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/joy/Box';
 
-export const Login = () => {
+export default () => {
   const navigate = useNavigate();
   const location = useLocation();
 

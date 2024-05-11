@@ -5,12 +5,16 @@ import { MainContent } from './main-content';
 import { Layout } from '../components';
 import useAuth from '../providers/useAuth';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Register from '../views/register';
-import { ForgotPassword, Login, ResetPassword } from '../views';
-import { AuthLayout } from './auth-pages/authLayout';
-import Landing from './auth-pages/landing';
+import {
+  AuthLayout,
+  ForgotPassword,
+  Landing,
+  Login,
+  Register,
+  ResetPassword,
+} from './auth-pages';
 
-export const App = () => {
+export default () => {
   const { loading, user } = useAuth();
 
   if (loading) return null;
@@ -47,5 +51,3 @@ export const App = () => {
     </>
   );
 };
-
-export default App;

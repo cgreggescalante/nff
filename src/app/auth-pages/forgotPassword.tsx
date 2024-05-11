@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 
 const EMAIL_REGEX = /[\w.]+@([\w-]+\.)+[\w-]{2,4}/;
 
-export const ForgotPassword = () => {
+export default () => {
   const [email, setEmail] = useState<string>('');
   const [emailSent, setEmailSent] = useState<boolean>(false);
 
