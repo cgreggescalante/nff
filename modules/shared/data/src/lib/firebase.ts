@@ -1,7 +1,11 @@
 import { initializeApp } from '@firebase/app';
 import { getAuth, connectAuthEmulator } from '@firebase/auth';
 import { getFirestore, connectFirestoreEmulator } from '@firebase/firestore';
-import { getFunctions, connectFunctionsEmulator } from 'firebase/functions';
+import {
+  getFunctions,
+  connectFunctionsEmulator,
+  httpsCallable,
+} from 'firebase/functions';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyB85bcexC2tYSJSeaM1MBCtKHt-YyThEfU',
@@ -26,6 +30,11 @@ if (process.env.NODE_ENV === 'development') {
   connectFunctionsEmulator(functions, '127.0.0.1', 5001);
 }
 
-export { db, auth, functions };
+const sendPasswordResetEmail = httpsCallable(
+  functions,
+  'sendPasswordResetEmail'
+);
+
+export { db, auth, functions, sendPasswordResetEmail };
 
 export default app;

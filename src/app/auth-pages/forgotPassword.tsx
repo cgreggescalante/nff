@@ -1,9 +1,8 @@
 import { Button, Stack, Typography } from '@mui/joy';
 import TextField from '@mui/material/TextField';
 import { FormEvent, useState } from 'react';
-import { functions } from '@shared-data';
+import { sendPasswordResetEmail } from '@shared-data';
 import { toast } from 'react-toastify';
-import { httpsCallable } from 'firebase/functions';
 
 const EMAIL_REGEX = /[\w.]+@([\w-]+\.)+[\w-]{2,4}/;
 
@@ -21,11 +20,6 @@ export default () => {
     }
 
     setProcessing(true);
-
-    const sendPasswordResetEmail = httpsCallable(
-      functions,
-      'sendPasswordResetEmail'
-    );
 
     sendPasswordResetEmail({ email })
       .then(() => {
