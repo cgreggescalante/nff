@@ -9,11 +9,21 @@
 
 import { onCall } from 'firebase-functions/v2/https';
 import * as logger from 'firebase-functions/logger';
+import { auth } from './firebaseClient';
+import { sendPasswordResetEmail as sendEmail } from 'firebase/auth';
 
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
 
-export const helloCallable = onCall((request) => {
-  logger.info('Hello logs!', { structuredData: true });
-  return { data: `Hello ${request.auth ? request.auth.uid : 'unknown'}!` };
+const sendPasswordResetEmail = onCall({ cors: true }, (request) => {
+  return sendEmail(auth, request.data.email).catch((error) => {
+    logger.error(error);
+    if (error.code === 'auth/user-not-found') {
+      logger.warn(`Password reset attempted for email: ${request.data.email}`);
+      return;
+    }
+    throw error;
+  });
 });
+
+export { sendPasswordResetEmail };
