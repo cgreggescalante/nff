@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { addWorkoutTypeToNumber, WorkoutTypeToNumber } from '../models';
-import { simpleCreateUpload, updatePoints } from '../services/create';
+import { createUpload, updatePoints } from '../services/create';
 import { WORKOUT_CONFIG } from '../CONFIG';
 
 export const addUpload = async (
@@ -16,18 +16,25 @@ export const addUpload = async (
       .shuffle(Object.values(WORKOUT_CONFIG))
       .slice(0, 2);
 
-    const workouts: WorkoutTypeToNumber = {};
+    const activities: WorkoutTypeToNumber = {};
     for (const type of workoutTypes) {
-      workouts[type.name] = faker.number.int({ min: 1, max: 25 });
+      activities[type.name] = faker.number.int({ min: 1, max: 25 });
     }
 
-    totalDuration = addWorkoutTypeToNumber(totalDuration, workouts);
+    const activityPoints: WorkoutTypeToNumber = {};
+    for (const type of workoutTypes) {
+      activityPoints[type.name] = type.pointRate * activities[type.name];
+    }
 
-    await simpleCreateUpload({
+    totalDuration = addWorkoutTypeToNumber(totalDuration, activities);
+
+    await createUpload({
       date,
       description: faker.lorem.sentence(),
       userId: user.uid,
-      workouts,
+      activities,
+      activityPoints,
+      points: Object.values(activityPoints).reduce((a, b) => a + b, 0),
       userDisplayName: user.displayName,
     });
   }

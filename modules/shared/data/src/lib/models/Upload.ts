@@ -6,7 +6,9 @@ export interface Upload {
   userDisplayName: string;
   description: string;
   date: Date;
-  workouts: WorkoutTypeToNumber;
+  activities: WorkoutTypeToNumber;
+  activityPoints: WorkoutTypeToNumber;
+  points: number;
 }
 
 export type UploadWithMetaData = Upload & WithMetaData<Upload>;

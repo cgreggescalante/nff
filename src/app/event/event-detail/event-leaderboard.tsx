@@ -36,12 +36,14 @@ export const EventLeaderboard = ({ event }: EventLeaderboardProps) => {
                 <td>{Math.round(entry.points * 10) / 10}</td>
                 <td>
                   {Math.round(
-                    (entry.duration.Run ? entry.duration.Run : 0) * 10
+                    (entry.activities.Run ? entry.activities.Run : 0) * 10
                   ) / 10}
                 </td>
                 <td>
                   {Math.round(
-                    (entry.duration.Ski ? entry.duration.Ski : 0) * 10
+                    ((entry.activities['Classic Roller Skiing'] || 0) +
+                      (entry.activities['Skate Roller Skiing'] || 0)) *
+                      10
                   ) / 10}
                 </td>
               </tr>

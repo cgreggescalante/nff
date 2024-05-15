@@ -1,4 +1,9 @@
-import { createUpload, Upload, WorkoutTypeToNumber } from '@shared-data';
+import {
+  createUpload,
+  Upload,
+  WORKOUT_CONFIG,
+  WorkoutTypeToNumber,
+} from '@shared-data';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import useAuth from '../providers/useAuth';
@@ -51,9 +56,13 @@ export default (): UploadController => {
     if (userInfo.user === null || !userInfo.user.displayName) return;
 
     const validWorkouts: WorkoutTypeToNumber = {};
-    includedWorkouts.forEach((workout) => {
-      if (workouts[workout] !== undefined && workouts[workout]! > 0) {
-        validWorkouts[workout] = workouts[workout];
+    const activityPoints: WorkoutTypeToNumber = {};
+
+    WORKOUT_CONFIG.forEach((workout) => {
+      if (workouts[workout.name] !== undefined && workouts[workout.name]! > 0) {
+        validWorkouts[workout.name] = workouts[workout.name];
+        activityPoints[workout.name] =
+          workouts[workout.name] * workout.pointRate;
       }
     });
 
@@ -61,14 +70,20 @@ export default (): UploadController => {
       userDisplayName: userInfo.user?.displayName,
       userId: userInfo.user?.uid,
       description,
-      workouts: validWorkouts,
+      activities: validWorkouts,
+      activityPoints,
+      points: Object.values(activityPoints).reduce(
+        (acc, curr) => acc + curr,
+        0
+      ),
       date: new Date(),
     };
 
-    createUpload(upload, userInfo.user)
+    createUpload(upload)
       .then((_) => {
         setDescription('');
         setWorkouts({});
+        setIncludedWorkouts([]);
         toast.success('Workouts added successfully');
       })
       .catch((error) => {

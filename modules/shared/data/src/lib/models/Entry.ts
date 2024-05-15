@@ -9,10 +9,11 @@ export interface Entry {
   userDisplayName: string;
   eventRef: DocumentReference<Event>;
   teamRef?: DocumentReference<Team>;
-  duration: WorkoutTypeToNumber;
+  activities: WorkoutTypeToNumber;
+  activityPoints: WorkoutTypeToNumber;
+  points: number;
   goal: number;
   category: string;
-  points: number;
 }
 
 export type EntryWithMetaData = Entry & WithMetaData<Entry>;
