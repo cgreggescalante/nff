@@ -1,5 +1,5 @@
-import { initializeApp } from 'firebase-admin/app';
-import { getFirestore } from 'firebase-admin/firestore';
+import { App, initializeApp } from 'firebase-admin/app';
+import { getFirestore, QueryDocumentSnapshot } from 'firebase-admin/firestore';
 import * as logger from 'firebase-functions/logger';
 import { onDocumentCreated } from 'firebase-functions/v2/firestore';
 
@@ -20,8 +20,12 @@ const addWorkoutTypeToNumber = (
   return result;
 };
 
+let app: App;
+
 export const onUpload = onDocumentCreated('uploads/{uploadId}', (event) => {
-  initializeApp();
+  if (!app) {
+    app = initializeApp();
+  }
 
   const snapshot = event.data;
 
@@ -43,6 +47,20 @@ export const onUpload = onDocumentCreated('uploads/{uploadId}', (event) => {
     const entries = await transaction.get(entryQuery);
 
     for (const entry of entries.docs) {
+      const eventSnapshot = (await transaction.get(
+        entry.get('eventRef')
+      )) as unknown as QueryDocumentSnapshot;
+      if (!eventSnapshot.exists) {
+        logger.error('Event does not exist');
+        continue;
+      }
+
+      if (
+        eventSnapshot.get('startDate') > upload.date ||
+        eventSnapshot.get('endDate') < upload.date
+      )
+        continue;
+
       // Add the upload to the entries total points and total duration
       transaction.update(entry.ref, {
         activities: addWorkoutTypeToNumber(
