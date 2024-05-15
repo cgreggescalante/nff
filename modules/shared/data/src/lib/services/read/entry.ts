@@ -24,7 +24,7 @@ export const getUserLeaderboard = async (
 
   const entries = snapshot.docs.map((doc) => withMetaData(doc));
 
-  entries.sort((a, b) => a.points - b.points);
+  entries.sort((a, b) => b.points - a.points);
 
   return entries;
 };
