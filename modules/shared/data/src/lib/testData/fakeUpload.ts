@@ -8,6 +8,8 @@ export const addUpload = async (
   count: number
 ) => {
   let totalDuration: WorkoutTypeToNumber = {};
+  let totalActivtyPoints: WorkoutTypeToNumber = {};
+
   for (let i = 0; i < count; i++) {
     const date = new Date();
     date.setDate(date.getDate() + faker.number.int({ min: -60, max: 0 }));
@@ -27,6 +29,10 @@ export const addUpload = async (
     }
 
     totalDuration = addWorkoutTypeToNumber(totalDuration, activities);
+    totalActivtyPoints = addWorkoutTypeToNumber(
+      activityPoints,
+      totalActivtyPoints
+    );
 
     await createUpload({
       date,
@@ -39,5 +45,5 @@ export const addUpload = async (
     });
   }
 
-  await updatePoints(user.uid, totalDuration);
+  await updatePoints(user.uid, totalDuration, totalActivtyPoints);
 };

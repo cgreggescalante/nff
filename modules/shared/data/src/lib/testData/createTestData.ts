@@ -18,7 +18,7 @@ const users: { uid: string; displayName: string }[] = [];
 export const createTestData = async () => {
   console.log('Creating Users');
 
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 25; i++) {
     users.push({ uid: `user-${i}`, displayName: faker.person.fullName() });
   }
 
@@ -65,7 +65,7 @@ export const createUploads = async () => {
   console.log('Adding uploads');
   for (const user of users) {
     console.log(user.displayName);
-    await addUpload(user, 25);
+    await addUpload(user, 10);
     await new Promise((resolve) => setTimeout(resolve, 1000));
   }
   console.log('Complete');
