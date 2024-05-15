@@ -1,9 +1,9 @@
-import EventCard from './event-card';
+import EventCard from './eventCard';
 import { useListEvents } from '../../../providers/queries';
 import { Stack, Typography } from '@mui/joy';
 import { LoadingWrapper } from '../../../components';
 
-export const EventList = () => {
+export default () => {
   const { data: events, isLoading } = useListEvents();
 
   return (
@@ -19,5 +19,3 @@ export const EventList = () => {
     </div>
   );
 };
-
-export default EventList;

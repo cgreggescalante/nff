@@ -7,9 +7,10 @@ import {
 } from '@shared-data';
 import { useEffect, useState } from 'react';
 import { Button, Grid, Input, Typography } from '@mui/joy';
-import { EditTeam } from './edit-team';
+import useEditTeamController from '../../../../controllers/useEditTeamController';
+import { ConfirmPopup } from '../../../../components';
 
-export const EditTeams = ({ event }: { event: EventWithMetadata }) => {
+export default ({ event }: { event: EventWithMetadata }) => {
   const [teams, setTeams] = useState<TeamWithMetaData[]>([]);
   const [teamsLoading, setTeamsLoading] = useState<boolean>(true);
   const [newTeamOwner, setNewTeamOwner] = useState<string>('');
@@ -58,5 +59,38 @@ export const EditTeams = ({ event }: { event: EventWithMetadata }) => {
         </Button>
       </Grid>
     </Grid>
+  );
+};
+
+const EditTeam = ({
+  event,
+  team,
+}: {
+  event: EventWithMetadata;
+  team: TeamWithMetaData;
+}) => {
+  const { handleDeleteTeam, show, setShow, name, setName, handleSubmit } =
+    useEditTeamController(event, team);
+
+  return (
+    <>
+      <ConfirmPopup
+        onConfirm={handleDeleteTeam}
+        message={`Are you sure you want to delete team '${team.name}'?`}
+        show={show}
+        setShow={setShow}
+        action={'Delete'}
+      />
+      <Grid xs={3}>Owner Entry ID: {team.ownerEntryRef.id}</Grid>
+      <Grid>
+        <Input value={name} onChange={(e) => setName(e.target.value)} />
+      </Grid>
+      <Grid>
+        <Button onClick={handleSubmit}>Save</Button>
+      </Grid>
+      <Grid>
+        <Button onClick={() => setShow(true)}>X</Button>
+      </Grid>
+    </>
   );
 };

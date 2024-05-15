@@ -7,7 +7,7 @@ export interface EventCardProps {
   event: EventWithMetadata;
 }
 
-export const EventCard = ({ event }: EventCardProps) => (
+export default ({ event }: EventCardProps) => (
   <Card
     component={(props) => (
       <RouterLink
@@ -42,5 +42,3 @@ export const EventCard = ({ event }: EventCardProps) => (
     </Typography>
   </Card>
 );
-
-export default EventCard;

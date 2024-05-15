@@ -7,7 +7,7 @@ import useEventRoute, {
   EventRouteProvider,
 } from '../../../../providers/useEventRoute';
 import { EventOwnerRoute } from '../../../../components';
-import { EditTeams } from './edit-teams';
+import EditTeams from './editTeams';
 
 export default () => (
   <EventOwnerRoute>

@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { auth, CheckIsEventOwner, EventWithMetadata } from '@shared-data';
 import EventLeaderboard from './eventLeaderboard';
-import { TeamLeaderboard } from './team-leaderboard';
+import TeamLeaderboard from './teamLeaderboard';
 import useAuth from '../../../providers/useAuth';
 import { Button, Typography } from '@mui/joy';
 import useEventRoute, {

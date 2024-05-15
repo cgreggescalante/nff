@@ -17,7 +17,7 @@ interface TeamsListProps {
   event: EventWithMetadata;
 }
 
-export const TeamLeaderboard = ({ event }: TeamsListProps) => {
+export default ({ event }: TeamsListProps) => {
   const { data: teams, isLoading: teamsLoading } = useTeamLeaderboard(
     event.uid
   );

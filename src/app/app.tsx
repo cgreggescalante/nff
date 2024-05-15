@@ -3,7 +3,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Slide, ToastContainer } from 'react-toastify';
 import MainContent from './mainContent';
 import useAuth from '../providers/useAuth';
-import AuthPages from './auth-pages';
+import Landing from './landing';
 
 export default () => {
   const { loading, user } = useAuth();
@@ -24,7 +24,7 @@ export default () => {
           <MainContent />
         </div>
       ) : (
-        <AuthPages />
+        <Landing />
       )}
     </>
   );

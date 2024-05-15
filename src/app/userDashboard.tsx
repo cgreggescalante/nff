@@ -1,8 +1,8 @@
 import { Stack, Typography } from '@mui/joy';
-import { UploadList } from '../../components';
-import useAuth from '../../providers/useAuth';
+import { UploadList } from '../components';
+import useAuth from '../providers/useAuth';
 
-export const UserDashboard = () => {
+export default () => {
   const { user } = useAuth();
 
   if (!user) return <Typography>No User</Typography>;
@@ -17,5 +17,3 @@ export const UserDashboard = () => {
     </Stack>
   );
 };
-
-export default UserDashboard;
