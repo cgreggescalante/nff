@@ -19,14 +19,14 @@ export const readEntry = async (
 
 export const getUserLeaderboard = async (
   event: EventWithMetadata
-): Promise<EntryWithMetaData[]> => {
+): Promise<(EntryWithMetaData & { rank: number })[]> => {
   const snapshot = await getDocs(getEntryCollectionRef(event.uid));
 
   const entries = snapshot.docs.map((doc) => withMetaData(doc));
 
   entries.sort((a, b) => b.points - a.points);
 
-  return entries;
+  return entries.map((entry, index) => ({ ...entry, rank: index + 1 }));
 };
 
 export const getEntriesByEvent = async (

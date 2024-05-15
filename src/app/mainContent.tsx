@@ -7,7 +7,7 @@ import RegisterForEvent from './event/event-detail/registerForEvent';
 import EditEvent from './event/event-detail/edit-event';
 import Home from './home';
 import EventList from './event/event-list/event-list';
-import EventDetail from './event/event-detail/event-detail';
+import EventDetail from './event/event-detail/eventDetail';
 import Upload from './upload';
 
 export default () => (

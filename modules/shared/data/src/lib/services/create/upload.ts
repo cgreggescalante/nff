@@ -20,7 +20,8 @@ export const createUpload = async (upload: Upload) => {
 
 export const updatePoints = async (
   userId: string,
-  duration: WorkoutTypeToNumber
+  activities: WorkoutTypeToNumber,
+  activityPoints: WorkoutTypeToNumber
 ) => {
   const entries = (
     await getDocs(query(EntryCollectionGroupRef, where('userId', '==', userId)))
@@ -31,10 +32,11 @@ export const updatePoints = async (
 
     if (!event) continue;
 
-    const points = ApplyScoring(duration);
+    const points = ApplyScoring(activities);
 
     await updateDoc(entry.ref, {
-      duration,
+      activities,
+      activityPoints,
       points: entry.points + points,
     });
 

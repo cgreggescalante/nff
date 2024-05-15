@@ -51,7 +51,7 @@ export const createTestData = async () => {
     console.log('Adding users to team');
     const teams = await getTeamsByEvent(event.uid);
 
-    for (const entry of entries) {
+    for (const entry of entries.slice(2)) {
       const team = teams[Math.floor(Math.random() * teams.length)];
 
       await addTeamMember(team, entry);
