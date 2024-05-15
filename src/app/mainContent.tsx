@@ -1,13 +1,13 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import UserDashboard from './userDashboard';
-import AdminTools from './admin-tools';
+import AdminTools from './adminTools';
 import { AdminRoute, EventOwnerRoute, Layout } from '../components';
-import Draft from './event/event-detail/draft';
-import RegisterForEvent from './event/event-detail/registerForEvent';
-import EditEvent from './event/event-detail/editEvent';
+import Draft from './eventDetail/draft';
+import RegisterForEvent from './eventDetail/registerForEvent';
+import EditEvent from './eventDetail/editEvent';
 import Home from './home';
-import EventList from './event/eventList';
-import EventDetail from './event/event-detail';
+import EventList from './eventList';
+import EventDetail from './eventDetail';
 import Upload from './upload';
 
 export default () => (

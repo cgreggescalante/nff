@@ -1,4 +1,4 @@
-import ManageEvents from './manage-events/manage-events';
+import ManageEvents from './manageEvents';
 import { Button, Tab, TabList, TabPanel, Tabs } from '@mui/joy';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import {
@@ -7,7 +7,7 @@ import {
   createUploads,
 } from '../../../modules/shared/data/src/lib/testData/createTestData';
 
-export const AdminTools = () => (
+export default () => (
   <div>
     <h1>Admin Tools</h1>
 
@@ -25,5 +25,3 @@ export const AdminTools = () => (
     </Tabs>
   </div>
 );
-
-export default AdminTools;

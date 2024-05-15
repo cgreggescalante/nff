@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import type { EventWithMetadata } from '@shared-data';
 import { deleteEvent } from '@shared-data';
-import CreateEvent from './create-event';
+import CreateEvent from './createEvent';
 import { toast } from 'react-toastify';
 import { useListEvents } from '../../../providers/queries';
 import { Button, Table } from '@mui/joy';
 import { ConfirmPopup } from '../../../components';
 
-export function ManageEvents() {
+export default () => {
   const { data: events, isLoading, refetch } = useListEvents();
   const [error, setError] = useState<string>();
   const [showCreateEvent, setShowCreateEvent] = useState<boolean>(false);
@@ -69,7 +69,7 @@ export function ManageEvents() {
       )}
     </div>
   );
-}
+};
 
 interface EventRowProps {
   event: EventWithMetadata;
@@ -103,5 +103,3 @@ const EventRow = ({ event, index, onDelete }: EventRowProps) => {
     </tr>
   );
 };
-
-export default ManageEvents;

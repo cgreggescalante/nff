@@ -14,7 +14,7 @@ export interface CreateEventProps {
   completed: () => void;
 }
 
-export const CreateEvent = ({ completed }: CreateEventProps) => {
+export default ({ completed }: CreateEventProps) => {
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
@@ -120,5 +120,3 @@ export const CreateEvent = ({ completed }: CreateEventProps) => {
     </div>
   );
 };
-
-export default CreateEvent;

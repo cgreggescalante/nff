@@ -1,7 +1,7 @@
 import EventCard from './eventCard';
-import { useListEvents } from '../../../providers/queries';
+import { useListEvents } from '../../providers/queries';
 import { Stack, Typography } from '@mui/joy';
-import { LoadingWrapper } from '../../../components';
+import { LoadingWrapper } from '../../components';
 
 export default () => {
   const { data: events, isLoading } = useListEvents();
