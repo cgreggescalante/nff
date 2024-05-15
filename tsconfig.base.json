@@ -16,8 +16,6 @@
     "baseUrl": ".",
     "paths": {
       "@shared-data": ["modules/shared/data/src/index.ts"],
-      "@shared-ui": ["modules/shared/ui/src/index.ts"],
-      "admin": ["modules/admin/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

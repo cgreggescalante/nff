@@ -2,10 +2,10 @@ import { useState } from 'react';
 import type { EventWithMetadata } from '@shared-data';
 import { deleteEvent } from '@shared-data';
 import CreateEvent from './create-event';
-import { ConfirmPopup } from '@shared-ui';
 import { toast } from 'react-toastify';
 import { useListEvents } from '../../../providers/queries';
 import { Button, Table } from '@mui/joy';
+import { ConfirmPopup } from '../../../components';
 
 export function ManageEvents() {
   const { data: events, isLoading, refetch } = useListEvents();

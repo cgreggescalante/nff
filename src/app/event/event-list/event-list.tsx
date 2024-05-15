@@ -1,7 +1,7 @@
 import EventCard from './event-card';
-import { LoadingWrapper } from '@shared-ui';
 import { useListEvents } from '../../../providers/queries';
 import { Stack, Typography } from '@mui/joy';
+import { LoadingWrapper } from '../../../components';
 
 export const EventList = () => {
   const { data: events, isLoading } = useListEvents();

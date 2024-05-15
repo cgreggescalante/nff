@@ -1,7 +1,7 @@
 import { EventWithMetadata, TeamWithMetaData } from '@shared-data';
-import { ConfirmPopup } from '@shared-ui';
 import { Button, Grid, Input } from '@mui/joy';
 import useEditTeamController from '../../../../controllers/useEditTeamController';
+import { ConfirmPopup } from '../../../../components';
 
 export const EditTeam = ({
   event,

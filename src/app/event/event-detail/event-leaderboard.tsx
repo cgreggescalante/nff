@@ -1,7 +1,7 @@
 import { EventWithMetadata } from '@shared-data';
-import { LoadingWrapper } from '@shared-ui';
 import { useUserLeaderboard } from '../../../providers/queries';
 import { Table } from '@mui/joy';
+import { LoadingWrapper } from '../../../components';
 
 interface EventLeaderboardProps {
   event: EventWithMetadata;

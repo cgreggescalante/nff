@@ -1,8 +1,8 @@
 import { UploadCard } from './upload-card';
-import { LoadingWrapper } from '@shared-ui';
 import { Stack, Typography } from '@mui/joy';
 import { useListRecentUploads } from '../providers/queries';
 import React from 'react';
+import { LoadingWrapper } from './loading-wrapper';
 
 export interface UploadListProps {
   uid?: string;

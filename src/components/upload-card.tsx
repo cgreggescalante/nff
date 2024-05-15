@@ -21,7 +21,7 @@ export const UploadCard = ({ upload }: UploadCardProps) => (
 
     <Table size={'md'} variant={'outlined'} borderAxis={'bothBetween'}>
       <tbody>
-        {Object.entries(upload.workouts).map(([workout, value]) => (
+        {Object.entries(upload.activities).map(([workout, value]) => (
           <tr key={workout}>
             <td>{workout}</td>
             <td>
