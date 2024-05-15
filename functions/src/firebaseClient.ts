@@ -1,6 +1,5 @@
-import { initializeApp } from '@firebase/app';
-import { getAuth, connectAuthEmulator } from '@firebase/auth';
-import { getFirestore, connectFirestoreEmulator } from '@firebase/firestore';
+import { initializeApp, FirebaseApp } from '@firebase/app';
+import { getAuth, connectAuthEmulator, Auth } from '@firebase/auth';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyB85bcexC2tYSJSeaM1MBCtKHt-YyThEfU',
@@ -12,13 +11,16 @@ const firebaseConfig = {
   measurementId: 'G-88NRQ90PTP',
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth();
-const db = getFirestore();
+let app: FirebaseApp;
+let auth: Auth;
 
-connectAuthEmulator(auth, 'http://127.0.0.1:9099');
-connectFirestoreEmulator(db, '127.0.0.1', 8080);
+export const getFirebaseClientAuth = (): Auth => {
+  if (!app) app = initializeApp(firebaseConfig);
 
-export { db, auth };
+  if (!auth) {
+    connectAuthEmulator(auth, 'http://127.0.0.1:9099');
+    auth = getAuth(app);
+  }
 
-export default app;
+  return auth;
+};
