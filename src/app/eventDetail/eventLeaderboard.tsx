@@ -1,17 +1,18 @@
-import { EventWithMetadata } from '@shared-data';
+import { EntryWithMetaData, EventWithMetadata } from '@shared-data';
 import { useUserLeaderboard } from '../../providers/queries';
 
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface EventLeaderboardProps {
   event: EventWithMetadata;
+  division?: string | null;
 }
 
-export default ({ event }: EventLeaderboardProps) => {
-  const { data: leaderboard } = useUserLeaderboard(event);
+export default ({ event, division }: EventLeaderboardProps) => {
+  const { data: entries } = useUserLeaderboard(event);
 
   const [colDefs] = useState([
     { field: 'rank', headerName: 'Rank', flex: 1 },
@@ -38,10 +39,19 @@ export default ({ event }: EventLeaderboardProps) => {
     },
   ] as any[]);
 
+  const [data, setData] = useState([] as EntryWithMetaData[]);
+
+  useEffect(() => {
+    if (!entries) return;
+    if (!division) setData(entries);
+    else setData(entries.filter((entry) => entry.category === division));
+  }, [entries, division]);
+
   return (
-    <div className="ag-theme-quartz" style={{ height: 400, width: '100%' }}>
+    <div className="ag-theme-quartz">
       <AgGridReact
-        rowData={leaderboard}
+        domLayout={'autoHeight'}
+        rowData={data}
         columnDefs={colDefs}
         autoSizeStrategy={{ type: 'fitCellContents' }}
       />

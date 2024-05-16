@@ -6,6 +6,7 @@ import {
   addTeamMember,
   createEvent,
   createTeamByOwner,
+  DIVISIONS,
   getEntriesByEvent,
   getTeamsByEvent,
   listEvents,
@@ -93,7 +94,7 @@ export const createDraftTestData = async () => {
       event,
       users[i] as User,
       100,
-      'Upperclassman'
+      DIVISIONS[Math.random() * DIVISIONS.length].value
     );
     entries.push(entry);
   }

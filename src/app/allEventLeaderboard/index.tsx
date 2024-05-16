@@ -10,18 +10,21 @@ import Box from '@mui/joy/Box';
 import { useListEvents } from '../../providers/queries';
 import { LoadingWrapper } from '../../components';
 import { useEffect, useState } from 'react';
-import { DIVISIONS } from '@shared-data';
+import { DIVISIONS, EventWithMetadata } from '@shared-data';
+import EventLeaderboard from '../eventDetail/eventLeaderboard';
 
 export default () => {
   const { data: events, isLoading } = useListEvents();
 
-  const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<EventWithMetadata | null>(
+    null
+  );
   const [selectedDivision, setSelectedDivision] = useState<string | null>('');
 
   useEffect(() => {
     if (!events) return;
 
-    setSelectedEvent(events[0].uid);
+    setSelectedEvent(events[0]);
   }, [events, isLoading]);
 
   return (
@@ -29,7 +32,7 @@ export default () => {
       <Typography level={'h2'}>Leaderboard</Typography>
 
       <LoadingWrapper loading={isLoading}>
-        {events && (
+        {events && selectedEvent && (
           <>
             <Stack
               direction={'row'}
@@ -52,7 +55,7 @@ export default () => {
                   onChange={(_, value) => setSelectedEvent(value)}
                 >
                   {events.map((event, index) => (
-                    <Option key={index} value={event.uid}>
+                    <Option key={index} value={event}>
                       {event.name}
                     </Option>
                   ))}
@@ -83,6 +86,13 @@ export default () => {
                 </Select>
               </FormControl>
             </Stack>
+
+            <Box height={'500px'} marginTop={1}>
+              <EventLeaderboard
+                event={selectedEvent}
+                division={selectedDivision}
+              />
+            </Box>
           </>
         )}
       </LoadingWrapper>
