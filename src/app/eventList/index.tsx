@@ -2,12 +2,13 @@ import EventCard from './eventCard';
 import { useListEvents } from '../../providers/queries';
 import { Stack, Typography } from '@mui/joy';
 import { LoadingWrapper } from '../../components';
+import ContentBox from '../../components/contentBox';
 
 export default () => {
   const { data: events, isLoading } = useListEvents();
 
   return (
-    <div>
+    <ContentBox maxWidth={600}>
       <LoadingWrapper loading={isLoading}>
         <Stack spacing={2}>
           <Typography level={'h2'}>Events</Typography>
@@ -16,6 +17,6 @@ export default () => {
           ))}
         </Stack>
       </LoadingWrapper>
-    </div>
+    </ContentBox>
   );
 };

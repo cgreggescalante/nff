@@ -33,13 +33,9 @@ export default ({
 
 const DrawerContent = ({ toggleOpen }: { toggleOpen: () => void }) => (
   <List>
+    <ListItemLink path={'/'} name={'Activity Feed'} onClick={toggleOpen} />
     <ListItemLink path={'/events'} name={'Events'} onClick={toggleOpen} />
     <ListItemLink path={'/upload'} name={'Add Activity'} onClick={toggleOpen} />
-    <ListItemLink
-      path={'/user-dashboard'}
-      name={'Dashboard'}
-      onClick={toggleOpen}
-    />
     <ListItemLink
       path={'/leaderboard'}
       name={'Leaderboard'}

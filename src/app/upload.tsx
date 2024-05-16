@@ -11,6 +11,7 @@ import Box from '@mui/joy/Box';
 import ClearIcon from '@mui/icons-material/Clear';
 import useUploadController from '../controllers/useUploadController';
 import { WORKOUT_CONFIG } from '@shared-data';
+import ContentBox from '../components/contentBox';
 
 export default () => {
   const {
@@ -29,7 +30,7 @@ export default () => {
   // TODO: clear form after submission
 
   return (
-    <Box style={{ maxWidth: '500px' }}>
+    <ContentBox maxWidth={500}>
       <Typography level="h2" sx={{ mb: 3 }}>
         Add Activity
       </Typography>
@@ -121,6 +122,6 @@ export default () => {
           Clear
         </Button>
       </Box>
-    </Box>
+    </ContentBox>
   );
 };

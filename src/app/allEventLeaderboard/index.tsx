@@ -16,6 +16,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { DIVISIONS, EventWithMetadata } from '@shared-data';
 import { useSearchParams } from 'react-router-dom';
+import ContentBox from '../../components/contentBox';
 
 export default () => {
   const { data: events, isLoading } = useListEvents();
@@ -57,8 +58,10 @@ export default () => {
   };
 
   return (
-    <Box>
-      <Typography level={'h2'}>Leaderboard</Typography>
+    <ContentBox maxWidth={700}>
+      <Typography level={'h2'} mb={2}>
+        Leaderboard
+      </Typography>
 
       <LoadingWrapper loading={isLoading}>
         {events && selectedEvent && (
@@ -132,6 +135,6 @@ export default () => {
           </>
         )}
       </LoadingWrapper>
-    </Box>
+    </ContentBox>
   );
 };

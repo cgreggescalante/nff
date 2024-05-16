@@ -1,5 +1,4 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import UserDashboard from './userDashboard';
 import AdminTools from './adminTools';
 import { AdminRoute, EventOwnerRoute, Layout } from '../components';
 import Draft from './eventDetail/draft';
@@ -33,7 +32,6 @@ export default () => (
         }
       />
       <Route path="/upload" element={<Upload />} />
-      <Route path="/user-dashboard" element={<UserDashboard />} />
       <Route
         path="/admin-tools"
         element={
