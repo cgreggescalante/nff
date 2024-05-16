@@ -56,11 +56,10 @@ export default ({ children }: { children: ReactNode }) => {
       <Box
         style={{
           width: `100% - ${margin}px`,
-          maxWidth: 800,
           marginLeft: `${margin}px`,
           marginTop: headerHeight,
         }}
-        sx={{ p: 4 }}
+        sx={{ p: 2 }}
       >
         {children}
       </Box>
