@@ -20,7 +20,12 @@ export const getTeamsByEvent = async (
  */
 export const getTeamLeaderboard = async (
   eventUid: string
-): Promise<TeamWithMetaData[]> =>
+): Promise<(TeamWithMetaData & { rank: number })[]> =>
   getDocs(
     query(getTeamCollectionRef(eventUid), orderBy('points', 'desc'))
-  ).then((teams) => teams.docs.map((doc) => withMetaData(doc)));
+  ).then((teams) =>
+    teams.docs.map((doc, index) => ({
+      ...withMetaData(doc),
+      rank: index + 1,
+    }))
+  );

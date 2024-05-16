@@ -12,6 +12,7 @@ import { LoadingWrapper } from '../../components';
 import { useEffect, useState } from 'react';
 import { DIVISIONS, EventWithMetadata } from '@shared-data';
 import EventLeaderboard from '../eventDetail/eventLeaderboard';
+import TeamLeaderboard from '../eventDetail/teamLeaderboard';
 
 export default () => {
   const { data: events, isLoading } = useListEvents();
@@ -78,6 +79,9 @@ export default () => {
                   <Option key={''} value={''}>
                     All
                   </Option>
+                  <Option key={'teams'} value={'teams'}>
+                    Teams
+                  </Option>
                   {DIVISIONS.map(({ value }) => (
                     <Option key={value} value={value}>
                       {value}
@@ -87,11 +91,15 @@ export default () => {
               </FormControl>
             </Stack>
 
-            <Box height={'500px'} marginTop={1}>
-              <EventLeaderboard
-                event={selectedEvent}
-                division={selectedDivision}
-              />
+            <Box marginTop={1}>
+              {selectedDivision === 'teams' ? (
+                <TeamLeaderboard event={selectedEvent} />
+              ) : (
+                <EventLeaderboard
+                  event={selectedEvent}
+                  division={selectedDivision}
+                />
+              )}
             </Box>
           </>
         )}

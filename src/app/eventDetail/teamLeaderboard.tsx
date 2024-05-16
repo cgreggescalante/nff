@@ -7,79 +7,146 @@ import {
   useTeamLeaderboard,
   useUserLeaderboard,
 } from '../../providers/queries';
-import { IconButton, Table } from '@mui/joy';
-import { useState } from 'react';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
+import { AgGridReact } from 'ag-grid-react';
+import Popover from '@mui/material/Popover';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { LoadingWrapper } from '../../components';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import { Stack } from '@mui/joy';
+import './teamLeaderboard.css';
 
 interface TeamsListProps {
   event: EventWithMetadata;
 }
 
 export default ({ event }: TeamsListProps) => {
-  const { data: teams, isLoading: teamsLoading } = useTeamLeaderboard(
-    event.uid
-  );
-  const { data: entries, isLoading: usersLoading } = useUserLeaderboard(event);
+  const { data: teams } = useTeamLeaderboard(event.uid);
+  const { data: entries } = useUserLeaderboard(event);
+
+  const [colDefs, setColDefs] = useState<any[]>();
+
+  useEffect(() => {
+    if (!teams || !entries) return;
+
+    setColDefs([
+      { field: 'rank', headerName: 'Rank', flex: 1 },
+      {
+        field: 'name',
+        headerName: 'Team',
+        flex: 2,
+        cellRenderer: (p: any) => (
+          <TeamDetailPopover
+            team={
+              teams.find((team) => team.name === p.value) as TeamWithMetaData
+            }
+            entries={entries}
+          >
+            {p.value}
+          </TeamDetailPopover>
+        ),
+      },
+      {
+        headerName: 'Leader',
+        flex: 2,
+        valueGetter: (p: any) =>
+          entries.find((entry) => entry.uid === p.data.ownerEntryRef.id)
+            ?.userDisplayName,
+      },
+      {
+        field: 'points',
+        headerName: 'Points',
+        valueFormatter: (p: any) => Math.round(p.value).toLocaleString(),
+        flex: 1,
+      },
+    ]);
+  }, [teams, entries]);
 
   return (
-    <LoadingWrapper loading={teamsLoading && usersLoading}>
-      {teams && teams.length > 0 && entries && (
-        <Table hoverRow={true}>
-          <thead>
-            <tr>
-              <th style={{ width: '8%' }} />
-              <th>Team</th>
-              <th>Points</th>
-              <th>Members</th>
-            </tr>
-          </thead>
-          <tbody>
-            {teams.map((team, index) => (
-              <TeamWithDropdown team={team} entries={entries} key={index} />
-            ))}
-          </tbody>
-        </Table>
-      )}
-    </LoadingWrapper>
+    <div className="ag-theme-quartz">
+      <AgGridReact
+        domLayout={'autoHeight'}
+        rowData={teams}
+        columnDefs={colDefs}
+        autoSizeStrategy={{ type: 'fitCellContents' }}
+      />
+    </div>
   );
 };
 
-const TeamWithDropdown = ({
+const TeamDetailPopover = ({
   team,
   entries,
+  children,
 }: {
   team: TeamWithMetaData;
   entries: EntryWithMetaData[];
+  children: ReactNode;
 }) => {
-  const [open, setOpen] = useState(false);
+  const popoverRef = useRef<HTMLDivElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const toggleOpen = (event: React.MouseEvent<HTMLElement>) => {
+    if (anchorEl) {
+      setAnchorEl(null);
+    } else {
+      setAnchorEl(event.currentTarget);
+    }
+  };
+
+  const [colDefs] = useState<any[]>([
+    { field: 'rank', headerName: 'Rank', flex: 1 },
+    {
+      field: 'userDisplayName',
+      headerName: 'Name',
+      flex: 2,
+    },
+    {
+      field: 'points',
+      headerName: 'Points',
+      valueFormatter: (p: any) => Math.round(p.value).toLocaleString(),
+      flex: 1,
+    },
+  ]);
 
   return (
     <>
-      <tr>
-        <td>
-          <IconButton onClick={() => setOpen(!open)}>
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </td>
-        <td>{team.name}</td>
-        <td>{team.points}</td>
-        <td>{team.entryRefs.length}</td>
-      </tr>
-      {open && (
-        <>
-          {entries
-            .filter((entry) => entry.teamRef?.id === team.uid)
-            .map((entry, index) => (
-              <tr key={index}>
-                <td />
-                <td>{entry.userDisplayName}</td>
-                <td>{entry.points}</td>
-              </tr>
-            ))}
-        </>
-      )}
+      <div
+        aria-owns={anchorEl ? 'popover' : undefined}
+        aria-haspopup={'true'}
+        onClick={toggleOpen}
+      >
+        <Stack direction={'row'} alignItems={'center'}>
+          {children}
+          {anchorEl ? <KeyboardArrowDownIcon /> : <KeyboardArrowRightIcon />}
+        </Stack>
+      </div>
+      <Popover
+        ref={popoverRef}
+        id={'popover'}
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={() => setAnchorEl(null)}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        disableAutoFocus
+      >
+        <div className="ag-theme-quartz compact" style={{ width: '350px' }}>
+          <AgGridReact
+            domLayout={'autoHeight'}
+            rowData={entries.filter(
+              (entry) => entry.teamRef && entry.teamRef.id === team.uid
+            )}
+            columnDefs={colDefs}
+            // autoSizeStrategy={{ type: 'fitCellContents' }}
+          />
+        </div>
+      </Popover>
     </>
   );
 };
