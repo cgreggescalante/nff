@@ -6,12 +6,12 @@ import {
 import {
   useTeamLeaderboard,
   useUserLeaderboard,
-} from '../../../providers/queries';
+} from '../../providers/queries';
 import { IconButton, Table } from '@mui/joy';
 import { useState } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { LoadingWrapper } from '../../../components';
+import { LoadingWrapper } from '../../components';
 
 interface TeamsListProps {
   event: EventWithMetadata;

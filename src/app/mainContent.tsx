@@ -9,6 +9,7 @@ import Home from './home';
 import EventList from './eventList';
 import EventDetail from './eventDetail';
 import Upload from './upload';
+import AllEventLeaderboard from './allEventLeaderboard';
 
 export default () => (
   <Layout>
@@ -22,6 +23,7 @@ export default () => (
       <Route path="/events/:eventId" element={<EventDetail />} />
       <Route path="/events/:eventId/edit" element={<EditEvent />} />
       <Route path="/events/:eventId/register" element={<RegisterForEvent />} />
+      <Route path="/leaderboard" element={<AllEventLeaderboard />} />
       <Route
         path="/events/:eventId/draft"
         element={

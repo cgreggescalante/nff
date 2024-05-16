@@ -5,8 +5,8 @@ import { useState } from 'react';
 import { EventWithMetadata } from '@shared-data';
 import useEventRoute, {
   EventRouteProvider,
-} from '../../../../providers/useEventRoute';
-import { EventOwnerRoute } from '../../../../components';
+} from '../../../providers/useEventRoute';
+import { EventOwnerRoute } from '../../../components';
 import EditTeams from './editTeams';
 
 export default () => (

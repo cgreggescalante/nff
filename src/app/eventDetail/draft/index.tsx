@@ -7,10 +7,10 @@ import {
   TeamWithMetaData,
 } from '@shared-data';
 import { Stack, Table, Typography } from '@mui/joy';
-import { EventOwnerRoute } from '../../../../components';
+import { EventOwnerRoute } from '../../../components';
 import useEventRoute, {
   EventRouteProvider,
-} from '../../../../providers/useEventRoute';
+} from '../../../providers/useEventRoute';
 
 export default () => (
   <EventOwnerRoute>

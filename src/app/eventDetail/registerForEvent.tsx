@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { Button, Input, Radio, RadioGroup, Typography } from '@mui/joy';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEvent } from '../../../providers/queries';
+import { useEvent } from '../../providers/queries';
 
 export default () => {
   const { eventId } = useParams();

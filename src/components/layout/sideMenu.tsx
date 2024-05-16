@@ -40,5 +40,10 @@ const DrawerContent = ({ toggleOpen }: { toggleOpen: () => void }) => (
       name={'Dashboard'}
       onClick={toggleOpen}
     />
+    <ListItemLink
+      path={'/leaderboard'}
+      name={'Leaderboard'}
+      onClick={toggleOpen}
+    />
   </List>
 );

@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react';
 import { auth, CheckIsEventOwner, EventWithMetadata } from '@shared-data';
 import EventLeaderboard from './eventLeaderboard';
 import TeamLeaderboard from './teamLeaderboard';
-import useAuth from '../../../providers/useAuth';
+import useAuth from '../../providers/useAuth';
 import { Button, Typography } from '@mui/joy';
 import useEventRoute, {
   EventRouteProvider,
-} from '../../../providers/useEventRoute';
+} from '../../providers/useEventRoute';
 
 export default () => (
   <EventRouteProvider>
