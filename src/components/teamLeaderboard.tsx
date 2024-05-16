@@ -3,10 +3,7 @@ import {
   EventWithMetadata,
   TeamWithMetaData,
 } from '@shared-data';
-import {
-  useTeamLeaderboard,
-  useUserLeaderboard,
-} from '../../providers/queries';
+import { useTeamLeaderboard, useUserLeaderboard } from '../providers/queries';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { AgGridReact, CustomCellRendererProps } from 'ag-grid-react';
 import Popover from '@mui/material/Popover';

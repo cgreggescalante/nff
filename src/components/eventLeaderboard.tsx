@@ -1,5 +1,5 @@
 import { EntryWithMetaData, EventWithMetadata } from '@shared-data';
-import { useUserLeaderboard } from '../../providers/queries';
+import { useUserLeaderboard } from '../providers/queries';
 
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';

@@ -8,11 +8,13 @@ import {
 } from '@mui/joy';
 import Box from '@mui/joy/Box';
 import { useListEvents } from '../../providers/queries';
-import { LoadingWrapper } from '../../components';
+import {
+  EventLeaderboard,
+  LoadingWrapper,
+  TeamLeaderboard,
+} from '../../components';
 import React, { useEffect, useState } from 'react';
 import { DIVISIONS, EventWithMetadata } from '@shared-data';
-import EventLeaderboard from '../eventDetail/eventLeaderboard';
-import TeamLeaderboard from '../eventDetail/teamLeaderboard';
 import { useSearchParams } from 'react-router-dom';
 
 export default () => {
