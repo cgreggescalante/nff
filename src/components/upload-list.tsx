@@ -16,7 +16,7 @@ export const UploadList = ({ uid }: UploadListProps) => {
 
   return (
     <LoadingWrapper loading={isLoading}>
-      <Stack spacing={3} sx={{ maxWidth: '500px' }}>
+      <Stack spacing={2} sx={{ maxWidth: '500px' }}>
         {uploads && uploads.length === 0 ? (
           <Typography level={'h2'}>No uploads found</Typography>
         ) : (
