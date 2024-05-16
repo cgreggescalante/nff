@@ -8,7 +8,7 @@ import {
   useUserLeaderboard,
 } from '../../providers/queries';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
-import { AgGridReact } from 'ag-grid-react';
+import { AgGridReact, CustomCellRendererProps } from 'ag-grid-react';
 import Popover from '@mui/material/Popover';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
@@ -34,13 +34,8 @@ export default ({ event }: TeamsListProps) => {
         field: 'name',
         headerName: 'Team',
         flex: 2,
-        cellRenderer: (p: any) => (
-          <TeamDetailPopover
-            team={
-              teams.find((team) => team.name === p.value) as TeamWithMetaData
-            }
-            entries={entries}
-          >
+        cellRenderer: (p: CustomCellRendererProps) => (
+          <TeamDetailPopover team={p.data} entries={entries}>
             {p.value}
           </TeamDetailPopover>
         ),
@@ -59,7 +54,7 @@ export default ({ event }: TeamsListProps) => {
         flex: 1,
       },
     ]);
-  }, [teams, entries]);
+  }, [event, teams, entries]);
 
   return (
     <div className="ag-theme-quartz">
@@ -143,7 +138,6 @@ const TeamDetailPopover = ({
               (entry) => entry.teamRef && entry.teamRef.id === team.uid
             )}
             columnDefs={colDefs}
-            // autoSizeStrategy={{ type: 'fitCellContents' }}
           />
         </div>
       </Popover>
