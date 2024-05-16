@@ -18,8 +18,8 @@ export const getFirebaseClientAuth = (): Auth => {
   if (!app) app = initializeApp(firebaseConfig);
 
   if (!auth) {
-    connectAuthEmulator(auth, 'http://127.0.0.1:9099');
     auth = getAuth(app);
+    connectAuthEmulator(auth, 'http://127.0.0.1:9099');
   }
 
   return auth;

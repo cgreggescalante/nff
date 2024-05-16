@@ -8,10 +8,16 @@ import Box from '@mui/joy/Box';
 
 export default () => (
   <Box
+    m={0}
+    p={0}
     display={'flex'}
     alignItems={'center'}
     justifyContent={'center'}
     height={'100vh'}
+    width={'100vw'}
+    sx={{
+      backgroundColor: '#1976d2',
+    }}
   >
     <BrowserRouter basename={'/'}>
       <Routes>

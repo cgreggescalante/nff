@@ -3,7 +3,7 @@ import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '@shared-data';
 import { toast } from 'react-toastify';
-import { Button, Stack, Typography } from '@mui/joy';
+import { Button, Card, Stack, Typography } from '@mui/joy';
 import TextField from '@mui/material/TextField';
 
 export default () => {
@@ -54,64 +54,66 @@ export default () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ maxWidth: '500px' }}>
-      <Stack alignItems={'center'}>
-        <Typography level={'h2'} sx={{ mb: 2 }}>
-          Register
-        </Typography>
-        <Typography level={'body-sm'} sx={{ mb: 1 }}>
-          Name cannot be changed later.
-        </Typography>
-        <Stack spacing={1} direction={'row'} sx={{ mb: 2 }}>
+    <Card sx={{ maxWidth: 500 }}>
+      <form onSubmit={handleSubmit}>
+        <Stack alignItems={'center'}>
+          <Typography level={'h2'} sx={{ mb: 2 }}>
+            Register
+          </Typography>
+          <Typography level={'body-sm'} sx={{ mb: 1 }}>
+            Name cannot be changed later.
+          </Typography>
+          <Stack spacing={1} direction={'row'} sx={{ mb: 2 }}>
+            <TextField
+              label={'First Name'}
+              fullWidth
+              required
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+            <TextField
+              label={'Last Name'}
+              fullWidth
+              required
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
+          </Stack>
+
           <TextField
-            label={'First Name'}
+            label={'Email'}
+            type={'email'}
             fullWidth
             required
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            sx={{ mb: 2 }}
           />
-          <TextField
-            label={'Last Name'}
-            fullWidth
-            required
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-          />
+
+          <Stack spacing={1} direction={'row'} sx={{ mb: 2 }}>
+            <TextField
+              label={'Password'}
+              type={'password'}
+              fullWidth
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              sx={{ mb: 3 }}
+            />
+            <TextField
+              label={'Confirm Password'}
+              type={'password'}
+              fullWidth
+              required
+              value={passwordConfirm}
+              onChange={(e) => setPasswordConfirm(e.target.value)}
+              sx={{ mb: 3 }}
+            />
+          </Stack>
+
+          <Button type={'submit'}>Create Account</Button>
         </Stack>
-
-        <TextField
-          label={'Email'}
-          type={'email'}
-          fullWidth
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          sx={{ mb: 2 }}
-        />
-
-        <Stack spacing={1} direction={'row'} sx={{ mb: 2 }}>
-          <TextField
-            label={'Password'}
-            type={'password'}
-            fullWidth
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            sx={{ mb: 3 }}
-          />
-          <TextField
-            label={'Confirm Password'}
-            type={'password'}
-            fullWidth
-            required
-            value={passwordConfirm}
-            onChange={(e) => setPasswordConfirm(e.target.value)}
-            sx={{ mb: 3 }}
-          />
-        </Stack>
-
-        <Button type={'submit'}>Create Account</Button>
-      </Stack>
-    </form>
+      </form>
+    </Card>
   );
 };

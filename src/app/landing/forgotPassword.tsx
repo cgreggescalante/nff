@@ -1,4 +1,4 @@
-import { Button, Stack, Typography } from '@mui/joy';
+import { Button, Card, Stack, Typography } from '@mui/joy';
 import TextField from '@mui/material/TextField';
 import { FormEvent, useState } from 'react';
 import { sendPasswordResetEmail } from '@shared-data';
@@ -34,33 +34,37 @@ export default () => {
 
   if (emailSent) {
     return (
-      <Stack spacing={2} maxWidth={'400px'} alignItems={'center'}>
-        <Typography level={'h2'}>Submitted successfully!</Typography>
-        <Typography level={'body-md'} textAlign={'center'}>
-          If there is an account registered to that email, you'll receive a link
-          with instructions on resetting your password.
-        </Typography>
-      </Stack>
+      <Card sx={{ maxWidth: 400 }}>
+        <Stack spacing={2} alignItems={'center'}>
+          <Typography level={'h2'}>Submitted successfully!</Typography>
+          <Typography level={'body-md'} textAlign={'center'}>
+            If there is an account registered to that email, you'll receive a
+            link with instructions on resetting your password.
+          </Typography>
+        </Stack>
+      </Card>
     );
   }
 
   return (
-    <form onSubmit={submit} style={{ maxWidth: '400px' }}>
-      <Stack spacing={3} alignItems={'center'}>
-        <Typography level={'h2'}>Forgot Password</Typography>
-        <Stack direction={'row'} spacing={1}>
-          <TextField
-            size={'small'}
-            type={'email'}
-            label={'Email'}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <Button disabled={processing} type={'submit'}>
-            Submit
-          </Button>
+    <Card sx={{ maxWidth: 400 }}>
+      <form onSubmit={submit} style={{ maxWidth: '400px' }}>
+        <Stack spacing={3} alignItems={'center'}>
+          <Typography level={'h2'}>Forgot Password</Typography>
+          <Stack direction={'row'} spacing={1}>
+            <TextField
+              size={'small'}
+              type={'email'}
+              label={'Email'}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <Button disabled={processing} type={'submit'}>
+              Submit
+            </Button>
+          </Stack>
         </Stack>
-      </Stack>
-    </form>
+      </form>
+    </Card>
   );
 };

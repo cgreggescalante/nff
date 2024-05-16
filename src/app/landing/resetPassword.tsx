@@ -1,4 +1,4 @@
-import { Button, Stack, Typography } from '@mui/joy';
+import { Button, Card, Stack, Typography } from '@mui/joy';
 import { useLocation, useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import { auth } from '@shared-data';
@@ -43,39 +43,47 @@ export default () => {
 
   if (success) {
     return (
-      <Stack spacing={2}>
-        <Typography level={'h2'}>Password reset successfully!</Typography>
-        <Button onClick={() => navigate('/login')}>Login</Button>
-      </Stack>
+      <Card sx={{ maxWidth: 400 }}>
+        <Stack spacing={2}>
+          <Typography level={'h2'}>Password reset successfully!</Typography>
+          <Button onClick={() => navigate('/login')}>Login</Button>
+        </Stack>
+      </Card>
     );
   }
 
   if (!oobCode) {
-    return <Typography level={'h4'}>Invalid password reset link :(</Typography>;
+    return (
+      <Card sx={{ maxWidth: 400 }}>
+        <Typography level={'h4'}>Invalid password reset link :(</Typography>
+      </Card>
+    );
   }
 
   return (
-    <Stack maxWidth={'400px'}>
-      <Typography level={'h2'}>Reset Password</Typography>
-      <TextField
-        label={'New Password'}
-        type={'password'}
-        fullWidth
-        required
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        sx={{ mb: 3, mt: 4 }}
-      />
-      <TextField
-        label={'Confirm Password'}
-        type={'password'}
-        fullWidth
-        required
-        value={passwordConfirm}
-        onChange={(e) => setPasswordConfirm(e.target.value)}
-        sx={{ mb: 3 }}
-      />
-      <Button onClick={handleReset}>Submit</Button>
-    </Stack>
+    <Card sx={{ maxWidth: 400 }}>
+      <Stack>
+        <Typography level={'h2'}>Reset Password</Typography>
+        <TextField
+          label={'New Password'}
+          type={'password'}
+          fullWidth
+          required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          sx={{ mb: 3, mt: 4 }}
+        />
+        <TextField
+          label={'Confirm Password'}
+          type={'password'}
+          fullWidth
+          required
+          value={passwordConfirm}
+          onChange={(e) => setPasswordConfirm(e.target.value)}
+          sx={{ mb: 3 }}
+        />
+        <Button onClick={handleReset}>Submit</Button>
+      </Stack>
+    </Card>
   );
 };
