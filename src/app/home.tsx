@@ -1,4 +1,4 @@
-import { UploadList } from '../components';
+import { ActivityList } from '../components';
 import Typography from '@mui/joy/Typography';
 import { Option, Select, Stack } from '@mui/joy';
 import { useState } from 'react';
@@ -24,7 +24,7 @@ export default () => {
         </Select>
       </Stack>
 
-      <UploadList uid={user && activityFilter ? user.uid : undefined} />
+      <ActivityList uid={user && activityFilter ? user.uid : undefined} />
     </ContentBox>
   );
 };

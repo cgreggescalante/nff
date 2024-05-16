@@ -5,11 +5,11 @@ import { LoadingWrapper } from './loading-wrapper';
 import { getUnitType, Upload } from '@shared-data';
 import Grid from '@mui/material/Grid';
 
-export interface UploadListProps {
+export interface ActivityListProps {
   uid?: string;
 }
 
-export default ({ uid }: UploadListProps) => {
+export default ({ uid }: ActivityListProps) => {
   const { data: uploads, isLoading } = useListRecentUploads({
     userUid: uid,
     count: 25,

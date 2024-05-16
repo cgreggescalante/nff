@@ -1,9 +1,9 @@
 import Layout from './layout';
 import EventLeaderboard from './eventLeaderboard';
 import TeamLeaderboard from './teamLeaderboard';
-import UploadList from './uploadList';
+import ActivityList from './activityList';
 
-export { Layout, EventLeaderboard, TeamLeaderboard, UploadList };
+export { Layout, EventLeaderboard, TeamLeaderboard, ActivityList };
 
 export * from './routes';
 export * from './confirm-popup';

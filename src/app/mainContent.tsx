@@ -7,7 +7,7 @@ import EditEvent from './eventDetail/editEvent';
 import Home from './home';
 import EventList from './eventList';
 import EventDetail from './eventDetail';
-import Upload from './upload';
+import AddActivity from './addActivity';
 import AllEventLeaderboard from './allEventLeaderboard';
 
 export default () => (
@@ -31,7 +31,7 @@ export default () => (
           </EventOwnerRoute>
         }
       />
-      <Route path="/upload" element={<Upload />} />
+      <Route path="/add-activity" element={<AddActivity />} />
       <Route
         path="/admin-tools"
         element={
