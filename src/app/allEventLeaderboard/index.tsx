@@ -9,24 +9,50 @@ import {
 import Box from '@mui/joy/Box';
 import { useListEvents } from '../../providers/queries';
 import { LoadingWrapper } from '../../components';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DIVISIONS, EventWithMetadata } from '@shared-data';
 import EventLeaderboard from '../eventDetail/eventLeaderboard';
 import TeamLeaderboard from '../eventDetail/teamLeaderboard';
+import { useSearchParams } from 'react-router-dom';
 
 export default () => {
   const { data: events, isLoading } = useListEvents();
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [selectedEvent, setSelectedEvent] = useState<EventWithMetadata | null>(
     null
   );
-  const [selectedDivision, setSelectedDivision] = useState<string | null>('');
 
   useEffect(() => {
     if (!events) return;
 
-    setSelectedEvent(events[0]);
-  }, [events, isLoading]);
+    const eventId = searchParams.get('eventId') || events[0].uid;
+
+    if (eventId)
+      setSelectedEvent(
+        events.find((event) => event.uid === eventId) || events[0]
+      );
+    else {
+      setSelectedEvent(events[0]);
+    }
+  }, [searchParams, events, isLoading]);
+
+  const handleEventChange = (newEvent: EventWithMetadata | null) => {
+    if (!newEvent) return;
+    setSearchParams({
+      eventId: newEvent.uid,
+      division: searchParams.get('division') || '',
+    });
+    setSelectedEvent(newEvent);
+  };
+
+  const handleDivisionChange = (newDivision: string) => {
+    setSearchParams({
+      eventId: selectedEvent ? selectedEvent.uid : '',
+      division: newDivision,
+    });
+  };
 
   return (
     <Box>
@@ -53,7 +79,7 @@ export default () => {
                 <FormLabel>Select Event</FormLabel>
                 <Select
                   value={selectedEvent}
-                  onChange={(_, value) => setSelectedEvent(value)}
+                  onChange={(_, value) => handleEventChange(value)}
                 >
                   {events.map((event, index) => (
                     <Option key={index} value={event}>
@@ -73,8 +99,8 @@ export default () => {
               >
                 <FormLabel>Select Division</FormLabel>
                 <Select
-                  value={selectedDivision}
-                  onChange={(_, value) => setSelectedDivision(value)}
+                  value={searchParams.get('division')}
+                  onChange={(_, value) => handleDivisionChange(value || '')}
                 >
                   <Option key={''} value={''}>
                     All
@@ -92,12 +118,12 @@ export default () => {
             </Stack>
 
             <Box marginTop={1}>
-              {selectedDivision === 'teams' ? (
+              {searchParams.get('division') === 'teams' ? (
                 <TeamLeaderboard event={selectedEvent} />
               ) : (
                 <EventLeaderboard
                   event={selectedEvent}
-                  division={selectedDivision}
+                  division={searchParams.get('division')}
                 />
               )}
             </Box>
