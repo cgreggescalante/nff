@@ -3,8 +3,9 @@ import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '@shared-data';
 import { toast } from 'react-toastify';
-import { Button, Card, Stack, Typography } from '@mui/joy';
+import { Button, Card, Input, Stack, Typography } from '@mui/joy';
 import TextField from '@mui/material/TextField';
+import Layout from './layout';
 
 export default () => {
   const [firstName, setFirstName] = useState<string>('');
@@ -54,25 +55,26 @@ export default () => {
   };
 
   return (
-    <Card sx={{ maxWidth: 500 }}>
+    <Layout>
       <form onSubmit={handleSubmit}>
-        <Stack alignItems={'center'}>
-          <Typography level={'h2'} sx={{ mb: 2 }}>
+        <Stack alignItems={'center'} maxWidth={400}>
+          <Typography level={'h2'} sx={{ mb: 1 }}>
             Register
           </Typography>
           <Typography level={'body-sm'} sx={{ mb: 1 }}>
             Name cannot be changed later.
           </Typography>
-          <Stack spacing={1} direction={'row'} sx={{ mb: 2 }}>
-            <TextField
-              label={'First Name'}
+
+          <Stack spacing={1} direction={'row'} sx={{ mb: 2 }} maxWidth={400}>
+            <Input
+              placeholder={'First Name *'}
               fullWidth
               required
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
             />
-            <TextField
-              label={'Last Name'}
+            <Input
+              placeholder={'Last Name *'}
               fullWidth
               required
               value={lastName}
@@ -80,8 +82,8 @@ export default () => {
             />
           </Stack>
 
-          <TextField
-            label={'Email'}
+          <Input
+            placeholder={'Email *'}
             type={'email'}
             fullWidth
             required
@@ -90,30 +92,28 @@ export default () => {
             sx={{ mb: 2 }}
           />
 
-          <Stack spacing={1} direction={'row'} sx={{ mb: 2 }}>
-            <TextField
-              label={'Password'}
+          <Stack spacing={1} direction={'row'} sx={{ mb: 2 }} maxWidth={400}>
+            <Input
+              placeholder={'Password *'}
               type={'password'}
               fullWidth
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              sx={{ mb: 3 }}
             />
-            <TextField
-              label={'Confirm Password'}
+            <Input
+              placeholder={'Confirm Password *'}
               type={'password'}
               fullWidth
               required
               value={passwordConfirm}
               onChange={(e) => setPasswordConfirm(e.target.value)}
-              sx={{ mb: 3 }}
             />
           </Stack>
 
           <Button type={'submit'}>Create Account</Button>
         </Stack>
       </form>
-    </Card>
+    </Layout>
   );
 };

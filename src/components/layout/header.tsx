@@ -6,6 +6,7 @@ import useAuth from '../../providers/useAuth';
 import { auth } from '@shared-data';
 import { signOut } from 'firebase/auth';
 import { toast } from 'react-toastify';
+import Box from '@mui/joy/Box';
 
 export default ({
   height,
@@ -35,6 +36,7 @@ export default ({
         height: `${height}px`,
         width: '100%',
         zIndex: 1201,
+        backgroundColor: '#11508e',
       }}
     >
       <Toolbar>
@@ -55,11 +57,12 @@ export default ({
           color={'inherit'}
           underline={'none'}
           variant={'h6'}
-          sx={{ flexGrow: 1, textAlign: 'left' }}
+          sx={{ textAlign: 'left' }}
           onClick={() => navigate('/')}
         >
           NFF
         </Link>
+        <Box sx={{ flexGrow: 1 }} />
         {!authData.user ? (
           <Stack direction={'row'} spacing={1}>
             <Button onClick={() => navigate('/login')}>Login</Button>

@@ -3,9 +3,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@shared-data';
 import { toast } from 'react-toastify';
-import { Button, Card, Stack, Typography } from '@mui/joy';
-import TextField from '@mui/material/TextField';
+import { Button, Input, Typography } from '@mui/joy';
 import Box from '@mui/joy/Box';
+import Layout from './layout';
 
 export default () => {
   const navigate = useNavigate();
@@ -29,50 +29,61 @@ export default () => {
   };
 
   return (
-    <Card sx={{ width: 350 }}>
-      <form onSubmit={handleSubmit} autoComplete={'off'}>
-        <Stack alignItems={'center'} minWidth={'100%'}>
-          <Typography level={'h1'} sx={{ mb: 3 }}>
-            Login
-          </Typography>
+    <Layout>
+      <form
+        onSubmit={handleSubmit}
+        autoComplete={'off'}
+        style={{
+          alignItems: 'center',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <Typography level={'h2'} sx={{ mb: 2 }}>
+          Login
+        </Typography>
 
-          <TextField
-            label={'Email'}
-            type={'email'}
-            fullWidth
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            sx={{ mb: 1 }}
-          />
+        <Input
+          size={'md'}
+          placeholder={'Email *'}
+          type={'email'}
+          fullWidth
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          sx={{ mb: 1 }}
+        />
 
-          <TextField
-            label={'Password'}
-            type={'password'}
-            fullWidth
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            sx={{ mb: 2 }}
-          />
+        <Input
+          size={'md'}
+          placeholder={'Password *'}
+          type={'password'}
+          fullWidth
+          required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          sx={{ mb: 2 }}
+        />
 
-          <Box>
-            <Button type={'submit'}>Login</Button>
+        <Box sx={{ flexGrow: 1 }} />
 
-            <Button onClick={() => navigate('/register')} sx={{ mt: 2, ml: 1 }}>
-              Register
-            </Button>
-          </Box>
+        <Box>
+          <Button type={'submit'}>Login</Button>
 
-          <Button
-            onClick={() => navigate('/forgot-password')}
-            sx={{ mt: 1 }}
-            variant={'plain'}
-          >
-            Forgot password?
+          <Button onClick={() => navigate('/register')} sx={{ ml: 1 }}>
+            Register
           </Button>
-        </Stack>
+        </Box>
+
+        <Button
+          onClick={() => navigate('/forgot-password')}
+          sx={{ mt: 1 }}
+          variant={'plain'}
+        >
+          Forgot password?
+        </Button>
       </form>
-    </Card>
+    </Layout>
   );
 };
