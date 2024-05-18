@@ -12,13 +12,9 @@ export default () => {
 
       <Typography>Highland Park's summer training game</Typography>
 
-      <Box sx={{ flexGrow: 1 }} />
-
-      <Box mb={3}>
-        <Button onClick={() => navigate('/login')} sx={{ mt: 2 }}>
-          Login
-        </Button>
-        <Button onClick={() => navigate('/register')} sx={{ mt: 2, ml: 2 }}>
+      <Box mt={5}>
+        <Button onClick={() => navigate('/login')}>Login</Button>
+        <Button onClick={() => navigate('/register')} sx={{ ml: 2 }}>
           Register
         </Button>
       </Box>

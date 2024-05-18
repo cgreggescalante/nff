@@ -38,6 +38,7 @@ export default () => {
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
+          justifyContent: 'center',
         }}
       >
         <Typography level={'h2'} sx={{ mb: 2 }}>
@@ -65,8 +66,6 @@ export default () => {
           onChange={(e) => setPassword(e.target.value)}
           sx={{ mb: 2 }}
         />
-
-        <Box sx={{ flexGrow: 1 }} />
 
         <Box>
           <Button type={'submit'}>Login</Button>

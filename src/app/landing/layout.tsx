@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Card, CardContent, CardCover } from '@mui/joy';
+import { Card, CardContent } from '@mui/joy';
 import Box from '@mui/joy/Box';
 
 export default ({ children }: { children: ReactNode }) => (
@@ -17,7 +17,7 @@ export default ({ children }: { children: ReactNode }) => (
   >
     <Card
       orientation={'horizontal'}
-      size={'lg'}
+      size={'md'}
       sx={{
         height: 275,
         width: 'auto',
@@ -27,20 +27,13 @@ export default ({ children }: { children: ReactNode }) => (
         flexGrow: 1,
       }}
     >
-      <CardCover>
-        <img alt={'Runner having lots of fun'} src={'DSC_0058.JPG'} />
-      </CardCover>
-      <CardCover
-        sx={{
-          background: 'rgba(255,255,255,.9)',
-        }}
-      />
       <CardContent
         sx={{
           alignItems: 'center',
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
+          justifyContent: 'center',
         }}
       >
         {children}

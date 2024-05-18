@@ -3,8 +3,7 @@ import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '@shared-data';
 import { toast } from 'react-toastify';
-import { Button, Card, Input, Stack, Typography } from '@mui/joy';
-import TextField from '@mui/material/TextField';
+import { Button, Grid, Input, Typography } from '@mui/joy';
 import Layout from './layout';
 
 export default () => {
@@ -56,63 +55,76 @@ export default () => {
 
   return (
     <Layout>
-      <form onSubmit={handleSubmit}>
-        <Stack alignItems={'center'} maxWidth={400}>
-          <Typography level={'h2'} sx={{ mb: 1 }}>
-            Register
-          </Typography>
-          <Typography level={'body-sm'} sx={{ mb: 1 }}>
-            Name cannot be changed later.
-          </Typography>
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          alignItems: 'center',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+        }}
+      >
+        <Typography level={'h2'} sx={{ mb: 1 }}>
+          Register
+        </Typography>
+        <Typography level={'body-sm'} sx={{ mb: 1 }}>
+          Name cannot be changed later.
+        </Typography>
 
-          <Stack spacing={1} direction={'row'} sx={{ mb: 2 }} maxWidth={400}>
+        <Grid container sx={{ flexGrow: 1 }} rowSpacing={0.5} columnSpacing={1}>
+          <Grid xs={6}>
             <Input
-              placeholder={'First Name *'}
               fullWidth
+              placeholder={'First Name *'}
               required
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
             />
+          </Grid>
+          <Grid xs={6}>
             <Input
-              placeholder={'Last Name *'}
               fullWidth
+              placeholder={'Last Name *'}
               required
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
             />
-          </Stack>
+          </Grid>
 
-          <Input
-            placeholder={'Email *'}
-            type={'email'}
-            fullWidth
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            sx={{ mb: 2 }}
-          />
-
-          <Stack spacing={1} direction={'row'} sx={{ mb: 2 }} maxWidth={400}>
+          <Grid xs={12}>
             <Input
+              placeholder={'Email *'}
+              type={'email'}
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </Grid>
+
+          <Grid xs={6}>
+            <Input
+              fullWidth
               placeholder={'Password *'}
               type={'password'}
-              fullWidth
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+          </Grid>
+          <Grid xs={6}>
             <Input
+              fullWidth
               placeholder={'Confirm Password *'}
               type={'password'}
-              fullWidth
               required
               value={passwordConfirm}
               onChange={(e) => setPasswordConfirm(e.target.value)}
             />
-          </Stack>
+          </Grid>
+        </Grid>
 
-          <Button type={'submit'}>Create Account</Button>
-        </Stack>
+        <Button type={'submit'}>Create Account</Button>
       </form>
     </Layout>
   );

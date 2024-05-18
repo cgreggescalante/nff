@@ -1,5 +1,4 @@
 import { Button, Input, Stack, Typography } from '@mui/joy';
-import TextField from '@mui/material/TextField';
 import { FormEvent, useState } from 'react';
 import { sendPasswordResetEmail } from '@shared-data';
 import { toast } from 'react-toastify';
@@ -36,13 +35,15 @@ export default () => {
   return (
     <Layout>
       {emailSent ? (
-        <Stack spacing={3} alignItems={'center'}>
-          <Typography level={'h2'}>Submitted successfully!</Typography>
+        <>
+          <Typography level={'h2'} textAlign={'center'} mb={2}>
+            Success!
+          </Typography>
           <Typography level={'body-md'} textAlign={'center'}>
             If there is an account registered to that email, you'll receive a
             link with instructions on resetting your password.
           </Typography>
-        </Stack>
+        </>
       ) : (
         <form onSubmit={submit}>
           <Stack spacing={5} alignItems={'center'}>
