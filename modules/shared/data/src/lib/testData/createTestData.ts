@@ -1,6 +1,5 @@
 import { addEvent } from './fakeEvent';
 import { addUpload } from './fakeUpload';
-import { faker } from '@faker-js/faker';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import {
   addTeamMember,
@@ -13,6 +12,7 @@ import {
   registerUserForEvent,
 } from '@shared-data';
 import { User } from '@firebase/auth';
+import { randFullName } from '@ngneat/falso';
 
 const users: { uid: string; displayName: string }[] = [];
 
@@ -20,7 +20,7 @@ export const createTestData = async () => {
   console.log('Creating Users');
 
   for (let i = 0; i < 25; i++) {
-    users.push({ uid: `user-${i}`, displayName: faker.person.fullName() });
+    users.push({ uid: `user-${i}`, displayName: randFullName() });
   }
 
   console.log('Creating Events');
@@ -75,7 +75,7 @@ export const createUploads = async () => {
 export const createDraftTestData = async () => {
   const users = Array.from({ length: 50 }, (_, i) => ({
     uid: `draft-test-${i}`,
-    displayName: faker.person.fullName(),
+    displayName: randFullName(),
   }));
 
   const event = await createEvent({

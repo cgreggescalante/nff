@@ -1,11 +1,11 @@
-import { faker } from '@faker-js/faker';
 import { Event } from '../models';
 import { createEvent } from '../services/create';
+import { randAirline, randParagraph } from '@ngneat/falso';
 
 export const addEvent = async () => {
-  const rs = faker.number.int({ min: -30, max: 30 });
-  const rLength = faker.number.int({ min: 2, max: 30 });
-  const eventLength = faker.number.int({ min: 7, max: 70 });
+  const rs = Math.round(Math.random() * 60 - 30);
+  const rLength = Math.round(Math.random() * 28 + 2);
+  const eventLength = Math.round(Math.random() * 63 + 7);
 
   const registrationStart = new Date();
   registrationStart.setDate(registrationStart.getDate() + rs);
@@ -17,8 +17,8 @@ export const addEvent = async () => {
   endDate.setDate(endDate.getDate() + rs + rLength + 1 + eventLength);
 
   const event: Event = {
-    name: faker.airline.airline().name + ' TEST EVENT',
-    description: faker.lorem.paragraph(),
+    name: randAirline() + ' TEST EVENT',
+    description: randParagraph(),
     startDate,
     endDate,
     registrationStart,

@@ -1,26 +1,24 @@
-import { faker } from '@faker-js/faker';
 import { addWorkoutTypeToNumber, WorkoutTypeToNumber } from '../models';
 import { createUpload, updatePoints } from '../services/create';
 import { WORKOUT_CONFIG } from '../CONFIG';
+import { rand, randSentence } from '@ngneat/falso';
 
 export const addUpload = async (
   user: { uid: string; displayName: string },
   count: number
 ) => {
   let totalDuration: WorkoutTypeToNumber = {};
-  let totalActivtyPoints: WorkoutTypeToNumber = {};
+  let totalActivityPoints: WorkoutTypeToNumber = {};
 
   for (let i = 0; i < count; i++) {
     const date = new Date();
-    date.setDate(date.getDate() + faker.number.int({ min: -60, max: 0 }));
+    date.setDate(date.getDate() + Math.floor(Math.random() * -60));
 
-    const workoutTypes = faker.helpers
-      .shuffle(Object.values(WORKOUT_CONFIG))
-      .slice(0, 2);
+    const workoutTypes = rand(Object.values(WORKOUT_CONFIG), { length: 2 });
 
     const activities: WorkoutTypeToNumber = {};
     for (const type of workoutTypes) {
-      activities[type.name] = faker.number.int({ min: 1, max: 25 });
+      activities[type.name] = Math.round(Math.random() * 30 + 1);
     }
 
     const activityPoints: WorkoutTypeToNumber = {};
@@ -29,14 +27,14 @@ export const addUpload = async (
     }
 
     totalDuration = addWorkoutTypeToNumber(totalDuration, activities);
-    totalActivtyPoints = addWorkoutTypeToNumber(
+    totalActivityPoints = addWorkoutTypeToNumber(
       activityPoints,
-      totalActivtyPoints
+      totalActivityPoints
     );
 
     await createUpload({
       date,
-      description: faker.lorem.sentence(),
+      description: randSentence(),
       userId: user.uid,
       activities,
       activityPoints,
@@ -45,5 +43,5 @@ export const addUpload = async (
     });
   }
 
-  await updatePoints(user.uid, totalDuration, totalActivtyPoints);
+  await updatePoints(user.uid, totalDuration, totalActivityPoints);
 };
