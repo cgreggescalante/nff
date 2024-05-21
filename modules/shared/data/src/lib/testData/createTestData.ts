@@ -94,7 +94,7 @@ export const createDraftTestData = async () => {
       event,
       users[i] as User,
       100,
-      DIVISIONS[Math.random() * DIVISIONS.length].value
+      DIVISIONS[Math.floor(Math.random() * DIVISIONS.length)].value
     );
     entries.push(entry);
   }
