@@ -1,6 +1,12 @@
-import React, { ChangeEvent } from 'react';
-import { Button, Table } from '@mui/joy';
-import TextField from '@mui/material/TextField';
+import React from 'react';
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Table,
+  Textarea,
+} from '@mui/joy';
 import Typography from '@mui/joy/Typography';
 import MenuItem from '@mui/joy/MenuItem';
 import Dropdown from '@mui/joy/Dropdown';
@@ -27,7 +33,6 @@ export default () => {
   } = useUploadController();
 
   // TODO: add flag to tell the user if submission is still being processed
-  // TODO: clear form after submission
 
   return (
     <ContentBox maxWidth={500}>
@@ -48,10 +53,18 @@ export default () => {
             <tr key={index}>
               <td>
                 <Typography level={'body-md'}>{workout}</Typography>
+                <Typography level={'body-xs'} mt={0}>
+                  (
+                  {WORKOUT_CONFIG.find((w) => w.name === workout)?.units ===
+                  'distance'
+                    ? 'miles'
+                    : 'minutes'}
+                  )
+                </Typography>
               </td>
               <td>
-                <TextField
-                  size={'small'}
+                <Input
+                  size={'sm'}
                   fullWidth
                   type={'number'}
                   value={workouts[workout]}
@@ -63,7 +76,7 @@ export default () => {
               <td>
                 <Button
                   onClick={removeWorkout(workout)}
-                  style={{ height: '100%' }}
+                  style={{ height: '80%' }}
                 >
                   <ClearIcon />
                 </Button>
@@ -84,30 +97,27 @@ export default () => {
           Add Workout
         </MenuButton>
         <Menu>
-          {Object.values(WORKOUT_CONFIG)
-            .filter(
-              (workoutType) => !includedWorkouts.includes(workoutType.name)
-            )
-            .map((workout, index) => (
-              <MenuItem key={index} onClick={addWorkout(workout.name)}>
-                <Typography>{workout.name}</Typography>
-              </MenuItem>
-            ))}
+          {WORKOUT_CONFIG.filter(
+            (workoutType) => !includedWorkouts.includes(workoutType.name)
+          ).map((workout, index) => (
+            <MenuItem key={index} onClick={addWorkout(workout.name)}>
+              <Typography>{workout.name}</Typography>
+            </MenuItem>
+          ))}
         </Menu>
       </Dropdown>
 
-      <TextField
-        value={description}
-        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-          setDescription(e.target.value)
-        }
-        label={'Description'}
-        fullWidth
-        multiline
-        minRows={2}
-        maxRows={16}
-        sx={{ mb: 3 }}
-      />
+      <FormControl>
+        <FormLabel>Description</FormLabel>
+        <Textarea
+          placeholder={'Describe your activity...'}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          minRows={2}
+          maxRows={16}
+          sx={{ mb: 3 }}
+        />
+      </FormControl>
 
       <Box>
         <Button onClick={handleSubmit}>Submit</Button>
