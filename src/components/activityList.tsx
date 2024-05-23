@@ -9,6 +9,13 @@ export interface ActivityListProps {
   uid?: string;
 }
 
+const overkillNumberFormatter = (num: number) =>
+  num > 10000
+    ? num.toLocaleString(undefined, {
+        notation: 'scientific',
+      })
+    : Math.round(num * 100) / 100;
+
 export default ({ uid }: ActivityListProps) => {
   const { data: uploads, isLoading } = useListRecentUploads({
     userUid: uid,
@@ -65,12 +72,13 @@ const UploadCard = ({ upload }: UploadCardProps) => (
             </td>
             <td>
               <Typography ml={1} level={'body-sm'}>
-                {value} {getUnitType(activity) === 'time' ? 'minutes' : 'miles'}
+                {overkillNumberFormatter(value)}{' '}
+                {getUnitType(activity) === 'time' ? 'minutes' : 'miles'}
               </Typography>
             </td>
             <td>
               <Typography ml={1} level={'body-sm'}>
-                {Math.round(upload.activityPoints[activity] * 100) / 100}
+                {overkillNumberFormatter(upload.activityPoints[activity])}
               </Typography>
             </td>
           </tr>
@@ -84,7 +92,7 @@ const UploadCard = ({ upload }: UploadCardProps) => (
           </td>
           <td>
             <Typography ml={1} level={'body-sm'}>
-              {Math.round(upload.points * 100) / 100}
+              {overkillNumberFormatter(upload.points)}
             </Typography>
           </td>
         </tr>
