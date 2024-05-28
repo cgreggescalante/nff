@@ -19,10 +19,7 @@ import { useSearchParams } from 'react-router-dom';
 import ContentBox from '../../components/contentBox';
 
 export default () => {
-  // const { data: events, isLoading } = useListEvents();
-
-  const events = [] as EventWithMetadata[];
-  const isLoading = false;
+  const { data: events, isLoading } = useListEvents();
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -67,7 +64,7 @@ export default () => {
       </Typography>
 
       <LoadingWrapper loading={isLoading}>
-        {events.length === 0 && (
+        {events && events.length === 0 && (
           <Typography level={'body-md'}>
             No events yet! Check back later.
           </Typography>

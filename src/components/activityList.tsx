@@ -1,8 +1,7 @@
 import { Card, Stack, Table, Typography } from '@mui/joy';
-import { useListRecentUploads } from '../providers/queries';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { LoadingWrapper } from './loading-wrapper';
-import { getUnitType, Upload } from '@shared-data';
+import { getUnitType, listRecentUploads, Upload } from '@shared-data';
 import Grid from '@mui/material/Grid';
 
 export interface ActivityListProps {
@@ -17,9 +16,19 @@ const overkillNumberFormatter = (num: number) =>
     : Math.round(num * 100) / 100;
 
 export default ({ uid }: ActivityListProps) => {
-  const { data: uploads, isLoading } = useListRecentUploads({
-    userUid: uid,
-    count: 25,
+  const [uploads, setUploads] = useState<Upload[] | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    listRecentUploads({ userUid: uid, count: 25 })
+      .then((uploads) => {
+        setUploads(uploads);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setIsLoading(false);
+      });
   });
 
   return (
@@ -29,7 +38,7 @@ export default ({ uid }: ActivityListProps) => {
           <Typography level={'h3'}>No uploads found</Typography>
         ) : (
           uploads?.map((upload, index) => (
-            <UploadCard key={index} upload={upload} />
+            <ActivityCard key={index} upload={upload} />
           ))
         )}
       </Stack>
@@ -41,7 +50,7 @@ export interface UploadCardProps {
   upload: Upload;
 }
 
-const UploadCard = ({ upload }: UploadCardProps) => (
+const ActivityCard = ({ upload }: UploadCardProps) => (
   <Card>
     <Grid container alignItems={'flex-end'} spacing={1}>
       <Grid item>
@@ -62,6 +71,25 @@ const UploadCard = ({ upload }: UploadCardProps) => (
     )}
 
     <Table size={'sm'} variant={'outlined'} borderAxis={'bothBetween'}>
+      <thead>
+        <tr>
+          <th>
+            <Typography ml={1} level={'body-sm'}>
+              Activity
+            </Typography>
+          </th>
+          <th>
+            <Typography ml={1} level={'body-sm'}>
+              Duration
+            </Typography>
+          </th>
+          <th>
+            <Typography ml={1} level={'body-sm'}>
+              Points
+            </Typography>
+          </th>
+        </tr>
+      </thead>
       <tbody>
         {Object.entries(upload.activities).map(([activity, value]) => (
           <tr key={activity}>
