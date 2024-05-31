@@ -29,7 +29,7 @@ export default ({ uid }: ActivityListProps) => {
         console.error(err);
         setIsLoading(false);
       });
-  });
+  }, [uid]);
 
   return (
     <LoadingWrapper loading={isLoading}>
