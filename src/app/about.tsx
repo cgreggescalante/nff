@@ -93,7 +93,8 @@ export default () => (
       </a>
       <Typography>
         That's the total time I've spent working on this project since I started
-        in August of 2023. Seems like a bit much :/
+        in August of 2023. Seems like a bit much :/. It works out to about 2
+        minutes per line of code.
       </Typography>
     </Box>
   </ContentBox>
