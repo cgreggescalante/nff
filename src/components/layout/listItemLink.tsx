@@ -11,6 +11,11 @@ export default ({
   onClick: () => void;
 }) => (
   <ListItem
+    slotProps={{
+      root: {
+        style: { color: '#11508e' },
+      },
+    }}
     sx={{ paddingBottom: 1 }}
     component={(props) => <RouterLink {...props} to={path} onClick={onClick} />}
   >
