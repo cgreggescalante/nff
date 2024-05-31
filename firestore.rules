@@ -52,5 +52,10 @@ service cloud.firestore {
             allow delete: if exists(/databases/$(database)/documents/events/$(eventId)/owners/$(request.auth.uid));
         }
     }
+
+    match /messages/{messageId} {
+        allow read;
+        allow write: if isAdmin();
+    }
   }
 }

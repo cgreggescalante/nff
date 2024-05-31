@@ -1,4 +1,5 @@
 import { Timestamp } from '@firebase/firestore';
+import { WithMetaData } from './Models';
 
 export interface MessageData {
   text: string;
@@ -11,3 +12,5 @@ export interface Message {
   link: string;
   expirationDate: Date;
 }
+
+export type MessageWithMetadata = Message & WithMetaData<Message>;
