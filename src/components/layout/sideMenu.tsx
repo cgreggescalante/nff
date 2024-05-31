@@ -1,5 +1,6 @@
 import { Drawer, List } from '@mui/material';
 import ListItemLink from './listItemLink';
+import { Divider } from '@mui/joy';
 
 export default ({
   headerHeight,
@@ -45,5 +46,7 @@ const DrawerContent = ({ toggleOpen }: { toggleOpen: () => void }) => (
       name={'Leaderboard'}
       onClick={toggleOpen}
     />
+    <Divider />
+    <ListItemLink path={'/about'} name={'About'} onClick={toggleOpen} />
   </List>
 );

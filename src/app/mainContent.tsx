@@ -9,11 +9,13 @@ import EventList from './eventList';
 import EventDetail from './eventDetail';
 import AddActivity from './addActivity';
 import AllEventLeaderboard from './allEventLeaderboard';
+import About from './about';
 
 export default () => (
   <Layout>
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/about" element={<About />} />
       <Route path="/register" element={<Navigate replace to={'/'} />} />
       <Route path="/login" element={<Navigate replace to={'/'} />} />
       <Route path="/forgot-password" element={<Navigate replace to={'/'} />} />
