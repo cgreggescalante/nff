@@ -13,6 +13,7 @@ import {
   UploadWithMetaData,
   WithMetaData,
 } from './models';
+import { Message, MessageData } from './models/Message';
 
 export const dataConverter = <T>(): FirestoreDataConverter<T> => ({
   toFirestore: (data: T) => Object.assign({}, data),
@@ -22,6 +23,19 @@ export const dataConverter = <T>(): FirestoreDataConverter<T> => ({
 
 export const TeamConverter = dataConverter<Team>();
 export const EntryConverter = dataConverter<Entry>();
+export const MessageConverter: FirestoreDataConverter<Message> = {
+  toFirestore: (message: Message) => Object.assign({}, message),
+  fromFirestore: (snapshot, options): Message => {
+    const data = snapshot.data(options) as MessageData;
+
+    return {
+      ...withMetaData(snapshot as QueryDocumentSnapshot<Message>, options),
+      text: data.text,
+      link: data.link,
+      expirationDate: data.expirationDate.toDate(),
+    };
+  },
+};
 
 export const EventConverter: FirestoreDataConverter<Event> = {
   toFirestore: (event: Event) => Object.assign({}, event),

@@ -9,11 +9,15 @@ import {
 import {
   EntryConverter,
   EventConverter,
+  MessageConverter,
   TeamConverter,
   UploadConverter,
 } from '../converters';
 import { Entry, Team, Event } from '@shared-data';
 
+export const MessageCollectionRef = collection(db, 'messages').withConverter(
+  MessageConverter
+);
 export const EventCollectionRef = collection(db, 'events').withConverter(
   EventConverter
 );

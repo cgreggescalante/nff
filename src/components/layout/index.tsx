@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Box from '@mui/joy/Box';
 import Header from './header';
 import SideMenu from './sideMenu';
+import MessageBanner from '../messageBanner';
 
 const drawerWidth = 150;
 const headerHeight = 60;
@@ -59,9 +60,9 @@ export default ({ children }: { children: ReactNode }) => {
           marginLeft: `${margin}px`,
           marginTop: headerHeight,
         }}
-        sx={{ p: 2 }}
       >
-        {children}
+        <MessageBanner />
+        <Box sx={{ p: 2 }}>{children}</Box>
       </Box>
     </BrowserRouter>
   );

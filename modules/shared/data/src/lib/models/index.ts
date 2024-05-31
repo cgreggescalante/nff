@@ -4,3 +4,4 @@ export * from './Models';
 export * from './Team';
 export * from './Upload';
 export * from './WorkoutType';
+export * from './Message';
