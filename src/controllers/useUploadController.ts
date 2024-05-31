@@ -7,6 +7,7 @@ import {
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import useAuth from '../providers/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 interface UploadController {
   description: string;
@@ -25,6 +26,8 @@ interface UploadController {
 
 export default (): UploadController => {
   const userInfo = useAuth();
+
+  const navigate = useNavigate();
 
   const [description, setDescription] = useState<string>('');
   const [workouts, setWorkouts] = useState<WorkoutTypeToNumber>({});
@@ -84,6 +87,7 @@ export default (): UploadController => {
         setDescription('');
         setWorkouts({});
         setIncludedWorkouts([]);
+        navigate('/');
         toast.success('Workouts added successfully');
       })
       .catch((error) => {

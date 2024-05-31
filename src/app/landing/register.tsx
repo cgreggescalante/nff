@@ -33,7 +33,8 @@ export default () => {
           displayName: `${firstName} ${lastName}`,
         })
           .then(() => {
-            navigate('/');
+            navigate('/events');
+            toast.success('Register for an event to get started!');
           })
           .catch((error) => {
             console.error('Error while updating user profile: ', error);
