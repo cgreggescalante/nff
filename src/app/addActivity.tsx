@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Button,
   FormControl,
+  FormHelperText,
   FormLabel,
   Input,
   Table,
@@ -66,6 +67,7 @@ export default () => {
                 <Input
                   size={'sm'}
                   fullWidth
+                  slotProps={{ input: { min: 0 } }}
                   type={'number'}
                   value={workouts[workout]}
                   onChange={(e) =>
@@ -107,16 +109,19 @@ export default () => {
         </Menu>
       </Dropdown>
 
-      <FormControl>
+      <FormControl sx={{ mb: 3 }}>
         <FormLabel>Description</FormLabel>
         <Textarea
+          slotProps={{ textarea: { maxLength: 256 } }}
           placeholder={'Describe your activity...'}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           minRows={2}
           maxRows={16}
-          sx={{ mb: 3 }}
         />
+        <FormHelperText>
+          {256 - description.length} characters remaining
+        </FormHelperText>
       </FormControl>
 
       <Box>
