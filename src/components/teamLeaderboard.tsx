@@ -1,9 +1,4 @@
-import {
-  EntryWithMetaData,
-  EventWithMetadata,
-  TeamWithMetaData,
-} from '@shared-data';
-import { useTeamLeaderboard, useUserLeaderboard } from '../providers/queries';
+import { EntryWithMetaData, TeamWithMetaData } from '@shared-data';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { AgGridReact, CustomCellRendererProps } from 'ag-grid-react';
 import Popover from '@mui/material/Popover';
@@ -12,14 +7,12 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { Stack } from '@mui/joy';
 import './teamLeaderboard.css';
 
-interface TeamsListProps {
-  event: EventWithMetadata;
+interface TeamLeaderboardProps {
+  teams: (TeamWithMetaData & { rank: number })[] | undefined;
+  entries: (EntryWithMetaData & { rank: number })[] | undefined;
 }
 
-export default ({ event }: TeamsListProps) => {
-  const { data: teams } = useTeamLeaderboard(event.uid);
-  const { data: entries } = useUserLeaderboard(event);
-
+export default ({ teams, entries }: TeamLeaderboardProps) => {
   const [colDefs, setColDefs] = useState<any[]>();
 
   useEffect(() => {
@@ -51,7 +44,7 @@ export default ({ event }: TeamsListProps) => {
         flex: 1,
       },
     ]);
-  }, [event, teams, entries]);
+  }, [teams, entries]);
 
   return (
     <div className="ag-theme-quartz">

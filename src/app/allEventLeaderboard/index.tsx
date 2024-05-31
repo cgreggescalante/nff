@@ -7,7 +7,11 @@ import {
   Stack,
 } from '@mui/joy';
 import Box from '@mui/joy/Box';
-import { useListEvents } from '../../providers/queries';
+import {
+  useListEvents,
+  useTeamLeaderboard,
+  useUserLeaderboard,
+} from '../../providers/queries';
 import {
   EventLeaderboard,
   LoadingWrapper,
@@ -128,18 +132,31 @@ export default () => {
             </Stack>
 
             <Box marginTop={1}>
-              {searchParams.get('division') === 'teams' ? (
-                <TeamLeaderboard event={selectedEvent} />
-              ) : (
-                <EventLeaderboard
-                  event={selectedEvent}
-                  division={searchParams.get('division')}
-                />
-              )}
+              <LeaderboardContainer
+                event={selectedEvent}
+                division={searchParams.get('division')}
+              />
             </Box>
           </>
         )}
       </LoadingWrapper>
     </ContentBox>
+  );
+};
+
+const LeaderboardContainer = ({
+  event,
+  division,
+}: {
+  event: EventWithMetadata;
+  division: string | null;
+}) => {
+  const { data: teams } = useTeamLeaderboard(event.uid);
+  const { data: entries } = useUserLeaderboard(event);
+
+  return division === 'teams' ? (
+    <TeamLeaderboard teams={teams} entries={entries} />
+  ) : (
+    <EventLeaderboard entries={entries} division={division} />
   );
 };

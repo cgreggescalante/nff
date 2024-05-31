@@ -1,12 +1,15 @@
-import { auth, DIVISIONS, registerUserForEvent } from '@shared-data';
+import { DIVISIONS, registerUserForEvent } from '@shared-data';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { Button, Input, Radio, RadioGroup, Typography } from '@mui/joy';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEvent } from '../../providers/queries';
+import ContentBox from '../../components/contentBox';
+import useAuth from '../../providers/useAuth';
 
 export default () => {
   const { eventId } = useParams();
+  const { user } = useAuth();
 
   if (!eventId) throw new Error('Event ID not provided');
 
@@ -18,9 +21,9 @@ export default () => {
   const [division, setDivision] = useState<string>('');
 
   const register = () => {
-    if (goal <= 0 || division === '' || !event) return;
+    if (goal <= 0 || division === '' || !event || !user) return;
 
-    registerUserForEvent(event, auth.currentUser!, goal, division)
+    registerUserForEvent(event, user, goal, division)
       .then(() => navigate(`/events/${event.uid}`))
       .catch(() => {
         toast.error('Could not register for event');
@@ -28,7 +31,7 @@ export default () => {
   };
 
   return (
-    <>
+    <ContentBox maxWidth={500}>
       <Typography level={'h2'}>Register for Event</Typography>
       <Typography level={'body-lg'} sx={{ mt: 2, mb: 1 }}>
         Please set a realistic goal.
@@ -65,6 +68,6 @@ export default () => {
       >
         Cancel
       </Button>
-    </>
+    </ContentBox>
   );
 };

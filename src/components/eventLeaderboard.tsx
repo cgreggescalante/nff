@@ -1,5 +1,4 @@
-import { EntryWithMetaData, EventWithMetadata } from '@shared-data';
-import { useUserLeaderboard } from '../providers/queries';
+import { EntryWithMetaData } from '@shared-data';
 
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
@@ -7,13 +6,11 @@ import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { useEffect, useState } from 'react';
 
 interface EventLeaderboardProps {
-  event: EventWithMetadata;
+  entries: (EntryWithMetaData & { rank: number })[] | undefined;
   division?: string | null;
 }
 
-export default ({ event, division }: EventLeaderboardProps) => {
-  const { data: entries } = useUserLeaderboard(event);
-
+export default ({ entries, division }: EventLeaderboardProps) => {
   const [colDefs] = useState([
     { field: 'rank', headerName: 'Rank', flex: 1 },
     { field: 'userDisplayName', headerName: 'Name', flex: 4 },
