@@ -30,9 +30,11 @@ export const getUserLeaderboard = async (
 };
 
 export const getEntriesByEvent = async (
-  event: EventWithMetadata
+  event: EventWithMetadata | string
 ): Promise<EntryWithMetaData[]> => {
-  const snapshot = await getDocs(getEntryCollectionRef(event.uid));
+  const snapshot = await getDocs(
+    getEntryCollectionRef(typeof event === 'string' ? event : event.uid)
+  );
 
   return snapshot.docs.map((doc) => withMetaData(doc));
 };

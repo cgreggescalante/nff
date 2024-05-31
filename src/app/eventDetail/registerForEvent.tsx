@@ -1,5 +1,9 @@
-import { DIVISIONS, registerUserForEvent } from '@shared-data';
-import { useState } from 'react';
+import {
+  DIVISIONS,
+  isUserRegisteredForEvent,
+  registerUserForEvent,
+} from '@shared-data';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Button, Input, Radio, RadioGroup, Typography } from '@mui/joy';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -29,6 +33,19 @@ export default () => {
         toast.error('Could not register for event');
       });
   };
+
+  useEffect(() => {
+    if (!eventId || !user) return;
+
+    isUserRegisteredForEvent(user?.uid || '', eventId).then((isRegistered) => {
+      if (isRegistered) {
+        toast.error('You are already registered for this event', {
+          toastId: 'already-registered',
+        });
+        navigate(`/events/${eventId}`);
+      }
+    });
+  }, [user, eventId]);
 
   return (
     <ContentBox maxWidth={500}>
