@@ -1,12 +1,11 @@
 import {
-  Select,
-  Typography,
-  Option,
-  FormLabel,
   FormControl,
+  FormLabel,
+  Option,
+  Select,
   Stack,
+  Typography,
 } from '@mui/joy';
-import Box from '@mui/joy/Box';
 import {
   useListEvents,
   useTeamLeaderboard,
@@ -80,6 +79,7 @@ export default () => {
               spacing={1}
               sx={{
                 width: '100%',
+                mb: 1,
               }}
             >
               <FormControl
@@ -131,12 +131,10 @@ export default () => {
               </FormControl>
             </Stack>
 
-            <Box marginTop={1}>
-              <LeaderboardContainer
-                event={selectedEvent}
-                division={searchParams.get('division')}
-              />
-            </Box>
+            <LeaderboardContainer
+              event={selectedEvent}
+              division={searchParams.get('division')}
+            />
           </>
         )}
       </LoadingWrapper>
