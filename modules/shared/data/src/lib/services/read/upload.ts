@@ -8,7 +8,7 @@ import {
 import { UploadCollectionRef } from '../CollectionRefs';
 import { withMetaData } from './all';
 import { UploadConverter } from '../../converters';
-import { Upload, WithMetaData } from '../../models';
+import { Upload, UploadWithMetaData, WithMetaData } from '../../models';
 
 export const listRecentUploads = async ({
   userUid,
@@ -37,5 +37,5 @@ export const listRecentUploads = async ({
     uploadQuery.withConverter(UploadConverter)
   );
 
-  return snapshot.docs.map((doc) => withMetaData(doc));
+  return snapshot.docs.map((doc) => withMetaData(doc)) as UploadWithMetaData[];
 };
