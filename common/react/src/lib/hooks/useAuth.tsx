@@ -26,10 +26,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     return auth.onAuthStateChanged(async (user) => {
       if (user) {
-        setUser(user);
         await CheckAdminStatus(user.uid).then((isAdmin) => {
           if (isAdmin) setIsAdmin(true);
         });
+        setUser(user);
       } else {
         setIsAdmin(false);
         setUser(null);
