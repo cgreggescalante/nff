@@ -3,10 +3,12 @@ import { EventWithMetadata, listEvents } from '@shared-data';
 import { deleteEvent } from '@shared-data';
 import CreateEvent from './createEvent';
 import { toast } from 'react-toastify';
-import { Button, Table } from '@mui/joy';
+import { Button, Modal, ModalClose, ModalDialog, Table } from '@mui/joy';
 import { ConfirmPopup } from 'common-react';
+import EditEvent from '../editEvent';
 
 export default () => {
+  const [selectedEvent, setSelectedEvent] = useState<EventWithMetadata>();
   const [events, setEvents] = useState<EventWithMetadata[]>();
   const [error, setError] = useState<string>();
   const [showCreateEvent, setShowCreateEvent] = useState<boolean>(false);
@@ -31,6 +33,14 @@ export default () => {
 
   return (
     <div>
+      {selectedEvent && (
+        <Modal open={true} onClose={() => setSelectedEvent(null)}>
+          <ModalDialog>
+            <ModalClose />
+            <EditEvent event={selectedEvent} />
+          </ModalDialog>
+        </Modal>
+      )}
       <Table borderAxis={'bothBetween'}>
         <thead>
           <tr>
@@ -45,6 +55,7 @@ export default () => {
               key={index}
               event={event}
               index={index}
+              onEdit={() => setSelectedEvent(event)}
               onDelete={() => handleDelete(event.uid ? event.uid : '')}
             />
           ))}
@@ -74,10 +85,11 @@ export default () => {
 interface EventRowProps {
   event: EventWithMetadata;
   index: number;
+  onEdit: () => void;
   onDelete: () => void;
 }
 
-const EventRow = ({ event, index, onDelete }: EventRowProps) => {
+const EventRow = ({ event, index, onDelete, onEdit }: EventRowProps) => {
   const [show, setShow] = useState<boolean>(false);
   const onConfirm = () => {
     setShow(false);
@@ -89,6 +101,9 @@ const EventRow = ({ event, index, onDelete }: EventRowProps) => {
       <td>
         <Button size={'sm'} color={'danger'} onClick={() => setShow(true)}>
           Delete
+        </Button>
+        <Button size={'sm'} onClick={onEdit}>
+          Edit
         </Button>
       </td>
       <td>{event.name}</td>

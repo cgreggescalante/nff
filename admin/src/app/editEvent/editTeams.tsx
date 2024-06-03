@@ -7,7 +7,7 @@ import {
 } from '@shared-data';
 import { useEffect, useState } from 'react';
 import { Button, Grid, Input, Typography } from '@mui/joy';
-import useEditTeamController from '../../../controllers/useEditTeamController';
+import useEditTeamController from './useEditTeamController';
 import { ConfirmPopup } from 'common-react';
 
 export default ({ event }: { event: EventWithMetadata }) => {

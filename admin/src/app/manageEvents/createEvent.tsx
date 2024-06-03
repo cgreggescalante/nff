@@ -109,10 +109,6 @@ export default ({ completed }: CreateEventProps) => {
           </FormControl>
         </Stack>
 
-        <Typography level={'h3'} sx={{ mt: 2 }}>
-          Scoring Rates
-        </Typography>
-
         <Button type={'submit'} sx={{ mt: 2 }}>
           Submit
         </Button>

@@ -8,27 +8,13 @@ import {
   TeamWithMetaData,
 } from '@shared-data';
 import { Select, Stack, Table, Typography, Option } from '@mui/joy';
-import { EventOwnerRoute } from '../../../components';
-import useEventRoute, {
-  EventRouteProvider,
-} from '../../../providers/useEventRoute';
 import { AgGridReact } from 'ag-grid-react';
 import './style.css';
 import { IconButton } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import { DocumentReference } from '@firebase/firestore';
 
-export default () => (
-  <EventOwnerRoute>
-    <EventRouteProvider>
-      <Draft />
-    </EventRouteProvider>
-  </EventOwnerRoute>
-);
-
-const Draft = () => {
-  const serverEvent = useEventRoute();
-
+export default ({ event: serverEvent }: { event: EventWithMetadata }) => {
   const [event] = useState<EventWithMetadata>(serverEvent);
 
   const [teams, setTeams] = useState<TeamWithMetaData[]>([]);
