@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@shared-data": ["modules/shared/data/src/index.ts"],
+      "@shared-data": ["modules/shared/data/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -1,5 +1,18 @@
 {
   "projects": {
     "default": "notfantasyfitness"
-  }
+  },
+  "targets": {
+    "notfantasyfitness": {
+      "hosting": {
+        "admin": [
+          "nff-admin"
+        ],
+        "app": [
+          "notfantasyfitness"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }
