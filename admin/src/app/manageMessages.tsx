@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { createMessage, listMessages, MessageWithMetadata } from '@shared-data';
 import { AgGridReact } from 'ag-grid-react';
+import 'ag-grid-community/styles/ag-theme-quartz.css';
+import 'ag-grid-community/styles/ag-grid.css';
 import {
   Button,
   FormControl,
@@ -33,7 +35,9 @@ export default () => {
     []
   );
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+
     const newMessage = {
       text: message,
       expirationDate: new Date(expirationDate),

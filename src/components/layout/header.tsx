@@ -2,11 +2,11 @@ import { AppBar, IconButton, Link, Toolbar } from '@mui/material';
 import { Menu } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { Button, Stack } from '@mui/joy';
-import useAuth from '../../providers/useAuth';
 import { auth } from '@shared-data';
 import { signOut } from 'firebase/auth';
 import { toast } from 'react-toastify';
 import Box from '@mui/joy/Box';
+import { useAuth } from 'common-react';
 
 export default ({
   height,

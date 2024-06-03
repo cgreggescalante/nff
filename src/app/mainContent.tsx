@@ -1,6 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import AdminTools from './adminTools';
-import { AdminRoute, EventOwnerRoute, Layout } from '../components';
+import { EventOwnerRoute, Layout } from '../components';
 import Draft from './eventDetail/draft';
 import RegisterForEvent from './eventDetail/registerForEvent';
 import EditEvent from './eventDetail/editEvent';
@@ -34,14 +33,6 @@ export default () => (
         }
       />
       <Route path="/add-activity" element={<AddActivity />} />
-      <Route
-        path="/admin-tools"
-        element={
-          <AdminRoute>
-            <AdminTools />
-          </AdminRoute>
-        }
-      />
     </Routes>
   </Layout>
 );

@@ -1,18 +1,19 @@
-import { useState } from 'react';
-import type { EventWithMetadata } from '@shared-data';
+import { useEffect, useState } from 'react';
+import { EventWithMetadata, listEvents } from '@shared-data';
 import { deleteEvent } from '@shared-data';
 import CreateEvent from './createEvent';
 import { toast } from 'react-toastify';
-import { useListEvents } from '../../../providers/queries';
 import { Button, Table } from '@mui/joy';
-import { ConfirmPopup } from '../../../components';
+import { ConfirmPopup } from 'common-react';
 
 export default () => {
-  const { data: events, isLoading, refetch } = useListEvents();
+  const [events, setEvents] = useState<EventWithMetadata[]>();
   const [error, setError] = useState<string>();
   const [showCreateEvent, setShowCreateEvent] = useState<boolean>(false);
 
-  if (isLoading) return <p>Loading...</p>;
+  useEffect(() => {
+    listEvents().then(setEvents);
+  }, []);
   if (!events) return <p>No events found</p>;
 
   const handleDelete = (uid: string) => {
@@ -21,7 +22,6 @@ export default () => {
     deleteEvent(event)
       .then(() => {
         toast.success('Event deleted');
-        refetch();
       })
       .catch((error) => {
         console.error('Error while deleting Event:', error);

@@ -2,8 +2,8 @@ import { ActivityList } from '../components';
 import Typography from '@mui/joy/Typography';
 import { Option, Select, Stack } from '@mui/joy';
 import { useState } from 'react';
-import useAuth from '../providers/useAuth';
 import ContentBox from '../components/contentBox';
+import { useAuth } from 'common-react';
 
 export default () => {
   const [activityFilter, setActivityFilter] = useState(0);

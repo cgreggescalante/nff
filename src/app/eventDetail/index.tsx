@@ -5,7 +5,6 @@ import {
   EntryWithMetaData,
   EventWithMetadata,
 } from '@shared-data';
-import useAuth from '../../providers/useAuth';
 import { Button, Stack, Typography } from '@mui/joy';
 import useEventRoute, {
   EventRouteProvider,
@@ -16,6 +15,7 @@ import {
   useTeamLeaderboard,
   useUserLeaderboard,
 } from '../../providers/queries';
+import { useAuth } from 'common-react';
 
 export default () => (
   <EventRouteProvider>

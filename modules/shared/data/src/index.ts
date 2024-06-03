@@ -10,3 +10,5 @@ export * from './lib/CONFIG';
 export * from './lib/services/AuthService';
 
 export * from './lib/firebase';
+
+export * from './lib/testData/createTestData';

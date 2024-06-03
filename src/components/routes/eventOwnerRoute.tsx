@@ -2,7 +2,7 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import React, { ReactNode, useEffect, useState } from 'react';
 import { CheckIsEventOwner } from '@shared-data';
-import useAuth from '../../providers/useAuth';
+import { useAuth } from 'common-react';
 
 interface EventOwnerRouteProps {
   children: ReactNode;
@@ -14,6 +14,7 @@ export default ({ children }: EventOwnerRouteProps) => {
   if (!eventId) throw new Error('Event ID not provided');
 
   const { loading: authLoading, isAdmin, user } = useAuth();
+
   const navigate = useNavigate();
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);

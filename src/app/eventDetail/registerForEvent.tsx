@@ -9,7 +9,7 @@ import { Button, Input, Radio, RadioGroup, Typography } from '@mui/joy';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEvent } from '../../providers/queries';
 import ContentBox from '../../components/contentBox';
-import useAuth from '../../providers/useAuth';
+import { useAuth } from 'common-react';
 
 export default () => {
   const { eventId } = useParams();

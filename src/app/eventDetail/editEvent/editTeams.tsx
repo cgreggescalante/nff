@@ -8,7 +8,7 @@ import {
 import { useEffect, useState } from 'react';
 import { Button, Grid, Input, Typography } from '@mui/joy';
 import useEditTeamController from '../../../controllers/useEditTeamController';
-import { ConfirmPopup } from '../../../components';
+import { ConfirmPopup } from 'common-react';
 
 export default ({ event }: { event: EventWithMetadata }) => {
   const [teams, setTeams] = useState<TeamWithMetaData[]>([]);

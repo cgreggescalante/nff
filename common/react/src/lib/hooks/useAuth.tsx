@@ -14,7 +14,7 @@ const AuthContext = createContext({
   loading: true,
 } as { isAdmin: boolean; user: User | null; loading: boolean });
 
-const useAuth = () => {
+export const useAuth = () => {
   return useContext(AuthContext);
 };
 
@@ -44,5 +44,3 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     </AuthContext.Provider>
   );
 };
-
-export default useAuth;

@@ -6,8 +6,8 @@ import {
 } from '@shared-data';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import useAuth from '../providers/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from 'common-react';
 
 interface UploadController {
   description: string;
