@@ -71,7 +71,7 @@ export default () => {
                   type={'number'}
                   value={workouts[workout]}
                   onChange={(e) =>
-                    handleDurationChange(workout, parseInt(e.target.value))
+                    handleDurationChange(workout, parseFloat(e.target.value))
                   }
                 />
               </td>
