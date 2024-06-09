@@ -1,11 +1,4 @@
-import {
-  FormControl,
-  FormLabel,
-  Option,
-  Select,
-  Stack,
-  Typography,
-} from '@mui/joy';
+import { FormControl, FormLabel, Option, Select, Typography } from '@mui/joy';
 import {
   useListEvents,
   useTeamLeaderboard,
@@ -20,6 +13,7 @@ import React, { useEffect, useState } from 'react';
 import { DIVISIONS, EventWithMetadata } from '@shared-data';
 import { useSearchParams } from 'react-router-dom';
 import ContentBox from '../../components/contentBox';
+import Box from '@mui/joy/Box';
 
 export default () => {
   const { data: events, isLoading } = useListEvents();
@@ -29,6 +23,11 @@ export default () => {
   const [selectedEvent, setSelectedEvent] = useState<EventWithMetadata | null>(
     null
   );
+
+  const { data: teams } = useTeamLeaderboard(
+    selectedEvent ? selectedEvent.uid : null
+  );
+  const { data: entries } = useUserLeaderboard(selectedEvent);
 
   useEffect(() => {
     if (!events || !events.length) return;
@@ -74,87 +73,67 @@ export default () => {
         )}
         {events && selectedEvent && (
           <>
-            <Stack
-              direction={'row'}
-              spacing={1}
+            <FormControl
               sx={{
-                width: '100%',
-                mb: 1,
+                width: '50%',
+                flexGrow: 1,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
               }}
             >
-              <FormControl
-                sx={{
-                  width: '50%',
-                  flexGrow: 1,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                }}
+              <FormLabel sx={{ mb: 0 }}>Select Event</FormLabel>
+              <Select
+                value={selectedEvent}
+                onChange={(_, value) => handleEventChange(value)}
               >
-                <FormLabel>Select Event</FormLabel>
-                <Select
-                  value={selectedEvent}
-                  onChange={(_, value) => handleEventChange(value)}
-                >
-                  {events.map((event, index) => (
-                    <Option key={index} value={event}>
-                      {event.name}
-                    </Option>
-                  ))}
-                </Select>
-              </FormControl>
+                {events.map((event, index) => (
+                  <Option key={index} value={event}>
+                    {event.name}
+                  </Option>
+                ))}
+              </Select>
+            </FormControl>
 
-              <FormControl
-                sx={{
-                  width: '50%',
-                  flexGrow: 1,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                }}
+            <FormControl
+              sx={{
+                width: '50%',
+                flexGrow: 1,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              <FormLabel sx={{ mb: 0 }}>Select Division</FormLabel>
+              <Select
+                value={searchParams.get('division')}
+                onChange={(_, value) => handleDivisionChange(value || '')}
               >
-                <FormLabel>Select Division</FormLabel>
-                <Select
-                  value={searchParams.get('division')}
-                  onChange={(_, value) => handleDivisionChange(value || '')}
-                >
-                  <Option key={''} value={''}>
-                    All
+                <Option key={''} value={''}>
+                  All
+                </Option>
+                <Option key={'teams'} value={'teams'}>
+                  Teams
+                </Option>
+                {DIVISIONS.map(({ value }) => (
+                  <Option key={value} value={value}>
+                    {value}
                   </Option>
-                  <Option key={'teams'} value={'teams'}>
-                    Teams
-                  </Option>
-                  {DIVISIONS.map(({ value }) => (
-                    <Option key={value} value={value}>
-                      {value}
-                    </Option>
-                  ))}
-                </Select>
-              </FormControl>
-            </Stack>
+                ))}
+              </Select>
+            </FormControl>
 
-            <LeaderboardContainer
-              event={selectedEvent}
-              division={searchParams.get('division')}
-            />
+            <Box sx={{ maxWidth: '700px', mt: 1, width: '100%' }}>
+              {searchParams.get('division') === 'teams' ? (
+                <TeamLeaderboard teams={teams} entries={entries} />
+              ) : (
+                <EventLeaderboard
+                  entries={entries}
+                  division={searchParams.get('division')}
+                />
+              )}
+            </Box>
           </>
         )}
       </LoadingWrapper>
     </ContentBox>
-  );
-};
-
-const LeaderboardContainer = ({
-  event,
-  division,
-}: {
-  event: EventWithMetadata;
-  division: string | null;
-}) => {
-  const { data: teams } = useTeamLeaderboard(event.uid);
-  const { data: entries } = useUserLeaderboard(event);
-
-  return division === 'teams' ? (
-    <TeamLeaderboard teams={teams} entries={entries} />
-  ) : (
-    <EventLeaderboard entries={entries} division={division} />
   );
 };

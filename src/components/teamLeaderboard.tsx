@@ -19,7 +19,7 @@ export default ({ teams, entries }: TeamLeaderboardProps) => {
     if (!teams || !entries) return;
 
     setColDefs([
-      { field: 'rank', headerName: 'Rank', flex: 1 },
+      { field: 'rank', headerName: '#', flex: 1 },
       {
         field: 'name',
         headerName: 'Team',
@@ -47,7 +47,7 @@ export default ({ teams, entries }: TeamLeaderboardProps) => {
   }, [teams, entries]);
 
   return (
-    <div className="ag-theme-quartz">
+    <div className="ag-theme-quartz" style={{ maxWidth: '100%' }}>
       <AgGridReact
         domLayout={'autoHeight'}
         rowData={teams}
@@ -79,7 +79,7 @@ const TeamDetailPopover = ({
   };
 
   const [colDefs] = useState<any[]>([
-    { field: 'rank', headerName: 'Rank', flex: 1 },
+    { field: 'rank', headerName: '#', flex: 1 },
     {
       field: 'userDisplayName',
       headerName: 'Name',

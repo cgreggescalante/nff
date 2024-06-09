@@ -12,7 +12,7 @@ interface EventLeaderboardProps {
 
 export default ({ entries, division }: EventLeaderboardProps) => {
   const [colDefs] = useState([
-    { field: 'rank', headerName: 'Rank', flex: 1 },
+    { field: 'rank', headerName: '#', flex: 1 },
     { field: 'userDisplayName', headerName: 'Name', flex: 4 },
     { field: 'goal', headerName: 'Goal', flex: 2 },
     {
@@ -45,7 +45,7 @@ export default ({ entries, division }: EventLeaderboardProps) => {
   }, [entries, division]);
 
   return (
-    <div className="ag-theme-quartz">
+    <div className="ag-theme-quartz" style={{ width: '100%' }}>
       <AgGridReact
         domLayout={'autoHeight'}
         rowData={data}

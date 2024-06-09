@@ -33,8 +33,6 @@ export default () => {
     removeWorkout,
   } = useUploadController();
 
-  // TODO: add flag to tell the user if submission is still being processed
-
   return (
     <ContentBox maxWidth={500}>
       <Typography level="h2" sx={{ mb: 3 }}>
@@ -85,6 +83,15 @@ export default () => {
               </td>
             </tr>
           ))}
+          {includedWorkouts.length === 0 && (
+            <tr>
+              <td colSpan={2}>
+                <Typography>
+                  Select a workout type from the dropdown to get started!
+                </Typography>
+              </td>
+            </tr>
+          )}
         </tbody>
       </Table>
 
@@ -125,7 +132,12 @@ export default () => {
       </FormControl>
 
       <Box>
-        <Button onClick={handleSubmit}>Submit</Button>
+        <Button
+          onClick={handleSubmit}
+          disabled={!Object.values(workouts).some((duration) => duration > 0)}
+        >
+          Submit
+        </Button>
         <Button
           sx={{ ml: 1 }}
           variant={'plain'}
