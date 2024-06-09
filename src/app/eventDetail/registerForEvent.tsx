@@ -55,11 +55,14 @@ export default () => {
       </Typography>
       <Input
         sx={{ ml: 1 }}
+        slotProps={{ input: { min: 0 } }}
         autoFocus
         required
         type={'number'}
         value={goal}
-        onChange={(e) => setGoal(parseFloat(e.target.value))}
+        onChange={(e) =>
+          setGoal(e.target.value ? parseFloat(e.target.value) : 0)
+        }
       />
       <Typography level={'body-lg'} sx={{ mt: 2, mb: 1 }}>
         Select the division that best describes you.
