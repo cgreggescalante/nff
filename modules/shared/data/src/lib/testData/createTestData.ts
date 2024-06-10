@@ -1,18 +1,20 @@
 import { addEvent } from './fakeEvent';
 import { addUpload } from './fakeUpload';
 // eslint-disable-next-line @nx/enforce-module-boundaries
+import { User } from '@firebase/auth';
+import { randFullName } from '@ngneat/falso';
 import {
-  addTeamMember,
-  createEvent,
-  createTeamByOwner,
-  DIVISIONS,
   getEntriesByEvent,
   getTeamsByEvent,
   listEvents,
+} from '../services/read';
+import {
+  createEvent,
+  createTeamByOwner,
   registerUserForEvent,
-} from '@shared-data';
-import { User } from '@firebase/auth';
-import { randFullName } from '@ngneat/falso';
+} from '../services/create';
+import { addTeamMember } from '../services/update';
+import { DIVISIONS } from '../CONFIG';
 
 const users: { uid: string; displayName: string }[] = [];
 

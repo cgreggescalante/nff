@@ -13,7 +13,7 @@ import {
   TeamConverter,
   UploadConverter,
 } from '../converters';
-import { Entry, Team, Event } from '@shared-data';
+import { Entry, Team, Event } from '../models';
 
 export const MessageCollectionRef = collection(db, 'messages').withConverter(
   MessageConverter

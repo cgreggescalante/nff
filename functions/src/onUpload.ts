@@ -1,7 +1,8 @@
 import { App, initializeApp } from 'firebase-admin/app';
-import { getFirestore, QueryDocumentSnapshot } from 'firebase-admin/firestore';
+import { QueryDocumentSnapshot, getFirestore } from 'firebase-admin/firestore';
 import * as logger from 'firebase-functions/logger';
 import { onDocumentCreated } from 'firebase-functions/v2/firestore';
+import { Team } from '../../modules/shared/data/src';
 
 const addWorkoutTypeToNumber = (
   a: { [k: string]: number },
@@ -46,14 +47,30 @@ export const onUpload = onDocumentCreated('uploads/{uploadId}', (event) => {
 
     const entries = await transaction.get(entryQuery);
 
-    for (const entry of entries.docs) {
-      const eventSnapshot = (await transaction.get(
-        entry.get('eventRef')
-      )) as unknown as QueryDocumentSnapshot;
-      if (!eventSnapshot.exists) {
+    const eventSnapshots = await Promise.all(
+      entries.docs.map(
+        async (entry) => await transaction.get(entry.get('eventRef'))
+      )
+    );
+
+    const teamSnapshots = (await Promise.all(
+      entries.docs.map(async (entry) =>
+        entry.get('teamRef')
+          ? await transaction.get(entry.get('teamRef'))
+          : null
+      )
+    )) as unknown as QueryDocumentSnapshot<Team>[];
+
+    for (let i = 0; i < entries.size; i++) {
+      if (!eventSnapshots[i]) {
         logger.error('Event does not exist');
         continue;
       }
+
+      const eventSnapshot = eventSnapshots[
+        i
+      ] as unknown as QueryDocumentSnapshot<Event>;
+      const entry = entries.docs[i];
 
       if (
         eventSnapshot.get('startDate') > upload.date ||
@@ -74,13 +91,10 @@ export const onUpload = onDocumentCreated('uploads/{uploadId}', (event) => {
         points: entry.get('points') + upload.points,
       });
 
-      // If the entry has a team, update the team's points
-      if (entry.get('teamRef')) {
-        const team: any = (
-          await transaction.get(entry.get('teamRef'))
-        ).docs[0].data();
+      if (teamSnapshots[i]) {
+        const team = teamSnapshots[i].data();
 
-        transaction.update(team.ref, {
+        transaction.update(teamSnapshots[i].ref, {
           points: team.points + upload.points,
         });
       }

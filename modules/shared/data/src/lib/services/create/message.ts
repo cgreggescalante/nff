@@ -1,4 +1,4 @@
-import { Message } from '@shared-data';
+import { Message } from '../../models';
 import { addDoc } from '@firebase/firestore';
 import { MessageCollectionRef } from '../CollectionRefs';
 

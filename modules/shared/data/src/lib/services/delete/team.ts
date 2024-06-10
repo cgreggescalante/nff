@@ -1,6 +1,12 @@
 import { getTeamRef } from '../CollectionRefs';
-import { deleteField, getDoc, runTransaction } from '@firebase/firestore';
+import {
+  deleteField,
+  DocumentReference,
+  getDoc,
+  runTransaction,
+} from '@firebase/firestore';
 import { db } from '../../firebase';
+import { Entry } from '../../models';
 
 export const deleteTeam = async (eventId: string, teamId: string) => {
   const teamSnapshot = await getDoc(getTeamRef(eventId, teamId));
@@ -10,7 +16,7 @@ export const deleteTeam = async (eventId: string, teamId: string) => {
 
   await runTransaction(db, async (transaction) => {
     transaction.delete(teamRef);
-    entryRefs.forEach((entry) => {
+    entryRefs.forEach((entry: DocumentReference<Entry>) => {
       transaction.update(entry, {
         teamRef: deleteField(),
       });
