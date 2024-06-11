@@ -21,7 +21,7 @@ service cloud.firestore {
 
     match /uploads/{uploadId} {
         allow read;
-        allow write: if signedIn() && request.auth.uid == request.resource.data.userId;
+        allow write: if signedIn() && request.auth.uid == get(/databases/$(database)/documents/uploads/$(uploadId)).data.userId;
     }
 
     match /{path=**}/entries/{entryId} {

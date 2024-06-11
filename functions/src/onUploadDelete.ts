@@ -10,6 +10,7 @@ let app: App;
 export const onUploadDelete = onDocumentDeleted(
   'uploads/{uploadId}',
   async (event) => {
+    logger.info('onUploadDelete', event);
     if (!app) app = initializeApp();
 
     const snapshot = event.data;
